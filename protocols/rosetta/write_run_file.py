@@ -2,14 +2,17 @@
 
 import os
 import sys
+import inspect
 
-template_file = 'template.py'
+path_to_this_module = os.path.abspath( os.path.dirname( inspect.getsourcefile(sys.modules[__name__]) ) )
+
+template_file = os.path.join(path_to_this_module, 'template.py')
 
 def process(data_dict):
     required_arguments = [
         'numjobs', 'scriptname', 'mem_free',
-        'cluster_rosetta_bin', 'cluster_rosetta_db',
-        'local_rosetta_bin', 'local_rosetta_db',
+        'cluster_rosetta_bin',
+        'local_rosetta_bin',
         'appname', 'rosetta_args_list',
         'output_dir',
     ]
@@ -35,6 +38,12 @@ def process(data_dict):
     else:
         data_dict['add_extra_ld_path'] = 'False'
         data_dict['extra_ld_path'] = ''
+
+    if 'cluster_rosetta_db' not in data_dict:
+        data_dict['cluster_rosetta_db'] = ''
+
+    if 'local_rosetta_db' not in data_dict:
+        data_dict['local_rosetta_db'] = ''
 
     if not os.path.isdir(data_dict['output_dir']):
         os.makedirs(data_dict['output_dir'])

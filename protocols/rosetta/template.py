@@ -141,7 +141,7 @@ def run_single(task_id, rosetta_bin, rosetta_db, scratch_dir=local_scratch_dir, 
 
     time_start = roundTime()
 
-    if verbosity > =1:
+    if verbosity >= 1:
         print 'Starting time:',time_start
         print 'Task id:',task_id
 
@@ -163,11 +163,26 @@ def run_single(task_id, rosetta_bin, rosetta_db, scratch_dir=local_scratch_dir, 
     tmp_data_dir = tempfile.mkdtemp(prefix='%d.%d_data_' % (job_id,task_id), dir=scratch_dir)
     tmp_output_dir = tempfile.mkdtemp(prefix='%d.%d_output_' % (job_id,task_id), dir=scratch_dir)
 
+    if verbosity >= 1:
+        print 'Temporary data dir:', tmp_data_dir
+        print 'Temporary output dir:', tmp_output_dir
+
     args=[
         os.path.join(rosetta_bin, app_name),
-        '-database',
-        rosetta_db,
     ]
+
+    # Append specific Rosetta database path if this argument is included
+    if len(rosetta_db) > 0:
+        args.append('-database')
+        args.append(rosetta_db)
+
+    def copy_file_helper(original_file):
+        new_file = os.path.join(tmp_data_dir, os.path.basename(original_file))
+        shutil.copy(original_file, new_file)
+        value = os.path.relpath(new_file, tmp_output_dir)
+        if verbosity>=1:
+            print 'Copied file to local scratch:', os.path.basename(original_file)
+        return value
 
     flags_dict = job_dict[job_dir]
     for flag in flags_dict:
@@ -180,6 +195,19 @@ def run_single(task_id, rosetta_bin, rosetta_db, scratch_dir=local_scratch_dir, 
         if flag == 'input_file_list':
             continue
 
+        # Check if argument is a rosetta script variable
+        if flag == '-parser:script_vars':
+            args.append(flag)
+            script_vars = flags_dict[flag]
+            assert( not isinstance(script_vars, basestring) )
+            for varstring in script_vars:
+                assert( '=' in varstring )
+                name, value = varstring.split('=')
+                if os.path.isfile(value):
+                    value = copy_file_helper( os.path.abspath(value) )
+                args.append( '%s=%s' % (name, value) )
+            continue
+
         # Add only the value if NOAPPEND, otherwise also add the key here
         if not flag.startswith('NOAPPEND'):
             args.append(flag)
@@ -188,12 +216,8 @@ def run_single(task_id, rosetta_bin, rosetta_db, scratch_dir=local_scratch_dir, 
         # If so, copy to temporary data directory
         value = str(flags_dict[flag])
         if os.path.isfile(value):
-            original_file = os.path.abspath(value)
-            new_file = os.path.join(tmp_data_dir, os.path.basename(original_file))
-            shutil.copy(original_file, new_file)
-            value = os.path.relpath(new_file, tmp_output_dir)
-            if verbosity>=1:
-                print 'Copied file to local scratch:', os.path.basename(original_file)
+            value = copy_file_helper( os.path.abspath(value) )
+
         elif os.path.isdir(value):
             original_dir = os.path.abspath(value)
             new_dir = os.path.join(tmp_data_dir, os.path.basename(original_dir))
@@ -267,7 +291,7 @@ def run_single(task_id, rosetta_bin, rosetta_db, scratch_dir=local_scratch_dir, 
         zip_file(outfile_path)
 
     if not os.path.isdir(job_dir_path):
-        print 'Making jobdir: ', job_dir_path
+        print 'Making new job output directory: ', job_dir_path
         os.makedirs(job_dir_path)
 
     # Move files to job_dir from scratch dir recursively
@@ -300,8 +324,8 @@ def run_single(task_id, rosetta_bin, rosetta_db, scratch_dir=local_scratch_dir, 
     if run_on_sge:
         try:
             # Encase this in try block in case script_name is wrong
-            shutil.move("%s.o%d.%d"%(script_name,job_id,sge_task_id),job_dir_path)
-            shutil.move("%s.e%d.%d"%(script_name,job_id,sge_task_id),job_dir_path)
+            shutil.move("%s.o%d.%d" % (script_name,job_id,sge_task_id), job_dir_path)
+            shutil.move("%s.e%d.%d" % (script_name,job_id,sge_task_id), job_dir_path)
         except IOError:
             print 'Failed moving script files, check stored name'
 
@@ -333,6 +357,13 @@ def run_local():
     from multiprocessing import Pool
     import multiprocessing
 
+    # Integer argument allows number of jobs to run to be specified
+    # Jobs will be run single-threaded for debugging
+    if len(sys.argv) > 1:
+        jobs_to_run = int(sys.argv[1])
+    else:
+        jobs_to_run = None
+
     class MultiWorker:
         def __init__(self, task, func):
             self.reporter = Reporter(task)
@@ -343,17 +374,19 @@ def run_local():
             self.number_finished += 1
             self.reporter.report(self.number_finished)
         def addJob(self,argsTuple):
-            # Multiprocessing
-            self.pool.apply_async(self.func, argsTuple, callback=self.cb)
+            if jobs_to_run:
+                # Testing
+                self.cb( self.func(argsTuple[0], argsTuple[1], argsTuple[2], argsTuple[3], argsTuple[4]) )
+            else:
+                # Multiprocessing
+                self.pool.apply_async(self.func, argsTuple, callback=self.cb)
 
-            # Testing
-            # self.cb( self.func(argsTuple[0], argsTuple[1], argsTuple[2], argsTuple[3], argsTuple[4]) )
         def finishJobs(self):
             self.pool.close()
             self.pool.join()
             self.reporter.done()
 
-    worker = MultiWorker('running script locally',run_single)
+    worker = MultiWorker('running script locally', run_single)
 
     if os.path.isfile(job_pickle_file):
         p = open(job_pickle_file, 'r')
@@ -364,9 +397,8 @@ def run_local():
     worker.reporter.set_total_count(num_jobs)
 
     for i in xrange(0, num_jobs): # Manually specify which jobs to run here, if you desire. Or pass as argument
-        if len(sys.argv) > 1:
-            if i >= int(sys.argv[1]):
-                continue
+        if jobs_to_run and i >= jobs_to_run:
+            break
         worker.addJob( (i, local_rosetta_bin, local_rosetta_db, local_scratch_dir, 1) )
 
     worker.finishJobs()
