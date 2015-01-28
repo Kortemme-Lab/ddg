@@ -1,0 +1,48 @@
+<ROSETTASCRIPTS>
+        <SCOREFXNS>
+	   <fa_talaris2014 weights=talaris2014/>
+	   <fa_score12 weights=score12/>
+	   <fa_soft_rep weights=soft_rep/>
+	   <fa_talaris2013 weights=talaris2013/>
+	   <fa_talaris2014_soft_fa_rep weights=talaris2014>
+	     <Reweight scoretype="fa_rep" weight=0.055/>
+	   </fa_talaris2014_soft_fa_rep>
+	   <fa_talaris2014_soft_fa_dun weights=talaris2014>
+	     <Reweight scoretype="fa_dun" weight=0.07/>
+	   </fa_talaris2014_soft_fa_dun>
+	   <fa_interface weights=interface/>
+        </SCOREFXNS>
+
+        <TASKOPERATIONS>
+	  <ReadResfile name=rrf filename="%%pathtoresfile%%"/>
+        </TASKOPERATIONS>
+
+        <MOVERS>
+	  <ddG name=ddgmover scorefxn=fa_%%currentscorefxn%% chain_num=%%chainstomove%% repack=false repack_bound=false relax_bound=false/>
+        </MOVERS>
+
+        <FILTERS>
+	  <DdGScan name=alascan task_operations=rrf repeats=1 scorefxn=fa_%%currentscorefxn%% report_diffs=1 write2pdb=1 ddG_mover=ddgmover />
+        </FILTERS>
+
+	<MOVERS>
+	  <ReportToDB name=%%tanja_id%% batch_description="protocol_z_%%currentscorefxn%%">
+	    <feature name=ResidueFeatures/>
+	    <feature name=PdbDataFeatures/>
+	    <feature name=ScoreTypeFeatures/>
+	    <feature name=ScoreFunctionFeatures scorefxn=fa_%%currentscorefxn%%/>
+	    <feature name=StructureScoresFeatures scorefxn=fa_%%currentscorefxn%%/>
+	    <feature name=ResidueScoresFeatures scorefxn=fa_%%currentscorefxn%%/>
+	    <feature name=DdGFeatures ddG_scan_mover=alascan/>
+	  </ReportToDB>
+	</MOVERS>
+
+        <APPLY_TO_POSE>
+        </APPLY_TO_POSE>
+
+        <PROTOCOLS>
+	  <Add mover_name=%%tanja_id%%/>
+        </PROTOCOLS>
+
+        <OUTPUT />
+</ROSETTASCRIPTS>
