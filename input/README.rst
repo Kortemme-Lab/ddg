@@ -2,18 +2,18 @@
 Input data
 ====================================
 
--------------
-DDG benchmark
--------------
+---------------
+|DDG| benchmark
+---------------
 
-The input data for the DDG benchmark are DDG values determined from experimental assays and published in the literature.
-The data are presented in the form of curated datasets published for the purposes of benchmarking DDG protocols.
+The input data for the |DDG| benchmark are |DDG| values determined from experimental assays and published in the literature.
+The data are presented in the form of curated datasets published for the purposes of benchmarking |DDG| protocols.
 
 The datasets are divided into two classes:
- - monomeric datasets; each data point specifies a single protein chain, a set of mutations on that chain, and an experimental DDG value measuring protein stability;
- - protein-protein interface datasets; each data point specifies the two partners of the interface (where each partner may consist of multiple protein chains), a set of mutations on the chains, and an experimental DDG value measuring binding affinity.
+ - monomeric datasets; each data point specifies a single protein chain, a set of mutations on that chain, and an experimental |DDG| value measuring protein stability;
+ - protein-protein interface datasets; each data point specifies the two partners of the interface (where each partner may consist of multiple protein chains), a set of mutations on the chains, and an experimental |DDG| value measuring binding affinity.
 
-Each DDG value in the datasets is presented with references to published material describing the conditions in which the
+Each |DDG| value in the datasets is presented with references to published material describing the conditions in which the
 measurement was taken. We provide a bibliography containing details of the references.
 
 ------------
@@ -33,20 +33,23 @@ programming to incorporate into an application.
 Monomeric datasets (thermostability)
 ====================================
 
-There are four curated monomeric datasets in this benchmark capture, compiled by separate teams. The datasets overlap but
-differ in their choice of DDG values, methods of denaturation (chemical, thermal, *etc.*), and structural (PDB) files.
+There are five curated monomeric datasets in this benchmark capture, compiled by separate teams. The datasets overlap but
+differ in their choice of |DDG| values, methods of denaturation (chemical, thermal, *etc.*), and structural (PDB) files.
 Some of these choices depend on when the dataset was published, particularly: i) the choice of PDB file as higher-resolution
-structures have since been deposited in the PDB; and ii) the set of published DDG values. We refer the
+structures have since been deposited in the PDB; and ii) the set of published |DDG| values. We refer the
 reader to the original publications for the full details of the selection criteria.
 
 The three previous published datasets use data compiled in the ProTherm database [1]_, [2]_ which contains a large amount of
 thermodynamic parameters from published experimental assays. ProTherm also stores the references associated with
-these parameters which greatly enriches the data. The datasets were originally published using DDG values with no explicit
+these parameters which greatly enriches the data. The datasets were originally published using |DDG| values with no explicit
 connection to the original sources in the literature but we have made efforts to add this data back into the datasets by
 mapping the dataset records between themselves and the ProTherm database.
 
+ProTherm distinguishes between types of |DDG| measurements - in general |DDG| and |DDGH2O| values respectively denote thermal
+and denaturant denaturation.
+
 Note: The three previously published datasets are not presented in their original forms here. In particular, we have made
-changes to the list of mutations, the PDB ID, or the DDG values in cases where we suspected that the published values may
+changes to the list of mutations, the PDB ID, or the |DDG| values in cases where we suspected that the published values may
 be incorrect or in cases where the PDB IDs have since been deprecated. Our changes are hopefully - but not necessarily -
 correct. We welcome any corrections from the community.
 
@@ -86,11 +89,22 @@ Files: input/json/curatedprotherm.json, input/csv/curatedprotherm.csv
 AlaScan-GPK
 -----------
 
-Records: ...
-Unique PDB IDs: ...
+Records: 768
+
+Unique PDB IDs: 56
+
 Files: input/json/alascan-gpk.json, input/csv/alascan-gpk.csv
 
-Alanine scanning benchmark
+This dataset consists of all of the point mutations to alanine that are present in the Guerois, Potapov, and Kellogg datasets.
+The method of construction was as follows:
+
+- consider all point mutations to alanine in the union of the datasets;
+- for each mutation, take:
+
+ - the set of |DDGH2O| values from ProTherm if available, otherwise the set of |DDG| values. If this set contained |DDG| values used in the datasets then we took the mean value of the intersection otherwise we took the mean value of the entire set;
+ - the highest resolution PDB structure used in the datasets.
+
+Thus, the |DDG| values and PDB IDs may differ from the original datasets for some records.
 
 =====================================================
 Protein-protein interface datasets (binding affinity)
@@ -122,7 +136,7 @@ in the input/json/pdbs.json and input/csv/pdbs.csv.
 Dataset reference files
 =======================
 
-The datasets tie each experimental DDG value to a reference using an identifying string (typically a PubMed ID). The details
+The datasets tie each experimental |DDG| value to a reference using an identifying string (typically a PubMed ID). The details
 of these references - authors, title, publication, publication date - are provided in input/json/references.json and
 input/csv/references.csv
 
@@ -142,3 +156,7 @@ References
 .. [5] Kellogg
 
 .. [6] SKEMPI
+
+.. |Dgr|  unicode:: U+00394 .. GREEK CAPITAL LETTER DELTA
+.. |DDGH2O| replace:: |Dgr|\ |Dgr|\ G H\ :sub:`2`\ O
+.. |DDG| replace:: |Dgr|\ |Dgr|\ G
