@@ -1,5 +1,6 @@
 {
     "information": "\nThis dataset of mutations originates from the paper by Potapov et al. [1]. We have made some changes from the original\ndataset. In particular, we have tried to match the DDG values to the original publications.\n\nThe DSSPType column lists the DSSP secondary structure type assigned by mkdssp 2.2.1 [2, 3]. The DSSPSimpleSSType column\nlists a simple elision of the DSSP types: G, H, and I become H(elix); E becomes S(heet); and T, B, S, and C become O(ther).\n    ", 
+    "version": "This dataset was last updated on 2015-01-29.", 
     "references": {
         "1": "PMID:19561092", 
         "2": "PMID:21071423", 
@@ -51,9 +52,9 @@
                 {
                     "DSSPExposure": 0.575342465753425, 
                     "MutantAA": "V", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "105", 
                     "WildTypeAA": "T"
                 }
@@ -80,9 +81,9 @@
                 {
                     "DSSPExposure": 0.214285714285714, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "109", 
                     "WildTypeAA": "I"
                 }
@@ -109,9 +110,9 @@
                 {
                     "DSSPExposure": 0.214285714285714, 
                     "MutantAA": "V", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "109", 
                     "WildTypeAA": "I"
                 }
@@ -196,9 +197,9 @@
                 {
                     "DSSPExposure": 0.315352697095436, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "110", 
                     "WildTypeAA": "R"
                 }
@@ -631,9 +632,9 @@
                 {
                     "DSSPExposure": 0.26027397260274, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "26", 
                     "WildTypeAA": "T"
                 }
@@ -660,9 +661,9 @@
                 {
                     "DSSPExposure": 0.26027397260274, 
                     "MutantAA": "G", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "26", 
                     "WildTypeAA": "T"
                 }
@@ -689,9 +690,9 @@
                 {
                     "DSSPExposure": 0.26027397260274, 
                     "MutantAA": "S", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "26", 
                     "WildTypeAA": "T"
                 }
@@ -718,9 +719,9 @@
                 {
                     "DSSPExposure": 0.26027397260274, 
                     "MutantAA": "V", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "26", 
                     "WildTypeAA": "T"
                 }
@@ -1008,9 +1009,9 @@
                 {
                     "DSSPExposure": 0.4125, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "36", 
                     "WildTypeAA": "V"
                 }
@@ -1037,9 +1038,9 @@
                 {
                     "DSSPExposure": 0.4125, 
                     "MutantAA": "T", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "36", 
                     "WildTypeAA": "V"
                 }
@@ -1066,9 +1067,9 @@
                 {
                     "DSSPExposure": 0.151898734177215, 
                     "MutantAA": "D", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "41", 
                     "WildTypeAA": "N"
                 }
@@ -1153,9 +1154,9 @@
                 {
                     "DSSPExposure": 0.351648351648352, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "4", 
                     "WildTypeAA": "I"
                 }
@@ -1182,9 +1183,9 @@
                 {
                     "DSSPExposure": 0.351648351648352, 
                     "MutantAA": "V", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "4", 
                     "WildTypeAA": "I"
                 }
@@ -1414,9 +1415,9 @@
                 {
                     "DSSPExposure": 0.183544303797468, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "58", 
                     "WildTypeAA": "N"
                 }
@@ -1443,9 +1444,9 @@
                 {
                     "DSSPExposure": 0.183544303797468, 
                     "MutantAA": "D", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "58", 
                     "WildTypeAA": "N"
                 }
@@ -1472,9 +1473,9 @@
                 {
                     "DSSPExposure": 0.170886075949367, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "5", 
                     "WildTypeAA": "N"
                 }
@@ -1588,9 +1589,9 @@
                 {
                     "DSSPExposure": 0.0, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "76", 
                     "WildTypeAA": "I"
                 }
@@ -1617,9 +1618,9 @@
                 {
                     "DSSPExposure": 0.0, 
                     "MutantAA": "V", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "76", 
                     "WildTypeAA": "I"
                 }
@@ -1675,9 +1676,9 @@
                 {
                     "DSSPExposure": 0.0393013100436681, 
                     "MutantAA": "F", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "78", 
                     "WildTypeAA": "Y"
                 }
@@ -1704,9 +1705,9 @@
                 {
                     "DSSPExposure": 0.278481012658228, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "84", 
                     "WildTypeAA": "N"
                 }
@@ -2255,9 +2256,9 @@
                 {
                     "DSSPExposure": 0.572614107883817, 
                     "MutantAA": "Q", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "72", 
                     "WildTypeAA": "R"
                 }
@@ -2313,9 +2314,9 @@
                 {
                     "DSSPExposure": 0.0206185567010309, 
                     "MutantAA": "N", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "48", 
                     "WildTypeAA": "H"
                 }
@@ -2400,9 +2401,9 @@
                 {
                     "DSSPExposure": 0.470198675496689, 
                     "MutantAA": "N", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "55", 
                     "WildTypeAA": "D"
                 }
@@ -2516,9 +2517,9 @@
                 {
                     "DSSPExposure": 0.0275229357798165, 
                     "MutantAA": "L", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "86", 
                     "WildTypeAA": "F"
                 }
@@ -2545,9 +2546,9 @@
                 {
                     "DSSPExposure": 0.319502074688797, 
                     "MutantAA": "G", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "88", 
                     "WildTypeAA": "R"
                 }
@@ -3009,9 +3010,9 @@
                 {
                     "DSSPExposure": 0.021978021978022, 
                     "MutantAA": "V", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "73A", 
                     "WildTypeAA": "I"
                 }
@@ -4040,9 +4041,9 @@
                 {
                     "DSSPExposure": 0.079646017699115, 
                     "MutantAA": "G", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "51", 
                     "WildTypeAA": "A"
                 }
@@ -4900,9 +4901,9 @@
                 {
                     "DSSPExposure": 0.232876712328767, 
                     "MutantAA": "D", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "26", 
                     "WildTypeAA": "T"
                 }
@@ -4929,9 +4930,9 @@
                 {
                     "DSSPExposure": 0.232876712328767, 
                     "MutantAA": "E", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "26", 
                     "WildTypeAA": "T"
                 }
@@ -4958,9 +4959,9 @@
                 {
                     "DSSPExposure": 0.232876712328767, 
                     "MutantAA": "N", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "26", 
                     "WildTypeAA": "T"
                 }
@@ -4987,9 +4988,9 @@
                 {
                     "DSSPExposure": 0.232876712328767, 
                     "MutantAA": "Q", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "26", 
                     "WildTypeAA": "T"
                 }
@@ -6100,9 +6101,9 @@
                 {
                     "DSSPExposure": 0.393364928909953, 
                     "MutantAA": "R", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "62", 
                     "WildTypeAA": "K"
                 }
@@ -6129,9 +6130,9 @@
                 {
                     "DSSPExposure": 0.729411764705882, 
                     "MutantAA": "S", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "65", 
                     "WildTypeAA": "G"
                 }
@@ -6158,9 +6159,9 @@
                 {
                     "DSSPExposure": 0.616113744075829, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "66", 
                     "WildTypeAA": "K"
                 }
@@ -6187,9 +6188,9 @@
                 {
                     "DSSPExposure": 0.16597510373444, 
                     "MutantAA": "K", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "69", 
                     "WildTypeAA": "R"
                 }
@@ -6224,9 +6225,9 @@
                 {
                     "DSSPExposure": 0.16597510373444, 
                     "MutantAA": "M", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "69", 
                     "WildTypeAA": "R"
                 }
@@ -6253,9 +6254,9 @@
                 {
                     "DSSPExposure": 0.16597510373444, 
                     "MutantAA": "S", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "69", 
                     "WildTypeAA": "R"
                 }
@@ -6588,9 +6589,9 @@
                 {
                     "DSSPExposure": 0.767123287671233, 
                     "MutantAA": "V", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "79", 
                     "WildTypeAA": "T"
                 }
@@ -6646,9 +6647,9 @@
                 {
                     "DSSPExposure": 0.298755186721992, 
                     "MutantAA": "K", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "83", 
                     "WildTypeAA": "R"
                 }
@@ -6683,9 +6684,9 @@
                 {
                     "DSSPExposure": 0.298755186721992, 
                     "MutantAA": "Q", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "83", 
                     "WildTypeAA": "R"
                 }
@@ -6960,9 +6961,9 @@
                 {
                     "DSSPExposure": 0.250965250965251, 
                     "MutantAA": "F", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "94", 
                     "WildTypeAA": "W"
                 }
@@ -7005,9 +7006,9 @@
                 {
                     "DSSPExposure": 0.250965250965251, 
                     "MutantAA": "L", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "94", 
                     "WildTypeAA": "W"
                 }
@@ -7042,9 +7043,9 @@
                 {
                     "DSSPExposure": 0.250965250965251, 
                     "MutantAA": "Y", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "94", 
                     "WildTypeAA": "W"
                 }
@@ -7071,9 +7072,9 @@
                 {
                     "DSSPExposure": 0.227777777777778, 
                     "MutantAA": "G", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "95", 
                     "WildTypeAA": "L"
                 }
@@ -7158,9 +7159,9 @@
                 {
                     "DSSPExposure": 0.388646288209607, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "10", 
                     "WildTypeAA": "Y"
                 }
@@ -7187,9 +7188,9 @@
                 {
                     "DSSPExposure": 0.465753424657534, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "11", 
                     "WildTypeAA": "T"
                 }
@@ -7216,9 +7217,9 @@
                 {
                     "DSSPExposure": 0.211764705882353, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "12", 
                     "WildTypeAA": "G"
                 }
@@ -7274,9 +7275,9 @@
                 {
                     "DSSPExposure": 0.881516587677725, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "15", 
                     "WildTypeAA": "K"
                 }
@@ -7303,9 +7304,9 @@
                 {
                     "DSSPExposure": 0.937759336099585, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "17", 
                     "WildTypeAA": "R"
                 }
@@ -7390,9 +7391,9 @@
                 {
                     "DSSPExposure": 0.643153526970954, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "1", 
                     "WildTypeAA": "R"
                 }
@@ -7622,9 +7623,9 @@
                 {
                     "DSSPExposure": 0.41958041958042, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "2", 
                     "WildTypeAA": "P"
                 }
@@ -7804,9 +7805,9 @@
                 {
                     "DSSPExposure": 0.0117647058823529, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "36", 
                     "WildTypeAA": "G"
                 }
@@ -7833,9 +7834,9 @@
                 {
                     "DSSPExposure": 0.0117647058823529, 
                     "MutantAA": "S", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "36", 
                     "WildTypeAA": "G"
                 }
@@ -7957,9 +7958,9 @@
                 {
                     "DSSPExposure": 0.492890995260663, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "41", 
                     "WildTypeAA": "K"
                 }
@@ -8052,9 +8053,9 @@
                 {
                     "DSSPExposure": 0.132911392405063, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "44", 
                     "WildTypeAA": "N"
                 }
@@ -8081,9 +8082,9 @@
                 {
                     "DSSPExposure": 0.132911392405063, 
                     "MutantAA": "G", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "44", 
                     "WildTypeAA": "N"
                 }
@@ -8400,9 +8401,9 @@
                 {
                     "DSSPExposure": 0.458823529411765, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "57", 
                     "WildTypeAA": "G"
                 }
@@ -8487,9 +8488,9 @@
                 {
                     "DSSPExposure": 0.706293706293706, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "8", 
                     "WildTypeAA": "P"
                 }
@@ -8516,9 +8517,9 @@
                 {
                     "DSSPExposure": 0.328671328671329, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "9", 
                     "WildTypeAA": "P"
                 }
@@ -8838,9 +8839,9 @@
                 {
                     "DSSPExposure": 0.00458715596330275, 
                     "MutantAA": "K", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "123", 
                     "WildTypeAA": "F"
                 }
@@ -9775,9 +9776,9 @@
                 {
                     "DSSPExposure": 0.183333333333333, 
                     "MutantAA": "I", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "49", 
                     "WildTypeAA": "L"
                 }
@@ -10506,9 +10507,9 @@
                 {
                     "DSSPExposure": 0.13986013986014, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "35", 
                     "WildTypeAA": "P"
                 }
@@ -10535,9 +10536,9 @@
                 {
                     "DSSPExposure": 0.229508196721311, 
                     "MutantAA": "P", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "373", 
                     "WildTypeAA": "E"
                 }
@@ -10564,9 +10565,9 @@
                 {
                     "DSSPExposure": 0.229508196721311, 
                     "MutantAA": "R", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "373", 
                     "WildTypeAA": "E"
                 }
@@ -11655,9 +11656,9 @@
                 {
                     "DSSPExposure": 0.633333333333333, 
                     "MutantAA": "E", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "66", 
                     "WildTypeAA": "L"
                 }
@@ -11729,9 +11730,9 @@
                 {
                     "DSSPExposure": 0.00714285714285714, 
                     "MutantAA": "S", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "206", 
                     "WildTypeAA": "C"
                 }
@@ -11766,9 +11767,9 @@
                 {
                     "DSSPExposure": 0.135135135135135, 
                     "MutantAA": "F", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "5", 
                     "WildTypeAA": "W"
                 }
@@ -11833,9 +11834,9 @@
                 {
                     "DSSPExposure": 0.389908256880734, 
                     "MutantAA": "N", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "14", 
                     "WildTypeAA": "F"
                 }
@@ -11862,18 +11863,18 @@
                 {
                     "DSSPExposure": 0.29375, 
                     "MutantAA": "T", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "108", 
                     "WildTypeAA": "V"
                 }, 
                 {
                     "DSSPExposure": 0.389908256880734, 
                     "MutantAA": "N", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "14", 
                     "WildTypeAA": "F"
                 }
@@ -11909,9 +11910,9 @@
                 {
                     "DSSPExposure": 0.389908256880734, 
                     "MutantAA": "N", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "14", 
                     "WildTypeAA": "F"
                 }
@@ -11938,18 +11939,18 @@
                 {
                     "DSSPExposure": 0.650684931506849, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "112", 
                     "WildTypeAA": "T"
                 }, 
                 {
                     "DSSPExposure": 0.389908256880734, 
                     "MutantAA": "N", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "14", 
                     "WildTypeAA": "F"
                 }
@@ -11976,18 +11977,18 @@
                 {
                     "DSSPExposure": 0.650684931506849, 
                     "MutantAA": "G", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "112", 
                     "WildTypeAA": "T"
                 }, 
                 {
                     "DSSPExposure": 0.389908256880734, 
                     "MutantAA": "N", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "14", 
                     "WildTypeAA": "F"
                 }
@@ -12072,18 +12073,18 @@
                 {
                     "DSSPExposure": 0.025, 
                     "MutantAA": "T", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "11", 
                     "WildTypeAA": "V"
                 }, 
                 {
                     "DSSPExposure": 0.389908256880734, 
                     "MutantAA": "N", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "14", 
                     "WildTypeAA": "F"
                 }
@@ -12119,9 +12120,9 @@
                 {
                     "DSSPExposure": 0.389908256880734, 
                     "MutantAA": "N", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "14", 
                     "WildTypeAA": "F"
                 }
@@ -12148,9 +12149,9 @@
                 {
                     "DSSPExposure": 0.0596026490066225, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "12", 
                     "WildTypeAA": "D"
                 }
@@ -12177,9 +12178,9 @@
                 {
                     "DSSPExposure": 0.390728476821192, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "13", 
                     "WildTypeAA": "D"
                 }
@@ -12206,9 +12207,9 @@
                 {
                     "DSSPExposure": 0.389908256880734, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "14", 
                     "WildTypeAA": "F"
                 }
@@ -12235,9 +12236,9 @@
                 {
                     "DSSPExposure": 0.389908256880734, 
                     "MutantAA": "N", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "14", 
                     "WildTypeAA": "F"
                 }, 
@@ -12273,9 +12274,9 @@
                 {
                     "DSSPExposure": 0.389908256880734, 
                     "MutantAA": "N", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "14", 
                     "WildTypeAA": "F"
                 }, 
@@ -12311,9 +12312,9 @@
                 {
                     "DSSPExposure": 0.389908256880734, 
                     "MutantAA": "N", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "14", 
                     "WildTypeAA": "F"
                 }, 
@@ -12349,18 +12350,18 @@
                 {
                     "DSSPExposure": 0.389908256880734, 
                     "MutantAA": "N", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "14", 
                     "WildTypeAA": "F"
                 }, 
                 {
                     "DSSPExposure": 0.0176991150442478, 
                     "MutantAA": "G", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "36", 
                     "WildTypeAA": "A"
                 }
@@ -12387,9 +12388,9 @@
                 {
                     "DSSPExposure": 0.389908256880734, 
                     "MutantAA": "N", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "14", 
                     "WildTypeAA": "F"
                 }, 
@@ -12425,9 +12426,9 @@
                 {
                     "DSSPExposure": 0.389908256880734, 
                     "MutantAA": "N", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "14", 
                     "WildTypeAA": "F"
                 }, 
@@ -12463,9 +12464,9 @@
                 {
                     "DSSPExposure": 0.389908256880734, 
                     "MutantAA": "N", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "14", 
                     "WildTypeAA": "F"
                 }, 
@@ -12501,9 +12502,9 @@
                 {
                     "DSSPExposure": 0.389908256880734, 
                     "MutantAA": "N", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "14", 
                     "WildTypeAA": "F"
                 }, 
@@ -12539,9 +12540,9 @@
                 {
                     "DSSPExposure": 0.389908256880734, 
                     "MutantAA": "N", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "14", 
                     "WildTypeAA": "F"
                 }, 
@@ -12577,18 +12578,18 @@
                 {
                     "DSSPExposure": 0.389908256880734, 
                     "MutantAA": "N", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "14", 
                     "WildTypeAA": "F"
                 }, 
                 {
                     "DSSPExposure": 0.337748344370861, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "64", 
                     "WildTypeAA": "D"
                 }
@@ -12615,9 +12616,9 @@
                 {
                     "DSSPExposure": 0.389908256880734, 
                     "MutantAA": "N", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "14", 
                     "WildTypeAA": "F"
                 }, 
@@ -12653,9 +12654,9 @@
                 {
                     "DSSPExposure": 0.389908256880734, 
                     "MutantAA": "N", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "14", 
                     "WildTypeAA": "F"
                 }, 
@@ -12691,9 +12692,9 @@
                 {
                     "DSSPExposure": 0.389908256880734, 
                     "MutantAA": "N", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "14", 
                     "WildTypeAA": "F"
                 }, 
@@ -12729,9 +12730,9 @@
                 {
                     "DSSPExposure": 0.389908256880734, 
                     "MutantAA": "N", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "14", 
                     "WildTypeAA": "F"
                 }, 
@@ -12767,9 +12768,9 @@
                 {
                     "DSSPExposure": 0.0794701986754967, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "57", 
                     "WildTypeAA": "D"
                 }
@@ -13047,9 +13048,9 @@
                 {
                     "DSSPExposure": 0.157534246575342, 
                     "MutantAA": "I", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "235", 
                     "WildTypeAA": "T"
                 }
@@ -13762,9 +13763,9 @@
                 {
                     "DSSPExposure": 0.651960784313726, 
                     "MutantAA": "R", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "1", 
                     "WildTypeAA": "M"
                 }
@@ -13879,9 +13880,9 @@
                 {
                     "DSSPExposure": 0.11875, 
                     "MutantAA": "K", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "20", 
                     "WildTypeAA": "V"
                 }
@@ -13996,9 +13997,9 @@
                 {
                     "DSSPExposure": 0.11875, 
                     "MutantAA": "Q", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "20", 
                     "WildTypeAA": "V"
                 }
@@ -14203,9 +14204,9 @@
                 {
                     "DSSPExposure": 0.920529801324503, 
                     "MutantAA": "K", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "24", 
                     "WildTypeAA": "D"
                 }
@@ -14272,9 +14273,9 @@
                 {
                     "DSSPExposure": 0.920529801324503, 
                     "MutantAA": "N", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "24", 
                     "WildTypeAA": "D"
                 }
@@ -14341,9 +14342,9 @@
                 {
                     "DSSPExposure": 0.43046357615894, 
                     "MutantAA": "K", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "25", 
                     "WildTypeAA": "D"
                 }
@@ -14410,9 +14411,9 @@
                 {
                     "DSSPExposure": 0.43046357615894, 
                     "MutantAA": "Q", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "25", 
                     "WildTypeAA": "D"
                 }
@@ -14537,9 +14538,9 @@
                 {
                     "DSSPExposure": 0.383886255924171, 
                     "MutantAA": "E", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "39", 
                     "WildTypeAA": "K"
                 }
@@ -14606,9 +14607,9 @@
                 {
                     "DSSPExposure": 0.383886255924171, 
                     "MutantAA": "Q", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "39", 
                     "WildTypeAA": "K"
                 }
@@ -15007,9 +15008,9 @@
                 {
                     "DSSPExposure": 0.754098360655738, 
                     "MutantAA": "K", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "42", 
                     "WildTypeAA": "E"
                 }
@@ -15076,9 +15077,9 @@
                 {
                     "DSSPExposure": 0.754098360655738, 
                     "MutantAA": "Q", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "42", 
                     "WildTypeAA": "E"
                 }
@@ -16565,9 +16566,9 @@
                 {
                     "DSSPExposure": 0.218579234972678, 
                     "MutantAA": "K", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "66", 
                     "WildTypeAA": "E"
                 }
@@ -16618,9 +16619,9 @@
                 {
                     "DSSPExposure": 0.218579234972678, 
                     "MutantAA": "L", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "66", 
                     "WildTypeAA": "E"
                 }
@@ -17175,9 +17176,9 @@
                 {
                     "DSSPExposure": 0.29375, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "88", 
                     "WildTypeAA": "V"
                 }
@@ -17755,9 +17756,9 @@
                 {
                     "DSSPExposure": 0.142857142857143, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "56", 
                     "WildTypeAA": "I"
                 }
@@ -17784,9 +17785,9 @@
                 {
                     "DSSPExposure": 0.142857142857143, 
                     "MutantAA": "T", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "56", 
                     "WildTypeAA": "I"
                 }
@@ -18544,9 +18545,9 @@
                 {
                     "DSSPExposure": 0.0333333333333333, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "100", 
                     "WildTypeAA": "L"
                 }
@@ -18573,9 +18574,9 @@
                 {
                     "DSSPExposure": 0.508196721311475, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "101", 
                     "WildTypeAA": "S"
                 }
@@ -18631,9 +18632,9 @@
                 {
                     "DSSPExposure": 0.554502369668246, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "103", 
                     "WildTypeAA": "K"
                 }
@@ -18689,9 +18690,9 @@
                 {
                     "DSSPExposure": 0.0437158469945355, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "106", 
                     "WildTypeAA": "E"
                 }
@@ -18892,9 +18893,9 @@
                 {
                     "DSSPExposure": 0.829113924050633, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "112", 
                     "WildTypeAA": "N"
                 }
@@ -18921,9 +18922,9 @@
                 {
                     "DSSPExposure": 0.455696202531646, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "113", 
                     "WildTypeAA": "N"
                 }
@@ -19211,9 +19212,9 @@
                 {
                     "DSSPExposure": 0.661375661375661, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "128", 
                     "WildTypeAA": "Q"
                 }
@@ -19733,9 +19734,9 @@
                 {
                     "DSSPExposure": 0.556291390728477, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "91", 
                     "WildTypeAA": "D"
                 }
@@ -19820,9 +19821,9 @@
                 {
                     "DSSPExposure": 0.377049180327869, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "94", 
                     "WildTypeAA": "S"
                 }
@@ -19849,9 +19850,9 @@
                 {
                     "DSSPExposure": 0.132780082987552, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "95", 
                     "WildTypeAA": "R"
                 }
@@ -20142,9 +20143,9 @@
                 {
                     "DSSPExposure": 0.08125, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "117", 
                     "WildTypeAA": "V"
                 }
@@ -20179,9 +20180,9 @@
                 {
                     "DSSPExposure": 0.232876712328767, 
                     "MutantAA": "S", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "122", 
                     "WildTypeAA": "T"
                 }
@@ -20248,9 +20249,9 @@
                 {
                     "DSSPExposure": 0.754966887417219, 
                     "MutantAA": "K", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "126", 
                     "WildTypeAA": "D"
                 }
@@ -20751,9 +20752,9 @@
                 {
                     "DSSPExposure": 0.688524590163934, 
                     "MutantAA": "K", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "40", 
                     "WildTypeAA": "E"
                 }
@@ -22040,9 +22041,9 @@
                 {
                     "DSSPExposure": 0.85781990521327, 
                     "MutantAA": "E", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "114", 
                     "WildTypeAA": "K"
                 }
@@ -22069,9 +22070,9 @@
                 {
                     "DSSPExposure": 0.85781990521327, 
                     "MutantAA": "N", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "114", 
                     "WildTypeAA": "K"
                 }
@@ -22098,9 +22099,9 @@
                 {
                     "DSSPExposure": 0.85781990521327, 
                     "MutantAA": "Q", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "114", 
                     "WildTypeAA": "K"
                 }
@@ -22562,9 +22563,9 @@
                 {
                     "DSSPExposure": 0.0871559633027523, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "12", 
                     "WildTypeAA": "F"
                 }
@@ -22591,9 +22592,9 @@
                 {
                     "DSSPExposure": 0.0871559633027523, 
                     "MutantAA": "L", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "12", 
                     "WildTypeAA": "F"
                 }
@@ -22649,9 +22650,9 @@
                 {
                     "DSSPExposure": 0.450819672131148, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "16", 
                     "WildTypeAA": "S"
                 }
@@ -23461,9 +23462,9 @@
                 {
                     "DSSPExposure": 0.699453551912568, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "46", 
                     "WildTypeAA": "E"
                 }
@@ -24215,9 +24216,9 @@
                 {
                     "DSSPExposure": 0.516556291390728, 
                     "MutantAA": "N", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "19", 
                     "WildTypeAA": "D"
                 }
@@ -24591,6 +24592,35 @@
             "AggregateType": "SingleValue", 
             "DDG": 1.6, 
             "_DataSetDDGID": 10358
+        }, 
+        {
+            "ExperimentalDDGs": [
+                {
+                    "DDGType": "DDG", 
+                    "LocationOfValueInPublication": "Table 2", 
+                    "Temperature": 65.3, 
+                    "pH": 5.4, 
+                    "DDG": 1.6, 
+                    "Publication": "PMID:10545167"
+                }
+            ], 
+            "RecordID": 706, 
+            "Mutations": [
+                {
+                    "DSSPExposure": 0.043956043956044, 
+                    "MutantAA": "M", 
+                    "DSSPSimpleSSType": "H", 
+                    "Chain": "A", 
+                    "DSSPType": "H", 
+                    "ResidueID": "100", 
+                    "WildTypeAA": "I"
+                }
+            ], 
+            "_ExperimentID": 112201, 
+            "PDBFileID": "1L63", 
+            "AggregateType": "SingleValue", 
+            "DDG": 1.6, 
+            "_DataSetDDGID": 9287
         }, 
         {
             "ExperimentalDDGs": [
@@ -25939,6 +25969,35 @@
             "ExperimentalDDGs": [
                 {
                     "DDGType": "DDG", 
+                    "LocationOfValueInPublication": "Table 2", 
+                    "Temperature": 65.3, 
+                    "pH": 5.4, 
+                    "DDG": 1.9, 
+                    "Publication": "PMID:10545167"
+                }
+            ], 
+            "RecordID": 710, 
+            "Mutations": [
+                {
+                    "DSSPExposure": 0.0, 
+                    "MutantAA": "M", 
+                    "DSSPSimpleSSType": "H", 
+                    "Chain": "A", 
+                    "DSSPType": "H", 
+                    "ResidueID": "129", 
+                    "WildTypeAA": "A"
+                }
+            ], 
+            "_ExperimentID": 112208, 
+            "PDBFileID": "1L63", 
+            "AggregateType": "SingleValue", 
+            "DDG": 1.9, 
+            "_DataSetDDGID": 9291
+        }, 
+        {
+            "ExperimentalDDGs": [
+                {
+                    "DDGType": "DDG", 
                     "LocationOfValueInPublication": "Table II", 
                     "Temperature": 51.55, 
                     "pH": 3.0, 
@@ -26809,9 +26868,9 @@
                 {
                     "DSSPExposure": 0.324503311258278, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "20", 
                     "WildTypeAA": "D"
                 }
@@ -26838,9 +26897,9 @@
                 {
                     "DSSPExposure": 0.324503311258278, 
                     "MutantAA": "N", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "20", 
                     "WildTypeAA": "D"
                 }
@@ -26867,9 +26926,9 @@
                 {
                     "DSSPExposure": 0.324503311258278, 
                     "MutantAA": "S", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "20", 
                     "WildTypeAA": "D"
                 }
@@ -26896,9 +26955,9 @@
                 {
                     "DSSPExposure": 0.324503311258278, 
                     "MutantAA": "T", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "20", 
                     "WildTypeAA": "D"
                 }
@@ -27194,9 +27253,9 @@
                 {
                     "DSSPExposure": 0.409836065573771, 
                     "MutantAA": "N", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "38", 
                     "WildTypeAA": "S"
                 }
@@ -28209,9 +28268,9 @@
                 {
                     "DSSPExposure": 0.021978021978022, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "58", 
                     "WildTypeAA": "I"
                 }
@@ -28238,9 +28297,9 @@
                 {
                     "DSSPExposure": 0.021978021978022, 
                     "MutantAA": "T", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "58", 
                     "WildTypeAA": "I"
                 }
@@ -28267,9 +28326,9 @@
                 {
                     "DSSPExposure": 0.465753424657534, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "59", 
                     "WildTypeAA": "T"
                 }
@@ -28304,9 +28363,9 @@
                 {
                     "DSSPExposure": 0.465753424657534, 
                     "MutantAA": "D", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "59", 
                     "WildTypeAA": "T"
                 }
@@ -28333,9 +28392,9 @@
                 {
                     "DSSPExposure": 0.465753424657534, 
                     "MutantAA": "G", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "59", 
                     "WildTypeAA": "T"
                 }
@@ -28370,9 +28429,9 @@
                 {
                     "DSSPExposure": 0.465753424657534, 
                     "MutantAA": "N", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "59", 
                     "WildTypeAA": "T"
                 }
@@ -28399,9 +28458,9 @@
                 {
                     "DSSPExposure": 0.465753424657534, 
                     "MutantAA": "S", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "59", 
                     "WildTypeAA": "T"
                 }
@@ -28428,9 +28487,9 @@
                 {
                     "DSSPExposure": 0.465753424657534, 
                     "MutantAA": "V", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "59", 
                     "WildTypeAA": "T"
                 }
@@ -29370,9 +29429,9 @@
                 {
                     "DSSPExposure": 0.370860927152318, 
                     "MutantAA": "N", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "92", 
                     "WildTypeAA": "D"
                 }
@@ -30328,9 +30387,9 @@
                 {
                     "DSSPExposure": 0.66887417218543, 
                     "MutantAA": "N", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "120", 
                     "WildTypeAA": "D"
                 }
@@ -30386,9 +30445,9 @@
                 {
                     "DSSPExposure": 0.870588235294118, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "129", 
                     "WildTypeAA": "G"
                 }
@@ -30510,9 +30569,9 @@
                 {
                     "DSSPExposure": 0.312796208530806, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "1", 
                     "WildTypeAA": "K"
                 }
@@ -30539,9 +30598,9 @@
                 {
                     "DSSPExposure": 0.312796208530806, 
                     "MutantAA": "M", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "1", 
                     "WildTypeAA": "K"
                 }
@@ -31494,9 +31553,9 @@
                 {
                     "DSSPExposure": 0.218543046357616, 
                     "MutantAA": "N", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "67", 
                     "WildTypeAA": "D"
                 }
@@ -31610,9 +31669,9 @@
                 {
                     "DSSPExposure": 0.54375, 
                     "MutantAA": "D", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "74", 
                     "WildTypeAA": "V"
                 }
@@ -31639,9 +31698,9 @@
                 {
                     "DSSPExposure": 0.54375, 
                     "MutantAA": "F", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "74", 
                     "WildTypeAA": "V"
                 }
@@ -31668,9 +31727,9 @@
                 {
                     "DSSPExposure": 0.54375, 
                     "MutantAA": "G", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "74", 
                     "WildTypeAA": "V"
                 }
@@ -31697,9 +31756,9 @@
                 {
                     "DSSPExposure": 0.54375, 
                     "MutantAA": "I", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "74", 
                     "WildTypeAA": "V"
                 }
@@ -31726,9 +31785,9 @@
                 {
                     "DSSPExposure": 0.54375, 
                     "MutantAA": "L", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "74", 
                     "WildTypeAA": "V"
                 }
@@ -31755,9 +31814,9 @@
                 {
                     "DSSPExposure": 0.54375, 
                     "MutantAA": "M", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "74", 
                     "WildTypeAA": "V"
                 }
@@ -31784,9 +31843,9 @@
                 {
                     "DSSPExposure": 0.54375, 
                     "MutantAA": "N", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "74", 
                     "WildTypeAA": "V"
                 }
@@ -31813,9 +31872,9 @@
                 {
                     "DSSPExposure": 0.54375, 
                     "MutantAA": "R", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "74", 
                     "WildTypeAA": "V"
                 }
@@ -31850,9 +31909,9 @@
                 {
                     "DSSPExposure": 0.54375, 
                     "MutantAA": "S", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "74", 
                     "WildTypeAA": "V"
                 }
@@ -31879,9 +31938,9 @@
                 {
                     "DSSPExposure": 0.54375, 
                     "MutantAA": "Y", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "74", 
                     "WildTypeAA": "V"
                 }
@@ -31937,9 +31996,9 @@
                 {
                     "DSSPExposure": 0.824742268041237, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "78", 
                     "WildTypeAA": "H"
                 }
@@ -31974,9 +32033,9 @@
                 {
                     "DSSPExposure": 0.824742268041237, 
                     "MutantAA": "G", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "78", 
                     "WildTypeAA": "H"
                 }
@@ -32716,9 +32775,9 @@
                 {
                     "DSSPExposure": 0.0707964601769911, 
                     "MutantAA": "G", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "20", 
                     "WildTypeAA": "A"
                 }
@@ -33296,9 +33355,9 @@
                 {
                     "DSSPExposure": 0.04375, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "39", 
                     "WildTypeAA": "V"
                 }
@@ -33354,9 +33413,9 @@
                 {
                     "DSSPExposure": 0.270588235294118, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "41", 
                     "WildTypeAA": "G"
                 }
@@ -34391,9 +34450,9 @@
                 {
                     "DSSPExposure": 0.0352941176470588, 
                     "MutantAA": "P", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "9", 
                     "WildTypeAA": "G"
                 }
@@ -34428,9 +34487,9 @@
                 {
                     "DSSPExposure": 0.221311475409836, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "46", 
                     "WildTypeAA": "S"
                 }
@@ -34465,9 +34524,9 @@
                 {
                     "DSSPExposure": 0.221311475409836, 
                     "MutantAA": "D", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "46", 
                     "WildTypeAA": "S"
                 }
@@ -34502,9 +34561,9 @@
                 {
                     "DSSPExposure": 0.221311475409836, 
                     "MutantAA": "N", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "46", 
                     "WildTypeAA": "S"
                 }
@@ -34597,9 +34656,9 @@
                 {
                     "DSSPExposure": 0.131004366812227, 
                     "MutantAA": "F", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "47", 
                     "WildTypeAA": "Y"
                 }
@@ -34853,9 +34912,9 @@
                 {
                     "DSSPExposure": 0.10625, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "121", 
                     "WildTypeAA": "V"
                 }
@@ -35043,9 +35102,9 @@
                 {
                     "DSSPExposure": 0.377049180327869, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "24", 
                     "WildTypeAA": "S"
                 }
@@ -35850,9 +35909,9 @@
                 {
                     "DSSPExposure": 0.5875, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "74", 
                     "WildTypeAA": "V"
                 }
@@ -35908,9 +35967,9 @@
                 {
                     "DSSPExposure": 0.0384615384615385, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "89", 
                     "WildTypeAA": "I"
                 }
@@ -35945,9 +36004,9 @@
                 {
                     "DSSPExposure": 0.0384615384615385, 
                     "MutantAA": "V", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "89", 
                     "WildTypeAA": "I"
                 }
@@ -36119,9 +36178,9 @@
                 {
                     "DSSPExposure": 0.30625, 
                     "MutantAA": "T", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "2", 
                     "WildTypeAA": "V"
                 }
@@ -36222,9 +36281,9 @@
                 {
                     "DSSPExposure": 0.613756613756614, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "38", 
                     "WildTypeAA": "Q"
                 }
@@ -36251,9 +36310,9 @@
                 {
                     "DSSPExposure": 0.120253164556962, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "39", 
                     "WildTypeAA": "N"
                 }
@@ -36280,9 +36339,9 @@
                 {
                     "DSSPExposure": 0.120253164556962, 
                     "MutantAA": "D", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "39", 
                     "WildTypeAA": "N"
                 }
@@ -36309,9 +36368,9 @@
                 {
                     "DSSPExposure": 0.120253164556962, 
                     "MutantAA": "S", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "39", 
                     "WildTypeAA": "N"
                 }
@@ -36375,9 +36434,9 @@
                 {
                     "DSSPExposure": 0.21875, 
                     "MutantAA": "T", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "43", 
                     "WildTypeAA": "V"
                 }
@@ -36462,9 +36521,9 @@
                 {
                     "DSSPExposure": 0.0, 
                     "MutantAA": "T", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "57", 
                     "WildTypeAA": "V"
                 }
@@ -36491,9 +36550,9 @@
                 {
                     "DSSPExposure": 0.226027397260274, 
                     "MutantAA": "V", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "59", 
                     "WildTypeAA": "T"
                 }
@@ -36557,9 +36616,9 @@
                 {
                     "DSSPExposure": 0.149377593360996, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "65", 
                     "WildTypeAA": "R"
                 }
@@ -37276,9 +37335,9 @@
                 {
                     "DSSPExposure": 0.286885245901639, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "B", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "12", 
                     "WildTypeAA": "S"
                 }
@@ -38107,9 +38166,9 @@
                 {
                     "DSSPExposure": 0.170886075949367, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "B", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "44", 
                     "WildTypeAA": "N"
                 }
@@ -38136,9 +38195,9 @@
                 {
                     "DSSPExposure": 0.170886075949367, 
                     "MutantAA": "D", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "B", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "44", 
                     "WildTypeAA": "N"
                 }
@@ -38165,9 +38224,9 @@
                 {
                     "DSSPExposure": 0.170886075949367, 
                     "MutantAA": "S", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "B", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "44", 
                     "WildTypeAA": "N"
                 }
@@ -38194,9 +38253,9 @@
                 {
                     "DSSPExposure": 1.04635761589404, 
                     "MutantAA": "H", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "B", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "49", 
                     "WildTypeAA": "D"
                 }
@@ -38368,9 +38427,9 @@
                 {
                     "DSSPExposure": 0.0436681222707424, 
                     "MutantAA": "F", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "B", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "68", 
                     "WildTypeAA": "Y"
                 }
@@ -40436,9 +40495,9 @@
                 {
                     "DSSPExposure": 0.628318584070796, 
                     "MutantAA": "G", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "64", 
                     "WildTypeAA": "A"
                 }
@@ -40465,9 +40524,9 @@
                 {
                     "DSSPExposure": 0.0, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "75", 
                     "WildTypeAA": "S"
                 }
@@ -41098,9 +41157,9 @@
                 {
                     "DSSPExposure": 0.3625, 
                     "MutantAA": "I", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "88", 
                     "WildTypeAA": "V"
                 }
@@ -41127,9 +41186,9 @@
                 {
                     "DSSPExposure": 0.109289617486339, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "107", 
                     "WildTypeAA": "E"
                 }
@@ -41156,9 +41215,9 @@
                 {
                     "DSSPExposure": 0.109289617486339, 
                     "MutantAA": "Q", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "107", 
                     "WildTypeAA": "E"
                 }
@@ -41309,9 +41368,9 @@
                 {
                     "DSSPExposure": 0.706161137440758, 
                     "MutantAA": "F", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "18", 
                     "WildTypeAA": "K"
                 }
@@ -41338,9 +41397,9 @@
                 {
                     "DSSPExposure": 0.0125, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "23", 
                     "WildTypeAA": "V"
                 }
@@ -41367,9 +41426,9 @@
                 {
                     "DSSPExposure": 0.383561643835616, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "24", 
                     "WildTypeAA": "T"
                 }
@@ -41425,9 +41484,9 @@
                 {
                     "DSSPExposure": 0.357615894039735, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "29", 
                     "WildTypeAA": "D"
                 }
@@ -42253,9 +42312,9 @@
                 {
                     "DSSPExposure": 0.0, 
                     "MutantAA": "G", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "109", 
                     "WildTypeAA": "A"
                 }
@@ -42485,9 +42544,9 @@
                 {
                     "DSSPExposure": 0.132743362831858, 
                     "MutantAA": "G", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "112", 
                     "WildTypeAA": "A"
                 }
@@ -42514,9 +42573,9 @@
                 {
                     "DSSPExposure": 0.768558951965066, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "113", 
                     "WildTypeAA": "Y"
                 }
@@ -42543,9 +42602,9 @@
                 {
                     "DSSPExposure": 0.768558951965066, 
                     "MutantAA": "F", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "113", 
                     "WildTypeAA": "Y"
                 }
@@ -42572,9 +42631,9 @@
                 {
                     "DSSPExposure": 0.768558951965066, 
                     "MutantAA": "G", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "113", 
                     "WildTypeAA": "Y"
                 }
@@ -42601,9 +42660,9 @@
                 {
                     "DSSPExposure": 0.768558951965066, 
                     "MutantAA": "L", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "113", 
                     "WildTypeAA": "Y"
                 }
@@ -42630,9 +42689,9 @@
                 {
                     "DSSPExposure": 0.1625, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "114", 
                     "WildTypeAA": "V"
                 }
@@ -42659,9 +42718,9 @@
                 {
                     "DSSPExposure": 0.1625, 
                     "MutantAA": "G", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "114", 
                     "WildTypeAA": "V"
                 }
@@ -42688,9 +42747,9 @@
                 {
                     "DSSPExposure": 0.1625, 
                     "MutantAA": "T", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "114", 
                     "WildTypeAA": "V"
                 }
@@ -43036,9 +43095,9 @@
                 {
                     "DSSPExposure": 0.227848101265823, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "119", 
                     "WildTypeAA": "N"
                 }
@@ -43065,9 +43124,9 @@
                 {
                     "DSSPExposure": 0.227848101265823, 
                     "MutantAA": "G", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "119", 
                     "WildTypeAA": "N"
                 }
@@ -44154,9 +44213,9 @@
                 {
                     "DSSPExposure": 0.266666666666667, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "137", 
                     "WildTypeAA": "L"
                 }
@@ -44183,9 +44242,9 @@
                 {
                     "DSSPExposure": 0.266666666666667, 
                     "MutantAA": "G", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "137", 
                     "WildTypeAA": "L"
                 }
@@ -44560,9 +44619,9 @@
                 {
                     "DSSPExposure": 0.860655737704918, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "141", 
                     "WildTypeAA": "S"
                 }
@@ -44589,9 +44648,9 @@
                 {
                     "DSSPExposure": 0.860655737704918, 
                     "MutantAA": "G", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "141", 
                     "WildTypeAA": "S"
                 }
@@ -46329,9 +46388,9 @@
                 {
                     "DSSPExposure": 0.0616438356164384, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "41", 
                     "WildTypeAA": "T"
                 }
@@ -46358,9 +46417,9 @@
                 {
                     "DSSPExposure": 0.0616438356164384, 
                     "MutantAA": "G", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "41", 
                     "WildTypeAA": "T"
                 }
@@ -46387,9 +46446,9 @@
                 {
                     "DSSPExposure": 0.0616438356164384, 
                     "MutantAA": "V", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "41", 
                     "WildTypeAA": "T"
                 }
@@ -46416,9 +46475,9 @@
                 {
                     "DSSPExposure": 0.111888111888112, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "42", 
                     "WildTypeAA": "P"
                 }
@@ -46445,9 +46504,9 @@
                 {
                     "DSSPExposure": 0.111888111888112, 
                     "MutantAA": "G", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "42", 
                     "WildTypeAA": "P"
                 }
@@ -46474,9 +46533,9 @@
                 {
                     "DSSPExposure": 0.262295081967213, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "43", 
                     "WildTypeAA": "E"
                 }
@@ -46503,9 +46562,9 @@
                 {
                     "DSSPExposure": 0.262295081967213, 
                     "MutantAA": "G", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "43", 
                     "WildTypeAA": "E"
                 }
@@ -47025,9 +47084,9 @@
                 {
                     "DSSPExposure": 0.218579234972678, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "52", 
                     "WildTypeAA": "E"
                 }
@@ -47054,9 +47113,9 @@
                 {
                     "DSSPExposure": 0.218579234972678, 
                     "MutantAA": "G", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "52", 
                     "WildTypeAA": "E"
                 }
@@ -48077,9 +48136,9 @@
                 {
                     "DSSPExposure": 0.221238938053097, 
                     "MutantAA": "G", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "69", 
                     "WildTypeAA": "A"
                 }
@@ -48106,9 +48165,9 @@
                 {
                     "DSSPExposure": 1.17061611374408, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "6", 
                     "WildTypeAA": "K"
                 }
@@ -48135,9 +48194,9 @@
                 {
                     "DSSPExposure": 1.17061611374408, 
                     "MutantAA": "G", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "6", 
                     "WildTypeAA": "K"
                 }
@@ -48222,9 +48281,9 @@
                 {
                     "DSSPExposure": 0.663507109004739, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "71", 
                     "WildTypeAA": "K"
                 }
@@ -48251,9 +48310,9 @@
                 {
                     "DSSPExposure": 0.663507109004739, 
                     "MutantAA": "G", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "71", 
                     "WildTypeAA": "K"
                 }
@@ -48570,9 +48629,9 @@
                 {
                     "DSSPExposure": 0.0132450331125828, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "77", 
                     "WildTypeAA": "D"
                 }
@@ -48599,9 +48658,9 @@
                 {
                     "DSSPExposure": 0.0132450331125828, 
                     "MutantAA": "G", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "77", 
                     "WildTypeAA": "D"
                 }
@@ -48739,9 +48798,9 @@
                 {
                     "DSSPExposure": 0.25, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "7", 
                     "WildTypeAA": "L"
                 }
@@ -48768,9 +48827,9 @@
                 {
                     "DSSPExposure": 0.25, 
                     "MutantAA": "G", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "7", 
                     "WildTypeAA": "L"
                 }
@@ -48797,9 +48856,9 @@
                 {
                     "DSSPExposure": 0.661375661375661, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "80", 
                     "WildTypeAA": "Q"
                 }
@@ -48826,9 +48885,9 @@
                 {
                     "DSSPExposure": 0.661375661375661, 
                     "MutantAA": "G", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "80", 
                     "WildTypeAA": "Q"
                 }
@@ -49000,9 +49059,9 @@
                 {
                     "DSSPExposure": 0.231788079470199, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "83", 
                     "WildTypeAA": "D"
                 }
@@ -49029,9 +49088,9 @@
                 {
                     "DSSPExposure": 0.231788079470199, 
                     "MutantAA": "G", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "83", 
                     "WildTypeAA": "D"
                 }
@@ -49232,9 +49291,9 @@
                 {
                     "DSSPExposure": 0.24896265560166, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "87", 
                     "WildTypeAA": "R"
                 }
@@ -49261,9 +49320,9 @@
                 {
                     "DSSPExposure": 0.24896265560166, 
                     "MutantAA": "G", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "87", 
                     "WildTypeAA": "R"
                 }
@@ -49414,9 +49473,9 @@
                 {
                     "DSSPExposure": 0.587628865979381, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "8", 
                     "WildTypeAA": "H"
                 }
@@ -49443,9 +49502,9 @@
                 {
                     "DSSPExposure": 0.587628865979381, 
                     "MutantAA": "G", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "8", 
                     "WildTypeAA": "H"
                 }
@@ -50097,9 +50156,9 @@
                 {
                     "DSSPExposure": 0.440758293838863, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "9", 
                     "WildTypeAA": "K"
                 }
@@ -50126,9 +50185,9 @@
                 {
                     "DSSPExposure": 0.440758293838863, 
                     "MutantAA": "G", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "9", 
                     "WildTypeAA": "K"
                 }
@@ -50242,9 +50301,9 @@
                 {
                     "DSSPExposure": 0.613924050632911, 
                     "MutantAA": "S", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "218", 
                     "WildTypeAA": "N"
                 }
@@ -50271,9 +50330,9 @@
                 {
                     "DSSPExposure": 0.161764705882353, 
                     "MutantAA": "F", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "50", 
                     "WildTypeAA": "M"
                 }
@@ -50329,9 +50388,9 @@
                 {
                     "DSSPExposure": 0.338888888888889, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "803", 
                     "WildTypeAA": "L"
                 }
@@ -50358,9 +50417,9 @@
                 {
                     "DSSPExposure": 0.048951048951049, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "806", 
                     "WildTypeAA": "P"
                 }
@@ -50561,9 +50620,9 @@
                 {
                     "DSSPExposure": 0.027972027972028, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "826", 
                     "WildTypeAA": "P"
                 }
@@ -50590,9 +50649,9 @@
                 {
                     "DSSPExposure": 0.021978021978022, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "830", 
                     "WildTypeAA": "I"
                 }
@@ -50619,9 +50678,9 @@
                 {
                     "DSSPExposure": 0.021978021978022, 
                     "MutantAA": "V", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "830", 
                     "WildTypeAA": "I"
                 }
@@ -50996,9 +51055,9 @@
                 {
                     "DSSPExposure": 0.0666666666666667, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "863", 
                     "WildTypeAA": "L"
                 }
@@ -51054,9 +51113,9 @@
                 {
                     "DSSPExposure": 0.116438356164384, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "867", 
                     "WildTypeAA": "T"
                 }
@@ -51083,9 +51142,9 @@
                 {
                     "DSSPExposure": 0.116438356164384, 
                     "MutantAA": "S", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "867", 
                     "WildTypeAA": "T"
                 }
@@ -51228,9 +51287,9 @@
                 {
                     "DSSPExposure": 0.0655737704918033, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "882", 
                     "WildTypeAA": "S"
                 }
@@ -51257,9 +51316,9 @@
                 {
                     "DSSPExposure": 0.48951048951049, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "884", 
                     "WildTypeAA": "P"
                 }
@@ -51402,9 +51461,9 @@
                 {
                     "DSSPExposure": 0.171232876712329, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "891", 
                     "WildTypeAA": "T"
                 }
@@ -51431,9 +51490,9 @@
                 {
                     "DSSPExposure": 0.171232876712329, 
                     "MutantAA": "S", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "891", 
                     "WildTypeAA": "T"
                 }
@@ -51634,9 +51693,9 @@
                 {
                     "DSSPExposure": 0.012448132780083, 
                     "MutantAA": "H", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "175", 
                     "WildTypeAA": "R"
                 }
@@ -51663,9 +51722,9 @@
                 {
                     "DSSPExposure": 0.114285714285714, 
                     "MutantAA": "S", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "242", 
                     "WildTypeAA": "C"
                 }
@@ -51721,9 +51780,9 @@
                 {
                     "DSSPExposure": 0.132780082987552, 
                     "MutantAA": "S", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "249", 
                     "WildTypeAA": "R"
                 }
@@ -51779,9 +51838,9 @@
                 {
                     "DSSPExposure": 0.252293577981651, 
                     "MutantAA": "T", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "13", 
                     "WildTypeAA": "F"
                 }
@@ -51866,9 +51925,9 @@
                 {
                     "DSSPExposure": 0.706161137440758, 
                     "MutantAA": "V", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "24", 
                     "WildTypeAA": "K"
                 }
@@ -52642,9 +52701,9 @@
                 {
                     "DSSPExposure": 0.43046357615894, 
                     "MutantAA": "C", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "36", 
                     "WildTypeAA": "D"
                 }
@@ -52671,9 +52730,9 @@
                 {
                     "DSSPExposure": 0.43046357615894, 
                     "MutantAA": "N", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "36", 
                     "WildTypeAA": "D"
                 }
@@ -52700,9 +52759,9 @@
                 {
                     "DSSPExposure": 0.611111111111111, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "37", 
                     "WildTypeAA": "L"
                 }
@@ -52729,9 +52788,9 @@
                 {
                     "DSSPExposure": 0.611111111111111, 
                     "MutantAA": "C", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "37", 
                     "WildTypeAA": "L"
                 }
@@ -52758,9 +52817,9 @@
                 {
                     "DSSPExposure": 0.611111111111111, 
                     "MutantAA": "I", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "37", 
                     "WildTypeAA": "L"
                 }
@@ -52787,9 +52846,9 @@
                 {
                     "DSSPExposure": 0.611111111111111, 
                     "MutantAA": "T", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "37", 
                     "WildTypeAA": "L"
                 }
@@ -52816,9 +52875,9 @@
                 {
                     "DSSPExposure": 0.611111111111111, 
                     "MutantAA": "V", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "37", 
                     "WildTypeAA": "L"
                 }
@@ -53444,9 +53503,9 @@
                 {
                     "DSSPExposure": 0.0388888888888889, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "49", 
                     "WildTypeAA": "L"
                 }
@@ -53473,9 +53532,9 @@
                 {
                     "DSSPExposure": 0.0388888888888889, 
                     "MutantAA": "C", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "49", 
                     "WildTypeAA": "L"
                 }
@@ -53502,9 +53561,9 @@
                 {
                     "DSSPExposure": 0.0388888888888889, 
                     "MutantAA": "I", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "49", 
                     "WildTypeAA": "L"
                 }
@@ -53531,9 +53590,9 @@
                 {
                     "DSSPExposure": 0.0388888888888889, 
                     "MutantAA": "T", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "49", 
                     "WildTypeAA": "L"
                 }
@@ -53560,9 +53619,9 @@
                 {
                     "DSSPExposure": 0.0388888888888889, 
                     "MutantAA": "V", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "49", 
                     "WildTypeAA": "L"
                 }
@@ -53597,9 +53656,9 @@
                 {
                     "DSSPExposure": 0.33112582781457, 
                     "MutantAA": "H", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "50", 
                     "WildTypeAA": "D"
                 }
@@ -53742,9 +53801,9 @@
                 {
                     "DSSPExposure": 0.448453608247423, 
                     "MutantAA": "C", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "64", 
                     "WildTypeAA": "H"
                 }
@@ -54449,9 +54508,9 @@
                 {
                     "DSSPExposure": 0.15, 
                     "MutantAA": "C", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "81", 
                     "WildTypeAA": "L"
                 }
@@ -54478,9 +54537,9 @@
                 {
                     "DSSPExposure": 0.15, 
                     "MutantAA": "T", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "81", 
                     "WildTypeAA": "L"
                 }
@@ -54507,9 +54566,9 @@
                 {
                     "DSSPExposure": 0.15, 
                     "MutantAA": "V", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "81", 
                     "WildTypeAA": "L"
                 }
@@ -54536,9 +54595,9 @@
                 {
                     "DSSPExposure": 0.182572614107884, 
                     "MutantAA": "C", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "82", 
                     "WildTypeAA": "R"
                 }
@@ -54565,9 +54624,9 @@
                 {
                     "DSSPExposure": 0.884955752212389, 
                     "MutantAA": "T", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "86", 
                     "WildTypeAA": "A"
                 }
@@ -54594,9 +54653,9 @@
                 {
                     "DSSPExposure": 0.884955752212389, 
                     "MutantAA": "V", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "86", 
                     "WildTypeAA": "A"
                 }
@@ -54697,6 +54756,35 @@
         {
             "ExperimentalDDGs": [
                 {
+                    "DDGType": "DDG_H2O", 
+                    "LocationOfValueInPublication": "Table 1", 
+                    "Temperature": 25.0, 
+                    "pH": 7.0, 
+                    "DDG": 1.05162523901, 
+                    "Publication": "PMID:9020793"
+                }
+            ], 
+            "RecordID": 154, 
+            "Mutations": [
+                {
+                    "DSSPExposure": 0.426573426573427, 
+                    "MutantAA": "A", 
+                    "DSSPSimpleSSType": "O", 
+                    "Chain": "A", 
+                    "DSSPType": " ", 
+                    "ResidueID": "132", 
+                    "WildTypeAA": "P"
+                }
+            ], 
+            "_ExperimentID": 109914, 
+            "PDBFileID": "1WQ5", 
+            "AggregateType": "SingleValue", 
+            "DDG": 1.05, 
+            "_DataSetDDGID": 8842
+        }, 
+        {
+            "ExperimentalDDGs": [
+                {
                     "DDGType": "DDG", 
                     "LocationOfValueInPublication": "Table III or Table IV", 
                     "Temperature": 54.1, 
@@ -54710,9 +54798,9 @@
                 {
                     "DSSPExposure": 0.426573426573427, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "132", 
                     "WildTypeAA": "P"
                 }
@@ -54722,6 +54810,35 @@
             "AggregateType": "SingleValue", 
             "DDG": 0.92, 
             "_DataSetDDGID": 10078
+        }, 
+        {
+            "ExperimentalDDGs": [
+                {
+                    "DDGType": "DDG_H2O", 
+                    "LocationOfValueInPublication": "Table III or Table IV", 
+                    "Temperature": 25.0, 
+                    "pH": 7.0, 
+                    "DDG": 1.0, 
+                    "Publication": "PMID:2008436"
+                }
+            ], 
+            "RecordID": 155, 
+            "Mutations": [
+                {
+                    "DSSPExposure": 0.426573426573427, 
+                    "MutantAA": "G", 
+                    "DSSPSimpleSSType": "O", 
+                    "Chain": "A", 
+                    "DSSPType": " ", 
+                    "ResidueID": "132", 
+                    "WildTypeAA": "P"
+                }
+            ], 
+            "_ExperimentID": 109909, 
+            "PDBFileID": "1WQ5", 
+            "AggregateType": "SingleValue", 
+            "DDG": 1.0, 
+            "_DataSetDDGID": 8843
         }, 
         {
             "ExperimentalDDGs": [
@@ -54739,9 +54856,9 @@
                 {
                     "DSSPExposure": 0.426573426573427, 
                     "MutantAA": "G", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "132", 
                     "WildTypeAA": "P"
                 }
@@ -54916,6 +55033,35 @@
         {
             "ExperimentalDDGs": [
                 {
+                    "DDGType": "DDG_H2O", 
+                    "LocationOfValueInPublication": "Table III or Table IV", 
+                    "Temperature": 25.0, 
+                    "pH": 7.0, 
+                    "DDG": 1.8, 
+                    "Publication": "PMID:2008436"
+                }
+            ], 
+            "RecordID": 156, 
+            "Mutations": [
+                {
+                    "DSSPExposure": 0.328671328671329, 
+                    "MutantAA": "A", 
+                    "DSSPSimpleSSType": "O", 
+                    "Chain": "A", 
+                    "DSSPType": " ", 
+                    "ResidueID": "207", 
+                    "WildTypeAA": "P"
+                }
+            ], 
+            "_ExperimentID": 109910, 
+            "PDBFileID": "1WQ5", 
+            "AggregateType": "SingleValue", 
+            "DDG": 1.8, 
+            "_DataSetDDGID": 8844
+        }, 
+        {
+            "ExperimentalDDGs": [
+                {
                     "DDGType": "DDG", 
                     "LocationOfValueInPublication": "Table III or Table IV", 
                     "Temperature": 54.1, 
@@ -54929,9 +55075,9 @@
                 {
                     "DSSPExposure": 0.328671328671329, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "207", 
                     "WildTypeAA": "P"
                 }
@@ -55294,6 +55440,35 @@
         {
             "ExperimentalDDGs": [
                 {
+                    "DDGType": "DDG_H2O", 
+                    "LocationOfValueInPublication": "Table 1", 
+                    "Temperature": 25.0, 
+                    "pH": 7.0, 
+                    "DDG": 0.3, 
+                    "Publication": "PMID:3299367"
+                }
+            ], 
+            "RecordID": 148, 
+            "Mutations": [
+                {
+                    "DSSPExposure": 0.00546448087431694, 
+                    "MutantAA": "A", 
+                    "DSSPSimpleSSType": "S", 
+                    "Chain": "A", 
+                    "DSSPType": "E", 
+                    "ResidueID": "49", 
+                    "WildTypeAA": "E"
+                }
+            ], 
+            "_ExperimentID": 109890, 
+            "PDBFileID": "1WQ5", 
+            "AggregateType": "SingleValue", 
+            "DDG": 0.3, 
+            "_DataSetDDGID": 8838
+        }, 
+        {
+            "ExperimentalDDGs": [
+                {
                     "DDGType": "DDG", 
                     "LocationOfValueInPublication": "Table 1", 
                     "Temperature": 25.0, 
@@ -55438,6 +55613,35 @@
             "AggregateType": "MeanValue", 
             "DDG": 0.44, 
             "_DataSetDDGID": 10055
+        }, 
+        {
+            "ExperimentalDDGs": [
+                {
+                    "DDGType": "DDG_H2O", 
+                    "LocationOfValueInPublication": "Table 1", 
+                    "Temperature": 25.0, 
+                    "pH": 7.0, 
+                    "DDG": 1.7, 
+                    "Publication": "PMID:3299367"
+                }
+            ], 
+            "RecordID": 149, 
+            "Mutations": [
+                {
+                    "DSSPExposure": 0.00546448087431694, 
+                    "MutantAA": "G", 
+                    "DSSPSimpleSSType": "S", 
+                    "Chain": "A", 
+                    "DSSPType": "E", 
+                    "ResidueID": "49", 
+                    "WildTypeAA": "E"
+                }
+            ], 
+            "_ExperimentID": 109889, 
+            "PDBFileID": "1WQ5", 
+            "AggregateType": "SingleValue", 
+            "DDG": 1.7, 
+            "_DataSetDDGID": 8839
         }, 
         {
             "ExperimentalDDGs": [
@@ -55734,6 +55938,35 @@
             "AggregateType": "MeanValue", 
             "DDG": -0.4, 
             "_DataSetDDGID": 10063
+        }, 
+        {
+            "ExperimentalDDGs": [
+                {
+                    "DDGType": "DDG_H2O", 
+                    "LocationOfValueInPublication": "Table 1", 
+                    "Temperature": 25.0, 
+                    "pH": 7.0, 
+                    "DDG": 2.5, 
+                    "Publication": "PMID:3299367"
+                }
+            ], 
+            "RecordID": 150, 
+            "Mutations": [
+                {
+                    "DSSPExposure": 0.00546448087431694, 
+                    "MutantAA": "Q", 
+                    "DSSPSimpleSSType": "S", 
+                    "Chain": "A", 
+                    "DSSPType": "E", 
+                    "ResidueID": "49", 
+                    "WildTypeAA": "E"
+                }
+            ], 
+            "_ExperimentID": 109901, 
+            "PDBFileID": "1WQ5", 
+            "AggregateType": "SingleValue", 
+            "DDG": 2.5, 
+            "_DataSetDDGID": 8840
         }, 
         {
             "ExperimentalDDGs": [
@@ -56076,6 +56309,35 @@
         {
             "ExperimentalDDGs": [
                 {
+                    "DDGType": "DDG_H2O", 
+                    "LocationOfValueInPublication": "Table 1", 
+                    "Temperature": 25.0, 
+                    "pH": 7.0, 
+                    "DDG": 2.12715105163, 
+                    "Publication": "PMID:9020793"
+                }
+            ], 
+            "RecordID": 153, 
+            "Mutations": [
+                {
+                    "DSSPExposure": 0.013986013986014, 
+                    "MutantAA": "A", 
+                    "DSSPSimpleSSType": "O", 
+                    "Chain": "A", 
+                    "DSSPType": " ", 
+                    "ResidueID": "96", 
+                    "WildTypeAA": "P"
+                }
+            ], 
+            "_ExperimentID": 109913, 
+            "PDBFileID": "1WQ5", 
+            "AggregateType": "SingleValue", 
+            "DDG": 2.13, 
+            "_DataSetDDGID": 8841
+        }, 
+        {
+            "ExperimentalDDGs": [
+                {
                     "DDGType": "DDG", 
                     "LocationOfValueInPublication": "Table III or Table IV", 
                     "Temperature": 54.1, 
@@ -56089,9 +56351,9 @@
                 {
                     "DSSPExposure": 0.013986013986014, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "96", 
                     "WildTypeAA": "P"
                 }
@@ -56118,9 +56380,9 @@
                 {
                     "DSSPExposure": 0.622377622377622, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "B", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "1057", 
                     "WildTypeAA": "P"
                 }
@@ -56147,9 +56409,9 @@
                 {
                     "DSSPExposure": 0.0, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "102", 
                     "WildTypeAA": "C"
                 }
@@ -56176,9 +56438,9 @@
                 {
                     "DSSPExposure": 0.0, 
                     "MutantAA": "S", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "102", 
                     "WildTypeAA": "C"
                 }
@@ -56229,9 +56491,9 @@
                 {
                     "DSSPExposure": 0.0, 
                     "MutantAA": "T", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "102", 
                     "WildTypeAA": "C"
                 }
@@ -56972,9 +57234,9 @@
                 {
                     "DSSPExposure": 0.155963302752294, 
                     "MutantAA": "Y", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "82", 
                     "WildTypeAA": "F"
                 }
@@ -57001,9 +57263,9 @@
                 {
                     "DSSPExposure": 0.0222222222222222, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "85", 
                     "WildTypeAA": "L"
                 }
@@ -57141,9 +57403,9 @@
                 {
                     "DSSPExposure": 0.025, 
                     "MutantAA": "I", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "109", 
                     "WildTypeAA": "V"
                 }
@@ -57170,9 +57432,9 @@
                 {
                     "DSSPExposure": 0.025, 
                     "MutantAA": "L", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "109", 
                     "WildTypeAA": "V"
                 }
@@ -57558,9 +57820,9 @@
                 {
                     "DSSPExposure": 0.4375, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "130", 
                     "WildTypeAA": "V"
                 }
@@ -57587,9 +57849,9 @@
                 {
                     "DSSPExposure": 0.383886255924171, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "I", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "21", 
                     "WildTypeAA": "K"
                 }
@@ -57616,9 +57878,9 @@
                 {
                     "DSSPExposure": 0.383886255924171, 
                     "MutantAA": "M", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "I", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "21", 
                     "WildTypeAA": "K"
                 }
@@ -57645,9 +57907,9 @@
                 {
                     "DSSPExposure": 0.397260273972603, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "I", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "22", 
                     "WildTypeAA": "T"
                 }
@@ -57674,9 +57936,9 @@
                 {
                     "DSSPExposure": 0.397260273972603, 
                     "MutantAA": "G", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "I", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "22", 
                     "WildTypeAA": "T"
                 }
@@ -57703,9 +57965,9 @@
                 {
                     "DSSPExposure": 0.397260273972603, 
                     "MutantAA": "V", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "I", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "22", 
                     "WildTypeAA": "T"
                 }
@@ -58465,9 +58727,9 @@
                 {
                     "DSSPExposure": 0.037914691943128, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "I", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "43", 
                     "WildTypeAA": "K"
                 }
@@ -58494,9 +58756,9 @@
                 {
                     "DSSPExposure": 0.037914691943128, 
                     "MutantAA": "G", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "I", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "43", 
                     "WildTypeAA": "K"
                 }
@@ -58966,9 +59228,9 @@
                 {
                     "DSSPExposure": 0.397260273972603, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "I", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "55", 
                     "WildTypeAA": "T"
                 }
@@ -58995,9 +59257,9 @@
                 {
                     "DSSPExposure": 0.397260273972603, 
                     "MutantAA": "S", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "I", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "55", 
                     "WildTypeAA": "T"
                 }
@@ -59024,9 +59286,9 @@
                 {
                     "DSSPExposure": 0.397260273972603, 
                     "MutantAA": "V", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "I", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "55", 
                     "WildTypeAA": "T"
                 }
@@ -59053,9 +59315,9 @@
                 {
                     "DSSPExposure": 0.901098901098901, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "I", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "56", 
                     "WildTypeAA": "I"
                 }
@@ -59082,9 +59344,9 @@
                 {
                     "DSSPExposure": 0.3625, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "I", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "57", 
                     "WildTypeAA": "V"
                 }
@@ -59111,9 +59373,9 @@
                 {
                     "DSSPExposure": 0.732876712328767, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "I", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "58", 
                     "WildTypeAA": "T"
                 }
@@ -59140,9 +59402,9 @@
                 {
                     "DSSPExposure": 0.732876712328767, 
                     "MutantAA": "D", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "I", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "58", 
                     "WildTypeAA": "T"
                 }
@@ -59169,9 +59431,9 @@
                 {
                     "DSSPExposure": 0.53551912568306, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "I", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "60", 
                     "WildTypeAA": "E"
                 }
@@ -59198,9 +59460,9 @@
                 {
                     "DSSPExposure": 0.477178423236515, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "I", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "62", 
                     "WildTypeAA": "R"
                 }
@@ -59438,9 +59700,9 @@
                 {
                     "DSSPExposure": 0.43046357615894, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "I", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "71", 
                     "WildTypeAA": "D"
                 }
@@ -59467,9 +59729,9 @@
                 {
                     "DSSPExposure": 0.43046357615894, 
                     "MutantAA": "N", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "I", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "71", 
                     "WildTypeAA": "D"
                 }
@@ -59641,9 +59903,9 @@
                 {
                     "DSSPExposure": 0.407079646017699, 
                     "MutantAA": "G", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "I", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "77", 
                     "WildTypeAA": "A"
                 }
@@ -59670,9 +59932,9 @@
                 {
                     "DSSPExposure": 0.2375, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "I", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "79", 
                     "WildTypeAA": "V"
                 }
@@ -59699,9 +59961,9 @@
                 {
                     "DSSPExposure": 0.2375, 
                     "MutantAA": "G", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "I", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "79", 
                     "WildTypeAA": "V"
                 }
@@ -59728,9 +59990,9 @@
                 {
                     "DSSPExposure": 0.2375, 
                     "MutantAA": "T", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "I", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "79", 
                     "WildTypeAA": "V"
                 }
@@ -59757,9 +60019,9 @@
                 {
                     "DSSPExposure": 0.027972027972028, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "I", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "80", 
                     "WildTypeAA": "P"
                 }
@@ -61946,9 +62208,9 @@
                 {
                     "DSSPExposure": 0.442622950819672, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "38", 
                     "WildTypeAA": "S"
                 }
@@ -61999,9 +62261,9 @@
                 {
                     "DSSPExposure": 0.442622950819672, 
                     "MutantAA": "D", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "38", 
                     "WildTypeAA": "S"
                 }
@@ -62679,9 +62941,9 @@
                 {
                     "DSSPExposure": 0.0285714285714286, 
                     "MutantAA": "T", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "54", 
                     "WildTypeAA": "C"
                 }
@@ -62708,9 +62970,9 @@
                 {
                     "DSSPExposure": 0.0285714285714286, 
                     "MutantAA": "V", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "54", 
                     "WildTypeAA": "C"
                 }
@@ -64677,9 +64939,9 @@
                 {
                     "DSSPExposure": 0.701030927835051, 
                     "MutantAA": "D", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "62", 
                     "WildTypeAA": "H"
                 }
@@ -64746,9 +65008,9 @@
                 {
                     "DSSPExposure": 0.701030927835051, 
                     "MutantAA": "P", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "62", 
                     "WildTypeAA": "H"
                 }
@@ -64783,9 +65045,9 @@
                 {
                     "DSSPExposure": 0.701030927835051, 
                     "MutantAA": "R", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "62", 
                     "WildTypeAA": "H"
                 }
@@ -64965,9 +65227,9 @@
                 {
                     "DSSPExposure": 0.390728476821192, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "70", 
                     "WildTypeAA": "D"
                 }
@@ -65002,9 +65264,9 @@
                 {
                     "DSSPExposure": 0.390728476821192, 
                     "MutantAA": "E", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "70", 
                     "WildTypeAA": "D"
                 }
@@ -65039,9 +65301,9 @@
                 {
                     "DSSPExposure": 0.390728476821192, 
                     "MutantAA": "N", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "70", 
                     "WildTypeAA": "D"
                 }
@@ -65710,9 +65972,9 @@
                 {
                     "DSSPExposure": 0.0873362445414847, 
                     "MutantAA": "F", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "150", 
                     "WildTypeAA": "Y"
                 }
@@ -65855,9 +66117,9 @@
                 {
                     "DSSPExposure": 0.433628318584071, 
                     "MutantAA": "G", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "90", 
                     "WildTypeAA": "A"
                 }
@@ -65884,9 +66146,9 @@
                 {
                     "DSSPExposure": 0.245901639344262, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "71", 
                     "WildTypeAA": "S"
                 }
@@ -65904,6 +66166,35 @@
                     "LocationOfValueInPublication": "Table 2", 
                     "Temperature": 20.0, 
                     "pH": 8.0, 
+                    "DDG": 0.97, 
+                    "Publication": "PMID:8060992"
+                }
+            ], 
+            "RecordID": 628, 
+            "Mutations": [
+                {
+                    "DSSPExposure": 0.245901639344262, 
+                    "MutantAA": "A", 
+                    "DSSPSimpleSSType": "O", 
+                    "Chain": "A", 
+                    "DSSPType": " ", 
+                    "ResidueID": "71", 
+                    "WildTypeAA": "S"
+                }
+            ], 
+            "_ExperimentID": 109642, 
+            "PDBFileID": "3HHR", 
+            "AggregateType": "SingleValue", 
+            "DDG": 0.97, 
+            "_DataSetDDGID": 9266
+        }, 
+        {
+            "ExperimentalDDGs": [
+                {
+                    "DDGType": "DDG", 
+                    "LocationOfValueInPublication": "Table 2", 
+                    "Temperature": 20.0, 
+                    "pH": 8.0, 
                     "DDG": 1.28, 
                     "Publication": "PMID:8060992"
                 }
@@ -65913,9 +66204,9 @@
                 {
                     "DSSPExposure": 0.245901639344262, 
                     "MutantAA": "Q", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "71", 
                     "WildTypeAA": "S"
                 }
@@ -65942,9 +66233,9 @@
                 {
                     "DSSPExposure": 0.245901639344262, 
                     "MutantAA": "T", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "71", 
                     "WildTypeAA": "S"
                 }
@@ -65971,9 +66262,9 @@
                 {
                     "DSSPExposure": 0.245901639344262, 
                     "MutantAA": "V", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "71", 
                     "WildTypeAA": "S"
                 }
@@ -66890,9 +67181,9 @@
                 {
                     "DSSPExposure": 0.911764705882353, 
                     "MutantAA": "A", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "73", 
                     "WildTypeAA": "M"
                 }
@@ -66935,9 +67226,9 @@
                 {
                     "DSSPExposure": 0.911764705882353, 
                     "MutantAA": "D", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "73", 
                     "WildTypeAA": "M"
                 }
@@ -66980,9 +67271,9 @@
                 {
                     "DSSPExposure": 0.911764705882353, 
                     "MutantAA": "E", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "73", 
                     "WildTypeAA": "M"
                 }
@@ -67025,9 +67316,9 @@
                 {
                     "DSSPExposure": 0.911764705882353, 
                     "MutantAA": "G", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "73", 
                     "WildTypeAA": "M"
                 }
@@ -67070,9 +67361,9 @@
                 {
                     "DSSPExposure": 0.911764705882353, 
                     "MutantAA": "I", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "73", 
                     "WildTypeAA": "M"
                 }
@@ -67115,9 +67406,9 @@
                 {
                     "DSSPExposure": 0.911764705882353, 
                     "MutantAA": "K", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "73", 
                     "WildTypeAA": "M"
                 }
@@ -67160,9 +67451,9 @@
                 {
                     "DSSPExposure": 0.911764705882353, 
                     "MutantAA": "L", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "73", 
                     "WildTypeAA": "M"
                 }
@@ -67205,9 +67496,9 @@
                 {
                     "DSSPExposure": 0.911764705882353, 
                     "MutantAA": "V", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "73", 
                     "WildTypeAA": "M"
                 }
@@ -67292,9 +67583,9 @@
                 {
                     "DSSPExposure": 0.587301587301587, 
                     "MutantAA": "R", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "37", 
                     "WildTypeAA": "Q"
                 }
@@ -68199,9 +68490,9 @@
                 {
                     "DSSPExposure": 0.073394495412844, 
                     "MutantAA": "Y", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "3", 
                     "WildTypeAA": "F"
                 }
@@ -68634,9 +68925,9 @@
                 {
                     "DSSPExposure": 0.655601659751037, 
                     "MutantAA": "K", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "73", 
                     "WildTypeAA": "R"
                 }
@@ -68663,9 +68954,9 @@
                 {
                     "DSSPExposure": 0.867088607594937, 
                     "MutantAA": "H", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "77", 
                     "WildTypeAA": "N"
                 }
@@ -68903,9 +69194,9 @@
                 {
                     "DSSPExposure": 0.842794759825327, 
                     "MutantAA": "C", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "26", 
                     "WildTypeAA": "Y"
                 }
@@ -68932,9 +69223,9 @@
                 {
                     "DSSPExposure": 0.842794759825327, 
                     "MutantAA": "D", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "26", 
                     "WildTypeAA": "Y"
                 }
@@ -68961,9 +69252,9 @@
                 {
                     "DSSPExposure": 0.842794759825327, 
                     "MutantAA": "F", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "26", 
                     "WildTypeAA": "Y"
                 }
@@ -68990,9 +69281,9 @@
                 {
                     "DSSPExposure": 0.842794759825327, 
                     "MutantAA": "H", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "26", 
                     "WildTypeAA": "Y"
                 }
@@ -69019,9 +69310,9 @@
                 {
                     "DSSPExposure": 0.842794759825327, 
                     "MutantAA": "L", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "26", 
                     "WildTypeAA": "Y"
                 }
@@ -69048,9 +69339,9 @@
                 {
                     "DSSPExposure": 0.842794759825327, 
                     "MutantAA": "Q", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "26", 
                     "WildTypeAA": "Y"
                 }
@@ -69077,9 +69368,9 @@
                 {
                     "DSSPExposure": 0.842794759825327, 
                     "MutantAA": "V", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "26", 
                     "WildTypeAA": "Y"
                 }
@@ -69106,9 +69397,9 @@
                 {
                     "DSSPExposure": 0.842794759825327, 
                     "MutantAA": "W", 
-                    "DSSPSimpleSSType": null, 
+                    "DSSPSimpleSSType": "O", 
                     "Chain": "A", 
-                    "DSSPType": null, 
+                    "DSSPType": " ", 
                     "ResidueID": "26", 
                     "WildTypeAA": "Y"
                 }
