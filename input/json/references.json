@@ -936,6 +936,35 @@
         ], 
         "Publication": "Journal of Molecular Biology"
     }, 
+    "PMID:21287615": {
+        "PublicationYear": 2011, 
+        "DOI": "10.1002/prot.22921", 
+        "EndPage": "838", 
+        "Title": "Role of conformational sampling in computing mutation-induced changes in protein structure and stability", 
+        "URL": "http://dx.doi.org/10.1002/prot.22921", 
+        "PubMedID": "21287615", 
+        "Volume": "79", 
+        "StartPage": "830", 
+        "PublicationDate": null, 
+        "Authors": [
+            {
+                "Surname": "Kellogg", 
+                "MiddleNames": "H.", 
+                "FirstName": "Elizabeth"
+            }, 
+            {
+                "Surname": "Leaver-Fay", 
+                "MiddleNames": "", 
+                "FirstName": "Andrew"
+            }, 
+            {
+                "Surname": "Baker", 
+                "MiddleNames": "", 
+                "FirstName": "David"
+            }
+        ], 
+        "Publication": "Proteins: Structure, Function, and Bioinformatics"
+    }, 
     "PMID:17065159": {
         "PublicationYear": 2006, 
         "DOI": null, 
@@ -1182,6 +1211,60 @@
             }
         ], 
         "Publication": "European Journal of Biochemistry"
+    }, 
+    "PMID:21071423": {
+        "PublicationYear": 2011, 
+        "DOI": "10.1093/nar/gkq1105", 
+        "EndPage": "D419", 
+        "Title": "A series of PDB related databases for everyday needs", 
+        "URL": "http://nar.oxfordjournals.org/content/39/suppl_1/D411.long", 
+        "PubMedID": [], 
+        "Volume": "39", 
+        "StartPage": "D411", 
+        "PublicationDate": "2011-01-01", 
+        "Authors": [
+            {
+                "Surname": "Joosten", 
+                "MiddleNames": "P.", 
+                "FirstName": "Robbie"
+            }, 
+            {
+                "Surname": "te Beek", 
+                "MiddleNames": "A.H.", 
+                "FirstName": "Tim"
+            }, 
+            {
+                "Surname": "Krieger", 
+                "MiddleNames": null, 
+                "FirstName": "Elmar"
+            }, 
+            {
+                "Surname": "Hekkelman", 
+                "MiddleNames": "L.", 
+                "FirstName": "Maarten"
+            }, 
+            {
+                "Surname": "Hooft", 
+                "MiddleNames": "W.W.", 
+                "FirstName": "Rob"
+            }, 
+            {
+                "Surname": "Schneider", 
+                "MiddleNames": null, 
+                "FirstName": "Reinhard"
+            }, 
+            {
+                "Surname": "Sander", 
+                "MiddleNames": null, 
+                "FirstName": "Chris"
+            }, 
+            {
+                "Surname": "Vriend", 
+                "MiddleNames": null, 
+                "FirstName": "Gert"
+            }
+        ], 
+        "Publication": "Nucleic Acids Research"
     }, 
     "PMID:1654091": {
         "PublicationYear": 1991, 
@@ -7048,34 +7131,49 @@
         ], 
         "Publication": "Biochemistry"
     }, 
-    "PMID:8060992": {
-        "PublicationYear": 1994, 
-        "DOI": "10.1021/bi00199a006", 
-        "EndPage": "9864", 
-        "Title": "Contribution to Global Protein Stabilization of the N-Capping Box in Human Growth Hormone", 
-        "URL": "http://dx.doi.org/10.1021/bi00199a006", 
-        "PubMedID": "8060992", 
-        "Volume": "33", 
-        "StartPage": "9856", 
-        "PublicationDate": "1994-08-01", 
+    "PMID:9847203": {
+        "PublicationYear": 1999, 
+        "DOI": "10.1093/nar/27.1.286", 
+        "EndPage": "288", 
+        "Title": "ProTherm: Thermodynamic Database for Proteins and Mutants", 
+        "URL": "http://nar.oxfordjournals.org/content/27/1/286.abstract", 
+        "PubMedID": "9847203", 
+        "Volume": "27", 
+        "StartPage": "286", 
+        "PublicationDate": "1999-01-01", 
         "Authors": [
             {
-                "Surname": "Zhukovsky", 
-                "MiddleNames": "A.", 
-                "FirstName": "Eugene"
+                "Surname": "Gromiha", 
+                "MiddleNames": "Michael", 
+                "FirstName": "M."
             }, 
             {
-                "Surname": "Mulkerrin", 
-                "MiddleNames": "G.", 
-                "FirstName": "Michael"
+                "Surname": "An", 
+                "MiddleNames": "", 
+                "FirstName": "Jianghong"
             }, 
             {
-                "Surname": "Presta", 
-                "MiddleNames": "G.", 
-                "FirstName": "Leonard"
+                "Surname": "Kono", 
+                "MiddleNames": "", 
+                "FirstName": "Hidetoshi"
+            }, 
+            {
+                "Surname": "Oobatake", 
+                "MiddleNames": "", 
+                "FirstName": "Motohisa"
+            }, 
+            {
+                "Surname": "Uedaira", 
+                "MiddleNames": "", 
+                "FirstName": "Hatsuho"
+            }, 
+            {
+                "Surname": "Sarai", 
+                "MiddleNames": "", 
+                "FirstName": "Akinori"
             }
         ], 
-        "Publication": "Biochemistry"
+        "Publication": "Nucleic Acids Research"
     }, 
     "PMID:2266554": {
         "PublicationYear": 1990, 
@@ -9755,6 +9853,55 @@
         ], 
         "Publication": "Journal of Biological Chemistry"
     }, 
+    "PMID:16381846": {
+        "PublicationYear": 2006, 
+        "DOI": null, 
+        "EndPage": "D206", 
+        "Title": "ProTherm and ProNIT: thermodynamic databases for proteins and protein\u2013nucleic acid interactions", 
+        "URL": "http://nar.oxfordjournals.org/content/34/suppl_1/D204.abstract", 
+        "PubMedID": "16381846", 
+        "Volume": "34", 
+        "StartPage": "D204", 
+        "PublicationDate": "2006-01-01", 
+        "Authors": [
+            {
+                "Surname": "Kumar", 
+                "MiddleNames": "D. Shaji", 
+                "FirstName": "M."
+            }, 
+            {
+                "Surname": "Bava", 
+                "MiddleNames": "Abdulla", 
+                "FirstName": "K."
+            }, 
+            {
+                "Surname": "Gromiha", 
+                "MiddleNames": "Michael", 
+                "FirstName": "M."
+            }, 
+            {
+                "Surname": "Prabakaran", 
+                "MiddleNames": "", 
+                "FirstName": "Ponraj"
+            }, 
+            {
+                "Surname": "Kitajima", 
+                "MiddleNames": "", 
+                "FirstName": "Koji"
+            }, 
+            {
+                "Surname": "Uedaira", 
+                "MiddleNames": "", 
+                "FirstName": "Hatsuho"
+            }, 
+            {
+                "Surname": "Sarai", 
+                "MiddleNames": "", 
+                "FirstName": "Akinori"
+            }
+        ], 
+        "Publication": "Nucleic Acids Research"
+    }, 
     "PMID:1731929": {
         "PublicationYear": 1992, 
         "DOI": "10.1021/bi00118a013", 
@@ -10258,6 +10405,35 @@
             }
         ], 
         "Publication": "Journal of Molecular Biology"
+    }, 
+    "PMID:8060992": {
+        "PublicationYear": 1994, 
+        "DOI": "10.1021/bi00199a006", 
+        "EndPage": "9864", 
+        "Title": "Contribution to Global Protein Stabilization of the N-Capping Box in Human Growth Hormone", 
+        "URL": "http://dx.doi.org/10.1021/bi00199a006", 
+        "PubMedID": "8060992", 
+        "Volume": "33", 
+        "StartPage": "9856", 
+        "PublicationDate": "1994-08-01", 
+        "Authors": [
+            {
+                "Surname": "Zhukovsky", 
+                "MiddleNames": "A.", 
+                "FirstName": "Eugene"
+            }, 
+            {
+                "Surname": "Mulkerrin", 
+                "MiddleNames": "G.", 
+                "FirstName": "Michael"
+            }, 
+            {
+                "Surname": "Presta", 
+                "MiddleNames": "G.", 
+                "FirstName": "Leonard"
+            }
+        ], 
+        "Publication": "Biochemistry"
     }, 
     "PMID:9020766": {
         "PublicationYear": 1997, 
@@ -10944,6 +11120,35 @@
             }
         ], 
         "Publication": "Protein Science"
+    }, 
+    "PMID:12079393": {
+        "PublicationYear": 2002, 
+        "DOI": "10.1016/S0022-2836(02)00442-4", 
+        "EndPage": "387", 
+        "Title": "Predicting Changes in the Stability of Proteins and Protein Complexes: A Study of More Than 1000 Mutations", 
+        "URL": "http://www.sciencedirect.com/science/article/pii/S0022283602004424", 
+        "PubMedID": "12079393", 
+        "Volume": "320", 
+        "StartPage": "369", 
+        "PublicationDate": "2002-07-05", 
+        "Authors": [
+            {
+                "Surname": "Guerois", 
+                "MiddleNames": "", 
+                "FirstName": "Raphael"
+            }, 
+            {
+                "Surname": "Nielsen", 
+                "MiddleNames": "Erik", 
+                "FirstName": "Jens"
+            }, 
+            {
+                "Surname": "Serrano", 
+                "MiddleNames": "", 
+                "FirstName": "Luis"
+            }
+        ], 
+        "Publication": "Journal of Molecular Biology"
     }, 
     "PMID:12079394": {
         "PublicationYear": 2002, 
@@ -14261,6 +14466,35 @@
         ], 
         "Publication": "Biochemistry"
     }, 
+    "PMID:19561092": {
+        "PublicationYear": 2009, 
+        "DOI": null, 
+        "EndPage": "560", 
+        "Title": "Assessing computational methods for predicting protein stability upon mutation: good on average but not in the details", 
+        "URL": "http://peds.oxfordjournals.org/content/22/9/553.abstract", 
+        "PubMedID": "19561092", 
+        "Volume": "22", 
+        "StartPage": "553", 
+        "PublicationDate": "2009-09-01", 
+        "Authors": [
+            {
+                "Surname": "Potapov", 
+                "MiddleNames": "", 
+                "FirstName": "Vladimir"
+            }, 
+            {
+                "Surname": "Cohen", 
+                "MiddleNames": "", 
+                "FirstName": "Mati"
+            }, 
+            {
+                "Surname": "Schreiber", 
+                "MiddleNames": "", 
+                "FirstName": "Gideon"
+            }
+        ], 
+        "Publication": "Protein Engineering, Design and Selection"
+    }, 
     "PMID:2023260": {
         "PublicationYear": 1991, 
         "DOI": "10.1016/0022-2836(91)90852-W", 
@@ -15105,6 +15339,30 @@
             }
         ], 
         "Publication": "Protein Engineering"
+    }, 
+    "PMID:6667333": {
+        "PublicationYear": 1983, 
+        "DOI": "10.1002/bip.360221211", 
+        "EndPage": "2637", 
+        "Title": "Dictionary of protein secondary structure: pattern recognition of hydrogen-bonded and geometrical features", 
+        "URL": "http://onlinelibrary.wiley.com/doi/10.1002/bip.360221211/abstract;jsessionid=D974576903083E416A8CF47E849720C0.f01t02", 
+        "PubMedID": [], 
+        "Volume": "22", 
+        "StartPage": "2577", 
+        "PublicationDate": "1983-12-01", 
+        "Authors": [
+            {
+                "Surname": "Kabsch", 
+                "MiddleNames": null, 
+                "FirstName": "Wolfgang"
+            }, 
+            {
+                "Surname": "Sander", 
+                "MiddleNames": null, 
+                "FirstName": "Christian"
+            }
+        ], 
+        "Publication": "Biopolymers"
     }, 
     "PMID:16042382": {
         "PublicationYear": 2005, 
