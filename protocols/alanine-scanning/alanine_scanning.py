@@ -240,7 +240,7 @@ if __name__ == "__main__":
                     'pathtoresfile=%s' % resfile_relpath,
                 ]
 
-            job_dict[ '%s/%s/%s' % (pdb_id.upper(), tanja_id, score_fxn) ] = sub_dict
+                job_dict[ '%s/%s/%s' % (pdb_id.upper(), tanja_id, score_fxn) ] = sub_dict
 
     with open(os.path.join(output_data_dir, 'job_dict.pickle'), 'w') as f:
         pickle.dump(job_dict, f)
