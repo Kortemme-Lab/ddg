@@ -53,37 +53,81 @@ changes to the list of mutations, the PDB ID, or the |DDG| values in cases where
 be incorrect or in cases where the PDB IDs have since been deprecated. Our changes are hopefully - but not necessarily -
 correct. We welcome any corrections from the community.
 
----------------------------
-Guerois et al. [3]_ dataset
----------------------------
+---------------------------------
+Guerois et al. [3]_ dataset, 2002
+---------------------------------
 
-Records: ...
-Unique PDB IDs: ...
+Records: 1005
+
+Unique PDB IDs: 81
+
 Files: input/json/guerois.json, input/csv/guerois.csv
+
+This dataset was compiled for benchmarking the FOLDEF application. ProTherm was a source for many of the datapoints. We use
+the combined dataset (training dataset and blind test dataset) of monomeric single mutants used for testing protein stability
+prediction. The dataset strikes a balance in terms of the secondary structure type of the wildtype residue,
+hydrophobic-hydrophobic mutations versus changes in polarity, and buried mutations versus exposed mutations.
+
+Each record appears to correspond with one recorded |DDG| value in ProTherm.
 
 ---------------------------
 Potapov et al. [4]_ dataset
 ---------------------------
 
-Records: ...
-Unique PDB IDs: ...
+Records: 2154
+
+Unique PDB IDs: 84
+
 Files: input/json/potapov.json, input/csv/potapov.csv
+
+This dataset was compiled for benchmarking different methods for measuring protein stability. The data originates from
+single mutations in both the Guerois dataset, which contains many ProTherm records, and the ProTherm database directly.
+
+Most records appears to correspond with one recorded |DDG| value in ProTherm but approximately 19% of the records appear
+to use a mean value from multiple recorded |DDG| values.
+
+As with all of the previous published datasets, we have modified this dataset. In particular, 10 of the records in the
+dataset presented herein have duplicate records with the same PDB ID and mutation. These are due to our replacement of
+1BKS with 1WQ5, 2LZMA with 1L63, and 1HGU with 3HHR.
 
 ---------------------------
 Kellogg et al. [5]_ dataset
 ---------------------------
 
-Records: ...
-Unique PDB IDs: ...
+Records: 1210
+
+Unique PDB IDs: 75
+
 Files: input/json/kellogg.json, input/csv/kellogg.csv
+
+This dataset was compiled for benchmarking 20 configurations of the Rosetta ddg_monomer application. The data is taken
+from single mutations in the ProTherm database although some records seem to be taken from the Guerois dataset or else added independently.
+Higher-resolution PDB structures were used when a choice existed and structures with more than 350 residues were omitted
+to reduce the computational cost of the benchmark. The lowest-resolution PDB structure in the dataset is 2.8A.
+
+Most records appears to correspond with one recorded |DDG| value in ProTherm but approximately 6% of the records appear
+to use a mean value from multiple recorded |DDG| values.
 
 -----------------
 ProTherm* dataset
 -----------------
 
-Records: ...
-Unique PDB IDs: ...
+Records: 2971
+
+Unique PDB IDs: 119
+
 Files: input/json/curatedprotherm.json, input/csv/curatedprotherm.csv
+
+This dataset was compiled for this benchmark capture. It is a curated subset of single mutations in the ProTherm dataset
+with the intention of using as many ProTherm records as possible. This dataset is therefore biased according to the results
+published in the literature. The selection criteria are:
+
+- any mutations in transmembrane protein chains are omitted;
+- |DDGH2O| values are favored over |DDG| values when available;
+- all PDB structures are determined or partially determined by X-ray defraction with a resolution of at least 2.5A;
+- records where any two |DDG| values vary by more than 2.5 kcal/mol are omitted.
+
+Approximately 28% of the records use a mean value from multiple recorded |DDG| values.
 
 -----------
 AlaScan-GPK
@@ -102,9 +146,11 @@ The method of construction was as follows:
 - for each mutation, take:
 
  - the set of |DDGH2O| values from ProTherm if available, otherwise the set of |DDG| values. If this set contained |DDG| values used in the datasets then we took the mean value of the intersection otherwise we took the mean value of the entire set;
+ - PDB structures determined by X-ray defraction over those determined by NMR, if available;
  - the highest resolution PDB structure used in the datasets.
 
-Thus, the |DDG| values and PDB IDs may differ from the original datasets for some records.
+Thus, the |DDG| values and PDB IDs may differ from the original datasets for some records. Approximately 12% of the records use a mean value from multiple recorded |DDG| values.
+
 
 =====================================================
 Protein-protein interface datasets (binding affinity)
@@ -116,10 +162,11 @@ todo: describe SKEMPI
 SKEMPI [6]_
 -----------
 
-Records: ...
-Unique PDB IDs: ...
-Files: todo:, todo:
+Records: todo:
 
+Unique PDB IDs: todo:
+
+Files: todo:, todo:
 
 
 ==============
@@ -127,10 +174,11 @@ PDB structures
 ==============
 
 The PDB structures used for the benchmark are provided in input/pdbs.
+
 todo: describe input/hydrogen_pdbs
 
-The resolutions and methods of determination (*e.g.* X-ray crystallograhy, NMR, *etc.*) for the PDB structures are listed
-in the input/json/pdbs.json and input/csv/pdbs.csv.
+The resolutions and methods of determination (*e.g.* X-ray defraction, NMR, *etc.*) for the PDB structures are listed
+in input/json/pdbs.json and input/csv/pdbs.csv.
 
 =======================
 Dataset reference files
@@ -138,25 +186,27 @@ Dataset reference files
 
 The datasets tie each experimental |DDG| value to a reference using an identifying string (typically a PubMed ID). The details
 of these references - authors, title, publication, publication date - are provided in input/json/references.json and
-input/csv/references.csv
-
+input/csv/references.csv. The references for the novel datasets presented herein - the ProTherm* and AlaScan-GPK
+datasets - should be accurate. The references for the Guerois, Potapov, and Kellogg datasets have been deduced so they may
+not be entirely accurate.
 
 ==========
 References
 ==========
 
-.. [1] Gromiha, MM, An, J, Kono, H, Oobatake, M, Uedaira, H, Sarai, A. ProTherm: Thermodynamic Database for Proteins and Mutants. 1999. Nucl. Acids Res. 27(1):286-288. `doi: 10.1093/nar/27.1.286 <http://dx.doi.org/10.1093/nar/27.1.286>`_.
+.. [1] Gromiha, MM, An, J, Kono, H, Oobatake, M, Uedaira, H, Sarai, A. ProTherm: Thermodynamic Database for Proteins and Mutants. 1999. Nucl. Acids Res. 27(1):286-288. `doi: 10.1093/nar/27.1.286 <https://dx.doi.org/10.1093/nar/27.1.286>`_.
 
-.. [2] Kumar, SK, Bava, KA, Gromiha, MM, Prabakaran, P, Kitajima, K, Uedaira, H, Sarai, A. ProTherm and ProNIT: thermodynamic databases for proteins and protein–nucleic acid interactions. 2006. Nucleic Acids Res. 34(Database issue):D204-6. `doi: 10.1093/nar/gkj103 <http://dx.doi.org/10.1093/nar/gkj103>`_.
+.. [2] Kumar, SK, Bava, KA, Gromiha, MM, Prabakaran, P, Kitajima, K, Uedaira, H, Sarai, A. ProTherm and ProNIT: thermodynamic databases for proteins and protein–nucleic acid interactions. 2006. Nucleic Acids Res. 34(Database issue):D204-6. `doi: 10.1093/nar/gkj103 <https://dx.doi.org/10.1093/nar/gkj103>`_.
 
-.. [3] Guerois
+.. [3] Guerois, R, Nielsen, JE, Serrano, L. Predicting changes in the stability of proteins and protein complexes: a study of more than 1000 mutations. 2002. J Mol Biol. 320(2):369-87. `doi: 10.1016/S0022-2836(02)00442-4 <https://dx.doi.org/10.1016/S0022-2836(02)00442-4>`_.
 
-.. [4] Potapov
+.. [4] Potapov, V, Cohen, M, Schreiber, G. Assessing computational methods for predicting protein stability upon mutation: good on average but not in the details. 2009. Protein Eng Des Sel. 22(9):553-60. `doi: 10.1093/protein/gzp030 <https://dx.doi.org/10.1093/protein/gzp030>`_.
 
-.. [5] Kellogg
+.. [5] Kellogg, EH, Leaver-Fay, A, Baker, D. Role of conformational sampling in computing mutation-induced changes in protein structure and stability. 2011. Proteins. 79(3):830-8. `doi: 10.1002/prot.22921 <https://dx.doi.org/10.1002/prot.22921>`_.
 
-.. [6] SKEMPI
+.. [6] Moal, IH, Fernández-Recio, J. SKEMPI: a Structural Kinetic and Energetic database of Mutant Protein Interactions and its use in empirical models. 2012. Bioinformatics. 28(20):2600-7. `doi: 10.1093/bioinformatics/bts489 <https://dx.doi.org/10.1093/bioinformatics/bts489>`_.
 
 .. |Dgr|  unicode:: U+00394 .. GREEK CAPITAL LETTER DELTA
+.. |ring|  unicode:: U+002DA .. RING ABOVE
 .. |DDGH2O| replace:: |Dgr|\ |Dgr|\ G H\ :sub:`2`\ O
 .. |DDG| replace:: |Dgr|\ |Dgr|\ G
