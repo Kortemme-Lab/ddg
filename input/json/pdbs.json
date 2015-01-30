@@ -1,0 +1,730 @@
+{
+    "1MYL": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.4
+    }, 
+    "2BQA": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.8
+    }, 
+    "2HMB": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.1
+    }, 
+    "2AFG": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.0
+    }, 
+    "1C5G": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.6
+    }, 
+    "241L": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.7
+    }, 
+    "1YEA": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.9
+    }, 
+    "1FMK": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.5
+    }, 
+    "1BP2": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.7
+    }, 
+    "1RX4": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.2
+    }, 
+    "1UBQ": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.8
+    }, 
+    "1CHK": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.4
+    }, 
+    "2A01": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.4
+    }, 
+    "3MBP": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.7
+    }, 
+    "1CYO": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.5
+    }, 
+    "1ZNJ": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.0
+    }, 
+    "2LZM": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.7
+    }, 
+    "243L": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.75
+    }, 
+    "246L": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.8
+    }, 
+    "1CYC": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.3
+    }, 
+    "239L": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.8
+    }, 
+    "1HTI": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.8
+    }, 
+    "2CI2": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.0
+    }, 
+    "2TS1": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.3
+    }, 
+    "1RGG": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.2
+    }, 
+    "1L99": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.95
+    }, 
+    "1RN1": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.84
+    }, 
+    "1IHB": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.95
+    }, 
+    "1L90": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.75
+    }, 
+    "1POH": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.0
+    }, 
+    "2TRX": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.68
+    }, 
+    "1BPI": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.09
+    }, 
+    "1WQ5": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.3
+    }, 
+    "247L": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.75
+    }, 
+    "3SSI": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.3
+    }, 
+    "1PGA": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.07
+    }, 
+    "1ROP": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.7
+    }, 
+    "1L67": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.9
+    }, 
+    "1L66": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.7
+    }, 
+    "1L60": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.7
+    }, 
+    "1L63": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.75
+    }, 
+    "1L69": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.9
+    }, 
+    "1L68": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.7
+    }, 
+    "171L": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.5
+    }, 
+    "1TPK": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.4
+    }, 
+    "1AM7": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.3
+    }, 
+    "1IOB": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION;SOLUTION NMR", 
+        "Resolution": 2.0
+    }, 
+    "2HPR": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.0
+    }, 
+    "1IGV": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.85
+    }, 
+    "1AZP": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.6
+    }, 
+    "1FNF": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.0
+    }, 
+    "1HFY": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.3
+    }, 
+    "164L": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.8
+    }, 
+    "237L": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.7
+    }, 
+    "1HFZ": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.3
+    }, 
+    "1L85": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.0
+    }, 
+    "1FXA": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.5
+    }, 
+    "1B5M": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.7
+    }, 
+    "1BNZ": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.0
+    }, 
+    "1QHE": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.0
+    }, 
+    "1DIL": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.9
+    }, 
+    "162L": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.8
+    }, 
+    "2CRK": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.35
+    }, 
+    "1STN": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.7
+    }, 
+    "1BNI": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.1
+    }, 
+    "3BCI": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.81
+    }, 
+    "1CSP": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.45
+    }, 
+    "244L": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.7
+    }, 
+    "1B0O": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.5
+    }, 
+    "1LHM": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.8
+    }, 
+    "165L": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.75
+    }, 
+    "1SCE": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.2
+    }, 
+    "1PIN": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.35
+    }, 
+    "238L": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.8
+    }, 
+    "1REX": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.5
+    }, 
+    "5AZU": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.9
+    }, 
+    "1G6N": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.1
+    }, 
+    "2IFB": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.0
+    }, 
+    "5CRO": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.3
+    }, 
+    "3CHY": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.66
+    }, 
+    "1IFB": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.96
+    }, 
+    "1CAH": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.88
+    }, 
+    "1LVE": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.95
+    }, 
+    "1AMQ": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.2
+    }, 
+    "1BVC": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.5
+    }, 
+    "1BOY": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.2
+    }, 
+    "3D2A": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.73
+    }, 
+    "1OIA": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.4
+    }, 
+    "1BF4": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.6
+    }, 
+    "1L02": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.7
+    }, 
+    "1L00": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.9
+    }, 
+    "236L": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.9
+    }, 
+    "1IO2": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.0
+    }, 
+    "1KFW": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.74
+    }, 
+    "1L08": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.7
+    }, 
+    "1LYH": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.7
+    }, 
+    "1FTG": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.0
+    }, 
+    "1B26": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 3.0
+    }, 
+    "235L": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.9
+    }, 
+    "1FLV": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.0
+    }, 
+    "1AXB": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.0
+    }, 
+    "1LYJ": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.8
+    }, 
+    "1C9O": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.17
+    }, 
+    "1CDC": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.0
+    }, 
+    "1EL1": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.9
+    }, 
+    "1Y4Y": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.0
+    }, 
+    "253L": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.0
+    }, 
+    "1CLW": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.0
+    }, 
+    "2RN2": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.48
+    }, 
+    "242L": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.8
+    }, 
+    "1ONC": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.7
+    }, 
+    "1RRO": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.3
+    }, 
+    "1BLC": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.2
+    }, 
+    "1IFC": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.19
+    }, 
+    "1L33": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.7
+    }, 
+    "1MGR": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.7
+    }, 
+    "1RTB": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.5
+    }, 
+    "1IDS": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.0
+    }, 
+    "1RTP": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.0
+    }, 
+    "1DYB": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.75
+    }, 
+    "2ZTA": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.8
+    }, 
+    "1ACB": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.0
+    }, 
+    "1DYJ": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.85
+    }, 
+    "163L": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.8
+    }, 
+    "1OH0": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.1
+    }, 
+    "1YCC": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.23
+    }, 
+    "1SUP": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.6
+    }, 
+    "219L": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.66
+    }, 
+    "1DPM": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.1
+    }, 
+    "2AKY": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.96
+    }, 
+    "1L21": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.85
+    }, 
+    "1L23": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.7
+    }, 
+    "1L22": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.7
+    }, 
+    "160L": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.8
+    }, 
+    "3BLS": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.3
+    }, 
+    "2ADA": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.4
+    }, 
+    "1FRD": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.7
+    }, 
+    "1QLP": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.0
+    }, 
+    "200L": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.95
+    }, 
+    "1HZ6": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.7
+    }, 
+    "1JIW": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.74
+    }, 
+    "1MSI": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.25
+    }, 
+    "227L": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.0
+    }, 
+    "1SHF": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.9
+    }, 
+    "1SHG": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.8
+    }, 
+    "1VQB": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.8
+    }, 
+    "1IRO": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.1
+    }, 
+    "1LZ1": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.5
+    }, 
+    "1RHG": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.2
+    }, 
+    "3PGK": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.5
+    }, 
+    "1ANK": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.0
+    }, 
+    "1ANF": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.67
+    }, 
+    "2WSY": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 3.05
+    }, 
+    "1LMB": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.8
+    }, 
+    "1HK0": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.25
+    }, 
+    "1H7M": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.96
+    }, 
+    "240L": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.75
+    }, 
+    "161L": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.7
+    }, 
+    "1CEY": {
+        "MethodOfDetermination": "SOLUTION NMR", 
+        "Resolution": "N/A"
+    }, 
+    "1RIS": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.0
+    }, 
+    "4BLM": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.0
+    }, 
+    "1AYE": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.8
+    }, 
+    "1L65": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.7
+    }, 
+    "1AYF": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.85
+    }, 
+    "1C2R": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.5
+    }, 
+    "1FKJ": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.7
+    }, 
+    "1TUP": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.2
+    }, 
+    "1A2P": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.5
+    }, 
+    "451C": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.6
+    }, 
+    "1FKB": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.7
+    }, 
+    "1U5P": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.0
+    }, 
+    "1W99": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.75
+    }, 
+    "1IR3": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.9
+    }, 
+    "4LYZ": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.0
+    }, 
+    "3HHR": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.8
+    }, 
+    "107L": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.8
+    }, 
+    "1AAR": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.3
+    }, 
+    "1MJC": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.0
+    }, 
+    "2IMM": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.0
+    }, 
+    "1TEN": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.8
+    }, 
+    "1N0J": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.2
+    }, 
+    "1BKS": {
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.2
+    }
+}
