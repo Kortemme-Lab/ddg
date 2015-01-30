@@ -65,7 +65,6 @@ if __name__ == '__main__':
             ddg_data, score_fxns = parse_db_output(db_output_file, ddg_data, score_fxns)
 
         score_fxns = sorted(list(score_fxns))
-        print 'Processed %d data points' % len(ddg_data)
         with open('results-%s.csv' % os.path.basename(output_dir), 'w') as f:
             f.write('ID')
             for score_fxn in score_fxns:
