@@ -6,6 +6,8 @@ import argparse
 import cPickle as pickle
 import sqlite3
 
+from alanine_scanning import parse_mutations_file
+
 pickle_name = os.path.join('data', 'job_dict.pickle')
 
 def parse_db_output(db_output_file, ddg_data, score_fxns):
@@ -64,7 +66,19 @@ if __name__ == '__main__':
         for db_output_file in db_output_files:
             ddg_data, score_fxns = parse_db_output(db_output_file, ddg_data, score_fxns)
 
+        mutations_data = parse_mutations_file()
+
+        for mut in mutations_data.values():
+            for i, tanja_id in enumerate(mut.tanja_id_list):
+                if tanja_id not in ddg_data:
+                    ddg_data[tanja_id] = {}
+                ddg_data[tanja_id]['ddg_obs'] = mut.ddg_obs_list[i]
+                ddg_data[tanja_id]['tanja_ddg_calc'] = mut.ddg_calc_list[i]
+
         score_fxns = sorted(list(score_fxns))
+        score_fxns.insert(0, 'ddg_obs')
+        score_fxns.insert(0, 'tanja_ddg_calc')
+
         with open('results-%s.csv' % os.path.basename(output_dir), 'w') as f:
             f.write('ID')
             for score_fxn in score_fxns:
