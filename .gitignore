@@ -1,5 +1,6 @@
 # History files
 .Rhistory
+.RData
 
 # PyCharm files
 .idea/
