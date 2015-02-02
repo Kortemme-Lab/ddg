@@ -41,6 +41,17 @@ def process(data_dict):
         data_dict['add_extra_ld_path'] = 'False'
         data_dict['extra_ld_path'] = ''
 
+    # Handle if general rosetta args are a list instead of a string
+    if not isinstance(data_dict['rosetta_args_list'], basestring):
+        rosetta_args = ""
+        if len(data_dict['rosetta_args_list']) == 1:
+            rosetta_args += "'%s'" % data_dict['rosetta_args_list']
+        elif len(data_dict['rosetta_args_list']) > 1:
+            for arg in data_dict['rosetta_args_list'][:-1]:
+                rosetta_args += "'%s', " % arg
+            rosetta_args += "'%s'" % data_dict['rosetta_args_list'][-1]
+        data_dict['rosetta_args_list'] = rosetta_args
+
     # Handle other options
     if 'cluster_rosetta_db' not in data_dict:
         data_dict['cluster_rosetta_db'] = ''

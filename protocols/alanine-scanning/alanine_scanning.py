@@ -245,12 +245,10 @@ if __name__ == "__main__":
     with open(os.path.join(output_data_dir, 'job_dict.pickle'), 'w') as f:
         pickle.dump(job_dict, f)
 
-    general_rosetta_args = "'-parser:view', '-inout:dbms:mode', 'sqlite3', '-inout:dbms:database_name', 'rosetta_output.db3', '-no_optH', 'true'"
-
     args = {
         'scriptname' : 'ddg_run',
         'appname' : 'rosetta_scripts.mysql.linuxgccrelease',
-        'rosetta_args_list' : general_rosetta_args,
+        'rosetta_args_list' : ['-parser:view', '-inout:dbms:mode', 'sqlite3', '-inout:dbms:database_name', 'rosetta_output.db3', '-no_optH', 'true'],
     }
 
     args['tasks_per_process'] = 5
