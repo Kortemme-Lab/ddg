@@ -19,7 +19,7 @@
 
         <MOVERS>
 	  <MinMover name=minmover scorefxn=fa_%%currentscorefxn%% chi=1 bb=1 jump=ALL cartesian=0 type=lbfgs_armijo tolerance=0.001/>
-	  <ddG name=ddgmover scorefxn=fa_%%currentscorefxn%% chain_num=%%chainstomove%% repack=true repack_bound=true relax_bound=true relax_mover=minmover/>
+	  <ddG name=ddgmover scorefxn=fa_%%currentscorefxn%% chain_num=%%chainstomove%% repack=true repack_bound=false relax_bound=false relax_mover=minmover/>
         </MOVERS>
 
         <FILTERS>
