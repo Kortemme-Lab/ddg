@@ -139,7 +139,7 @@ class Reporter:
         else:
             return time.time() - self.start
 
-def run_single(task_id, rosetta_bin, rosetta_db, scratch_dir=local_scratch_dir, verbosity=1):
+def run_single(task_id, rosetta_bin, rosetta_db, scratch_dir=local_scratch_dir, verbosity=1, move_output_files=False):
     global job_dict
 
     time_start = roundTime()
@@ -326,7 +326,7 @@ def run_single(task_id, rosetta_bin, rosetta_db, scratch_dir=local_scratch_dir, 
     # Check if on SGE to move special output files and calculate RAM usage                                                             
     ram_usage = None
     ram_usage_type = None
-    if run_on_sge:
+    if run_on_sge and move_output_files:
         try:
             # Encase this in try block in case script_name is wrong
             shutil.move("%s.o%d.%d" % (script_name,job_id,sge_task_id), job_dir_path)
@@ -423,7 +423,10 @@ def run_cluster():
     for i, task_id in enumerate(tasks_to_run):
         if len(tasks_to_run) != 1:
             print 'Running subtask %d (%d of %d)' % (task_id, i+1, len(tasks_to_run))
-        run_single(task_id, cluster_rosetta_bin, cluster_rosetta_db, scratch_dir='/scratch')
+        if i+1 == len(tasks_to_run):
+            run_single(task_id, cluster_rosetta_bin, cluster_rosetta_db, scratch_dir='/scratch', move_output_files=True)
+        else:
+            run_single(task_id, cluster_rosetta_bin, cluster_rosetta_db, scratch_dir='/scratch')
 
 def zip_file(file_path):
     if os.path.isfile(file_path):
