@@ -13,11 +13,11 @@ import getpass
 import interfaces_defs
 
 input_pdb_dir_path = '../../input/pdbs/hydrogen_pdbs'
-extra_name = '' # something like _talaris if needed
+extra_name = '_pretalaris' # something like _talaris if needed
 mutations_file_location = 'MUTATIONS.dat'
 rosetta_scripts_protocol = 'alascan.xml'
 resfile_start = 'NATRO\nEX 1 EX 2 EX 3\nSTART\n'
-score_fxns = ['talaris2014', 'soft_rep', 'talaris2013', 'talaris2014_soft_fa_rep', 'talaris2014_soft_fa_dun', 'score12', 'interface']
+score_fxns = ['talaris2014', 'soft_rep', 'talaris2014_soft_fa_rep', 'score12', 'interface']
 cluster_rosetta_bin = '/netapp/home/kbarlow/rosetta/alascan/source/bin'
 local_rosetta_bin = '/home/kyleb/rosetta/working_branches/alascan/source/bin'
 job_output_directory = 'job_output'
@@ -248,10 +248,10 @@ if __name__ == "__main__":
     args = {
         'scriptname' : 'ddg_run',
         'appname' : 'rosetta_scripts.mysql.linuxgccrelease',
-        'rosetta_args_list' : ['-parser:view', '-inout:dbms:mode', 'sqlite3', '-inout:dbms:database_name', 'rosetta_output.db3', '-no_optH', 'true'],
+        'rosetta_args_list' : ['-parser:view', '-inout:dbms:mode', 'sqlite3', '-inout:dbms:database_name', 'rosetta_output.db3', '-no_optH', 'true', '-mistakes::restore_pre_talaris_2013_behavior'],
     }
 
-    args['tasks_per_process'] = 5
+    args['tasks_per_process'] = 15
     args['extra_ld_path'] = '/netapp/home/kbarlow/lib/mysql-connector-c-6.1.2-linux-glibc2.5-x86_64/lib'
 
     args['cluster_rosetta_bin'] = cluster_rosetta_bin
