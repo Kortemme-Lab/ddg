@@ -254,6 +254,7 @@ if __name__ == "__main__":
     }
 
     args['tasks_per_process'] = 3
+    args['extra_ld_path'] = '/netapp/home/kbarlow/lib/mysql-connector-c-6.1.2-linux-glibc2.5-x86_64/lib'
 
     args['cluster_rosetta_bin'] = cluster_rosetta_bin
     args['local_rosetta_bin'] = local_rosetta_bin
