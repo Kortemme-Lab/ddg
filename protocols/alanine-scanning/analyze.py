@@ -10,6 +10,7 @@ import analysis.stats as stats
 from alanine_scanning import parse_mutations_file
 
 pickle_name = os.path.join('data', 'job_dict.pickle')
+global_analysis_output_dir = 'analysis_output'
 
 def parse_db_output(db_output_file, ddg_data, score_fxns):
     query = 'SELECT ddG.resNum, ddg.mutated_to_name3, ddg.ddG_value, ' \
@@ -45,6 +46,11 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     for output_dir in args.output_dirs:
+
+        analysis_output_dir = os.path.join(global_analysis_output_dir, os.path.basename(output_dir))
+        if not os.path.isdir(analysis_output_dir):
+            os.makedirs(analysis_output_dir)
+
         assert( os.path.isdir(output_dir) )
         job_pickle_file = os.path.join(
             output_dir, pickle_name
@@ -83,7 +89,11 @@ if __name__ == '__main__':
         # Write output CSV and create data lists for further analysis
         data_ids = []
         data_points = [[] for x in xrange(len(score_fxns))]
-        with open('results-%s.csv' % os.path.basename(output_dir), 'w') as f:
+        with open(
+            os.path.join(analysis_output_dir,
+                         'results-%s.csv' % os.path.basename(output_dir)),
+            'w'
+        ) as f:
             f.write('ID')
             for score_fxn in score_fxns:
                 f.write(',%s' % score_fxn)
@@ -111,11 +121,16 @@ if __name__ == '__main__':
                 continue
 
             print i_score_fxn, 'vs', j_score_fxn
-            dataset_stats = stats.get_xy_dataset_statistics(
+            dataset_stats = stats._get_xy_dataset_statistics(
                 data_points[i], data_points[j]
             )
-            for statname in sorted(dataset_stats.keys()):
-                print statname, ':', dataset_stats[statname]
+
+            stats_str = stats.format_stats_for_printing(dataset_stats)
+            with open(os.path.join(analysis_output_dir, '%s-stats.txt' % os.path.basename(output_dir)), 'a') as f:
+                f.write('%s vs %s\n' % (i_score_fxn, j_score_fxn) )
+                f.write(stats_str)
+                f.write('\n\n')
+            print stats_str
             print
 
             table_for_plot = []
@@ -123,7 +138,10 @@ if __name__ == '__main__':
                 table_for_plot.append(dict(ID = pt_id, Experimental = pt_i, Predicted = pt_j))
 
             stats.plot(
-                table_for_plot, 'test.pdf',
+                table_for_plot,
+                os.path.join(
+                    analysis_output_dir,
+                    '%s-%s_vs_%s.pdf' % (os.path.basename(output_dir), score_fxns[i], score_fxns[j])
+                ),
                 stats.RInterface.correlation_coefficient_gplot
             )
-            sys.exit(0)
