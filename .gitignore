@@ -67,3 +67,7 @@ docs/_build/
 
 # Repository-specific
 settings.json
+
+# Generated files
+*.pdf
+*.png
