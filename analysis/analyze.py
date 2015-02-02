@@ -22,6 +22,7 @@ import sys
 import os
 from libraries import docopt
 from stats import get_xy_dataset_statistics, plot, read_file, RInterface, format_stats_for_printing
+
 correlation_coefficient_scatterplotplot = RInterface.correlation_coefficient_gplot
 
 
@@ -77,7 +78,7 @@ if __name__ == '__main__':
     # Set up the output filename
     output_filename = arguments['--output']
     output_filename_ext = os.path.splitext(output_filename)[1].lower()
-    if output_filename_ext not in ['.png', '.pdf', '.eps']:
+    if output_filename_ext not in ['.png', '.pdf']: # todo: check eps output ('.eps')
         output_filename += '.png'
 
     print('\n' + '*'*10 + ' Statistics ' +'*'*10)
