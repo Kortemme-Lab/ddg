@@ -13,7 +13,7 @@ import getpass
 import interfaces_defs
 
 input_pdb_dir_path = '../../input/pdbs/hydrogen_pdbs'
-extra_name = '' # something like _talaris if needed
+extra_name = 'rp_rp-bound_rlx-bound-cart' # something like _talaris if needed
 mutations_file_location = 'MUTATIONS.dat'
 rosetta_scripts_protocol = 'alascan.xml'
 resfile_start = 'NATRO\nEX 1 EX 2 EX 3\nSTART\n'

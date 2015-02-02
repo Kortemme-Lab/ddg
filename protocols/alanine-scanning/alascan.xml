@@ -18,11 +18,12 @@
         </TASKOPERATIONS>
 
         <MOVERS>
-	  <ddG name=ddgmover scorefxn=fa_%%currentscorefxn%% chain_num=%%chainstomove%% repack=false repack_bound=false relax_bound=false/>
+	  <MinMover name=minmover scorefxn=fa_%%currentscorefxn%% chi=true bb=true jump=ALL cartesian=false type=lbfgs_armijo tolerance=0.001/>
+	  <ddG name=ddgmover scorefxn=fa_%%currentscorefxn%% chain_num=%%chainstomove%% repack=true repack_bound=true relax_bound=true relax_mover=minmover/>
         </MOVERS>
 
         <FILTERS>
-	  <DdGScan name=alascan task_operations=rrf repeats=1 scorefxn=fa_%%currentscorefxn%% report_diffs=1 write2pdb=1 ddG_mover=ddgmover />
+	  <DdGScan name=alascan task_operations=rrf repeats=4 scorefxn=fa_%%currentscorefxn%% report_diffs=1 write2pdb=1 ddG_mover=ddgmover />
         </FILTERS>
 
 	<MOVERS>
