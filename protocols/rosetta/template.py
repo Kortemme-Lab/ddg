@@ -423,7 +423,7 @@ def run_cluster():
     for i, task_id in enumerate(tasks_to_run):
         if len(tasks_to_run) != 1:
             print 'Running subtask %d (%d of %d)' % (task_id, i+1, len(tasks_to_run))
-        # run_single(task_id, cluster_rosetta_bin, cluster_rosetta_db, scratch_dir='/scratch')
+        run_single(task_id, cluster_rosetta_bin, cluster_rosetta_db, scratch_dir='/scratch')
 
 def zip_file(file_path):
     if os.path.isfile(file_path):
