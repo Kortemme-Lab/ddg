@@ -6,7 +6,7 @@ import argparse
 import cPickle as pickle
 import sqlite3
 
-import stats
+import analysis.stats as stats
 from alanine_scanning import parse_mutations_file
 
 pickle_name = os.path.join('data', 'job_dict.pickle')
@@ -109,6 +109,7 @@ if __name__ == '__main__':
         for j, j_score_fxn in enumerate(score_fxns):
             if i == j:
                 continue
+
             print i_score_fxn, 'vs', j_score_fxn
             dataset_stats = stats.get_xy_dataset_statistics(
                 data_points[i], data_points[j]
@@ -116,3 +117,13 @@ if __name__ == '__main__':
             for statname in sorted(dataset_stats.keys()):
                 print statname, ':', dataset_stats[statname]
             print
+
+            table_for_plot = []
+            for pt_id, pt_i, pt_j in zip(data_ids, data_points[i], data_points[j]):
+                table_for_plot.append(dict(ID = pt_id, Experimental = pt_i, Predicted = pt_j))
+
+            stats.plot(
+                table_for_plot, 'test.pdf',
+                stats.RInterface.correlation_coefficient_gplot
+            )
+            sys.exit(0)
