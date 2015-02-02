@@ -1,6 +1,7 @@
 # This work is licensed under the Creative Commons Attribution 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by/4.0/ or send a letter to Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
 
 import os
+import sys
 import math
 import time
 import tempfile
@@ -14,8 +15,7 @@ from scipy.stats import pearsonr, spearmanr, normaltest, ks_2samp, kstest, norm
 
 def _id(x): pass
 delete_file = [os.remove, _id][0] # for debugging, set 0 to 1
-script_path = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
-
+script_path = os.path.abspath( os.path.dirname( inspect.getsourcefile(sys.modules[__name__]) ) )
 
 def open_temp_file(path, ftype = 'w', suffix = '', prefix = ''):
     F, fname = tempfile.mkstemp(dir = path, suffix = suffix, prefix = prefix)
