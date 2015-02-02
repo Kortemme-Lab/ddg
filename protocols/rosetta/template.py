@@ -3,12 +3,12 @@
 #$ -cwd
 #$ -r yes
 #$ -l h_rt=240:00:00
-#$ -t 1-#$#numjobs#$#
+#$ -t 1-#$#numclusterjobs#$#
 #$ -l arch=linux-x64
 #$ -l mem_free=#$#mem_free#$#
 #$ -l netapp=1G,scratch=1G
 
-# 1-#$#numjobs#$# total (in case less is set above)
+# 1-#$#numclusterjobs#$# total (in case less is set above)
 
 import socket
 import sys
@@ -38,6 +38,9 @@ script_name = '#$#scriptname#$#.py'
 print "Script:", script_name
 
 # Constants
+tasks_per_process = #$#tasks_per_process#$#
+total_number_tasks = #$#numjobs#$#
+
 cluster_rosetta_bin = '#$#cluster_rosetta_bin#$#'
 cluster_rosetta_db = '#$#cluster_rosetta_db#$#'
 
@@ -274,6 +277,8 @@ def run_single(task_id, rosetta_bin, rosetta_db, scratch_dir=local_scratch_dir, 
         else:
             rosetta_env["LD_LIBRARY_PATH"] = "#$#extra_ld_path#$#"
 
+    # Check that Rosetta binary exists
+    assert( os.path.isfile( args[0] ) )
     # Output to file
     rosetta_process = subprocess.Popen(args, stdout=rosetta_outfile, stderr=subprocess.STDOUT, close_fds = True, cwd=tmp_output_dir, env=rosetta_env )
 
@@ -403,6 +408,23 @@ def run_local():
 
     worker.finishJobs()
 
+def run_cluster():
+    # Determine which tasks this job will run
+    tasks_to_run = []
+    starting_task_id = tasks_per_process * ( int(sge_task_id) - 1 )
+    tasks_to_run = range(
+        starting_task_id,
+        min(starting_task_id + tasks_per_process, total_number_tasks)
+    )
+
+    if len(tasks_to_run) == 0:
+        print 'ERROR: No tasks to run!!!'
+
+    for i, task_id in enumerate(tasks_to_run):
+        if len(tasks_to_run) != 1:
+            print 'Running subtask %d (%d of %d)' % (task_id, i+1, len(tasks_to_run))
+        # run_single(task_id, cluster_rosetta_bin, cluster_rosetta_db, scratch_dir='/scratch')
+
 def zip_file(file_path):
     if os.path.isfile(file_path):
         f_in = open(file_path, 'rb')
@@ -429,4 +451,4 @@ if __name__=='__main__':
     if run_locally:
         run_local()
     else:
-        run_single(int(sge_task_id)-1,cluster_rosetta_bin,cluster_rosetta_db,scratch_dir='/scratch')
+        run_cluster()
