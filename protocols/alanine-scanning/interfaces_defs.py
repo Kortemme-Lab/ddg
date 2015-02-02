@@ -1,3 +1,5 @@
+# This work is licensed under the terms of the MIT license. See LICENSE for the full text.
+
 kortemme_baker_protein_protein_interfaces = [
 #1A22
 #Kortemme & Baker partner names: hGH, hGHbp
