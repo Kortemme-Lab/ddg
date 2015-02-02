@@ -311,7 +311,7 @@ def format_stats_for_printing(stats):
         elif k == 'spearmanr':
             newstats[key] = '%0.3f (2-tailed p-value=%s)' % (v[0], str(v[1]))
         else:
-            newstats[key] = v
+            newstats[key] = '%0.3f' % v
     for k, v in sorted(newstats.iteritems()):
         s.append('%s: %s' % (str(k).ljust(32), str(v)))
     return '\n'.join(s)
