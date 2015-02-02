@@ -5,6 +5,7 @@ import sys
 import math
 import time
 import tempfile
+import copy
 import subprocess
 import traceback
 import inspect
@@ -82,30 +83,6 @@ class RInterface(object):
 def create_csv(analysis_table):
     contents = '\n'.join(['ID,Experimental,Predicted'] + ['%s,%s,%s' % (str(l['ID']), str(l['Experimental']), str(l['Predicted'])) for l in analysis_table])
     return write_temp_file('.', contents)
-
-
-def plot(analysis_table, output_filename, RFunction):
-    #R_return_values = {}
-    filetype = os.path.splitext(output_filename)[1].lower()
-    assert(filetype == '.png' or filetype == '.pdf' or filetype == '.eps')
-    filetype = filetype[1:]
-    if len(analysis_table) <= 1:
-        raise Exception("The analysis table must have at least two points.")
-    else:
-        input_filename = create_csv(analysis_table)
-        print(input_filename )
-        print(read_file(input_filename))
-        try:
-            R_output = RFunction(input_filename, output_filename, filetype)
-            #R_return_values = RUtilities.parse_R_output(R_output)
-            #for k, v in sorted(R_return_values.iteritems()):
-            #    print("  %s: %s" % (str(k), str(v)))
-        except Exception, e:
-            print(traceback.format_exc())
-            delete_file(input_filename)
-            raise Exception(e)
-        delete_file(input_filename)
-    return output_filename
 
 
 def get_ranks(values):
@@ -255,9 +232,18 @@ def mae(x_values, y_values):
     return numpy.sum(numpy.apply_along_axis(numpy.abs, 0, numpy.subtract(x_values, y_values))) / float(num_points)
 
 
-def get_xy_dataset_statistics(x_values, y_values, fcorrect_x_cutoff = 1.0, fcorrect_y_cutoff = 1.0, x_fuzzy_range = 0.1, y_scalar = 1.0):
-    '''A function which takes two lists of values of equal length with corresponding entries and returns a dict containing
-       a variety of metrics.'''
+def _get_xy_dataset_statistics(x_values, y_values, fcorrect_x_cutoff = 1.0, fcorrect_y_cutoff = 1.0, x_fuzzy_range = 0.1, y_scalar = 1.0):
+    '''
+    A function which takes two lists of values of equal length with corresponding entries and returns a dict containing
+    a variety of metrics.
+    :param x_values: A list of values for the X-axis (experimental values).
+    :param y_values: A list of values for the X-axis (predicted values).
+    :param fcorrect_x_cutoff: See get_xy_dataset_statistics.
+    :param fcorrect_y_cutoff: See get_xy_dataset_statistics.
+    :param x_fuzzy_range: See get_xy_dataset_statistics.
+    :param y_scalar: See get_xy_dataset_statistics.
+    :return: A table of statistics.
+    '''
     assert(len(x_values) == len(y_values))
     return dict(
         pearsonr = pearsonr(x_values, y_values),
@@ -272,6 +258,84 @@ def get_xy_dataset_statistics(x_values, y_values, fcorrect_x_cutoff = 1.0, fcorr
         fraction_correct = fraction_correct(x_values, y_values, x_cutoff = fcorrect_x_cutoff, y_cutoff = fcorrect_y_cutoff),
         fraction_correct_fuzzy_linear = fraction_correct_fuzzy_linear(x_values, y_values, x_cutoff = fcorrect_x_cutoff, x_fuzzy_range = x_fuzzy_range, y_scalar = y_scalar),
     )
+
+
+def get_xy_dataset_statistics(analysis_table, fcorrect_x_cutoff = 1.0, fcorrect_y_cutoff = 1.0, x_fuzzy_range = 0.1, y_scalar = 1.0):
+    '''
+    A version of _get_xy_dataset_statistics which accepts a list of dicts rather than X- and Y-value lists.
+    :param analysis_table: A list of dict where each dict has Experimental and Predicted float elements
+    :param fcorrect_x_cutoff: The X-axis cutoff value for the fraction correct metric.
+    :param fcorrect_y_cutoff: The Y-axis cutoff value for the fraction correct metric.
+    :param x_fuzzy_range: The X-axis fuzzy range value for the fuzzy fraction correct metric.
+    :param y_scalar: The Y-axis scalar multiplier for the fuzzy fraction correct metric (used to calculate y_cutoff and y_fuzzy_range in that metric)
+    :return: A table of statistics.
+    '''
+
+    x_values = [record['Experimental'] for record in analysis_table]
+    y_values = [record['Predicted'] for record in analysis_table]
+    return _get_xy_dataset_statistics(x_values, y_values, fcorrect_x_cutoff = fcorrect_x_cutoff, fcorrect_y_cutoff = fcorrect_y_cutoff, x_fuzzy_range = x_fuzzy_range, y_scalar = y_scalar)
+
+
+keymap = dict(
+    pearsonr = "Pearson's R",
+    spearmanr = "Spearman's R",
+    gamma_CC = "Gamma correlation coef.",
+    fraction_correct = "Fraction correct",
+    fraction_correct_fuzzy_linear = "Fraction correct (fuzzy)",
+    ks_2samp = "Kolmogorov-Smirnov test (XY)",
+    kstestx = "X-axis Kolmogorov-Smirnov test",
+    kstesty = "Y-axis Kolmogorov-Smirnov test",
+    normaltestx = "X-axis normality test",
+    normaltesty = "Y-axis normality test",
+)
+
+
+def format_stats_for_printing(stats):
+    s = []
+    newstats = {}
+    for k, v in stats.iteritems():
+        key = keymap.get(k, k)
+        if k == 'ks_2samp':
+            newstats[key] = '%0.3f (2-tailed p-value=%s)' % (v[0], str(v[1]))
+        elif k == 'kstestx':
+            newstats[key] = '%0.3f (p-value=%s)' % (v[0], str(v[1]))
+        elif k == 'kstesty':
+            newstats[key] = '%0.3f (p-value=%s)' % (v[0], str(v[1]))
+        elif k == 'normaltestx':
+            newstats[key] = '%0.3f (2-sided chi^2 p-value=%s)' % (v[0], str(v[1]))
+        elif k == 'normaltesty':
+            newstats[key] = '%0.3f (2-sided chi^2 p-value=%s)' % (v[0], str(v[1]))
+        elif k == 'pearsonr':
+            newstats[key] = '%0.3f (2-tailed p-value=%s)' % (v[0], str(v[1]))
+        elif k == 'spearmanr':
+            newstats[key] = '%0.3f (2-tailed p-value=%s)' % (v[0], str(v[1]))
+        else:
+            newstats[key] = v
+    for k, v in sorted(newstats.iteritems()):
+        s.append('%s: %s' % (str(k).ljust(32), str(v)))
+    return '\n'.join(s)
+
+
+def plot(analysis_table, output_filename, RFunction):
+    #R_return_values = {}
+    filetype = os.path.splitext(output_filename)[1].lower()
+    assert(filetype == '.png' or filetype == '.pdf' or filetype == '.eps')
+    filetype = filetype[1:]
+    if len(analysis_table) <= 1:
+        raise Exception("The analysis table must have at least two points.")
+    else:
+        input_filename = create_csv(analysis_table)
+        try:
+            R_output = RFunction(input_filename, output_filename, filetype)
+            #R_return_values = RUtilities.parse_R_output(R_output)
+            #for k, v in sorted(R_return_values.iteritems()):
+            #    print("  %s: %s" % (str(k), str(v)))
+        except Exception, e:
+            print(traceback.format_exc())
+            delete_file(input_filename)
+            raise Exception(e)
+        delete_file(input_filename)
+    return output_filename
 
 
 if __name__ == '__main__':
