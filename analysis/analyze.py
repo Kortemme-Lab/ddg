@@ -21,8 +21,42 @@ Authors:
 import sys
 import os
 from libraries import docopt
-from stats import get_xy_dataset_statistics, plot, read_file, RInterface
+from stats import get_xy_dataset_statistics, plot, read_file, RInterface, format_stats_for_printing
 correlation_coefficient_scatterplotplot = RInterface.correlation_coefficient_gplot
+
+
+def read_json(filename):
+    try:
+        try:
+            import json
+        except:
+            import simplejson as json
+        return json.loads(read_file(filename))
+    except:
+        return None
+
+
+def parse_csv(filename):
+    separator = ','
+    if filename.endswith('.tsv'):
+        separator = '\t'
+    try:
+        table = []
+        id = 1
+        contents = read_file(filename)
+        lines = [l.strip().split(separator) for l in contents.split('\n') if l.strip() and not(l.strip().startswith('#'))]
+        for linetokens in lines:
+            if len(linetokens) >= 3:
+                table.append(dict(Experimental = float(linetokens[0]), Predicted = float(linetokens[1]), ID = str(linetokens[2])))
+            elif len(linetokens) == 2:
+                table.append(dict(Experimental = float(linetokens[0]), Predicted = float(linetokens[1]), ID = id))
+                id += 1
+            else:
+                raise Exception('At least two columns (experimental DDG, predicted DDG) are expected.')
+        return table
+    except Exception, e:
+        raise Exception('An exception occurred parsing the CSV/TSV file: %s' % str(e))
+
 
 if __name__ == '__main__':
     try:
@@ -30,19 +64,25 @@ if __name__ == '__main__':
     except Exception, e:
         print('Failed while parsing arguments: %s.' % str(e))
         sys.exit(1)
-   
+
     # Read file input file
     input_filename = arguments['<inputfile>'][0]
     if not os.path.exists(input_filename):
         print('Error') # todo:
         sys.exit(2)
-    analysis_table = read_file(input_filename)
+    analysis_table = read_json(input_filename)
+    if not analysis_table:
+        analysis_table = parse_csv(input_filename)
 
     # Set up the output filename
     output_filename = arguments['--output']
     output_filename_ext = os.path.splitext(output_filename)[1].lower()
-    if output_filename_ext not in ['png', 'pdf', 'eps']:
+    if output_filename_ext not in ['.png', '.pdf', '.eps']:
         output_filename += '.png'
 
+    print('\n' + '*'*10 + ' Statistics ' +'*'*10)
+    print(format_stats_for_printing(get_xy_dataset_statistics(analysis_table)))
+
+    print('\nSaving scatterplot to %s.\n' % output_filename)
     plot(analysis_table, output_filename, correlation_coefficient_scatterplotplot)
 
