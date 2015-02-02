@@ -13,7 +13,7 @@ import getpass
 import interfaces_defs
 
 input_pdb_dir_path = '../../input/pdbs/hydrogen_pdbs'
-extra_name = '_rp' # something like _talaris if needed
+extra_name = '' # something like _talaris if needed
 mutations_file_location = 'MUTATIONS.dat'
 rosetta_scripts_protocol = 'alascan.xml'
 resfile_start = 'NATRO\nEX 1 EX 2 EX 3\nSTART\n'
@@ -253,13 +253,13 @@ if __name__ == "__main__":
         'rosetta_args_list' : general_rosetta_args,
     }
 
-    args['tasks_per_process'] = 3
+    args['tasks_per_process'] = 5
     args['extra_ld_path'] = '/netapp/home/kbarlow/lib/mysql-connector-c-6.1.2-linux-glibc2.5-x86_64/lib'
 
     args['cluster_rosetta_bin'] = cluster_rosetta_bin
     args['local_rosetta_bin'] = local_rosetta_bin
     args['numjobs'] = '%d' % len(job_dict)
-    args['mem_free'] = '1.1G'
+    args['mem_free'] = '1.0G'
     args['output_dir'] = output_dir
 
     write_run_file(args)
