@@ -6,6 +6,7 @@ import argparse
 import cPickle as pickle
 import sqlite3
 
+import stats
 from alanine_scanning import parse_mutations_file
 
 pickle_name = os.path.join('data', 'job_dict.pickle')
@@ -76,9 +77,12 @@ if __name__ == '__main__':
                 ddg_data[tanja_id]['tanja_ddg_calc'] = mut.ddg_calc_list[i]
 
         score_fxns = sorted(list(score_fxns))
-        score_fxns.insert(0, 'ddg_obs')
         score_fxns.insert(0, 'tanja_ddg_calc')
+        score_fxns.insert(0, 'ddg_obs')
 
+        # Write output CSV and create data lists for further analysis
+        data_ids = []
+        data_points = [[] for x in xrange(len(score_fxns))]
         with open('results-%s.csv' % os.path.basename(output_dir), 'w') as f:
             f.write('ID')
             for score_fxn in score_fxns:
@@ -86,9 +90,29 @@ if __name__ == '__main__':
             f.write('\n')
             for tanja_id in ddg_data:
                 f.write('%s' % tanja_id)
+                data_is_complete = True
                 for score_fxn in score_fxns:
                     if score_fxn in ddg_data[tanja_id]:
                         f.write(',%.6f' % ddg_data[tanja_id][score_fxn])
                     else:
+                        data_is_complete = False
                         f.write(',NA')
+                if data_is_complete:
+                    data_ids.append(tanja_id)
+                    for i, score_fxn in enumerate(score_fxns):
+                        data_points[i].append(ddg_data[tanja_id][score_fxn])
                 f.write('\n')
+
+        # for i, i_score_fxn in enumerate(score_fxns):
+        i = 0
+        i_score_fxn = score_fxns[0]
+        for j, j_score_fxn in enumerate(score_fxns):
+            if i == j:
+                continue
+            print i_score_fxn, 'vs', j_score_fxn
+            dataset_stats = stats.get_xy_dataset_statistics(
+                data_points[i], data_points[j]
+            )
+            for statname in sorted(dataset_stats.keys()):
+                print statname, ':', dataset_stats[statname]
+            print
