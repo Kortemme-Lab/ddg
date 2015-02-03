@@ -158,18 +158,15 @@ if __name__ == '__main__':
         os.makedirs(root_output_directory)
 
     # Set the job output directory
-    output_dir = os.path.join(root_output_directory, job_name)
+    task_subfolder = 'preminimization'
+    output_dir = os.path.join(root_output_directory, job_name) # The root directory for the protocol run
+    task_dir = os.path.join(output_dir, task_subfolder) # The root directory for preminization section of the protocol
     output_data_dir = os.path.join(output_dir, 'data')
     pdb_data_dir = os.path.join(output_data_dir, 'input_pdbs')
     mutfile_data_dir = os.path.join(output_data_dir, 'mutfiles')
-    try: os.mkdir(output_dir)
-    except: pass
-    try: os.mkdir(output_data_dir)
-    except: pass
-    try: os.mkdir(pdb_data_dir)
-    except: pass
-    try: os.mkdir(mutfile_data_dir)
-    except: pass
+    for jobdir in [output_dir, task_dir, output_data_dir, pdb_data_dir, mutfile_data_dir]:
+        try: os.mkdir(jobdir)
+        except: pass
 
     # Count the number of datapoints per PDB chain
     count_by_pdb_chain = {}
@@ -228,7 +225,7 @@ if __name__ == '__main__':
         # Set up --in:file:l parameter
         sub_dict['input_file_list'] = [pdb_relpath]
 
-        job_dict['_'.join(keypair)] = sub_dict
+        job_dict[os.path.join(task_subfolder, '_'.join(keypair))] = sub_dict
     sys.stdout.write('\n')
 
     with open(os.path.join(output_data_dir, 'job_dict.pickle'), 'w') as f:
