@@ -2,25 +2,22 @@
 # This work is licensed under the terms of the MIT license. See LICENSE for the full text.
 
 """\
-The script kicks off a benchmark run using the ddg_monomer application from the Rosetta suite. The command lines used
-herein are intended to reproduce the protocol from row 16 of the original paper by Kellogg et al.:
+The script kicks off the ddg step of the benchmark run using the ddg_monomer application from the
+Rosetta suite. The command lines used herein are intended to reproduce the protocol from row 16 of the original paper by Kellogg et al.:
 
  Kellogg, EH, Leaver-Fay, A, Baker, D. Role of conformational sampling in computing mutation-induced changes in protein
  structure and stability. 2011. Proteins. 79(3):830-8. doi: 10.1002/prot.22921.
 
 Usage:
-    run_benchmark.py [options]...
+    run_ddg.py [options]...
 
 Options:
 
     -d DATASET --dataset DATASET
         A filepath to the input dataset in JSON format [default: ../../input/json/kellogg.json]
 
-    -i RUN_ID --run_identifier RUN_ID
-        A suffix used to name the output directory.
-
-    -o OUTPUT_DIR --output_directory OUTPUT_DIR
-        The path where output data will be created. Output will be created inside a time-stamped subfolder of this directory [default: ./job_output]
+    -i RUN_DIR --run_directory RUN_DIR
+        The path to a directory previously generated from the run_preminimization script. This defaults to the most recent directory in job_output, if this exists.
 
     -t --test
         When this option is set, a shorter version of the benchmark will run with limited sampling. This should be used to test the scripts but not for analysis.
@@ -48,6 +45,14 @@ try:
 except:
     import simplejson as json
 
+def prompt_yn(q):
+    print(q)
+    answer = ''
+    while answer not in ['Y', 'N']:
+        sys.stdout.write("$ ")
+        answer = sys.stdin.readline().upper().strip()
+    return answer == 'Y'
+
 
 def make_resfile(resfile_path, mutation_datum, tanja_id):
     # Make resfile
@@ -68,6 +73,26 @@ if __name__ == '__main__':
     except Exception, e:
         print('Failed while parsing arguments: %s.' % str(e))
         sys.exit(1)
+
+    run_directory = None
+    if arguments.get('--run_directory'):
+        run_directory = arguments['--run_directory'][0]
+        if not(os.path.exists(run_directory)):
+            raise Exception('The directory %s does not exist.' % run_directory)
+    else:
+        run_directory = os.path.abspath('job_output')
+        if os.path.exists(run_directory):
+            existing_dirs = [os.path.join(run_directory, d) for d in os.listdir(run_directory) if d.find('ddg_monomer_16')!=-1 and os.path.isdir(os.path.join(run_directory, d))]
+            most_recent_directory = sorted(existing_dirs)[-1]
+            answer = prompt_yn('\nNo output path was specified. Use %s (y/n)?' % most_recent_directory)
+            if not answer:
+                print('No output path was specified. Exiting.\n')
+                sys.exit(1)
+            run_directory = most_recent_directory
+
+    print('')
+    sys.exit(0)
+
 
     # Set the PDB input path
     input_pdb_dir_path = '../../input/pdbs'
