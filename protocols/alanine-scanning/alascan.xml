@@ -20,11 +20,11 @@
 
         <MOVERS>
 	  <MinMover name=minmover scorefxn=fa_talaris2014  chi=1 bb=1 jump=ALL cartesian=0 type=lbfgs_armijo tolerance=0.001/>
-	  <ddG name=ddgmover scorefxn=fa_%%currentscorefxn%% chain_num=%%chainstomove%% repack=true repack_bound=false relax_bound=false relax_mover=minmover/>
+	  <ddG name=ddgmover scorefxn=fa_%%currentscorefxn%% chain_num=%%chainstomove%% repack=false repack_bound=false relax_bound=false/>
         </MOVERS>
 
         <FILTERS>
-	  <DdGScan name=alascan task_operations=rrf repeats=4 scorefxn=fa_%%currentscorefxn%% report_diffs=1 write2pdb=1 ddG_mover=ddgmover />
+	  <DdGScan name=alascan task_operations=rrf repeats=1 scorefxn=fa_%%currentscorefxn%% report_diffs=1 write2pdb=1 ddG_mover=ddgmover />
         </FILTERS>
 
 	<MOVERS>
