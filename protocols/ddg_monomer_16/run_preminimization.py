@@ -153,20 +153,6 @@ if __name__ == '__main__':
   u'_DataSetDDGID': 11915,
   u'_ExperimentID': 113616},
     '''
-    '''
-/netapp/home/klabqb3backrub/r57471/minimize_with_cst.static.linuxgccrelease -in:file:l $infilelvar -in:file:fullatom
--ignore_unrecognized_res -fa_max_dis 9.0 -database /netapp/home/klabqb3backrub/r57471/rosetta_database -ddg::harmonic_ca_tether 0.5
--ddg::constraint_weight 1.0 -ddg::out_pdb_prefix min_cst_0.5 -ddg::sc_min_only false
-    '''
-    '''
-/netapp/home/klabqb3backrub/r57471/ddg_monomer.static.linuxgccrelease -in:file:s $infilesvar
--ddg::mut_file $mutfilevar
--constraints::cst_file $constraintscst_filevar
--database /netapp/home/klabqb3backrub/r57471/rosetta_database
--ignore_unrecognized_res -in:file:fullatom -fa_max_dis 9.0 -ddg::dump_pdbs true -ddg::suppress_checkpointing true
--ddg:weight_file soft_rep_design -ddg::iterations 50 -ddg::local_opt_only false -ddg::min_cst true -ddg
-::mean false -ddg::min true -ddg::sc_min_only false -ddg::ramp_repulsive true
-    '''
 
     count_by_pdb = {}
     job_dict = {}
