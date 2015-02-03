@@ -13,7 +13,7 @@ import getpass
 import interfaces_defs
 
 input_pdb_dir_path = '../../input/pdbs/hydrogen_pdbs'
-extra_name = '_pretalaris' # something like _talaris if needed
+extra_name = '' # something like _talaris if needed
 mutations_file_location = 'MUTATIONS.dat'
 rosetta_scripts_protocol = 'alascan.xml'
 resfile_start = 'NATRO\nEX 1 EX 2 EX 3\nSTART\n'
@@ -248,7 +248,7 @@ if __name__ == "__main__":
     args = {
         'scriptname' : 'ddg_run',
         'appname' : 'rosetta_scripts.mysql.linuxgccrelease',
-        'rosetta_args_list' : ['-parser:view', '-inout:dbms:mode', 'sqlite3', '-inout:dbms:database_name', 'rosetta_output.db3', '-no_optH', 'true', '-mistakes::restore_pre_talaris_2013_behavior'],
+        'rosetta_args_list' : ['-parser:view', '-inout:dbms:mode', 'sqlite3', '-inout:dbms:database_name', 'rosetta_output.db3', '-no_optH', 'true'],
     }
 
     args['tasks_per_process'] = 15
