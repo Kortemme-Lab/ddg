@@ -1,3 +1,4 @@
+#!/usr/bin/env python2
 # This work is licensed under the terms of the MIT license. See LICENSE for the full text.
 
 import os
@@ -31,7 +32,6 @@ def write_temp_file(path, contents, ftype = 'w', suffix = '', prefix = ''):
     output_handle.close()
     return fname
 
-
 def read_file(filepath, binary = False):
     if binary:
         output_handle = open(filepath, 'rb')
@@ -43,6 +43,10 @@ def read_file(filepath, binary = False):
     output_handle.close()
     return contents
 
+def write_file(filepath, contents, ftype = 'w'):
+    output_handle = open(filepath, ftype)
+    output_handle.write(contents)
+    output_handle.close()
 
 class RInterface(object):
 
