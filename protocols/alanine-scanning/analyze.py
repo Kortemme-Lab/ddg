@@ -98,7 +98,7 @@ if __name__ == '__main__':
             for score_fxn in score_fxns:
                 f.write(',%s' % score_fxn)
             f.write('\n')
-            for tanja_id in ddg_data:
+            for tanja_id in sorted( ddg_data.keys() ):
                 f.write('%s' % tanja_id)
                 data_is_complete = True
                 for score_fxn in score_fxns:
