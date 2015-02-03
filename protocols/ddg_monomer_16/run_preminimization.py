@@ -62,7 +62,6 @@ def create_input_files(pdb_dir_path, pdb_data_dir, mutfile_data_dir, keypair, da
     pdb_id = keypair[0]
     chain = keypair[1]
     pdb = PDB.from_filepath(pdb_dir_path)
-    sys.exit(0)
     stripped_pdb_path = os.path.join(pdb_data_dir, '%s_%s.pdb' % (pdb_id, chain))
 
     # Strip the PDB to the list of chains. This also renumbers residues in the PDB for Rosetta.
