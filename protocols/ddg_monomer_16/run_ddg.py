@@ -153,7 +153,7 @@ if __name__ == '__main__':
   u'_DataSetDDGID': 11915,
   u'_ExperimentID': 113616},
     '''
-    
+
     count_by_pdb = {}
     job_dict = {}
     for ddg_case in dataset_cases:

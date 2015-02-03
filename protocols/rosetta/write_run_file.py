@@ -1,4 +1,5 @@
-#!/usr/bin/python
+#!/usr/bin/env python2
+# This work is licensed under the terms of the MIT license. See LICENSE for the full text.
 
 import os
 import sys

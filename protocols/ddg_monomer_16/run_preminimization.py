@@ -42,23 +42,67 @@ import cPickle as pickle
 import getpass
 from rosetta.write_run_file import process as write_run_file
 from analysis.libraries import docopt
-from analysis.stats import read_file
+from analysis.stats import read_file, write_file
 try:
     import json
 except:
     import simplejson as json
 
 
-def make_resfile(resfile_path, mutation_datum, tanja_id):
-    # Make resfile
-    mutation_info_index = mutation_datum.tanja_id_list.index(tanja_id)
-    chain = mutation_datum.chain_list[mutation_info_index]
-    pdb_res = mutation_datum.pdb_res_list[mutation_info_index]
-    insertion_code = mutation_datum.insertion_code_list[mutation_info_index]
+from rosetta.pdb import PDB, create_mutfile
+from rosetta.basics import Mutation
 
-    with open(resfile_path, 'w') as f:
-        f.write('NATRO\nEX 1 EX 2 EX 3\nSTART\n')
-        f.write('%d%s %s PIKAA A\n' % (pdb_res, insertion_code, chain))
+
+def create_input_files(pdb_dir_path, pdb_data_dir, mutfile_data_dir, keypair, dataset_cases, skip_if_exists = False):
+    '''Create the stripped PDB files and the mutfiles for the DDG step. Mutfiles are created at this point as we need the
+    original PDB to generate the residue mapping.
+    '''
+
+    # Read PDB
+    pdb_id = keypair[0]
+    chain = keypair[1]
+    pdb = PDB.from_filepath(pdb_dir_path)
+    sys.exit(0)
+    stripped_pdb_path = os.path.join(pdb_data_dir, '%s_%s.pdb' % (pdb_id, chain))
+
+    # Strip the PDB to the list of chains. This also renumbers residues in the PDB for Rosetta.
+    chains = [chain]
+    pdb.stripForDDG(chains, numberOfModels = 1)
+
+    # Check to make sure that we haven't stripped all the ATOM lines
+    if not [line for line in pdb.lines if line[0:4] == "ATOM"]:
+        raise Exception("No ATOM lines remain in the stripped PDB file %s." % stripped_pdb_path)
+
+    # Check to make sure that CSE and MSE are not present in the PDB
+    unhandled_residues = pdb.CheckForPresenceOf(["CSE", "MSE"])
+    if unhandled_residues:
+        raise Exception("Found residues [%s] in the stripped PDB file %s. These should be changed to run this job under Rosetta." % (', '.join(unhandled_residues), stripped_pdb_path))
+
+    # Turn the lines array back into a valid PDB file
+    if not(skip_if_exists) or not(os.path.exists(stripped_pdb_path)):
+        write_file(stripped_pdb_path, '\n'.join(pdb.lines))
+
+    # Check that the mutated positions exist and that the wild-type matches the PDB
+    for dataset_case in dataset_cases:
+        # todo: Hack. This should be removed when PDB homologs are dealt with properly.
+        mutation_objects = []
+        assert(dataset_case['PDBFileID'] == pdb_id)
+        for mutation in dataset_case['Mutations']:
+            #if experimentPDB_ID == "1AJ3" and predictionPDB_ID == "1U5P":
+            #    assert(int(mutation['ResidueID']) < 1000)
+            #    mutation['ResidueID'] = str(int(mutation['ResidueID']) + 1762)
+            mutation_objects.append(Mutation(mutation['WildTypeAA'], mutation['ResidueID'], mutation['MutantAA'], mutation['Chain']))
+
+        pdb.validate_mutations(mutation_objects)
+
+        # Post stripping checks
+        # Get the 'Chain ResidueID' PDB-formatted identifier for each mutation mapped to Rosetta numbering
+        # then check again that the mutated positions exist and that the wild-type matches the PDB
+
+        remappedMutations = pdb.remapMutations(mutation_objects, pdb_id)
+        mutfile = create_mutfile(pdb, remappedMutations)
+        write_file(os.path.join(mutfile_data_dir, '%d.mutfile' % (dataset_case['RecordID'])), mutfile)
+    return stripped_pdb_path
 
 
 if __name__ == '__main__':
@@ -118,90 +162,81 @@ if __name__ == '__main__':
     output_dir = os.path.join(root_output_directory, job_name)
     output_data_dir = os.path.join(output_dir, 'data')
     pdb_data_dir = os.path.join(output_data_dir, 'input_pdbs')
-    resfile_data_dir = os.path.join(output_data_dir, 'resfiles')
+    mutfile_data_dir = os.path.join(output_data_dir, 'mutfiles')
     try: os.mkdir(output_dir)
     except: pass
     try: os.mkdir(output_data_dir)
     except: pass
     try: os.mkdir(pdb_data_dir)
     except: pass
-    try: os.mkdir(resfile_data_dir)
+    try: os.mkdir(mutfile_data_dir)
     except: pass
 
-
-
-
-
-    '''
-    {u'AggregateType': u'SingleValue',
-  u'DDG': 0.956,
-  u'ExperimentalDDGs': [{u'DDG': 0.956022944550669,
-                         u'DDGType': u'DDG_H2O',
-                         u'LocationOfValueInPublication': u'Table 1',
-                         u'Publication': u'PMID:16042382',
-                         u'Temperature': 25.0,
-                         u'pH': 7.0}],
-  u'Mutations': [{u'Chain': u'A',
-                  u'DSSPExposure': 0.14375,
-                  u'DSSPSimpleSSType': u'S',
-                  u'DSSPType': u'E',
-                  u'MutantAA': u'A',
-                  u'ResidueID': u'95',
-                  u'WildTypeAA': u'V'}],
-  u'PDBFileID': u'5AZU',
-  u'RecordID': 1206,
-  u'_DataSetDDGID': 11915,
-  u'_ExperimentID': 113616},
-    '''
-
-    count_by_pdb = {}
+    # Count the number of datapoints per PDB chain
+    count_by_pdb_chain = {}
+    dataset_cases_by_pdb_chain = {}
     job_dict = {}
     for ddg_case in dataset_cases:
+        chains = set([r['Chain'] for r in ddg_case['Mutations']])
+        assert(len(chains) == 1)
+        chain = chains.pop()
         pdb_id = ddg_case['PDBFileID']
-        count_by_pdb[pdb_id] = count_by_pdb.get(pdb_id, 0)
-        count_by_pdb[pdb_id] += 1
+        keypair = (pdb_id, chain)
+        count_by_pdb_chain[keypair] = count_by_pdb_chain.get(keypair, 0)
+        count_by_pdb_chain[keypair] += 1
+        dataset_cases_by_pdb_chain[keypair] = dataset_cases_by_pdb_chain.get(keypair, [])
+        dataset_cases_by_pdb_chain[keypair].append(ddg_case)
 
+    # Create the list of PDB IDs and chains for the dataset
     print('')
     if arguments['--test']:
+        pdb_monomers = []
         print('Creating test run input...')
-        subset_of_pdb_paths = []
         num_cases = 0
-        for k, v in sorted(count_by_pdb.iteritems(), key=lambda x:-x[1]):
+        for keypair, v in sorted(count_by_pdb_chain.iteritems(), key=lambda x:-x[1]):
             if v <= 10:
-                subset_of_pdb_paths.append(os.path.join(input_pdb_dir_path, '%s.pdb' % k))
+                pdb_monomers.append(keypair)
                 num_cases += v
                 if num_cases >= 20:
                     break
-        pdb_paths = subset_of_pdb_paths
     else:
-        pdb_paths = sorted(set([os.path.join(input_pdb_dir_path, '%s.pdb' % ddg_case['PDBFileID']) for ddg_case in dataset_cases]))
+        pdb_monomers = sorted(count_by_pdb_chain.keys())
 
-    for pdb_path in pdb_paths:
+    # Ensure all the input PDB files exist
+    for keypair in pdb_monomers:
+        pdb_path = os.path.join(input_pdb_dir_path, '%s.pdb' % keypair[0])
         if not os.path.exists(pdb_path):
             raise Exception('Error: The file %s is missing.' % pdb_path)
 
     # Write job dict and setup self-contained data directory
-    print('Copying PDB files...')
+    print('Copying PDB files:')
     job_dict = {}
 
-    for pdb_path in pdb_paths:
+    for keypair in pdb_monomers:
+        sys.stdout.write('.')
+        sys.stdout.flush()
         sub_dict = {}
-        new_pdb_path = os.path.join(pdb_data_dir, os.path.basename(pdb_path))
-        if not os.path.isfile(new_pdb_path):
-            # Note: We are assuming that the existing file has not been modified to save time copying the files
-            shutil.copy(pdb_path, new_pdb_path)
-        pdb_relpath = os.path.relpath(new_pdb_path, output_dir)
+
+        # Create stripped PDB file
+        pdb_dir_path = os.path.join(input_pdb_dir_path, '%s.pdb' % keypair[0])
+        #new_pdb_path = os.path.join(pdb_data_dir, os.path.basename(pdb_path))
+        #if not os.path.isfile(new_pdb_path):
+        #    # Note: We are assuming that the existing file has not been modified to save time copying the files
+        #    shutil.copy(pdb_path, new_pdb_path)
+        stripped_pdb_path = create_input_files(pdb_dir_path, pdb_data_dir, mutfile_data_dir, keypair, dataset_cases_by_pdb_chain[keypair])
+        pdb_relpath = os.path.relpath(stripped_pdb_path, output_dir)
+
+        # Set up --in:file:l parameter
         sub_dict['input_file_list'] = [pdb_relpath]
 
-        pdb_name = os.path.basename(pdb_path).split('.')[0]
-        assert( len(pdb_name) == 4)
-        job_dict[pdb_name.upper()] = sub_dict
+        job_dict['_'.join(keypair)] = sub_dict
+    sys.stdout.write('\n')
 
     with open(os.path.join(output_data_dir, 'job_dict.pickle'), 'w') as f:
         pickle.dump(job_dict, f)
 
     args = {
-        'numjobs' : '%d' % len(pdb_paths),
+        'numjobs' : '%d' % len(pdb_monomers),
         'mem_free' : '3.0G',
         'scriptname' : 'cstmin_run',
         'cluster_rosetta_bin' : cluster_rosetta_bin_dir,
