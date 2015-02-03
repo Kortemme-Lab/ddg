@@ -2,21 +2,21 @@
 # This work is licensed under the terms of the MIT license. See LICENSE for the full text.
 
 """\
-The script kicks off a benchmark run using the ddg_monomer application from the Rosetta suite. The command lines used
-herein are intended to reproduce the protocol from row 16 of the original paper by Kellogg et al.:
+The script kicks off the preminmization step of the benchmark run using the minimize_with_cst application from the
+Rosetta suite. The command lines used herein are intended to reproduce the protocol from row 16 of the original paper by Kellogg et al.:
 
  Kellogg, EH, Leaver-Fay, A, Baker, D. Role of conformational sampling in computing mutation-induced changes in protein
  structure and stability. 2011. Proteins. 79(3):830-8. doi: 10.1002/prot.22921.
 
 Usage:
-    run_benchmark.py [options]...
+    run_preminimization.py [options]...
 
 Options:
 
     -d DATASET --dataset DATASET
         A filepath to the input dataset in JSON format [default: ../../input/json/kellogg.json]
 
-    -i RUN_ID --run_identifier RUN_ID
+    -n RUN_ID --run_identifier RUN_ID
         A suffix used to name the output directory.
 
     -o OUTPUT_DIR --output_directory OUTPUT_DIR
