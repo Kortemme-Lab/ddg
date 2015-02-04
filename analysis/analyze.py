@@ -69,7 +69,7 @@ if __name__ == '__main__':
     # Read file input file
     input_filename = arguments['<inputfile>'][0]
     if not os.path.exists(input_filename):
-        print('Error') # todo:
+        print('Error: the input file %s does not exist.' % input_filename)
         sys.exit(2)
     analysis_table = read_json(input_filename)
     if not analysis_table:

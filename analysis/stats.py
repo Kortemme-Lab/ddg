@@ -43,6 +43,11 @@ def read_file(filepath, binary = False):
     output_handle.close()
     return contents
 
+
+def read_file_lines(filepath, binary = False):
+    return read_file(filepath, binary).split('\n')
+
+
 def write_file(filepath, contents, ftype = 'w'):
     output_handle = open(filepath, ftype)
     output_handle.write(contents)
