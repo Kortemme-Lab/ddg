@@ -48,6 +48,14 @@ def write_file(filepath, contents, ftype = 'w'):
     output_handle.write(contents)
     output_handle.close()
 
+def prompt_yn(q):
+    print(q)
+    answer = ''
+    while answer not in ['Y', 'N']:
+        sys.stdout.write("$ ")
+        answer = sys.stdin.readline().upper().strip()
+    return answer == 'Y'
+
 class RInterface(object):
 
     @staticmethod
