@@ -13,14 +13,17 @@ Usage:
 
 Options:
 
-    -d DATASET --dataset DATASET
-        A filepath to the input dataset in JSON format [default: ../../input/json/kellogg.json]
-
-    -i RUN_DIR --run_directory RUN_DIR
+    -o --output_directory OUTPUT_DIR
         The path to a directory previously generated from the run_preminimization script. This defaults to the most recent directory in job_output, if this exists.
 
-    -t --test
-        When this option is set, a shorter version of the benchmark will run with limited sampling. This should be used to test the scripts but not for analysis.
+    -n --num_struct NUM_STRUCT
+        This specifies the number of wildtype/mutant structures generated. If this is used with --test then the --test value for this option takes priority. [default: 50]
+
+    --force
+        When this option is set, the most recent directory in job_output, if it exists, will be used without prompting the user.
+
+    --test
+        When this option is set, a shorter version of the benchmark will run with fewer input structures, less fewer DDG experiments, and fewer generated structures. This should be used to test the scripts but not for analysis.
 
 Authors:
     Kyle Barlow
@@ -35,35 +38,53 @@ import time
 import datetime
 import inspect
 import multiprocessing
+import glob
 import cPickle as pickle
 import getpass
+import gzip
 from rosetta.write_run_file import process as write_run_file
 from analysis.libraries import docopt
-from analysis.stats import read_file
+from analysis.stats import read_file, write_file, prompt_yn
+from run_preminimization import task_subfolder as preminimization_task_subfolder, mutfiles_subfolder
 try:
     import json
 except:
     import simplejson as json
 
-def prompt_yn(q):
-    print(q)
-    answer = ''
-    while answer not in ['Y', 'N']:
-        sys.stdout.write("$ ")
-        answer = sys.stdin.readline().upper().strip()
-    return answer == 'Y'
+
+task_subfolder = 'ddg'
+generated_scriptname = 'ddg_step'
 
 
-def make_resfile(resfile_path, mutation_datum, tanja_id):
-    # Make resfile
-    mutation_info_index = mutation_datum.tanja_id_list.index(tanja_id)
-    chain = mutation_datum.chain_list[mutation_info_index]
-    pdb_res = mutation_datum.pdb_res_list[mutation_info_index]
-    insertion_code = mutation_datum.insertion_code_list[mutation_info_index]
+def create_constraints_file(preminimization_log, outfile_path):
+    '''This does the work of the convert_to_cst_file.sh script in the Rosetta repository.'''
+    constraints = []
+    contents = read_file(preminimization_log)
+    for line in contents.split('\n'):
+        if line.startswith("c-alpha"):
+            line = line.split()
+            constraints.append("AtomPair CA %s CA %s HARMONIC %s %s" % (line[5], line[7], line[9], line[12]))
+    write_file(outfile_path, '\n'.join(constraints))
+    return outfile_path
 
-    with open(resfile_path, 'w') as f:
-        f.write('NATRO\nEX 1 EX 2 EX 3\nSTART\n')
-        f.write('%d%s %s PIKAA A\n' % (pdb_res, insertion_code, chain))
+
+def create_constraints_files(preminimized_pdb_data_dir, constraints_data_dir):
+    constraints_files = {}
+    preminimized_structures = {}
+    for pdir in os.listdir(preminimized_pdb_data_dir):
+        if len(pdir) == 6 and pdir[4] == '_':
+            pdb_id = pdir.split('_')[0]
+            chain_id = pdir.split('_')[1]
+            pcase_path = os.path.join(preminimized_pdb_data_dir, pdir)
+            output_files = os.listdir(pcase_path)
+            output_structure = 'min_cst_0.5.%s_0001.pdb.gz' % pdir
+            if 'rosetta.out.gz' not in output_files:
+                raise Exception('The expected output file rosetta.out.gz was not found in %s.' % pcase_path)
+            if (output_structure) not in output_files:
+                raise Exception('The expected preminimized structure %s was not found in %s.' % (output_structure, pcase_path))
+            constraints_files[(pdb_id, chain_id)] = create_constraints_file(os.path.join(pcase_path, 'rosetta.out.gz'), os.path.join(constraints_data_dir, '%s_%s.cst' % (pdb_id, chain_id)))
+            preminimized_structures[(pdb_id, chain_id)] = os.path.join(pcase_path, output_structure)
+    return constraints_files, preminimized_structures
 
 
 if __name__ == '__main__':
@@ -74,28 +95,31 @@ if __name__ == '__main__':
         print('Failed while parsing arguments: %s.' % str(e))
         sys.exit(1)
 
-    run_directory = None
-    if arguments.get('--run_directory'):
-        run_directory = arguments['--run_directory'][0]
-        if not(os.path.exists(run_directory)):
-            raise Exception('The directory %s does not exist.' % run_directory)
+    # Determine the output directory
+    output_dir = None
+    if arguments.get('--output_directory'):
+        output_dir = arguments['--output_directory'][0]
+        if not(os.path.exists(output_dir)):
+            raise Exception('The directory %s does not exist.' % output_dir)
     else:
-        run_directory = os.path.abspath('job_output')
-        if os.path.exists(run_directory):
-            existing_dirs = [os.path.join(run_directory, d) for d in os.listdir(run_directory) if d.find('ddg_monomer_16')!=-1 and os.path.isdir(os.path.join(run_directory, d))]
+        output_dir = os.path.abspath('job_output')
+        if os.path.exists(output_dir):
+            existing_dirs = [os.path.join(output_dir, d) for d in os.listdir(output_dir) if d.find('ddg_monomer_16')!=-1 and os.path.isdir(os.path.join(output_dir, d))]
             most_recent_directory = sorted(existing_dirs)[-1]
-            answer = prompt_yn('\nNo output path was specified. Use %s (y/n)?' % most_recent_directory)
-            if not answer:
-                print('No output path was specified. Exiting.\n')
+            if most_recent_directory:
+                answer = None
+                if arguments.get('--force'):
+                    answer = True
+                    print('\nRunning the ddg_monomer step in %s.' % most_recent_directory)
+                else:
+                    answer = prompt_yn('\nNo output path was specified. Use %s (y/n)?' % most_recent_directory)
+                if not answer:
+                    print('No output path was specified. Exiting.\n')
+                    sys.exit(1)
+                output_dir = most_recent_directory
+            else:
+                print('No preminimization output could be found in the job_output directory. Exiting.\n')
                 sys.exit(1)
-            run_directory = most_recent_directory
-
-    print('')
-    sys.exit(0)
-
-
-    # Set the PDB input path
-    input_pdb_dir_path = '../../input/pdbs'
 
     # Read the settings file
     if not os.path.exists('settings.json'):
@@ -112,145 +136,120 @@ if __name__ == '__main__':
     cluster_rosetta_bin_dir = os.path.join(cluster_rosetta_path, 'source', 'bin')
     cluster_rosetta_db_dir = os.path.join(cluster_rosetta_path, 'database')
 
-    # Read in the dataset file
-    dataset_filepath = arguments['--dataset'][0]
-    dataset_filename = os.path.splitext(os.path.split(dataset_filepath)[1])[0]
-    if not os.path.exists(dataset_filepath):
-        raise Exception('The dataset file %s does not exist.' % dataset_filepath)
+    # Set the job output directories
+    output_data_dir = os.path.join(output_dir, 'data')
+    mutfile_data_dir = os.path.join(output_data_dir, mutfiles_subfolder)
+    preminimized_pdb_data_dir = os.path.join(output_dir, preminimization_task_subfolder)
+    constraints_data_dir = os.path.join(output_data_dir, 'constraints')
+    try: os.mkdir(constraints_data_dir)
+    except: pass
+    for p in [output_data_dir, mutfile_data_dir, preminimized_pdb_data_dir, constraints_data_dir]:
+        if not os.path.exists(p):
+            raise Exception('The folder %s was expected to exist after the preminimization step but could not be found.' % p)
 
+    # Read in the dataset file
     try:
+        dataset_filepath = os.path.join(output_dir, 'dataset.json')
         dataset = json.loads(read_file(dataset_filepath))
         dataset_cases = dataset['data']
     except Exception, e:
         raise Exception('An error occurred parsing the JSON file: %s..' % str(e))
 
-    # Read in the dataset file
-    job_name = '%s_%s_ddg_monomer_16' % (time.strftime("%y-%m-%d-%H-%M"), getpass.getuser())
-    job_name = '%s_%s_ddg_monomer_16' % (time.strftime("%y-%m-%d"), getpass.getuser())
-
-    if arguments.get('--run_identifier'):
-        job_name += '_' + arguments['--run_identifier'][0]
-
-    # Set the root output directory
-    root_output_directory = 'job_output'
-    if arguments.get('--output_directory'):
-        root_output_directory = arguments['--output_directory'][0]
-    if not os.path.exists(root_output_directory):
-        print('Creating directory %s:' % root_output_directory)
-        os.makedirs(root_output_directory)
-
-    # Set the job output directory
-    output_dir = os.path.join(root_output_directory, job_name)
-    output_data_dir = os.path.join(output_dir, 'data')
-    pdb_data_dir = os.path.join(output_data_dir, 'input_pdbs')
-    resfile_data_dir = os.path.join(output_data_dir, 'resfiles')
-    try: os.mkdir(output_dir)
-    except: pass
-    try: os.mkdir(output_data_dir)
-    except: pass
-    try: os.mkdir(pdb_data_dir)
-    except: pass
-    try: os.mkdir(resfile_data_dir)
-    except: pass
-
-
-
-
-
-    '''
-    {u'AggregateType': u'SingleValue',
-  u'DDG': 0.956,
-  u'ExperimentalDDGs': [{u'DDG': 0.956022944550669,
-                         u'DDGType': u'DDG_H2O',
-                         u'LocationOfValueInPublication': u'Table 1',
-                         u'Publication': u'PMID:16042382',
-                         u'Temperature': 25.0,
-                         u'pH': 7.0}],
-  u'Mutations': [{u'Chain': u'A',
-                  u'DSSPExposure': 0.14375,
-                  u'DSSPSimpleSSType': u'S',
-                  u'DSSPType': u'E',
-                  u'MutantAA': u'A',
-                  u'ResidueID': u'95',
-                  u'WildTypeAA': u'V'}],
-  u'PDBFileID': u'5AZU',
-  u'RecordID': 1206,
-  u'_DataSetDDGID': 11915,
-  u'_ExperimentID': 113616},
-    '''
+    # Run all cases with associated mutfiles
+    mutfiles = glob.glob(os.path.join(mutfile_data_dir, '*.mutfile'))
+    existing_case_ids = []
+    for m in mutfiles:
+        try:
+            filename = os.path.split(m)[1]
+            assert(filename.endswith('.mutfile'))
+            record_id = int(filename[:-8])
+            existing_case_ids.append(record_id)
+        except:
+            raise Exception('The file %s was expected to have a name like [record_id].mutfile e.g. 1245.mutfile.' % m)
 
     count_by_pdb = {}
     job_dict = {}
+    dataset_cases_by_id = {}
     for ddg_case in dataset_cases:
-        pdb_id = ddg_case['PDBFileID']
-        count_by_pdb[pdb_id] = count_by_pdb.get(pdb_id, 0)
-        count_by_pdb[pdb_id] += 1
+        dataset_cases_by_id[ddg_case['RecordID']] = ddg_case
+    for existing_case_id in existing_case_ids:
+        if existing_case_id not in dataset_cases_by_id:
+            raise Exception('The dataset case corresponding to %d.mutfile could not be found in %s.' % (existing_case_id, dataset_filepath))
 
-    print('')
+
+    print('Creating constraint files...')
+    constraints_files, preminimized_structures = create_constraints_files(preminimized_pdb_data_dir, constraints_data_dir)
+
+    number_of_structural_pairs = arguments['--num_struct']
     if arguments['--test']:
-        print('Creating test run input...')
-        subset_of_pdb_paths = []
-        num_cases = 0
-        for k, v in sorted(count_by_pdb.iteritems(), key=lambda x:-x[1]):
-            if v <= 10:
-                subset_of_pdb_paths.append(os.path.join(input_pdb_dir_path, '%s.pdb' % k))
-                num_cases += v
-                if num_cases >= 20:
-                    break
-        pdb_paths = subset_of_pdb_paths
-    else:
-        pdb_paths = sorted(set([os.path.join(input_pdb_dir_path, '%s.pdb' % ddg_case['PDBFileID']) for ddg_case in dataset_cases]))
+        number_of_structural_pairs = 2 # only create two wildtype/mutant pairs in test mode
 
-    for pdb_path in pdb_paths:
-        if not os.path.exists(pdb_path):
-            raise Exception('Error: The file %s is missing.' % pdb_path)
+    print(existing_case_ids)
+    for existing_case_id in existing_case_ids:
+        dataset_case = dataset_cases_by_id[existing_case_id]
+        pdb_id = dataset_case['PDBFileID']
+        chains = set([m['Chain'] for m in dataset_case['Mutations']])
+        if not len(chains) == 1:
+            raise Exception('This script is only intended for monomeric structures but the set of mutations in case %d of %s uses more than one chain.' % (existing_case_id, dataset_filepath))
+        chain_id = chains.pop()
 
-    # Write job dict and setup self-contained data directory
-    print('Copying PDB files...')
-    job_dict = {}
+        sys.stdout.write('.')
+        sys.stdout.flush()
 
-    for pdb_path in pdb_paths:
         sub_dict = {}
-        new_pdb_path = os.path.join(pdb_data_dir, os.path.basename(pdb_path))
-        if not os.path.isfile(new_pdb_path):
-            # Note: We are assuming that the existing file has not been modified to save time copying the files
-            shutil.copy(pdb_path, new_pdb_path)
-        pdb_relpath = os.path.relpath(new_pdb_path, output_dir)
-        sub_dict['input_file_list'] = [pdb_relpath]
+        constraints_file = constraints_files.get((pdb_id, chain_id))
+        preminimized_structure = preminimized_structures.get((pdb_id, chain_id))
+        mutfile = os.path.join(mutfile_data_dir, '%d.mutfile' % existing_case_id)
+        if not constraints_file:
+            raise Exception('Could not determine the constraints file for %s, chain %s.' % (pdb_id, chain_id))
+        if not preminimized_structure:
+            raise Exception('Could not determine the preminimized structure file for %s, chain %s.' % (pdb_id, chain_id))
+        if not os.path.exists(mutfile):
+            raise Exception('Could not locate the mutfile %s for dataset record %d.' % (mutfile, existing_case_id))
+        sub_dict['-constraints::cst_file'] = os.path.relpath(constraints_file, output_dir)
+        sub_dict['-in:file:s'] = os.path.relpath(preminimized_structure, output_dir)
+        sub_dict['-ddg::mut_file'] = os.path.relpath(mutfile, output_dir)
 
-        pdb_name = os.path.basename(pdb_path).split('.')[0]
-        assert( len(pdb_name) == 4)
-        job_dict[pdb_name.upper()] = sub_dict
+        job_dict[os.path.join(task_subfolder, str(existing_case_id))] = sub_dict
+    sys.stdout.write('\n')
 
-    with open(os.path.join(output_data_dir, 'job_dict.pickle'), 'w') as f:
+    # Keep a copy of the preminimization step pickle for debugging
+    pickle_file = os.path.join(output_data_dir, 'job_dict.pickle')
+    if os.path.exists(pickle_file):
+        existing_job_keys = pickle.load(open(pickle_file, 'r')).keys()
+        for k in existing_job_keys:
+            if k.startswith(preminimization_task_subfolder):
+                shutil.copy(pickle_file, os.path.join(output_data_dir, '%s_step_dict.pickle' % preminimization_task_subfolder))
+                break
+
+    with open(pickle_file, 'w') as f:
         pickle.dump(job_dict, f)
 
     args = {
-        'numjobs' : '%d' % len(pdb_paths),
-        'mem_free' : '3.0G',
-        'scriptname' : 'cstmin_run',
+        'numjobs' : '%d' % len(existing_case_ids),
+        'mem_free' : '5.0G',
+        'scriptname' : generated_scriptname,
         'cluster_rosetta_bin' : cluster_rosetta_bin_dir,
         'cluster_rosetta_db' : cluster_rosetta_db_dir,
         'local_rosetta_bin' : local_rosetta_bin_dir,
         'local_rosetta_db' : local_rosetta_db_dir,
-        'appname' : 'minimize_with_cst%s' % rosetta_binary_type,
-        'rosetta_args_list' :  "'-in:file:fullatom', '-ignore_unrecognized_res', '-fa_max_dis 9.0', '-ddg::harmonic_ca_tether 0.5', '-ddg::constraint_weight 1.0', '-ddg::out_pdb_prefix min_cst_0.5', '-ddg::sc_min_only false'",
+        'appname' : 'ddg_monomer%s' % rosetta_binary_type,
+        'rosetta_args_list' : [
+            '-in:file:fullatom', '-ignore_unrecognized_res', '-fa_max_dis', '9.0',
+            '-ddg::dump_pdbs' ,'true', '-ddg::suppress_checkpointing' ,'true',
+            '-ddg:weight_file' ,'soft_rep_design' ,'-ddg::iterations' ,str(number_of_structural_pairs),
+            '-ddg::local_opt_only' ,'false' ,'-ddg::min_cst' ,'true',
+            '-ddg::mean' ,'false' ,'-ddg::min', 'true',
+            '-ddg::sc_min_only' ,'false',
+            '-ddg::ramp_repulsive', 'true'
+            ],
         'output_dir' : output_dir,
     }
 
     write_run_file(args)
-    print 'Job files written to directory: %s.\n' % os.path.abspath(output_dir)
+    job_path = os.path.abspath(output_dir)
+    print('''Job files written to directory: %s. To launch this job:
+    cd %s
+    python %s''' % (job_path, job_path, generated_scriptname))
 
 
-
-'''
-jobIDsvar=${jobIDs[$SGE_TASK_ID]}
-constraintscst_filevar=${constraintscst_file[$SGE_TASK_ID]}
-infilesvar=${infiles[$SGE_TASK_ID]}
-mutfilevar=${mutfile[$SGE_TASK_ID]}
-
-ddg_monomer.static.linuxgccrelease -in:file:s $infilesvar -ddg::mut_file $mutfilevar -constraints::cst_file $constraintscst_filevar
--database rosetta_database -ignore_unrecognized_res -in:file:fullatom -fa_max_dis 9.0 -ddg::dump_pdbs true
--ddg::suppress_checkpointing true -ddg:weight_file soft_rep_design -ddg::iterations 50 -ddg::local_opt_only false -ddg::min_cst true -ddg
-::mean false -ddg::min true -ddg::sc_min_only false -ddg::ramp_repulsive true
-'''

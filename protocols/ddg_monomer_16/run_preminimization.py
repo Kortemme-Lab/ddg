@@ -13,17 +13,17 @@ Usage:
 
 Options:
 
-    -d DATASET --dataset DATASET
-        A filepath to the input dataset in JSON format [default: ../../input/json/kellogg.json]
+    -d --dataset DATASET
+        A filepath to the input dataset in JSON format. [default: ../../input/json/kellogg.json]
 
-    -n RUN_ID --run_identifier RUN_ID
+    -o --output_directory OUTPUT_DIR
+        The path where output data will be created. Output will be created inside a time-stamped subfolder of this directory. [default: ./job_output]
+
+    --run_identifier RUN_ID
         A suffix used to name the output directory.
 
-    -o OUTPUT_DIR --output_directory OUTPUT_DIR
-        The path where output data will be created. Output will be created inside a time-stamped subfolder of this directory [default: ./job_output]
-
-    -t --test
-        When this option is set, a shorter version of the benchmark will run with limited sampling. This should be used to test the scripts but not for analysis.
+    --test
+        When this option is set, a shorter version of the benchmark will run with fewer input structures, less fewer DDG experiments, and fewer generated structures. This should be used to test the scripts but not for analysis.
 
 Authors:
     Kyle Barlow
@@ -48,9 +48,13 @@ try:
 except:
     import simplejson as json
 
-
 from rosetta.pdb import PDB, create_mutfile
 from rosetta.basics import Mutation
+
+
+task_subfolder = 'preminimization'
+mutfiles_subfolder = 'mutfiles'
+generated_scriptname = 'preminimization_step'
 
 
 def create_input_files(pdb_dir_path, pdb_data_dir, mutfile_data_dir, keypair, dataset_cases, skip_if_exists = False):
@@ -100,6 +104,9 @@ def create_input_files(pdb_dir_path, pdb_data_dir, mutfile_data_dir, keypair, da
 
         remappedMutations = pdb.remapMutations(mutation_objects, pdb_id)
         mutfile = create_mutfile(pdb, remappedMutations)
+        mutfilename = os.path.join(mutfile_data_dir, '%d.mutfile' % (dataset_case['RecordID']))
+        if os.path.exists(mutfilename):
+            raise Exception('%s already exists. Check that the RecordIDs in the JSON file are all unique.' % mutfilename)
         write_file(os.path.join(mutfile_data_dir, '%d.mutfile' % (dataset_case['RecordID'])), mutfile)
     return stripped_pdb_path
 
@@ -142,10 +149,8 @@ if __name__ == '__main__':
     except Exception, e:
         raise Exception('An error occurred parsing the JSON file: %s..' % str(e))
 
-    # Read in the dataset file
+    # Set the job directory name
     job_name = '%s_%s_ddg_monomer_16' % (time.strftime("%y-%m-%d-%H-%M"), getpass.getuser())
-    job_name = '%s_%s_ddg_monomer_16' % (time.strftime("%y-%m-%d"), getpass.getuser())
-
     if arguments.get('--run_identifier'):
         job_name += '_' + arguments['--run_identifier'][0]
 
@@ -158,15 +163,17 @@ if __name__ == '__main__':
         os.makedirs(root_output_directory)
 
     # Set the job output directory
-    task_subfolder = 'preminimization'
     output_dir = os.path.join(root_output_directory, job_name) # The root directory for the protocol run
     task_dir = os.path.join(output_dir, task_subfolder) # The root directory for preminization section of the protocol
     output_data_dir = os.path.join(output_dir, 'data')
     pdb_data_dir = os.path.join(output_data_dir, 'input_pdbs')
-    mutfile_data_dir = os.path.join(output_data_dir, 'mutfiles')
+    mutfile_data_dir = os.path.join(output_data_dir, mutfiles_subfolder)
     for jobdir in [output_dir, task_dir, output_data_dir, pdb_data_dir, mutfile_data_dir]:
         try: os.mkdir(jobdir)
         except: pass
+
+    # Make a copy the dataset so that it can be automatically used by the following steps
+    shutil.copy(dataset_filepath, os.path.join(output_dir, 'dataset.json'))
 
     # Count the number of datapoints per PDB chain
     count_by_pdb_chain = {}
@@ -234,17 +241,26 @@ if __name__ == '__main__':
     args = {
         'numjobs' : '%d' % len(pdb_monomers),
         'mem_free' : '3.0G',
-        'scriptname' : 'cstmin_run',
+        'scriptname' : generated_scriptname,
         'cluster_rosetta_bin' : cluster_rosetta_bin_dir,
         'cluster_rosetta_db' : cluster_rosetta_db_dir,
         'local_rosetta_bin' : local_rosetta_bin_dir,
         'local_rosetta_db' : local_rosetta_db_dir,
         'appname' : 'minimize_with_cst%s' % rosetta_binary_type,
-        'rosetta_args_list' :  "'-in:file:fullatom', '-ignore_unrecognized_res', '-fa_max_dis 9.0', '-ddg::harmonic_ca_tether 0.5', '-ddg::constraint_weight 1.0', '-ddg::out_pdb_prefix min_cst_0.5', '-ddg::sc_min_only false'",
+        'rosetta_args_list' :  [
+            '-in:file:fullatom', '-ignore_unrecognized_res',
+            '-fa_max_dis', '9.0', '-ddg::harmonic_ca_tether', '0.5',
+            '-ddg::constraint_weight', '1.0',
+            '-ddg::out_pdb_prefix', 'min_cst_0.5',
+            '-ddg::sc_min_only', 'false'
+            ],
         'output_dir' : output_dir,
     }
 
     write_run_file(args)
-    print 'Job files written to directory: %s\n' % os.path.abspath(output_dir)
+    job_path = os.path.abspath(output_dir)
+    print('''Job files written to directory: %s. To launch this job:
+    cd %s
+    python %s''' % (job_path, generated_scriptname))
 
 
