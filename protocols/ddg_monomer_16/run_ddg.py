@@ -42,6 +42,7 @@ import glob
 import cPickle as pickle
 import getpass
 import gzip
+import rosetta.parse_settings
 from rosetta.write_run_file import process as write_run_file
 from analysis.libraries import docopt
 from analysis.stats import read_file, write_file, prompt_yn
@@ -122,19 +123,7 @@ if __name__ == '__main__':
                 sys.exit(1)
 
     # Read the settings file
-    if not os.path.exists('settings.json'):
-        raise Exception('The settings file settings.json does not exist. Please create this file appropriately (see settings.json.example).')
-    try:
-        settings = json.loads(read_file('settings.json'))
-    except Exception, e:
-        raise Exception('An error occurred parsing the settings file settings.json: %s.' % str(e))
-    local_rosetta_path = settings['local_rosetta_installation_path']
-    cluster_rosetta_path = settings['cluster_rosetta_installation_path']
-    rosetta_binary_type = settings['rosetta_binary_type']
-    local_rosetta_bin_dir = os.path.join(local_rosetta_path, 'source', 'bin')
-    local_rosetta_db_dir = os.path.join(local_rosetta_path, 'database')
-    cluster_rosetta_bin_dir = os.path.join(cluster_rosetta_path, 'source', 'bin')
-    cluster_rosetta_db_dir = os.path.join(cluster_rosetta_path, 'database')
+    settings = rosetta.parse_settings.get_dict()
 
     # Set the job output directories
     output_data_dir = os.path.join(output_dir, 'data')
@@ -225,28 +214,22 @@ if __name__ == '__main__':
     with open(pickle_file, 'w') as f:
         pickle.dump(job_dict, f)
 
-    args = {
-        'numjobs' : '%d' % len(existing_case_ids),
-        'mem_free' : '5.0G',
-        'scriptname' : generated_scriptname,
-        'cluster_rosetta_bin' : cluster_rosetta_bin_dir,
-        'cluster_rosetta_db' : cluster_rosetta_db_dir,
-        'local_rosetta_bin' : local_rosetta_bin_dir,
-        'local_rosetta_db' : local_rosetta_db_dir,
-        'appname' : 'ddg_monomer%s' % rosetta_binary_type,
-        'rosetta_args_list' : [
-            '-in:file:fullatom', '-ignore_unrecognized_res', '-fa_max_dis', '9.0',
-            '-ddg::dump_pdbs' ,'true', '-ddg::suppress_checkpointing' ,'true',
-            '-ddg:weight_file' ,'soft_rep_design' ,'-ddg::iterations' ,str(number_of_structural_pairs),
-            '-ddg::local_opt_only' ,'false' ,'-ddg::min_cst' ,'true',
-            '-ddg::mean' ,'false' ,'-ddg::min', 'true',
-            '-ddg::sc_min_only' ,'false',
-            '-ddg::ramp_repulsive', 'true'
-            ],
-        'output_dir' : output_dir,
-    }
+    settings['numjobs'] = '%d' % len(existing_case_ids)
+    settings['mem_free'] = '5.0G'
+    settings['scriptname'] = generated_scriptname
+    settings['appname'] = 'ddg_monomer'
+    settings['rosetta_args_list'] = [
+        '-in:file:fullatom', '-ignore_unrecognized_res', '-fa_max_dis', '9.0',
+        '-ddg::dump_pdbs' ,'true', '-ddg::suppress_checkpointing' ,'true',
+        '-ddg:weight_file' ,'soft_rep_design' ,'-ddg::iterations' ,str(number_of_structural_pairs),
+        '-ddg::local_opt_only' ,'false' ,'-ddg::min_cst' ,'true',
+        '-ddg::mean' ,'false' ,'-ddg::min', 'true',
+        '-ddg::sc_min_only' ,'false',
+        '-ddg::ramp_repulsive', 'true'
+    ]
+    settings['output_dir'] = output_dir
 
-    write_run_file(args)
+    write_run_file(settings)
     job_path = os.path.abspath(output_dir)
     print('''Job files written to directory: %s. To launch this job:
     cd %s

@@ -21,10 +21,7 @@ import commands
 import traceback
 from optparse import OptionParser # todo: deprecated since Python 2.7
 
-if __name__ == '__main__':
-    sys.path.insert(0, "../..")
-
-from tools.fs.fsio import write_temp_file, read_file
+from fsio import write_temp_file, read_file
 
 script = '''<ROSETTASCRIPTS>
   <MOVERS>

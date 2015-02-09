@@ -40,6 +40,7 @@ import inspect
 import multiprocessing
 import cPickle as pickle
 import getpass
+import rosetta.parse_settings
 from rosetta.write_run_file import process as write_run_file
 from analysis.libraries import docopt
 from analysis.stats import read_file, write_file
@@ -55,7 +56,6 @@ from rosetta.basics import Mutation
 task_subfolder = 'preminimization'
 mutfiles_subfolder = 'mutfiles'
 generated_scriptname = 'preminimization_step'
-
 
 def create_input_files(pdb_dir_path, pdb_data_dir, mutfile_data_dir, keypair, dataset_cases, skip_if_exists = False):
     '''Create the stripped PDB files and the mutfiles for the DDG step. Mutfiles are created at this point as we need the
@@ -123,19 +123,7 @@ if __name__ == '__main__':
     input_pdb_dir_path = '../../input/pdbs'
 
     # Read the settings file
-    if not os.path.exists('settings.json'):
-        raise Exception('The settings file settings.json does not exist. Please create this file appropriately (see settings.json.example).')
-    try:
-        settings = json.loads(read_file('settings.json'))
-    except Exception, e:
-        raise Exception('An error occurred parsing the settings file settings.json: %s.' % str(e))
-    local_rosetta_path = settings['local_rosetta_installation_path']
-    cluster_rosetta_path = settings['cluster_rosetta_installation_path']
-    rosetta_binary_type = settings['rosetta_binary_type']
-    local_rosetta_bin_dir = os.path.join(local_rosetta_path, 'source', 'bin')
-    local_rosetta_db_dir = os.path.join(local_rosetta_path, 'database')
-    cluster_rosetta_bin_dir = os.path.join(cluster_rosetta_path, 'source', 'bin')
-    cluster_rosetta_db_dir = os.path.join(cluster_rosetta_path, 'database')
+    settings = rosetta.parse_settings.get_dict()
 
     # Read in the dataset file
     dataset_filepath = arguments['--dataset'][0]
@@ -238,29 +226,23 @@ if __name__ == '__main__':
     with open(os.path.join(output_data_dir, 'job_dict.pickle'), 'w') as f:
         pickle.dump(job_dict, f)
 
-    args = {
-        'numjobs' : '%d' % len(pdb_monomers),
-        'mem_free' : '3.0G',
-        'scriptname' : generated_scriptname,
-        'cluster_rosetta_bin' : cluster_rosetta_bin_dir,
-        'cluster_rosetta_db' : cluster_rosetta_db_dir,
-        'local_rosetta_bin' : local_rosetta_bin_dir,
-        'local_rosetta_db' : local_rosetta_db_dir,
-        'appname' : 'minimize_with_cst%s' % rosetta_binary_type,
-        'rosetta_args_list' :  [
-            '-in:file:fullatom', '-ignore_unrecognized_res',
-            '-fa_max_dis', '9.0', '-ddg::harmonic_ca_tether', '0.5',
-            '-ddg::constraint_weight', '1.0',
-            '-ddg::out_pdb_prefix', 'min_cst_0.5',
-            '-ddg::sc_min_only', 'false'
-            ],
-        'output_dir' : output_dir,
-    }
+    settings['numjobs'] = '%d' % len(pdb_monomers)
+    settings['mem_free'] = '3.0G'
+    settings['scriptname'] = generated_scriptname
+    settings['appname'] = 'minimize_with_cst'
+    settings['rosetta_args_list'] =  [
+        '-in:file:fullatom', '-ignore_unrecognized_res',
+        '-fa_max_dis', '9.0', '-ddg::harmonic_ca_tether', '0.5',
+        '-ddg::constraint_weight', '1.0',
+        '-ddg::out_pdb_prefix', 'min_cst_0.5',
+        '-ddg::sc_min_only', 'false'
+    ]
+    settings['output_dir'] = output_dir
 
-    write_run_file(args)
+    write_run_file(settings)
     job_path = os.path.abspath(output_dir)
     print('''Job files written to directory: %s. To launch this job:
     cd %s
-    python %s''' % (job_path, generated_scriptname))
+    python %s''' % (job_path, job_path, generated_scriptname))
 
 
