@@ -17,6 +17,7 @@ def process(data_dict):
         'local_rosetta_bin',
         'appname', 'rosetta_args_list',
         'output_dir',
+        'rosetta_binary_type',
     ]
 
     # Arguments that cannot be in data_dict
@@ -34,6 +35,9 @@ def process(data_dict):
         if arg in data_dict:
             print 'ERROR: Data dictionary cannot contain argument', arg
             sys.exit(1)
+
+    # Complete appname
+    data_dict['fullappname'] = data_dict['appname'] + data_dict['rosetta_binary_type']
             
     # Handle LD paths
     if 'extra_ld_path' in data_dict:

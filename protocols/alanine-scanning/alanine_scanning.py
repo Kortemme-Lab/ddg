@@ -11,6 +11,7 @@ import cPickle as pickle
 import re
 import getpass
 import interfaces_defs
+import rosetta.parse_settings
 
 input_pdb_dir_path = '../../input/pdbs/hydrogen_pdbs'
 extra_name = '' # something like _talaris if needed
@@ -18,8 +19,6 @@ mutations_file_location = 'MUTATIONS.dat'
 rosetta_scripts_protocol = 'alascan.xml'
 resfile_start = 'NATRO\nEX 1 EX 2 EX 3\nSTART\n'
 score_fxns = ['talaris2014', 'soft_rep', 'talaris2014_soft_fa_rep', 'score12', 'interface']
-cluster_rosetta_bin = '/netapp/home/kbarlow/rosetta/alascan/source/bin'
-local_rosetta_bin = '/home/kyleb/rosetta/working_branches/alascan/source/bin'
 job_output_directory = 'job_output'
 
 class MutationData:
@@ -190,6 +189,9 @@ def make_resfile(resfile_path, mutation_datum, tanja_id):
 if __name__ == "__main__":
     mutation_info = parse_mutations_file()
 
+    # Get settings info from JSON
+    settings = rosetta.parse_settings.get_dict()
+
     job_name = os.path.basename(inspect.getfile(inspect.currentframe())).split('.')[0] + extra_name
     output_dir = os.path.join(job_output_directory, '%s-%s_%s' % (time.strftime("%y%m%d"), getpass.getuser(), job_name) )
     output_data_dir = os.path.join(output_dir, 'data')
@@ -245,21 +247,14 @@ if __name__ == "__main__":
     with open(os.path.join(output_data_dir, 'job_dict.pickle'), 'w') as f:
         pickle.dump(job_dict, f)
 
-    args = {
-        'scriptname' : 'ddg_run',
-        'appname' : 'rosetta_scripts.mysql.linuxgccrelease',
-        'rosetta_args_list' : ['-parser:view', '-inout:dbms:mode', 'sqlite3', '-inout:dbms:database_name', 'rosetta_output.db3', '-no_optH', 'true'],
-    }
+    settings['scriptname'] = 'ddg_run'
+    settings['appname'] = 'rosetta_scripts'
+    settings['rosetta_args_list'] = ['-parser:view', '-inout:dbms:mode', 'sqlite3', '-inout:dbms:database_name', 'rosetta_output.db3', '-no_optH', 'true']
+    settings['tasks_per_process'] = 15
+    settings['numjobs'] = '%d' % len(job_dict)
+    settings['mem_free'] = '1.0G'
+    settings['output_dir'] = output_dir
 
-    args['tasks_per_process'] = 15
-    args['extra_ld_path'] = '/netapp/home/kbarlow/lib/mysql-connector-c-6.1.2-linux-glibc2.5-x86_64/lib'
-
-    args['cluster_rosetta_bin'] = cluster_rosetta_bin
-    args['local_rosetta_bin'] = local_rosetta_bin
-    args['numjobs'] = '%d' % len(job_dict)
-    args['mem_free'] = '1.0G'
-    args['output_dir'] = output_dir
-
-    write_run_file(args)
+    write_run_file(settings)
 
     print 'Job files written to directory:', os.path.abspath(output_dir)

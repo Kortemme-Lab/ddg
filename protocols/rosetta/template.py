@@ -51,7 +51,7 @@ local_scratch_dir = '/tmp'
 
 job_pickle_file = 'data/job_dict.pickle'
 
-app_name = '#$#appname#$#'
+app_name = '#$#fullappname#$#'
 
 zip_rosetta_output = True
 
