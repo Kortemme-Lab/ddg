@@ -10,23 +10,30 @@ This benchmark uses three different metrics:
 
 The metrics are not mutually exclusive but each has a separate focus. Pearson's R indicates the level of correlation
 between experimental and predicted values but ignores the average errors in cases. The MAE reports this error which
-is important when using a DDG protocol protein design. Finally, the fraction correct measures how likely we are to correctly
-predict hotspots or neutral mutations.
+is important when using a DDG protocol for protein design. Finally, the fraction correct measures how likely we are to
+correctly predict hotspots or neutral mutations.
 
 For certain applications, the user may be more interested in one or two of the metrics above however the combination of
 all three metrics reports how useful a DDG protocol is in general.
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Pearson's correlation coefficient (R)
+Pearson's correlation coefficient
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-todo:
+Pearson's correlation coefficient measures the linear correlation between a set of X values and their corresponding Y values.
+In our analysis, we are measuring the correlation between experimentally determined |DDG| values for a set of mutations and
+the computationally predicted values. A good positive correlation is indicated by a value between 0.7 and 1.0.
+
+Of particular note is that the Pearson correlation coefficient is invariant to the scale of the Y (predicted) values.
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 Mean absolute error (MAE)
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-todo:
+The mean absolute error is defined (here) as the mean of the absolute differences between experimental and predicted |DDG|
+values. Note that the MAE can be large even if a correlation is high as it does depend on the scale of the predicted values.
+Therefore, the MAE is an important metric if a |DDG| protocol is used in protein design as the individual predicted values
+are of more importance in this context rather than the relative predictive accuracy (as measured by Pearson's coefficient).
 
 ~~~~~~~~~~~~~~~~
 Fraction correct
