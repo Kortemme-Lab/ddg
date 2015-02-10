@@ -22,45 +22,79 @@ Pearson's correlation coefficient
 
 Pearson's correlation coefficient measures the linear correlation between a set of X values and their corresponding Y values.
 In our analysis, we are measuring the correlation between experimentally determined |DDG| values for a set of mutations and
-the computationally predicted values. A good positive correlation is indicated by a value between 0.7 and 1.0.
-
-Of particular note is that the Pearson correlation coefficient is invariant to the scale of the Y (predicted) values.
+the computationally predicted values. The range of values is from -1.0 to 1.0. A good positive correlation is indicated by
+a value between 0.7 and 1.0. A good negative correlation is indicated by a value between -0.7 and -1.0.  Of particular
+note is that the Pearson correlation coefficient is invariant to the scale of the Y (predicted) values.
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 Mean absolute error (MAE)
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The mean absolute error is defined (here) as the mean of the absolute differences between experimental and predicted |DDG|
-values. Note that the MAE can be large even if a correlation is high as it does depend on the scale of the predicted values.
+The mean absolute error for this benchmark is defined as the mean of the absolute differences between experimental and predicted |DDG|
+values. Note that the MAE can be large even if a correlation is high as its value is related to the scale of the predicted values.
 Therefore, the MAE is an important metric if a |DDG| protocol is used in protein design as the individual predicted values
 are of more importance in this context rather than the relative predictive accuracy (as measured by Pearson's coefficient).
+
+If the scoring function is scaled such that one score unit is roughly equivalent to kcal/mol then a good value for MAE would
+be a value within the range of experimental error.
 
 ~~~~~~~~~~~~~~~~
 Fraction correct
 ~~~~~~~~~~~~~~~~
 
-todo:
+The fraction correct metric measures the fraction of dataset cases where a mutation was correctly classified as (de)stabilizing
+or neutral. The metric is defined as the number of correctly classified mutations divided by the number of mutations in the
+benchmark set so values range from 0.0 to 1.0.
+
+The range of values for neutrality may vary; Kellogg et al. define neutrality as values between -1 kcal/mol
+and 1 kcal/mol, exclusive, for experimental DDG values which we adopt here. They also define neutrality for predicted
+values using their protocol 16, included here in protocols/ddg_monomer_16, as approximately between -3 and 1.15 Rosetta energy
+units (see Supporting Information, Figure 4(d) [1]_). We define neutrality as between -1.0 and 1.0 energy units
+in the included statistical analysis so the values of this metric may differ in this benchmark capture for the Rosetta
+protocol.
+
+Depending on the definition of neutrality, it is possible to get a relatively high value for this metric with a set of
+random predicted values. Therefore this metric, while a useful metric for reporting whether a method can correctly classify
+the stability of a mutant, should be considered alongside the correlation and MAE.
 
 ================
 Running analysis
 ================
 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Paths and extensions
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The command lines below use placeholders for paths and extensons. Please change these appropriately *e.g.*:
+
+::
+
+  WORKING_DIRECTORY=.
+  BENCHMARK_PATH=<path/to/sequence-tolerance>
+  OUTPUT_DIRECTORY=<directory created by the preminimization step>
+
+The output directory will be named according the the current date and username *e.g.* 15-02-02-12-00_username_ddg_monomer_16.
+
 ~~~~~~~~~~~~~~
-Required tools
+Dependencies
 ~~~~~~~~~~~~~~
 
 The analysis scripts require the `R software suite <http://www.r-project.org>`_. The scripts have been tested using R
 versions 2.12.1 and 3.1.1. They also require the following Python libraries:
+
  - numpy
  - scipy
-
 
 ~~~~~~~~~~~~~
 Main analysis
 ~~~~~~~~~~~~~
 
-The main analysis is performed by a Python script which invokes R. The input to the script should be a JSON or a commas-/tabs-
+Analysis is performed by a Python script analysis/analyze.py which also uses R to create a scatterplot. The input to the script should be a JSON or a commas-/tabs-
 separated file (CSV/TSV).
+
+------------------
+Input file formats
+------------------
 
 If the JSON format is used, the object should be a list of associative arrays/dicts each of which has both an Experimental and a
 Predicted field with floating-point values *e.g.*:
@@ -85,15 +119,35 @@ first two columns will be used for the Experimental and Predicted values respect
   ...
   1.400000,4.991100,76748,944
 
-The analysis script prints out statistics on the input dataset, including the metrics above, and creates a scatterplot. By
-default, this scatterplot will be named scatterplot.png but the --output argument can be used to specify the filename and
-PNG or PDF format *e.g.*:
+----------------
+Running analysis
+----------------
 
 ::
 
-  cd analysis
-  python analyze.py ../output/sample/kellogg_r57471.txt # produces scatterplot.png
-  python analyze.py ../output/sample/kellogg_r57471.txt --output myplot.pdf # produces myplot.pdf
+  cd ${BENCHMARK_PATH}/analysis
+  python analyze.py ${BENCHMARK_PATH}/output/sample/kellogg_r57471.txt
+
+The analysis script prints out statistics on the input dataset, including the metrics above, and creates a scatterplot. By
+default, this scatterplot will be named scatterplot.png in the current working directory but the --output argument can be used to specify the filename and file type (PNG or PDF format) *e.g.*
+
+::
+
+  cd ${BENCHMARK_PATH}/analysis
+  python analyze.py ${BENCHMARK_PATH}/output/sample/kellogg_r57471.txt --output myplot.pdf  
 
 
+-----------------
+Rosetta protocols
+-----------------
 
+
+Note that it is not necessary to call the analyze.py explicitly for the included Rosetta protocols as their analysis scripts call the underlying statistical functions. See the relevant documentation in the protocols subdirectories for more details.
+
+.. |Dgr|  unicode:: U+00394 .. GREEK CAPITAL LETTER DELTA
+.. |ring|  unicode:: U+002DA .. RING ABOVE
+.. |DDGH2O| replace:: |Dgr|\ |Dgr|\ G H\ :sub:`2`\ O
+.. |DDG| replace:: |Dgr|\ |Dgr|\ G
+
+
+.. [1] Kellogg, EH, Leaver-Fay, A, Baker, D. Role of conformational sampling in computing mutation-induced changes in protein structure and stability. 2011. Proteins. 79(3):830-8. `doi: 10.1002/prot.22921 <https://dx.doi.org/10.1002/prot.22921>`_.

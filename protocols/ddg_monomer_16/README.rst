@@ -61,7 +61,7 @@ run_preminimization.py needs to be configured to run correctly on a user's syste
 
 **run_ddg.py**
 
-Expected execution time: <30 hours per dataset record if the length of the protein is <400 residues. [2]_
+Expected execution time: <30 hours per dataset record if the length of the protein is <400 residues [2]_.
 
 This script runs the main computational step of the protocol. First, a set of constraints is generated from the output
 created by the preminimization step. Next, fifty pairs of wild-type and mutant structures are generated and the |DDG| value
@@ -111,8 +111,14 @@ Dependencies
 
 The benchmark and analysis scripts use `Python <https://www.python.org/>`_ and the `R software suite <http://www.r-project.org>`_ respectively. These
 scripts have been tested with:
+
 - Python 2.6.6
 - Python 2.7.8 and R 3.1.1
+
+The analysis scripts also require the following Python libraries:
+
+- numpy
+- scipy
 
 An installation of Rosetta is required for this method. Rosetta can be downloaded `here <https://www.rosettacommons.org/>`__
 and is freely available for academic use. Details of how to install Rosetta can be found in the `User Guide <https://www.rosettacommons.org/docs/latest/>`__.
@@ -303,10 +309,10 @@ Options:
     -o --output_directory OUTPUT_DIR
         The path where output data will be created. Output will be created inside a time-stamped subfolder of this directory. [default: ./job_output]
 
-    --run_identifier RUN_ID
+    -\-\run_identifier RUN_ID
         A suffix used to name the output directory.
 
-    --test
+    -\-\test
         When this option is set, a shorter version of the benchmark will run with fewer input structures, less fewer DDG experiments, and fewer generated structures. This should be used to test the scripts but not for analysis.
 
 ----------
@@ -324,10 +330,10 @@ Options:
     -n --num_struct NUM_STRUCT
         This specifies the number of wildtype/mutant structures generated. If this is used with --test then the --test value for this option takes priority. [default: 50]
 
-    --force
+    -\-\force
         When this option is set, the most recent directory in job_output, if it exists, will be used without prompting the user.
 
-    --test
+    -\-\test
         When this option is set, a shorter version of the benchmark will run with fewer input structures, less fewer DDG experiments, and fewer generated structures. This should be used to test the scripts but not for analysis.
 
 ----------------------
@@ -345,10 +351,10 @@ Options:
     -p --scatterplot_filename SCATTERPLOT_FILE
         The filename of the scatterplot to be generated in the output directory (unless --skip_analysis is set). [default: scatterplot.png]
 
-    --force
+    -\-\force
         When this option is set, the most recent directory in job_output, if it exists, will be used without prompting the user.
 
-    --skip_analysis
+    -\-\skip_analysis
         When this option is set, the analysis script is not invoked once the analysis files are generated.
 
 

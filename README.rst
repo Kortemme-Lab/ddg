@@ -72,6 +72,7 @@ This archive contains the following directories:
 - *protocols* : contains the scripts needed to run the benchmarks. The scripts for each protocol are provided in a specific subdirectory;
 - *protocols/alanine-scanning* : contains the scripts needed to run the alanine scanning benchmark using a Rosetta protocol;
 - *protocols/ddg_monomer_16* : contains the scripts needed to run the protein stability benchmark using the Rosetta ddg_monomer protocol;
+- *protocols/rosetta* : contains utility code used to run the Rosetta protocols;
 - *hpc* : contains scripts that can be used to run the entire benchmark using specific cluster architectures. For practical reasons, a limited number of cluster systems are supported. Please feel free to provide scripts which run the benchmark for your particular cluster system.
 - *hpc/sge/ddg_monomer_16* : contains scripts that can be used to run the the protein stability benchmark using ddg_monomer on a Sun Grid Engine cluster.
 
