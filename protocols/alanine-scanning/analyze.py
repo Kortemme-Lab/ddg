@@ -180,18 +180,18 @@ if __name__ == '__main__':
                 compress(all_data_points[j], data_id_in_interface)
             )
 
-            print '#### Points not in interface: ####'
-            run_stats(
-                'noninterface_pts', score_fxns[i], score_fxns[j],
-                compress(all_data_ids, data_id_in_interface, invert=True),
-                compress(all_data_points[i], data_id_in_interface, invert=True),
-                compress(all_data_points[j], data_id_in_interface, invert=True)
-            )
+            # print '#### Points not in interface: ####'
+            # run_stats(
+            #     'noninterface_pts', score_fxns[i], score_fxns[j],
+            #     compress(all_data_ids, data_id_in_interface, invert=True),
+            #     compress(all_data_points[i], data_id_in_interface, invert=True),
+            #     compress(all_data_points[j], data_id_in_interface, invert=True)
+            # )
 
-            print '#### All points: ####'
-            run_stats(
-                'all_pts', score_fxns[i], score_fxns[j],
-                all_data_ids,
-                all_data_points[i],
-                all_data_points[j]
-            )
+            # print '#### All points: ####'
+            # run_stats(
+            #     'all_pts', score_fxns[i], score_fxns[j],
+            #     all_data_ids,
+            #     all_data_points[i],
+            #     all_data_points[j]
+            # )

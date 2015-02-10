@@ -1,4 +1,26 @@
-#!/usr/bin/python
+#!/usr/bin/env python2
+# This work is licensed under the terms of the MIT license. See LICENSE for the full text.
+
+"""\
+The script kicks off the alanine scanning step of the alanine scanning benchmark run
+
+Usage:
+    alanine_scanning.py [options]...
+
+Options:
+
+    -o --output_directory OUTPUT_DIR
+        The path to a directory where the output files to be run will be saved
+    -e --extra_name EXTRA_NAME
+        Extra name to appended onto the end of the job directory
+    --repack_bound
+        When this option is set, residues around the mutant site in the protein complex will be repacked in the bound state
+    --repack_unbound
+        When this option is set, residues around the mutant site in the protein complex will be repacked in the unbound state
+
+Authors:
+    Kyle Barlow
+"""
 
 import multiprocessing
 import os
@@ -12,14 +34,18 @@ import re
 import getpass
 import interfaces_defs
 import rosetta.parse_settings
+import argparse
+from analysis.libraries import docopt
+import identify_interface
 
 input_pdb_dir_path = '../../input/pdbs/hydrogen_pdbs'
 extra_name = '' # something like _talaris if needed
-mutations_file_location = 'MUTATIONS.dat'
+mutations_file_location = 'mutation_benchmark_set.csv'
 rosetta_scripts_protocol = 'alascan.xml'
 resfile_start = 'NATRO\nEX 1 EX 2 EX 3\nSTART\n'
 score_fxns = ['talaris2014', 'score12', 'interface']
-job_output_directory = 'job_output'
+repack_score_fxns = ['talaris2014', 'score12', 'talaris2014']
+job_output_directory = 'job_output' # Default if not specified via options
 
 class MutationData:
     def __init__(self, pdb_id):
@@ -53,7 +79,7 @@ class MutationData:
         return ( three_letter_codes[self.amino_acid_list[i]], int(self.pdb_res_list[i]), self.chain_list[i] )
 
     def add_line(self, line):
-        data = line.split()
+        data = [x.strip() for x in line.split(',')]
         pdb_id = data[0]
         assert( pdb_id == self.pdb_id )
         chain = data[2]
@@ -119,6 +145,10 @@ class MutationData:
     def num_residues(self):
         return len(self.pdb_res_list)
 
+    def get_close_residues_tuple(self, tanja_id):
+        i = self.tanja_id_list.index(tanja_id)
+        return (self.pdb_res_list[i], self.chain_list[i], self.insertion_code_list[i])
+
     def lchainsnumbers(self):
         # Figure out lchains order
         lchainsnumbers = ''
@@ -175,7 +205,7 @@ def parse_mutations_file():
     return_dict = {}
     with open(mutations_file_location, 'r') as f:
         for line in f:
-            pdb_id = line.split()[0]
+            pdb_id = line.split(',')[0]
             if pdb_id == 'PDB_ID': # Skip first line
                 continue
             if pdb_id not in return_dict:
@@ -194,9 +224,40 @@ def make_resfile(resfile_path, mutation_datum, tanja_id):
         f.write(resfile_start)
         f.write('%d%s %s PIKAA A\n' % (pdb_res, insertion_code, chain))
 
-if __name__ == "__main__":
-    mutation_info = parse_mutations_file()
+def make_pack_resfile(pack_resfile_path, close_residues_list):
+    with open(pack_resfile_path, 'w') as f:
+        f.write(resfile_start)
+        for atom_resnum, atom_insertion_code, atom_chain in close_residues_list:
+            f.write('%d%s %s NATAA\n' % (atom_resnum, atom_insertion_code, atom_chain))
 
+if __name__ == "__main__":
+    import pprint
+    try:
+        arguments = docopt.docopt(__doc__.format(**locals()))
+    except Exception, e:
+        print('Failed while parsing arguments: %s.' % str(e))
+        sys.exit(1)
+
+    if arguments.get('--output_directory'):
+        job_output_directory = arguments['--output_directory'][0]
+        if not( os.path.exists(job_output_directory) ):
+            raise Exception('The specified output directory %s does not exist.' % output_dir)
+
+    if arguments.get('--extra_name'):
+        extra_name = arguments['--extra_name'][0]
+
+    if arguments.get('--repack_bound'):
+        repack_bound = True
+    else:
+        repack_bound = False
+
+    if arguments.get('--repack_unbound'):
+        repack_unbound = True
+    else:
+        repack_unbound = False
+
+    mutation_info = parse_mutations_file()
+    close_residues_dict = identify_interface.get_close_residues_dict()
     # Get settings info from JSON
     settings = rosetta.parse_settings.get_dict()
 
@@ -229,13 +290,20 @@ if __name__ == "__main__":
         # Setup chains to move
         comma_chains_to_move = mutation_info[pdb_id].get_comma_chains_to_move()
                 
-        for score_fxn in score_fxns:    
+        for score_fxn_index, score_fxn in enumerate(score_fxns):    
             for tanja_id in mutation_info[pdb_id].tanja_id_list:
-                # Make resfile
+                # Make mutation resfile
                 resfile_path = os.path.join(resfile_data_dir, '%s.mutation.resfile' % tanja_id)
                 if not os.path.exists(resfile_path):
                     make_resfile(resfile_path, mutation_info[pdb_id], tanja_id)
                 resfile_relpath = os.path.relpath(resfile_path, output_dir)
+
+                # Make packing resfile
+                pack_resfile_path = os.path.join(resfile_data_dir, '%s.pack.resfile' % tanja_id)
+                if not os.path.exists(pack_resfile_path):
+                    close_residues_list = close_residues_dict[pdb_id][mutation_info[pdb_id].get_close_residues_tuple(tanja_id)]
+                    make_pack_resfile(pack_resfile_path, close_residues_list)
+                pack_resfile_relpath = os.path.relpath(pack_resfile_path, output_dir)
 
                 sub_dict = {}
                 sub_dict['-in:file:s'] = pdb_relpath
@@ -245,10 +313,22 @@ if __name__ == "__main__":
                 sub_dict['-parser:script_vars'] = [
                     'tanja_id=%s' % tanja_id,
                     'currentscorefxn=%s' % score_fxn,
+                    'currentrepackscorefxn=%s' % repack_score_fxns[score_fxn_index],
                     'chainstomove=%s' % comma_chains_to_move,
                     'currentpackscorefxn=%s' % score_fxn,
                     'pathtoresfile=%s' % resfile_relpath,
+                    'pathtopackresfile=%s' % pack_resfile_relpath,
                 ]
+
+                if repack_bound:
+                    sub_dict['-parser:script_vars'].append( 'repackbound=true' )
+                else:
+                    sub_dict['-parser:script_vars'].append( 'repackbound=false' )
+
+                if repack_unbound:
+                    sub_dict['-parser:script_vars'].append( 'repackunbound=true' )
+                else:
+                    sub_dict['-parser:script_vars'].append( 'repackunbound=false' )
 
                 job_dict[ '%s/%s/%s' % (pdb_id.upper(), tanja_id, score_fxn) ] = sub_dict
 

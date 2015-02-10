@@ -16,11 +16,12 @@
 
         <TASKOPERATIONS>
 	  <ReadResfile name=rrf filename="%%pathtoresfile%%"/>
+	  <ReadResfile name=rrf_pack filename="%%pathtopackresfile%%"/>
         </TASKOPERATIONS>
 
         <MOVERS>
 	  <MinMover name=minmover scorefxn=fa_talaris2014  chi=1 bb=1 jump=ALL cartesian=0 type=lbfgs_armijo tolerance=0.001/>
-	  <ddG name=ddgmover scorefxn=fa_%%currentscorefxn%% chain_num=%%chainstomove%% repack_unbound=false repack_bound=false relax_bound=false/>
+	  <ddG name=ddgmover scorefxn=fa_%%currentrepackscorefxn%% chain_num=%%chainstomove%% repack_unbound=%%repackunbound%% repack_bound=%%repackbound%% relax_bound=false task_operations=rrf_pack/>
         </MOVERS>
 
         <FILTERS>
