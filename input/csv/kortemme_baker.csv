@@ -1,4 +1,4 @@
-PDB_ID,Mutated_partner,Chain_ID,PDB_res#,Amino_acid,DDG_calc,DDG_obs,"Interface(O:no,1:yes)",Tanja_ID,PubMedID,Location,FixedPDB_ID,FixedPDBResidueID
+PDB_ID,Mutated_partner,Chain_ID,PDB_res#,Amino_acid,DDG_calc,DDG_obs,"Interface(O:no,1:yes)",KB_ID,PubMedID,Location,FixedPDB_ID,FixedPDBResidueID
 1A22,hGH,A,14,M,0,0.1,0,1A2214,7504735,Table_2,None,None
 1A22,hGH,A,18,H,1.84,-0.5,1,1A2218,7504735,Table_2,None,None
 1A22,hGH,A,21,H,0.78,0.2,1,1A2221,7504735,Table_2,None,None
