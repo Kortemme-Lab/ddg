@@ -10,8 +10,9 @@ The input data for the |DDG| benchmark are |DDG| values determined from experime
 The data are presented in the form of curated datasets published for the purposes of benchmarking |DDG| protocols.
 
 The datasets are divided into two classes:
- - monomeric datasets; each data point specifies a single protein chain, a set of mutations on that chain, and an experimental |DDG| value measuring protein stability;
- - protein-protein interface datasets; each data point specifies the two partners of the interface (where each partner may consist of multiple protein chains), a set of mutations on the chains, and an experimental |DDG| value measuring binding affinity.
+
+- monomeric datasets; each data point specifies a single protein chain, a set of mutations on that chain, and an experimental |DDG| value measuring protein stability;
+- protein-protein interface datasets; each data point specifies the two partners of the interface (where each partner may consist of multiple protein chains), a set of mutations on the chains, and an experimental |DDG| value measuring binding affinity.
 
 Each |DDG| value in the datasets is presented with references to published material describing the conditions in which the
 measurement was taken. We provide a bibliography containing details of the references.
@@ -140,17 +141,13 @@ Unique PDB IDs: 56
 Files: input/json/alascan-gpk.json, input/csv/alascan-gpk.csv
 
 This dataset consists of all of the point mutations to alanine that are present in the Guerois, Potapov, and Kellogg datasets.
-The method of construction was as follows:
+The method of construction was to first consider all point mutations to alanine in the union of the datasets and then for each mutation, to take:
 
-- consider all point mutations to alanine in the union of the datasets;
-- for each mutation, take:
-
- - the set of |DDGH2O| values from ProTherm if available, otherwise the set of |DDG| values. If this set contained |DDG| values used in the datasets then we took the mean value of the intersection otherwise we took the mean value of the entire set;
- - PDB structures determined by X-ray defraction over those determined by NMR, if available;
- - the highest resolution PDB structure used in the datasets.
+- the set of |DDGH2O| values from ProTherm if available, otherwise the set of |DDG| values. If this set contained |DDG| values used in the datasets then we took the mean value of the intersection otherwise we took the mean value of the entire set;
+- PDB structures determined by X-ray defraction over those determined by NMR, if available;
+- the highest resolution PDB structure used in the datasets.
 
 Thus, the |DDG| values and PDB IDs may differ from the original datasets for some records. Approximately 12% of the records use a mean value from multiple recorded |DDG| values.
-
 
 =====================================================
 Protein-protein interface datasets (binding affinity)
