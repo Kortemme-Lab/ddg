@@ -13,6 +13,7 @@ Options:
         The path to a directory where the output files to be run will be saved
     -e --extra_name EXTRA_NAME
         Extra name to appended onto the end of the job directory
+    -n --number_repeats NUMBER_REPEATS
     --repack_bound
         When this option is set, residues around the mutant site in the protein complex will be repacked in the bound state
     --repack_unbound
@@ -46,6 +47,7 @@ resfile_start = 'NATRO\nEX 1 EX 2 EX 3\nSTART\n'
 score_fxns = ['talaris2014', 'score12', 'interface']
 repack_score_fxns = ['talaris2014', 'score12', 'talaris2014']
 job_output_directory = 'job_output' # Default if not specified via options
+number_scan_repeats = 1
 
 class MutationData:
     def __init__(self, pdb_id):
@@ -246,6 +248,9 @@ if __name__ == "__main__":
     if arguments.get('--extra_name'):
         extra_name = arguments['--extra_name'][0]
 
+    if arguments.get('--number_repeats'):
+        number_scan_repeats = int( arguments['--number_repeats'][0] )
+
     if arguments.get('--repack_bound'):
         repack_bound = True
     else:
@@ -318,6 +323,7 @@ if __name__ == "__main__":
                     'currentpackscorefxn=%s' % score_fxn,
                     'pathtoresfile=%s' % resfile_relpath,
                     'pathtopackresfile=%s' % pack_resfile_relpath,
+                    'numberscanrepeats=%d' % number_scan_repeats,
                 ]
 
                 if repack_bound:

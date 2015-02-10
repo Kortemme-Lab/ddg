@@ -25,7 +25,7 @@
         </MOVERS>
 
         <FILTERS>
-	  <DdGScan name=alascan task_operations=rrf repeats=1 scorefxn=fa_%%currentscorefxn%% report_diffs=1 write2pdb=1 ddG_mover=ddgmover />
+	  <DdGScan name=alascan task_operations=rrf repeats=%%numberscanrepeats%% scorefxn=fa_%%currentscorefxn%% report_diffs=1 write2pdb=1 ddG_mover=ddgmover />
         </FILTERS>
 
 	<MOVERS>
