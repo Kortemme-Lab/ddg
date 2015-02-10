@@ -15,7 +15,7 @@ import rosetta.parse_settings
 
 input_pdb_dir_path = '../../input/pdbs/hydrogen_pdbs'
 extra_name = '' # something like _talaris if needed
-mutations_file_location = 'MUTATIONS.dat'
+mutations_file_location = 'mutation_benchmark_set.csv'
 rosetta_scripts_protocol = 'alascan.xml'
 resfile_start = 'NATRO\nEX 1 EX 2 EX 3\nSTART\n'
 score_fxns = ['talaris2014', 'score12', 'interface']
@@ -53,7 +53,7 @@ class MutationData:
         return ( three_letter_codes[self.amino_acid_list[i]], int(self.pdb_res_list[i]), self.chain_list[i] )
 
     def add_line(self, line):
-        data = line.split()
+        data = [x.strip() for x in line.split(',')]
         pdb_id = data[0]
         assert( pdb_id == self.pdb_id )
         chain = data[2]
@@ -175,7 +175,7 @@ def parse_mutations_file():
     return_dict = {}
     with open(mutations_file_location, 'r') as f:
         for line in f:
-            pdb_id = line.split()[0]
+            pdb_id = line.split(',')[0]
             if pdb_id == 'PDB_ID': # Skip first line
                 continue
             if pdb_id not in return_dict:
