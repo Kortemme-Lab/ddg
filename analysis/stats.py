@@ -11,8 +11,6 @@ import subprocess
 import traceback
 import inspect
 import gzip
-import numpy
-from scipy.stats import pearsonr, spearmanr, normaltest, ks_2samp, kstest, norm
 
 
 def _id(x): pass
@@ -195,6 +193,7 @@ def fraction_correct(x_values, y_values, x_cutoff = 1.0, y_cutoff = 1.0):
 
 def fraction_correct_fuzzy_linear_create_vector(z, z_cutoff, z_fuzzy_range):
     '''A helper function for fraction_correct_fuzzy_linear.'''
+    import numpy
     assert(z_fuzzy_range * 2 < z_cutoff)
     if (z >= z_cutoff + z_fuzzy_range): # positive e.g. z >= 1.1
         return [0, 0, 1]
@@ -228,7 +227,8 @@ def fraction_correct_fuzzy_linear(x_values, y_values, x_cutoff = 1.0, x_fuzzy_ra
             \/      \/
             /\      /\
        ----/  \----/  \----
-    '''
+    ''' 
+    import numpy
     num_points = len(x_values)
     assert(num_points == len(y_values))
     correct = 0.0
@@ -245,6 +245,7 @@ def fraction_correct_fuzzy_linear(x_values, y_values, x_cutoff = 1.0, x_fuzzy_ra
 
 def mae(x_values, y_values):
     '''Mean absolute/unsigned error.'''
+    import numpy
     num_points = len(x_values)
     assert(num_points == len(y_values) and num_points > 0)
     return numpy.sum(numpy.apply_along_axis(numpy.abs, 0, numpy.subtract(x_values, y_values))) / float(num_points)
@@ -262,6 +263,7 @@ def _get_xy_dataset_statistics(x_values, y_values, fcorrect_x_cutoff = 1.0, fcor
     :param y_scalar: See get_xy_dataset_statistics.
     :return: A table of statistics.
     '''
+    from scipy.stats import pearsonr, spearmanr, normaltest, ks_2samp, kstest, norm
     assert(len(x_values) == len(y_values))
     return dict(
         pearsonr = pearsonr(x_values, y_values),
