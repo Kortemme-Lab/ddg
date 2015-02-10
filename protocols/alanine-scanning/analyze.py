@@ -5,6 +5,7 @@ import os
 import argparse
 import cPickle as pickle
 import sqlite3
+import itertools
 
 import analysis.stats as stats
 from alanine_scanning import parse_mutations_file
@@ -37,6 +38,12 @@ def parse_db_output(db_output_file, ddg_data, score_fxns):
     conn.close()
     return (ddg_data, score_fxns)
 
+def get_mutations_data_from_pdb_dict(pdb_data_dict, tanja_id):
+    for m in pdb_data_dict.values():
+        if tanja_id in m.tanja_id_list:
+            return m
+    raise Exception("Couldn't match ID %s" % str(tanja_id))
+
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
@@ -44,6 +51,8 @@ if __name__ == '__main__':
                         nargs='*',
                         help = 'Output directories')
     args = parser.parse_args()
+
+    mutations_data = parse_mutations_file()
 
     for output_dir in args.output_dirs:
 
@@ -73,8 +82,6 @@ if __name__ == '__main__':
         for db_output_file in db_output_files:
             ddg_data, score_fxns = parse_db_output(db_output_file, ddg_data, score_fxns)
 
-        mutations_data = parse_mutations_file()
-
         for mut in mutations_data.values():
             for i, tanja_id in enumerate(mut.tanja_id_list):
                 if tanja_id not in ddg_data:
@@ -87,8 +94,9 @@ if __name__ == '__main__':
         score_fxns.insert(0, 'ddg_obs')
 
         # Write output CSV and create data lists for further analysis
-        data_ids = []
-        data_points = [[] for x in xrange(len(score_fxns))]
+        all_data_ids = []
+        data_id_in_interface = [] # True/False mask array
+        all_data_points = [[] for x in xrange(len(score_fxns))]
         with open(
             os.path.join(analysis_output_dir,
                          'results-%s.csv' % os.path.basename(output_dir)),
@@ -108,11 +116,53 @@ if __name__ == '__main__':
                         data_is_complete = False
                         f.write(',NA')
                 if data_is_complete:
-                    data_ids.append(tanja_id)
+                    all_data_ids.append(tanja_id)
                     for i, score_fxn in enumerate(score_fxns):
-                        data_points[i].append(ddg_data[tanja_id][score_fxn])
+                        all_data_points[i].append(ddg_data[tanja_id][score_fxn])
+                    if get_mutations_data_from_pdb_dict(mutations_data, tanja_id).in_interface_by_id(tanja_id):
+                        data_id_in_interface.append(True)
+                    else:
+                        data_id_in_interface.append(False)
+
                 f.write('\n')
 
+        # Run stats module helper
+        def run_stats(name, i_name, j_name, data_ids, i_data_points, j_data_points):
+            dataset_stats = stats._get_xy_dataset_statistics(
+                i_data_points, j_data_points
+            )
+
+            stats_str = stats.format_stats_for_printing(dataset_stats)
+            with open(os.path.join(analysis_output_dir, '%s-stats.txt' % os.path.basename(output_dir)), 'a') as f:
+                f.write('%s - %s vs %s\n' % (name, i_score_fxn, j_score_fxn) )
+                f.write(stats_str)
+                f.write('\n\n')
+            print stats_str
+            print
+
+            table_for_plot = []
+            for pt_id, pt_i, pt_j in zip(data_ids, i_data_points, j_data_points):
+                table_for_plot.append(dict(ID = pt_id, Experimental = pt_i, Predicted = pt_j))
+
+            stats.plot(
+                table_for_plot,
+                os.path.join(
+                    analysis_output_dir,
+                    '%s-%s-%s_vs_%s.pdf' % ( os.path.basename(output_dir), name, i_name, j_name)
+                ),
+                stats.RInterface.correlation_coefficient_gplot
+            )
+
+        def compress(data, selectors, invert=False):
+            # Compress implementation with inversion option
+            # compress('ABCDEF', [1,0,1,0,1,1]) --> A C E F
+            if invert:
+                return [d for d, s in itertools.izip(data, selectors) if not s]
+            else:
+                return [d for d, s in itertools.izip(data, selectors) if s]
+
+        # Uncomment this outer loop to do all-by-all comparison
+        # Otherwise, default is to only compare against first, experimental results
         # for i, i_score_fxn in enumerate(score_fxns):
         i = 0
         i_score_fxn = score_fxns[0]
@@ -120,28 +170,28 @@ if __name__ == '__main__':
             if i == j:
                 continue
 
-            print i_score_fxn, 'vs', j_score_fxn
-            dataset_stats = stats._get_xy_dataset_statistics(
-                data_points[i], data_points[j]
+            print '########', i_score_fxn, 'vs', j_score_fxn, '########'
+
+            print '#### Points in interface: ####'
+            run_stats(
+                'interface_pts', score_fxns[i], score_fxns[j],
+                compress(all_data_ids, data_id_in_interface),
+                compress(all_data_points[i], data_id_in_interface),
+                compress(all_data_points[j], data_id_in_interface)
             )
 
-            stats_str = stats.format_stats_for_printing(dataset_stats)
-            with open(os.path.join(analysis_output_dir, '%s-stats.txt' % os.path.basename(output_dir)), 'a') as f:
-                f.write('%s vs %s\n' % (i_score_fxn, j_score_fxn) )
-                f.write(stats_str)
-                f.write('\n\n')
-            print stats_str
-            print
+            print '#### Points not in interface: ####'
+            run_stats(
+                'noninterface_pts', score_fxns[i], score_fxns[j],
+                compress(all_data_ids, data_id_in_interface, invert=True),
+                compress(all_data_points[i], data_id_in_interface, invert=True),
+                compress(all_data_points[j], data_id_in_interface, invert=True)
+            )
 
-            table_for_plot = []
-            for pt_id, pt_i, pt_j in zip(data_ids, data_points[i], data_points[j]):
-                table_for_plot.append(dict(ID = pt_id, Experimental = pt_i, Predicted = pt_j))
-
-            stats.plot(
-                table_for_plot,
-                os.path.join(
-                    analysis_output_dir,
-                    '%s-%s_vs_%s.pdf' % (os.path.basename(output_dir), score_fxns[i], score_fxns[j])
-                ),
-                stats.RInterface.correlation_coefficient_gplot
+            print '#### All points: ####'
+            run_stats(
+                'all_pts', score_fxns[i], score_fxns[j],
+                all_data_ids,
+                all_data_points[i],
+                all_data_points[j]
             )

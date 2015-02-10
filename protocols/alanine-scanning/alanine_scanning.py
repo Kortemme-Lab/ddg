@@ -105,6 +105,14 @@ class MutationData:
     def in_interface(self, resnum):
         return self.interface_list[self.pdb_res_list.index(resnum)]
 
+    def in_interface_by_id(self, tanja_id):
+        i = self.tanja_id_list.index(tanja_id)
+        if self.interface_list[i] == 0:
+            return False
+        else:
+            assert( self.interface_list[i] == 1)
+            return True
+
     def num_chains(self):
         return len( set(self.chain_list) )
 
