@@ -161,7 +161,7 @@ Records: 380
 
 Unique PDB IDs: 19
 
-Files: todo:, todo:
+Files: input/csv/kortemme_baker.csv
 
 This dataset consists of 380 experimental |DDG| measurements from alanine scanning assays of single point mutants, used to benchmark the interface
 alanine scanning protocol developed by Kortemme & Baker and available as part of the `Robetta server <http://robetta.bakerlab.org/>`__.
@@ -174,9 +174,11 @@ database (ASEdb) [7]_, references listed in the ASEdb, and further references de
 PDB structures
 ==============
 
-The PDB structures used for the benchmark are provided in input/pdbs.
+The PDB structures used for the |DDG| benchmark are provided in input/pdbs.
 
-todo: describe input/hydrogen_pdbs
+input/hydrogen_pdbs contains processed PDB structures where the hydrogen atoms have already been placed by Rosetta. Hydrogen
+placement in Rosetta is non-deterministic; fixing the hydrogen positions prior to running the benchmark removes any noise
+which would be introduced in the results by this placement.
 
 The resolutions and methods of determination (*e.g.* X-ray defraction, NMR, *etc.*) for the PDB structures are listed
 in input/json/pdbs.json and input/csv/pdbs.csv.
