@@ -134,9 +134,13 @@ Proteins. 79(3):830-8. `doi: 10.1002/prot.22921 <https://dx.doi.org/10.1002/prot
 Alanine scanning benchmark
 --------------------------
 
-Kortemme, T, Baker, D. A simple physical model for binding energy hot spots in protein–protein complexes. Proc Natl Acad Sci U S A. 2002 Oct 29;99(22):14116-21. Epub 2002 Oct 15.
+Kortemme, T, Baker, D. A simple physical model for binding energy hot spots in protein–protein complexes.
+Proc Natl Acad Sci U S A. 2002 Oct 29;99(22):14116-21. Epub 2002 Oct 15.
+`doi: 10.1073/pnas.202485799 <https://dx.doi.org/10.1073/pnas.202485799>`_.
 
-Kortemme T, Kim DE, Baker D. Computational alanine scanning of protein-protein interfaces. Sci STKE. 2004 Feb 3;2004(219):pl2.
+Kortemme T, Kim DE, Baker D. Computational alanine scanning of protein-protein interfaces.
+Sci STKE. 2004 Feb 3;2004(219):pl2.
+`doi: 10.1126/stke.2192004pl2 <https://dx.doi.org/10.1126/stke.2192004pl2>`_.
 
 
 =====
