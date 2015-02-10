@@ -17,3 +17,5 @@ is present only for the convenience of the user to indicate the license which co
 .. |ring|  unicode:: U+002DA .. RING ABOVE
 .. |DDGH2O| replace:: |Dgr|\ |Dgr|\ G H\ :sub:`2`\ O
 .. |DDG| replace:: |Dgr|\ |Dgr|\ G
+
+
