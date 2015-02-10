@@ -87,7 +87,7 @@ single mutations in both the Guerois dataset, which contains many ProTherm recor
 Most records appears to correspond with one recorded |DDG| value in ProTherm but approximately 19% of the records appear
 to use a mean value from multiple recorded |DDG| values.
 
-As with all of the previous published datasets, we have modified this dataset. In particular, 10 of the records in the
+As with all of the previous published datasets in this section, we have modified this dataset. In particular, 10 of the records in the
 dataset presented herein have duplicate records with the same PDB ID and mutation. These are due to our replacement of
 1BKS with 1WQ5, 2LZMA with 1L63, and 1HGU with 3HHR.
 
@@ -153,17 +153,21 @@ Thus, the |DDG| values and PDB IDs may differ from the original datasets for som
 Protein-protein interface datasets (binding affinity)
 =====================================================
 
-todo: describe SKEMPI
+---------------------
+Kortemme & Baker [6]_
+---------------------
 
------------
-SKEMPI [6]_
------------
+Records: 380
 
-Records: todo:
-
-Unique PDB IDs: todo:
+Unique PDB IDs: 19
 
 Files: todo:, todo:
+
+This dataset consists of 380 experimental |DDG| measurements from alanine scanning assays of single point mutants, used to benchmark the interface
+alanine scanning protocol developed by Kortemme & Baker and available as part of the `Robetta server <http://robetta.bakerlab.org/>`__.
+The mutation is located in the interface area in 233 of these assays. The data is taken from the Alanine Scanning Energetics
+database (ASEdb) [7]_, references listed in the ASEdb, and further references detailed in the Kortemme & Baker paper
+(supporting information, Table 4).
 
 
 ==============
@@ -201,7 +205,9 @@ References
 
 .. [5] Kellogg, EH, Leaver-Fay, A, Baker, D. Role of conformational sampling in computing mutation-induced changes in protein structure and stability. 2011. Proteins. 79(3):830-8. `doi: 10.1002/prot.22921 <https://dx.doi.org/10.1002/prot.22921>`_.
 
-.. [6] Moal, IH, Fernández-Recio, J. SKEMPI: a Structural Kinetic and Energetic database of Mutant Protein Interactions and its use in empirical models. 2012. Bioinformatics. 28(20):2600-7. `doi: 10.1093/bioinformatics/bts489 <https://dx.doi.org/10.1093/bioinformatics/bts489>`_.
+.. [6] Kortemme, T, Baker, D. A simple physical model for binding energy hot spots in protein–protein complexes. 2002. Proc Natl Acad Sci U S A Oct 29;99(22):14116-21. Epub 2002 Oct 15. `doi: 10.1073/pnas.202485799 <https://dx.doi.org/10.1073/pnas.202485799>`_.
+
+.. [7] Thorn KS, Bogan AA. ASEdb: a database of alanine mutations and their effects on the free energy of binding in protein interactions. 2001. Bioinformatics. Mar;17(3):284-5. `doi: 10.1093/bioinformatics/17.3.284 <https://dx.doi.org/10.1093/bioinformatics/17.3.284>`_.
 
 .. |Dgr|  unicode:: U+00394 .. GREEK CAPITAL LETTER DELTA
 .. |ring|  unicode:: U+002DA .. RING ABOVE
