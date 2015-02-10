@@ -14,7 +14,7 @@ def get_dict():
 
     # Read the settings file
     if not os.path.exists(settings_file):
-        raise Exception('The settings file settings.json does not exist (expected location: "%s"). Please create this file appropriately (see settings.json.example).' % os.path.absname(settings_file) )
+        raise Exception('The settings file settings.json does not exist (expected location: "%s"). Please create this file appropriately; see %s/settings.json.example contains an example configuration file which can be used as a template.' % (os.path.abspath(settings_file), os.path.split(os.path.abspath(settings_file))[0]))
     try:
         with open(settings_file, 'r') as f:
             settings = json.load(f)
