@@ -10,7 +10,7 @@ Created by: Elizabeth Kellogg, Andrew Leaver-Fay, David Baker [1]_
 
 Software suite: Rosetta
 
-Protocol directory: ddg_monomer_16
+Protocol directory: protocols/ddg_monomer_16
 
 -----------
 Description
