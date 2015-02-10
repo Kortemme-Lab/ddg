@@ -18,7 +18,7 @@ extra_name = '' # something like _talaris if needed
 mutations_file_location = 'MUTATIONS.dat'
 rosetta_scripts_protocol = 'alascan.xml'
 resfile_start = 'NATRO\nEX 1 EX 2 EX 3\nSTART\n'
-score_fxns = ['talaris2014', 'soft_rep', 'talaris2014_soft_fa_rep', 'score12', 'interface']
+score_fxns = ['talaris2014', 'score12', 'interface']
 job_output_directory = 'job_output'
 
 class MutationData:
