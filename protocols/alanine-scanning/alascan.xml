@@ -20,8 +20,8 @@
         </TASKOPERATIONS>
 
         <MOVERS>
-	  <MinMover name=minmover scorefxn=fa_talaris2014  chi=1 bb=1 jump=ALL cartesian=0 type=lbfgs_armijo tolerance=0.001/>
-	  <ddG name=ddgmover scorefxn=fa_%%currentrepackscorefxn%% chain_num=%%chainstomove%% repack_unbound=%%repackunbound%% repack_bound=%%repackbound%% relax_bound=false task_operations=rrf_pack/>
+	  <MinMover name=minmover scorefxn=fa_%%currentminmoverscorefxn%%  chi=1 bb=1 jump=ALL cartesian=%%cartminintbool%% type=lbfgs_armijo tolerance=0.0001 max_iter=2000 />
+	  <ddG name=ddgmover scorefxn=fa_%%currentrepackscorefxn%% chain_num=%%chainstomove%% repack_unbound=%%repackunbound%% repack_bound=%%repackbound%% relax_bound=%%relaxbool%% task_operations=rrf_pack relax_mover=minmover />
         </MOVERS>
 
         <FILTERS>

@@ -18,6 +18,10 @@ Options:
         When this option is set, residues around the mutant site in the protein complex will be repacked in the bound state
     --repack_unbound
         When this option is set, residues around the mutant site in the protein complex will be repacked in the unbound state
+    --relax
+        When this option is set, regular minimization will be run
+    --cart_relax
+        When this option is set, cartesian minimization will be run
 
 Authors:
     Kyle Barlow
@@ -251,15 +255,21 @@ if __name__ == "__main__":
     if arguments.get('--number_repeats'):
         number_scan_repeats = int( arguments['--number_repeats'][0] )
 
-    if arguments.get('--repack_bound'):
-        repack_bound = True
-    else:
-        repack_bound = False
+    repack_bound = arguments['--repack_bound']
+    repack_unbound = arguments['--repack_unbound']
 
-    if arguments.get('--repack_unbound'):
-        repack_unbound = True
+    if arguments['--relax'] or arguments['--cart_relax']:
+        relax = 'true'
     else:
-        repack_unbound = False
+        relax = 'false'
+
+    if arguments['--cart_relax']:
+        assert( not arguments['--relax'] )
+        cart_relax = 1
+        min_mover_score_fxn = 'talaris2013_cart'
+    else:
+        cart_relax = 0
+        min_mover_score_fxn = 'talaris2014'
 
     mutation_info = parse_mutations_file()
     close_residues_dict = identify_interface.get_close_residues_dict()
@@ -324,6 +334,9 @@ if __name__ == "__main__":
                     'pathtoresfile=%s' % resfile_relpath,
                     'pathtopackresfile=%s' % pack_resfile_relpath,
                     'numberscanrepeats=%d' % number_scan_repeats,
+                    'cartminintbool=%d' % cart_relax,
+                    'relaxbool=%s' % relax,
+                    'currentminmoverscorefxn=%s' % min_mover_score_fxn,
                 ]
 
                 if repack_bound:
@@ -344,9 +357,9 @@ if __name__ == "__main__":
     settings['scriptname'] = 'ddg_run'
     settings['appname'] = 'rosetta_scripts'
     settings['rosetta_args_list'] = ['-parser:view', '-inout:dbms:mode', 'sqlite3', '-inout:dbms:database_name', 'rosetta_output.db3', '-no_optH', 'true']
-    settings['tasks_per_process'] = 15
+    settings['tasks_per_process'] = 5
     settings['numjobs'] = '%d' % len(job_dict)
-    settings['mem_free'] = '1.0G'
+    settings['mem_free'] = '1.2G'
     settings['output_dir'] = output_dir
 
     write_run_file(settings)
