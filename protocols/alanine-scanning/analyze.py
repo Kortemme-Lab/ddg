@@ -27,22 +27,22 @@ def parse_db_output(db_output_file, ddg_data, score_fxns):
     conn.row_factory = sqlite3.Row
     c = conn.cursor()
 
-    for rosetta_resnum, mutated_to, ddg_calc, tag, pdb_resnum, chain, original_name3, description, tanja_id in c.execute(query):
+    for rosetta_resnum, mutated_to, ddg_calc, tag, pdb_resnum, chain, original_name3, description, PDBPosID in c.execute(query):
         pdb_id = tag.split('_')[0]
         assert( len(pdb_id) == 4 )
-        if tanja_id not in ddg_data:
-            ddg_data[tanja_id] = {}
-        ddg_data[tanja_id][description] = ddg_calc
+        if PDBPosID not in ddg_data:
+            ddg_data[PDBPosID] = {}
+        ddg_data[PDBPosID][description] = ddg_calc
         score_fxns.add(description)
 
     conn.close()
     return (ddg_data, score_fxns)
 
-def get_mutations_data_from_pdb_dict(pdb_data_dict, tanja_id):
+def get_mutations_data_from_pdb_dict(pdb_data_dict, PDBPosID):
     for m in pdb_data_dict.values():
-        if tanja_id in m.tanja_id_list:
+        if PDBPosID in m.PDBPosID_list:
             return m
-    raise Exception("Couldn't match ID %s" % str(tanja_id))
+    raise Exception("Couldn't match ID %s" % str(PDBPosID))
 
 if __name__ == '__main__':
 
@@ -83,11 +83,11 @@ if __name__ == '__main__':
             ddg_data, score_fxns = parse_db_output(db_output_file, ddg_data, score_fxns)
 
         for mut in mutations_data.values():
-            for i, tanja_id in enumerate(mut.tanja_id_list):
-                if tanja_id not in ddg_data:
-                    ddg_data[tanja_id] = {}
-                ddg_data[tanja_id]['ddg_obs'] = mut.ddg_obs_list[i]
-                ddg_data[tanja_id]['tanja_ddg_calc'] = mut.ddg_calc_list[i]
+            for i, PDBPosID in enumerate(mut.PDBPosID_list):
+                if PDBPosID not in ddg_data:
+                    ddg_data[PDBPosID] = {}
+                ddg_data[PDBPosID]['ddg_obs'] = mut.ddg_obs_list[i]
+                ddg_data[PDBPosID]['tanja_ddg_calc'] = mut.ddg_calc_list[i]
 
         score_fxns = sorted(list(score_fxns))
         score_fxns.insert(0, 'tanja_ddg_calc')
@@ -106,20 +106,20 @@ if __name__ == '__main__':
             for score_fxn in score_fxns:
                 f.write(',%s' % score_fxn)
             f.write('\n')
-            for tanja_id in sorted( ddg_data.keys() ):
-                f.write('%s' % tanja_id)
+            for PDBPosID in sorted( ddg_data.keys() ):
+                f.write('%s' % PDBPosID)
                 data_is_complete = True
                 for score_fxn in score_fxns:
-                    if score_fxn in ddg_data[tanja_id]:
-                        f.write(',%.6f' % ddg_data[tanja_id][score_fxn])
+                    if score_fxn in ddg_data[PDBPosID]:
+                        f.write(',%.6f' % ddg_data[PDBPosID][score_fxn])
                     else:
                         data_is_complete = False
                         f.write(',NA')
                 if data_is_complete:
-                    all_data_ids.append(tanja_id)
+                    all_data_ids.append(PDBPosID)
                     for i, score_fxn in enumerate(score_fxns):
-                        all_data_points[i].append(ddg_data[tanja_id][score_fxn])
-                    if get_mutations_data_from_pdb_dict(mutations_data, tanja_id).in_interface_by_id(tanja_id):
+                        all_data_points[i].append(ddg_data[PDBPosID][score_fxn])
+                    if get_mutations_data_from_pdb_dict(mutations_data, PDBPosID).in_interface_by_id(PDBPosID):
                         data_id_in_interface.append(True)
                     else:
                         data_id_in_interface.append(False)

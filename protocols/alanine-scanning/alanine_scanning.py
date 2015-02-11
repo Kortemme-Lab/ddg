@@ -58,7 +58,7 @@ class MutationData:
         self.ddg_calc_list = []
         self.ddg_obs_list = []
         self.ddg_obs_greater_than_list = []
-        self.tanja_id_list = []
+        self.PDBPosID_list = []
         self.chain_list = []
         self.interface_list = []
         self.new_id_list = []
@@ -74,8 +74,8 @@ class MutationData:
         # Load chain order
         self.chain_order = get_chain_order(pdb_id)
 
-    def tanja_id_to_alascan(self, tanja_id):
-        i = self.tanja_id_list.index(tanja_id)
+    def PDBPosID_to_alascan(self, PDBPosID):
+        i = self.PDBPosID_list.index(PDBPosID)
         # print self.chainres_list[i][1:]
         # print self.pdb_res_list[i]
         return ( three_letter_codes[self.amino_acid_list[i]], int(self.pdb_res_list[i]), self.chain_list[i] )
@@ -109,8 +109,8 @@ class MutationData:
         elif data[7] == '1':
             interface = True
 
-        tanja_id = data[8]
-        assert( tanja_id.startswith(pdb_id) )
+        PDBPosID = data[8]
+        assert( PDBPosID.startswith(pdb_id) )
 
         new_id = '%s%d' % (pdb_id, pdb_res)
 
@@ -123,18 +123,18 @@ class MutationData:
         self.ddg_calc_list.append(ddg_calc)
         self.ddg_obs_list.append(ddg_obs)
         self.ddg_obs_greater_than_list.append(greater_than)
-        self.tanja_id_list.append(tanja_id)
+        self.PDBPosID_list.append(PDBPosID)
         self.chain_list.append(chain)
         self.interface_list.append(interface)
         self.new_id_list.append(new_id)
         self.insertion_code_list.append(insertion_code)
-        self.id_conv[tanja_id] = new_id
+        self.id_conv[PDBPosID] = new_id
 
     def in_interface(self, resnum):
         return self.interface_list[self.pdb_res_list.index(resnum)]
 
-    def in_interface_by_id(self, tanja_id):
-        i = self.tanja_id_list.index(tanja_id)
+    def in_interface_by_id(self, PDBPosID):
+        i = self.PDBPosID_list.index(PDBPosID)
         if self.interface_list[i] == 0:
             return False
         else:
@@ -147,8 +147,8 @@ class MutationData:
     def num_residues(self):
         return len(self.pdb_res_list)
 
-    def get_close_residues_tuple(self, tanja_id):
-        i = self.tanja_id_list.index(tanja_id)
+    def get_close_residues_tuple(self, PDBPosID):
+        i = self.PDBPosID_list.index(PDBPosID)
         return (self.pdb_res_list[i], self.chain_list[i], self.insertion_code_list[i])
 
     def lchainsnumbers(self):
@@ -215,9 +215,9 @@ def parse_mutations_file():
             return_dict[pdb_id].add_line(line)
     return return_dict
 
-def make_resfile(resfile_path, mutation_datum, tanja_id):
+def make_resfile(resfile_path, mutation_datum, PDBPosID):
     # Make resfile
-    mutation_info_index = mutation_datum.tanja_id_list.index(tanja_id)
+    mutation_info_index = mutation_datum.PDBPosID_list.index(PDBPosID)
     chain = mutation_datum.chain_list[mutation_info_index]
     pdb_res = mutation_datum.pdb_res_list[mutation_info_index]
     insertion_code = mutation_datum.insertion_code_list[mutation_info_index]
@@ -296,17 +296,17 @@ if __name__ == "__main__":
         comma_chains_to_move = mutation_info[pdb_id].get_comma_chains_to_move()
                 
         for score_fxn_index, score_fxn in enumerate(score_fxns):    
-            for tanja_id in mutation_info[pdb_id].tanja_id_list:
+            for PDBPosID in mutation_info[pdb_id].PDBPosID_list:
                 # Make mutation resfile
-                resfile_path = os.path.join(resfile_data_dir, '%s.mutation.resfile' % tanja_id)
+                resfile_path = os.path.join(resfile_data_dir, '%s.mutation.resfile' % PDBPosID)
                 if not os.path.exists(resfile_path):
-                    make_resfile(resfile_path, mutation_info[pdb_id], tanja_id)
+                    make_resfile(resfile_path, mutation_info[pdb_id], PDBPosID)
                 resfile_relpath = os.path.relpath(resfile_path, output_dir)
 
                 # Make packing resfile
-                pack_resfile_path = os.path.join(resfile_data_dir, '%s.pack.resfile' % tanja_id)
+                pack_resfile_path = os.path.join(resfile_data_dir, '%s.pack.resfile' % PDBPosID)
                 if not os.path.exists(pack_resfile_path):
-                    close_residues_list = close_residues_dict[pdb_id][mutation_info[pdb_id].get_close_residues_tuple(tanja_id)]
+                    close_residues_list = close_residues_dict[pdb_id][mutation_info[pdb_id].get_close_residues_tuple(PDBPosID)]
                     make_pack_resfile(pack_resfile_path, close_residues_list)
                 pack_resfile_relpath = os.path.relpath(pack_resfile_path, output_dir)
 
@@ -316,7 +316,7 @@ if __name__ == "__main__":
                 sub_dict['-parser:protocol'] = protocol_relpath
 
                 sub_dict['-parser:script_vars'] = [
-                    'tanja_id=%s' % tanja_id,
+                    'PDBPosID=%s' % PDBPosID,
                     'currentscorefxn=%s' % score_fxn,
                     'currentrepackscorefxn=%s' % repack_score_fxns[score_fxn_index],
                     'chainstomove=%s' % comma_chains_to_move,
@@ -336,7 +336,7 @@ if __name__ == "__main__":
                 else:
                     sub_dict['-parser:script_vars'].append( 'repackunbound=false' )
 
-                job_dict[ '%s/%s/%s' % (pdb_id.upper(), tanja_id, score_fxn) ] = sub_dict
+                job_dict[ '%s/%s/%s' % (pdb_id.upper(), PDBPosID, score_fxn) ] = sub_dict
 
     with open(os.path.join(output_data_dir, 'job_dict.pickle'), 'w') as f:
         pickle.dump(job_dict, f)

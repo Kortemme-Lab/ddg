@@ -29,7 +29,7 @@
         </FILTERS>
 
 	<MOVERS>
-	  <ReportToDB name=%%tanja_id%% batch_description="%%currentscorefxn%%">
+	  <ReportToDB name=%%PDBPosID%% batch_description="%%currentscorefxn%%">
 	    <feature name=ResidueFeatures/>
 	    <feature name=PdbDataFeatures/>
 	    <feature name=ScoreTypeFeatures/>
@@ -44,7 +44,7 @@
         </APPLY_TO_POSE>
 
         <PROTOCOLS>
-	  <Add mover_name=%%tanja_id%%/>
+	  <Add mover_name=%%PDBPosID%%/>
         </PROTOCOLS>
 
         <OUTPUT />
