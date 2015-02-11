@@ -3,7 +3,7 @@
 
 import os
 import sys
-import alanine_scanning
+import setup_alanine_scanning
 import cPickle as pickle
 from math import sqrt
 
@@ -48,7 +48,7 @@ def read_pdb_atoms(pdb_file):
 
 def find_resnums_around_mutation(pdb_id, resnum, insertion_code, chain):
     if pdb_id not in pdb_atom_dict:
-        pdb_atom_dict[pdb_id] = read_pdb_atoms( os.path.join(alanine_scanning.input_pdb_dir_path, '%s_0001.pdb' % pdb_id) )
+        pdb_atom_dict[pdb_id] = read_pdb_atoms( os.path.join(setup_alanine_scanning.input_pdb_dir_path, '%s_0001.pdb' % pdb_id) )
     pdb_atoms = pdb_atom_dict[pdb_id]
 
     mut_coords = []
@@ -84,7 +84,7 @@ def get_close_residues_dict():
         with open('.close_residues.pickle', 'r') as f:
             return pickle.load(f)
 
-    mut_data_dict = alanine_scanning.parse_mutations_file()
+    mut_data_dict = setup_alanine_scanning.parse_mutations_file()
     close_residues_dict = {}
     for pdb_id in mut_data_dict:
         mut_data = mut_data_dict[pdb_id]

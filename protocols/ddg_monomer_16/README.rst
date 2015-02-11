@@ -100,7 +100,7 @@ The command lines below use placeholders for paths and extensons. Please change 
 ::
 
   WORKING_DIRECTORY=.
-  BENCHMARK_PATH=<path/to/sequence-tolerance>
+  BENCHMARK_PATH=<path/to/ddg_monomer_16>
   OUTPUT_DIRECTORY=<directory created by the preminimization step>
 
 The output directory will be named according the the current date and username *e.g.* 15-02-02-12-00_username_ddg_monomer_16.
@@ -119,6 +119,10 @@ The analysis scripts also require the following Python libraries:
 
 - numpy
 - scipy
+
+And the folllowing R library:
+
+- ggplot2
 
 An installation of Rosetta is required for this method. Rosetta can be downloaded `here <https://www.rosettacommons.org/>`__
 and is freely available for academic use. Details of how to install Rosetta can be found in the `User Guide <https://www.rosettacommons.org/docs/latest/>`__.
