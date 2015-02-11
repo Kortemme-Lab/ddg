@@ -19,7 +19,7 @@ The command lines below use placeholders for paths and extensons. Please change 
 ::
 
   WORKING_DIRECTORY=.
-  BENCHMARK_PATH=<path/to/sequence-tolerance>
+  BENCHMARK_PATH=<path/to/ddg_monomer_16>
   OUTPUT_DIRECTORY=<directory created by the preminimization step>
 
 The output directory will be named according the the current date and username *e.g.* 15-02-02-12-00_username_ddg_monomer_16.
@@ -37,13 +37,13 @@ These commands run the full benchmark for the different datasets.
   cd ${BENCHMARK_PATH}/protocols/ddg_monomer_16
   python run_preminimization.py
   cd ${BENCHMARK_PATH}/protocols/ddg_monomer_16/job_output/${OUTPUT_DIRECTORY}/
-  python preminimization_step.py
+  qsub preminimization_step.py
 
   # if execution is successful
   cd ${BENCHMARK_PATH}/protocols/ddg_monomer_16
   python run_ddg.py --force
   cd ${BENCHMARK_PATH}/protocols/ddg_monomer_16/job_output/${OUTPUT_DIRECTORY}/
-  python ddg_step.py
+  qsub ddg_step.py
 
   # if execution is successful
   cd ${BENCHMARK_PATH}/protocols/ddg_monomer_16
@@ -56,13 +56,13 @@ These commands run the full benchmark for the different datasets.
   cd ${BENCHMARK_PATH}/protocols/ddg_monomer_16
   python run_preminimization.py -d ${BENCHMARK_PATH}/input/json/guerois.json
   cd ${BENCHMARK_PATH}/protocols/ddg_monomer_16/job_output/${OUTPUT_DIRECTORY}/
-  python preminimization_step.py
+  qsub preminimization_step.py
 
   # if execution is successful
   cd ${BENCHMARK_PATH}/protocols/ddg_monomer_16
   python run_ddg.py --force
   cd ${BENCHMARK_PATH}/protocols/ddg_monomer_16/job_output/${OUTPUT_DIRECTORY}/
-  python ddg_step.py
+  qsub ddg_step.py
 
   # if execution is successful
   cd ${BENCHMARK_PATH}/protocols/ddg_monomer_16
@@ -75,13 +75,13 @@ These commands run the full benchmark for the different datasets.
   cd ${BENCHMARK_PATH}/protocols/ddg_monomer_16
   python run_preminimization.py -d ${BENCHMARK_PATH}/input/json/potapov.json
   cd ${BENCHMARK_PATH}/protocols/ddg_monomer_16/job_output/${OUTPUT_DIRECTORY}/
-  python preminimization_step.py
+  qsub preminimization_step.py
 
   # if execution is successful
   cd ${BENCHMARK_PATH}/protocols/ddg_monomer_16
   python run_ddg.py --force
   cd ${BENCHMARK_PATH}/protocols/ddg_monomer_16/job_output/${OUTPUT_DIRECTORY}/
-  python ddg_step.py
+  qsub ddg_step.py
 
   # if execution is successful
   cd ${BENCHMARK_PATH}/protocols/ddg_monomer_16
@@ -94,13 +94,13 @@ These commands run the full benchmark for the different datasets.
   cd ${BENCHMARK_PATH}/protocols/ddg_monomer_16
   python run_preminimization.py -d ${BENCHMARK_PATH}/input/json/curatedprotherm.json
   cd ${BENCHMARK_PATH}/protocols/ddg_monomer_16/job_output/${OUTPUT_DIRECTORY}/
-  python preminimization_step.py
+  qsub preminimization_step.py
 
   # if execution is successful
   cd ${BENCHMARK_PATH}/protocols/ddg_monomer_16
   python run_ddg.py --force
   cd ${BENCHMARK_PATH}/protocols/ddg_monomer_16/job_output/${OUTPUT_DIRECTORY}/
-  python ddg_step.py
+  qsub ddg_step.py
 
   # if execution is successful
   cd ${BENCHMARK_PATH}/protocols/ddg_monomer_16
