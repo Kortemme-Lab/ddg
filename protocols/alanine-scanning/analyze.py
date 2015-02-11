@@ -127,13 +127,13 @@ if __name__ == '__main__':
                 f.write('\n')
 
         # Run stats module helper
-        def run_stats(name, i_name, j_name, data_ids, i_data_points, j_data_points):
+        def run_stats(name, i_name, j_name, data_ids, i_data_points, j_data_points, write_mode='a'):
             dataset_stats = stats._get_xy_dataset_statistics(
                 i_data_points, j_data_points
             )
 
             stats_str = stats.format_stats_for_printing(dataset_stats)
-            with open(os.path.join(analysis_output_dir, '%s-stats.txt' % os.path.basename(output_dir)), 'a') as f:
+            with open(os.path.join(analysis_output_dir, '%s-stats.txt' % os.path.basename(output_dir)), write_mode) as f:
                 f.write('%s - %s vs %s\n' % (name, i_score_fxn, j_score_fxn) )
                 f.write(stats_str)
                 f.write('\n\n')
@@ -166,6 +166,7 @@ if __name__ == '__main__':
         # for i, i_score_fxn in enumerate(score_fxns):
         i = 0
         i_score_fxn = score_fxns[0]
+        first_output = True
         for j, j_score_fxn in enumerate(score_fxns):
             if i == j:
                 continue
@@ -173,11 +174,19 @@ if __name__ == '__main__':
             print '########', i_score_fxn, 'vs', j_score_fxn, '########'
 
             print '#### Points in interface: ####'
+
+            if first_output:
+                write_mode = 'w'
+                first_output = False
+            else:
+                write_mode = 'a'
+
             run_stats(
                 'interface_pts', score_fxns[i], score_fxns[j],
                 compress(all_data_ids, data_id_in_interface),
                 compress(all_data_points[i], data_id_in_interface),
-                compress(all_data_points[j], data_id_in_interface)
+                compress(all_data_points[j], data_id_in_interface),
+                write_mode = write_mode,
             )
 
             # print '#### Points not in interface: ####'
