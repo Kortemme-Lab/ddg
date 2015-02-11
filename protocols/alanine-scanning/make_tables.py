@@ -37,8 +37,7 @@ if __name__ == "__main__":
                         datum_name = datum_name.strip()
                         datum_value = float( datum_value.split()[0] )
                         new_data.append( (datum_name, datum_value) )
-                    else:
-                        assert( len(new_data) > 0 )
+                    elif len(new_data) > 0:
                         if table_name not in data_dicts:
                             data_dicts[table_name] = {datum_name : [datum_value] for datum_name, datum_value in new_data}
                             data_dicts[table_name]['run_names'] = [run_name]
@@ -55,7 +54,7 @@ if __name__ == "__main__":
 
     all_ps = []
     for table_name in data_dicts:
-        special_columns = ['run_names', 'table_name', 'Fraction correct', 'MAE', "Pearson's R", "Spearman's R"]
+        special_columns = ['run_names', 'table_name', 'n', 'Fraction correct', 'MAE', "Pearson's R", "Spearman's R"]
         all_columns = [x for x in data_dicts[table_name].keys() if x not in special_columns]
         special_columns.extend(all_columns)
         p = pd.DataFrame(data_dicts[table_name], columns=special_columns)

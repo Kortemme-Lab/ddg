@@ -136,6 +136,7 @@ if __name__ == '__main__':
             with open(os.path.join(analysis_output_dir, '%s-stats.txt' % os.path.basename(output_dir)), write_mode) as f:
                 f.write('%s - %s vs %s\n' % (name, i_score_fxn, j_score_fxn) )
                 f.write(stats_str)
+                f.write('\nn : %d\n' % len(i_data_points) )
                 f.write('\n\n')
             print stats_str
             print
@@ -197,10 +198,10 @@ if __name__ == '__main__':
             #     compress(all_data_points[j], data_id_in_interface, invert=True)
             # )
 
-            # print '#### All points: ####'
-            # run_stats(
-            #     'all_pts', score_fxns[i], score_fxns[j],
-            #     all_data_ids,
-            #     all_data_points[i],
-            #     all_data_points[j]
-            # )
+            print '#### All points: ####'
+            run_stats(
+                'all_pts', score_fxns[i], score_fxns[j],
+                all_data_ids,
+                all_data_points[i],
+                all_data_points[j]
+            )
