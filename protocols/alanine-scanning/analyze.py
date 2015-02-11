@@ -8,7 +8,7 @@ import sqlite3
 import itertools
 
 import analysis.stats as stats
-from alanine_scanning import parse_mutations_file
+from setup_alanine_scanning import parse_mutations_file
 
 pickle_name = os.path.join('data', 'job_dict.pickle')
 global_analysis_output_dir = 'analysis_output'

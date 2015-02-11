@@ -2,10 +2,10 @@
 # This work is licensed under the terms of the MIT license. See LICENSE for the full text.
 
 """\
-The script kicks off the alanine scanning step of the alanine scanning benchmark run
+The script sets up the alanine scanning step of the alanine scanning benchmark run
 
 Usage:
-    alanine_scanning.py [options]...
+    setup_alanine_scanning.py [options]...
 
 Options:
 
@@ -341,7 +341,7 @@ if __name__ == "__main__":
     with open(os.path.join(output_data_dir, 'job_dict.pickle'), 'w') as f:
         pickle.dump(job_dict, f)
 
-    settings['scriptname'] = 'ddg_run'
+    settings['scriptname'] = 'alascan_run'
     settings['appname'] = 'rosetta_scripts'
     settings['rosetta_args_list'] = ['-parser:view', '-inout:dbms:mode', 'sqlite3', '-inout:dbms:database_name', 'rosetta_output.db3', '-no_optH', 'true']
     settings['tasks_per_process'] = 15

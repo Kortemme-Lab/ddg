@@ -107,6 +107,23 @@ Software suite: Rosetta
 
 Protocol directory: protocols/alanine-scanning
 
+=====================================
+Running the benchmark: helper scripts
+=====================================
+
+While both the |DDG| and alanine protocols can be run directly on each case using published command line arguments to Rosetta, we have also included helper scripts for each protocol to assist in running them.
+Both protocol's helper scripts are customized to that protocol, but are used in similar ways.
+
+#. The benchmark setup script is run.
+   This setup script may take in options to determine which subset of the benchmark is run, or what flags will be passed to Rosetta.
+   The setup script will create and copy all necessary input files into a "job output" directory, containing a Python run script.
+#. (Optional) If the benchmark is to be run on a high-performance cluster, the self-contained generated job output directory can be copied onto that cluster.
+#. The Python run script (in the job output directory) is run with no arguments.
+   Rosetta will be called with the appropriate arguments by this run script, and the output saved into the same directory.
+   On a machine with multiple CPUs, Python's multiprocessing module is used to speed the runtime.
+   The script can also be run on a SGE cluster by using the qsub command.
+
+The above steps are repeated two times in the |DDG| protocol (see relevant documentation).
 
 ========
 Analysis
