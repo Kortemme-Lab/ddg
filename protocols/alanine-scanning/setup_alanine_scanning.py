@@ -48,8 +48,8 @@ extra_name = '' # something like _talaris if needed
 mutations_file_location = 'mutation_benchmark_set.csv'
 rosetta_scripts_protocol = 'alascan.xml'
 resfile_start = 'NATRO\nEX 1 EX 2 EX 3\nSTART\n'
-score_fxns = ['talaris2014', 'score12', 'interface']
-repack_score_fxns = ['talaris2014', 'score12', 'talaris2014']
+score_fxns = ['interface']
+repack_score_fxns = ['talaris2014']
 job_output_directory = 'job_output' # Default if not specified via options
 number_scan_repeats = 1
 
@@ -276,7 +276,7 @@ if __name__ == "__main__":
     # Get settings info from JSON
     settings = rosetta.parse_settings.get_dict()
 
-    job_name = os.path.basename(inspect.getfile(inspect.currentframe())).split('.')[0] + extra_name
+    job_name = 'alanine_scanning' + extra_name
     output_dir = os.path.join(job_output_directory, '%s-%s_%s' % (time.strftime("%y%m%d"), getpass.getuser(), job_name) )
     output_data_dir = os.path.join(output_dir, 'data')
     pdb_data_dir = os.path.join(output_data_dir, 'input_pdbs')
