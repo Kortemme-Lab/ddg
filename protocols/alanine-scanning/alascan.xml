@@ -2,6 +2,7 @@
         <SCOREFXNS>
 	   <fa_talaris2014 weights=talaris2014/>
 	   <fa_talaris2013_cart weights=talaris2013_cart/>
+	   <fa_ddg_monomer weights=ddg_monomer/>
 	   <fa_score12 weights=score12/>
 	   <fa_soft_rep weights=soft_rep/>
 	   <fa_talaris2013 weights=talaris2013/>
