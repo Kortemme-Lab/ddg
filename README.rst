@@ -25,17 +25,20 @@ Benchmarking a complete dataset is quite computationally intensive so we recomme
 Alanine scanning benchmark
 --------------------------
 
-This benchmark tests the ability of computational alanine scanning protocols to recapitulate the results of experimental
-alanine scanning, wherein each residue in a range of interest is individually mutated to the “neutral” residue alanine,
-disrupting any hydrogen bonding or shape-specific interactions made by the wild-type side chain without major disruptions
-to secondary structure. This technique allows a direct before and after interrogation of the energetics of folding, binding,
-or other functional effects of a single residue position through comparison of the properties of each alanine mutant to those
-of the wild-type protein *i.e.* alanine scanning can be used to ascertain the contribution of each individual residue to
-these interaction energies.
+A frequent application of modeling methods is the prediction of energetically important interactions (“hotspots”) in
+protein-protein interfaces. By systematically mutating protein interface residues to alanine (“alanine scanning”)
+and measuring the effect on binding, `Wells et al., 1995 <#references>`_ showed that not all residues with interface contacts but only a smaller
+subset of ‘hotspot’ residues contribute significantly to the binding free energy of human growth hormone to its receptor.
+Subsequent studies suggested that such hotspots may be a general characteristic of many protein-protein interfaces. This
+benchmark tests the ability of computational alanine scanning protocols to recapitulate the results of experimental alanine
+scanning. A computational protocol performing well on this test set can then be used for additional applications, for
+instance, as a design tool to disrupt protein-protein interactions by mutations or through targeting small molecules to
+hotspots, or to analyze the effect of disease mutations.
+
 
 This benchmark includes:
 
-- a previously published set of 233 mutations (to alanine) in 19 different protein-protein interfaces with known crystal structures (see `Kortemme & Baker, 2002 <References>`_);
+- a previously published set of 233 mutations (to alanine) in 19 different protein-protein interfaces with known crystal structures (see `Kortemme & Baker, 2002 <#references>`_);
 - scripts to run a new RosettaScripts protocol which has been designed to emulate the protocol described in Kortemme & Baker (2002);
 - an analysis script that output the metrics used for analysis. The script also outputs a scatterplot plotting experimental |DDG| values against predicted values (in whichever scoring unit is used by the protocol);
 
@@ -45,10 +48,8 @@ The RosettaScripts alanine scanning protocol is not computationally intensive so
 Licensing
 ---------
 
-The contents of the repository *where possible* are licensed under the MIT License. The license only applies to files which
-either: i) include the license statement; or ii) which are explicitly listed in some file in the repository as being covered
-by the license. All other files may be covered under a separate license. The LICENSE file in the root of this repository
-is present only for the convenience of the user to indicate the license which covers any novel content presented herein.
+This repository contains third party libraries and materials which are distributed under their own terms (see
+LICENSE-3RD-PARTY). The novel content in this repository is licensed according to LICENSE.
 
 -------------------------
 Downloading the benchmark
@@ -151,6 +152,10 @@ Proteins. 79(3):830-8. `doi: 10.1002/prot.22921 <https://dx.doi.org/10.1002/prot
 --------------------------
 Alanine scanning benchmark
 --------------------------
+
+Clackson T, Wells JA. A hot spot of binding energy in a hormone-receptor interface.
+Science. 1995 Jan 20;267(5196):383-6.
+`doi: 10.1126/science.7529940 <https://dx.doi.org/10.1126/science.7529940>`_.
 
 Kortemme, T, Baker, D. A simple physical model for binding energy hot spots in protein–protein complexes.
 Proc Natl Acad Sci U S A. 2002 Oct 29;99(22):14116-21. Epub 2002 Oct 15.

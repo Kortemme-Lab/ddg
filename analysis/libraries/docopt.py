@@ -2,7 +2,7 @@
 
  * http://docopt.org
  * Repository and issue-tracker: https://github.com/docopt/docopt
- * Licensed under terms of MIT license (see LICENSE-MIT)
+ * Licensed under terms of MIT license (see LICENSE-3RD-PARTY)
  * Copyright (c) 2013 Vladimir Keleshev, vladimir@keleshev.com
 
 """
