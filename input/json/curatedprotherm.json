@@ -103470,12 +103470,13 @@
             "_ExperimentID": 112152
         }
     ], 
-    "information": "\nThis dataset of single mutations was compiled by the Kortemme Lab, UCSF from the ProTherm database [1, 2].\n\nThe DSSPType column lists the DSSP secondary structure type assigned by mkdssp 2.2.1 [3, 4]. The DSSPSimpleSSType column\nlists a simple elision of the DSSP types: G, H, and I become H(elix); E becomes S(heet); and T, B, S, and C become O(ther).\n    ", 
+    "information": "\nThis dataset of single mutations was compiled by the Kortemme Lab, UCSF from the ProTherm database [1, 2].\n\nThe DSSPType column lists the DSSP secondary structure type assigned by mkdssp 2.2.1 [3, 4]. The DSSPSimpleSSType column\nlists a simple elision of the DSSP types: G, H, and I become H(elix); E becomes S(heet); and T, B, S, and C become O(ther).\n\nSCOP class and Pfam domain data was retrieved from the SIFTS resource [5] (Velankar et al., Nucleic Acids Research 41, D483 (2013), doi:10.1093/nar/gks1258).\n", 
     "references": {
         "1": "PMID:9847203", 
         "2": "PMID:16381846", 
         "3": "PMID:21071423", 
-        "4": "PMID:6667333"
+        "4": "PMID:6667333",
+        "5": "PMID:23203869"
     }, 
-    "version": "This dataset was last updated on 2015-01-29."
+    "version": "This dataset was last updated on 2015-04-07."
 }

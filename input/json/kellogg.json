@@ -38353,11 +38353,12 @@
             "_ExperimentID": 113617
         }
     ], 
-    "information": "\nThis dataset of mutations originates from the paper by Kellogg et al. [1]. We have made some changes from the original\ndataset. In particular, we have tried to match the DDG values to the original publications.\n\nThe DSSPType column lists the DSSP secondary structure type assigned by mkdssp 2.2.1 [2, 3]. The DSSPSimpleSSType column\nlists a simple elision of the DSSP types: G, H, and I become H(elix); E becomes S(heet); and T, B, S, and C become O(ther).\n    ", 
+    "information": "\nThis dataset of mutations originates from the paper by Kellogg et al. [1]. We have made some changes from the original\ndataset. In particular, we have tried to match the DDG values to the original publications.\n\nThe DSSPType column lists the DSSP secondary structure type assigned by mkdssp 2.2.1 [2, 3]. The DSSPSimpleSSType column\nlists a simple elision of the DSSP types: G, H, and I become H(elix); E becomes S(heet); and T, B, S, and C become O(ther).\nSCOP class and Pfam domain data was retrieved from the SIFTS resource [4] (Velankar et al., Nucleic Acids Research 41, D483 (2013), doi:10.1093/nar/gks1258).\n",
     "references": {
         "1": "PMID:21287615", 
         "2": "PMID:21071423", 
-        "3": "PMID:6667333"
-    }, 
-    "version": "This dataset was last updated on 2015-01-29."
+        "3": "PMID:6667333",
+        "4": "PMID:23203869"
+    },
+    "version": "This dataset was last updated on 2015-04-07."
 }
