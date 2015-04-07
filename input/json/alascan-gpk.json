@@ -24737,7 +24737,7 @@
             "_ExperimentID": 113617
         }
     ], 
-    "information": "\nThis dataset of experimental alanine scanning data for single mutations was compiled by the Kortemme Lab, UCSF from the following curated datasets:\n - Guerois et al. [1]\n - Potapov et al. [2]\n - Kellogg et al. [3]\nand the ProTherm database [4, 5].\n\nThe DSSPType values give the DSSP secondary structure type assigned by mkdssp 2.2.1 [6, 7]. The DSSPSimpleType values values\ngive a simple elision of the DSSP types: G, H, and I become H(elix); E becomes S(heet); and T, B, S, and C become O(ther).\nSCOP class and Pfam domain data was retrieved from the SIFTS resource [8] (Velankar et al., Nucleic Acids Research 41, D483 (2013), doi:10.1093/nar/gks1258).\n",
+    "information": "\nThis dataset of experimental alanine scanning data for single mutations was compiled by the Kortemme Lab, UCSF from the following curated datasets:\n - Guerois et al. [1]\n - Potapov et al. [2]\n - Kellogg et al. [3]\nand the ProTherm database [4, 5].\n\nThe DSSPType values give the DSSP secondary structure type assigned by mkdssp 2.2.1 [6, 7]. The DSSPSimpleType values values\ngive a simple elision of the DSSP types: G, H, and I become H(elix); E becomes S(heet); and T, B, S, and C become O(ther).\nSCOP class and Pfam domain data was retrieved from the SIFTS resource [8] (Velankar et al., Nucleic Acids Research 41, D483 (2013), doi:10.1093/nar/gks1258).\nSCOP class data was retrieved from SCOPe [9] (Fox et al., Nucleic Acids Research 42:D304-309, doi: 10.1093/nar/gkt1240).\n",
     "references": {
         "1": "PMID:12079393", 
         "2": "PMID:19561092", 
@@ -24746,7 +24746,8 @@
         "5": "PMID:16381846", 
         "6": "PMID:21071423", 
         "7": "PMID:6667333",
-        "8": "PMID:23203869"
+        "8": "PMID:23203869",
+        "9": "PMID:24304899"
     }, 
     "version": "This dataset was last updated on 2015-04-07."
 }
