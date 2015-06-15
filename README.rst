@@ -142,6 +142,11 @@ in more detail in analysis/README.rst.
 References
 ==========
 
+The latest release of this repository: |releasedoi|
+
+.. |releasedoi| image:: https://zenodo.org/badge/doi/10.5281/zenodo.18595.svg   
+   :target: http://dx.doi.org/10.5281/zenodo.18595
+
 -----------------------------------
 |DDG| (protein stability) benchmark
 -----------------------------------
