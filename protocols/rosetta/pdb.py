@@ -30,7 +30,7 @@ import types
 import string
 import types
 
-from basics import Residue, PDBResidue, Sequence, SequenceMap, residue_type_3to1_map, protonated_residue_type_3to1_map, non_canonical_amino_acids, residue_types_3, Mutation, ChainMutation, protonated_residues_types_3
+from basics import Residue, PDBResidue, Sequence, SequenceMap, residue_type_3to1_map, protonated_residue_type_3to1_map, non_canonical_amino_acids, protonated_residues_types_3, residue_types_3, Mutation, ChainMutation, SimpleMutation
 from basics import dna_nucleotides, rna_nucleotides, dna_nucleotides_3to1_map, dna_nucleotides_2to1_map, non_canonical_dna, non_canonical_rna, all_recognized_dna, all_recognized_rna
 from analysis.stats import read_file, write_file
 from map_pdb_residues import get_pdb_contents_to_pose_residue_map
@@ -243,8 +243,6 @@ class PDB:
             self.lines = [line.strip() for line in pdb_content]
         self.parsed_lines = {}
         self.structure_lines = []                       # For ATOM and HETATM records
-        self.ddGresmap = None
-        self.ddGiresmap = None
         self.journal = None
         self.chain_types = {}
         self.format_version = None
@@ -1157,10 +1155,12 @@ class PDB:
         self.atom_sequences = atom_sequences
 
 
-    def construct_pdb_to_rosetta_residue_map(self, rosetta_scripts_path, rosetta_database_path):
+    def construct_pdb_to_rosetta_residue_map(self, rosetta_scripts_path, rosetta_database_path, extra_command_flags = None):
         ''' Uses the features database to create a mapping from Rosetta-numbered residues to PDB ATOM residues.
             Next, the object's rosetta_sequences (a dict of Sequences) element is created.
             Finally, a SequenceMap object is created mapping the Rosetta Sequences to the ATOM Sequences.
+
+            The extra_command_flags parameter expects a string e.g. "-ignore_zero_occupancy false".
         '''
 
         ## Create a mapping from Rosetta-numbered residues to PDB ATOM residues
@@ -1176,7 +1176,7 @@ class PDB:
 
         # Get the residue mapping using the features database
         pdb_file_contents = "\n".join(self.structure_lines)
-        success, mapping = get_pdb_contents_to_pose_residue_map(pdb_file_contents, rosetta_scripts_path, rosetta_database_path, pdb_id = self.pdb_id, extra_flags = specific_flag_hacks or '')
+        success, mapping = get_pdb_contents_to_pose_residue_map(pdb_file_contents, rosetta_scripts_path, rosetta_database_path, pdb_id = self.pdb_id, extra_flags = ((specific_flag_hacks or '') + ' ' + (extra_command_flags or '')).strip())
         if not success:
             raise Exception("An error occurred mapping the PDB ATOM residue IDs to the Rosetta numbering.\n%s" % "\n".join(mapping))
 
@@ -1226,132 +1226,84 @@ class PDB:
         self.rosetta_to_atom_sequence_maps = rosetta_to_atom_sequence_maps
         self.rosetta_sequences = rosetta_sequences
 
+
+    def get_atom_sequence_to_rosetta_map(self):
+        '''Uses the Rosetta->ATOM injective map to construct an injective mapping from ATOM->Rosetta.
+           We do not extend the injection to include ATOM residues which have no corresponding Rosetta residue.
+             e.g. atom_sequence_to_rosetta_mapping[c].map.get('A  45 ') will return None if there is no corresponding Rosetta residue
+           those residues to None.
+           Likewise, if a PDB chain c is not present in the Rosetta model then atom_sequence_to_rosetta_mapping[c].map.get(s) returns None.
+        '''
+        if not self.rosetta_to_atom_sequence_maps and self.rosetta_sequences:
+            raise Exception('The PDB to Rosetta mapping has not been determined. Please call construct_pdb_to_rosetta_residue_map first.')
+
+        atom_sequence_to_rosetta_mapping = {}
+        for chain_id, mapping in self.rosetta_to_atom_sequence_maps.iteritems():
+            chain_mapping = {}
+            for k in mapping:
+                chain_mapping[k[1]] = k[0]
+            atom_sequence_to_rosetta_mapping[chain_id] = SequenceMap.from_dict(chain_mapping)
+
+        # Add empty maps for missing chains
+        for chain_id, sequence in self.atom_sequences.iteritems():
+            if not atom_sequence_to_rosetta_mapping.get(chain_id):
+                atom_sequence_to_rosetta_mapping[chain_id] = SequenceMap()
+
+        return atom_sequence_to_rosetta_mapping
+
+
+    def get_atom_sequence_to_rosetta_json_map(self):
+        '''Returns the mapping from PDB ATOM residue IDs to Rosetta residue IDs in JSON format.'''
+        import json
+        d = {}
+        atom_sequence_to_rosetta_mapping = self.get_atom_sequence_to_rosetta_map()
+        for c, sm in atom_sequence_to_rosetta_mapping.iteritems():
+            for k, v in sm.map.iteritems():
+                d[k] = v
+        return json.dumps(d, sort_keys = True)
+
+
+    def get_rosetta_sequence_to_atom_json_map(self):
+        '''Returns the mapping from Rosetta residue IDs to PDB ATOM residue IDs in JSON format.'''
+        import json
+        if not self.rosetta_to_atom_sequence_maps and self.rosetta_sequences:
+            raise Exception('The PDB to Rosetta mapping has not been determined. Please call construct_pdb_to_rosetta_residue_map first.')
+
+        d = {}
+        for c, sm in self.rosetta_to_atom_sequence_maps.iteritems():
+            for k, v in sm.map.iteritems():
+                d[k] = v
+            #d[c] = sm.map
+        return json.dumps(d, sort_keys = True)
+
+
+    def map_pdb_residues_to_rosetta_residues(self, mutations):
+        '''This function takes a list of ChainMutation objects and uses the PDB to Rosetta mapping to return the corresponding
+           list of SimpleMutation objects using Rosetta numbering.
+           e.g.
+              p = PDB(...)
+              p.construct_pdb_to_rosetta_residue_map()
+              rosetta_mutations = p.map_pdb_residues_to_rosetta_residues(pdb_mutations)
+        '''
+        if not self.rosetta_to_atom_sequence_maps and self.rosetta_sequences:
+            raise Exception('The PDB to Rosetta mapping has not been determined. Please call construct_pdb_to_rosetta_residue_map first.')
+
+        rosetta_mutations = []
+        atom_sequence_to_rosetta_mapping = self.get_atom_sequence_to_rosetta_map()
+        for m in mutations:
+            rosetta_residue_id = atom_sequence_to_rosetta_mapping[m.Chain].get('%s%s' % (m.Chain, m.ResidueID))
+            rosetta_mutations.append(SimpleMutation(m.WildTypeAA, rosetta_residue_id, m.MutantAA))
+        return rosetta_mutations
+
+
+    def assert_wildtype_matches(self, mutation):
+        '''Check that the wildtype of the Mutation object matches the PDB sequence.'''
+        readwt = self.getAminoAcid(self.getAtomLine(mutation.Chain, mutation.ResidueID))
+        assert(mutation.WildTypeAA == residue_type_3to1_map[readwt])
+
+
     ### END OF REFACTORED CODE
 
-
-    def GetATOMSequences(self, ConvertMSEToAtom = False, RemoveIncompleteFinalResidues = False, RemoveIncompleteResidues = False):
-        sequences, residue_map = self.GetRosettaResidueMap(ConvertMSEToAtom = ConvertMSEToAtom, RemoveIncompleteFinalResidues = RemoveIncompleteFinalResidues, RemoveIncompleteResidues = RemoveIncompleteResidues)
-        return sequences
-
-    def GetRosettaResidueMap(self, ConvertMSEToAtom = False, RemoveIncompleteFinalResidues = False, RemoveIncompleteResidues = False):
-        '''Note: This function ignores any DNA.'''
-        chain = None
-        sequences = {}
-        residue_map = {}
-        resid_set = set()
-        resid_list = []
-
-        DNA_residues = set([' DA', ' DC', ' DG', ' DT'])
-        chains = []
-        self.RAW_ATOM_SEQUENCE = []
-        essential_atoms_1 = set(['CA', 'C', 'N'])#, 'O'])
-        essential_atoms_2 = set(['CA', 'C', 'N'])#, 'OG'])
-        current_atoms = set()
-        atoms_read = {}
-        oldchainID = None
-        removed_residue = {}
-        for line in self.lines:
-            if line[0:4] == 'ATOM' or (ConvertMSEToAtom and (line[0:6] == 'HETATM') and (line[17:20] == 'MSE')):
-                chainID = line[21]
-                if missing_chain_ids.get(self.pdb_id):
-                    chainID = missing_chain_ids[self.pdb_id]
-                if chainID not in chains:
-                    chains.append(chainID)
-                residue_longname = line[17:20]
-                if residue_longname in DNA_residues:
-                    # Skip DNA
-                    continue
-                if residue_longname == 'UNK':
-                    # Skip unknown residues
-                    continue
-                if residue_longname not in allowed_PDB_residues_types and not(ConvertMSEToAtom and residue_longname == 'MSE'):
-                    if not self.strict:
-                        # Skip unknown residues
-                        continue
-                    else:
-                        raise NonCanonicalResidueException("Residue %s encountered: %s" % (line[17:20], line))
-                else:
-                    resid = line[21:27]
-                    #print(chainID, residue_longname, resid)
-                    #print(line)
-                    #print(resid_list)
-                    if resid not in resid_set:
-                        removed_residue[chainID] = False
-                        add_residue = True
-                        if current_atoms:
-                            if RemoveIncompleteResidues and essential_atoms_1.intersection(current_atoms) != essential_atoms_1 and essential_atoms_2.intersection(current_atoms) != essential_atoms_2:
-                                oldChain = resid_list[-1][0]
-                                oldResidueID = resid_list[-1][1:]
-                                print("The last residue '%s', %s, in chain %s is missing these atoms: %s." % (resid_list[-1], residue_longname, oldChain, essential_atoms_1.difference(current_atoms) or essential_atoms_2.difference(current_atoms)))
-                                resid_set.remove(resid_list[-1])
-                                #print("".join(resid_list))
-                                resid_list = resid_list[:-1]
-                                if oldchainID:
-                                    removed_residue[oldchainID] = True
-                                #print("".join(resid_list))
-                                #print(sequences[oldChain])
-                                if sequences.get(oldChain):
-                                    sequences[oldChain] = sequences[oldChain][:-1]
-
-                                if residue_map.get(oldChain):
-                                    residue_map[oldChain] = residue_map[oldChain][:-1]
-
-                                #print(sequences[oldChain]
-                        else:
-                            assert(not(resid_set))
-                        current_atoms = set()
-                        atoms_read[chainID] = set()
-                        atoms_read[chainID].add(line[12:15].strip())
-                        resid_set.add(resid)
-                        resid_list.append(resid)
-                        chainID = line[21]
-
-                        sequences[chainID] = sequences.get(chainID, [])
-                        if residue_longname in non_canonical_amino_acids:
-                            sequences[chainID].append(non_canonical_amino_acids[residue_longname])
-                        else:
-                            sequences[chainID].append(residue_type_3to1_map[residue_longname])
-
-                        residue_map[chainID] = residue_map.get(chainID, [])
-                        if residue_longname in non_canonical_amino_acids:
-                            residue_map[chainID].append((resid, non_canonical_amino_acids[residue_longname]))
-                        else:
-                            residue_map[chainID].append((resid, residue_type_3to1_map[residue_longname]))
-
-                        oldchainID = chainID
-                    else:
-                        #atoms_read[chainID] = atoms_read.get(chainID, set())
-                        atoms_read[chainID].add(line[12:15].strip())
-                    current_atoms.add(line[12:15].strip())
-        if RemoveIncompleteFinalResidues:
-            # These are (probably) necessary for Rosetta to keep the residue. Rosetta does throw away residues where only the N atom is present if that residue is at the end of a chain.
-            for chainID, sequence_list in sequences.iteritems():
-                if not(removed_residue[chainID]):
-                    if essential_atoms_1.intersection(atoms_read[chainID]) != essential_atoms_1 and essential_atoms_2.intersection(atoms_read[chainID]) != essential_atoms_2:
-                        print("The last residue %s of chain %s is missing these atoms: %s." % (sequence_list[-1], chainID, essential_atoms_1.difference(atoms_read[chainID]) or essential_atoms_2.difference(atoms_read[chainID])))
-                        oldResidueID = sequence_list[-1][1:]
-                        residue_map[chainID] = residue_map[chainID][0:-1]
-                        sequences[chainID] = sequence_list[0:-1]
-
-
-        for chainID, sequence_list in sequences.iteritems():
-            sequences[chainID] = "".join(sequence_list)
-            assert(sequences[chainID] == "".join([res_details[1] for res_details in residue_map[chainID]]))
-        for chainID in chains:
-            for a_acid in sequences.get(chainID, ""):
-                self.RAW_ATOM_SEQUENCE.append((chainID, a_acid))
-
-        residue_objects = {}
-        for chainID in residue_map.keys():
-            residue_objects[chainID] = []
-        for chainID, residue_list in residue_map.iteritems():
-            for res_pair in residue_list:
-                resid = res_pair[0]
-                resaa = res_pair[1]
-                assert(resid[0] == chainID)
-                residue_objects[chainID].append((resid[1:].strip(), resaa))
-
-        return sequences, residue_objects
 
     @staticmethod
     def ChainResidueID2String(chain, residueID):
@@ -1382,14 +1334,9 @@ class PDB:
             raise PDBValidationException("The mutation(s) %s could not be matched against the PDB %s." % (", ".join(map(str, badmutations)), self.pdb_id))
 
 
-    def get_ddGResmap(self):
-        return self.ddGresmap
-
-    def get_ddGInverseResmap(self):
-        return self.ddGiresmap
-
     def getAminoAcid(self, line):
         return line[17:20]
+
 
     def getAtomLine(self, chain, resid):
         '''This function assumes that all lines are ATOM or HETATM lines.
@@ -1401,87 +1348,6 @@ class PDB:
             if line[21:22] == chain and resid == line[22:27]:
                 return line
         raise Exception("Could not find the ATOM/HETATM line corresponding to chain '%(chain)s' and residue '%(resid)s'." % vars())
-
-
-    def remapMutations(self, mutations, pdbID = '?'):
-        '''Takes in a list of (Chain, ResidueID, WildTypeAA, MutantAA) mutation tuples and returns the remapped
-           mutations based on the ddGResmap (which must be previously instantiated).
-           This function checks that the mutated positions exist and that the wild-type matches the PDB.
-        '''
-        remappedMutations = []
-        ddGResmap = self.get_ddGResmap()
-
-        for m in mutations:
-            ns = (PDB.ChainResidueID2String(m.Chain, str(ddGResmap['ATOM-%s' % PDB.ChainResidueID2String(m.Chain, m.ResidueID)])))
-            remappedMutations.append(Mutation(m.WildTypeAA, ns[1:].strip(), m.MutantAA, ns[0]))
-
-        # Validate the mutations against the Rosetta residues
-        sequences, residue_map = self.GetRosettaResidueMap()
-        for rm in remappedMutations:
-            offset = int(residue_map[rm.Chain][0][0])
-            pr = residue_map[rm.Chain][int(rm.ResidueID) - offset]
-            assert(pr[0] == rm.ResidueID)
-            assert(pr[1] == rm.WildTypeAA)
-        return remappedMutations
-
-    def stripForDDG(self, chains = True, keepHETATM = False, numberOfModels = None):
-        '''Strips a PDB to ATOM lines. If keepHETATM is True then also retain HETATM lines.
-           By default all PDB chains are kept. The chains parameter should be True or a list.
-           In the latter case, only those chains in the list are kept.
-           Unoccupied ATOM lines are discarded.
-           This function also builds maps from PDB numbering to Rosetta numbering and vice versa.
-           '''
-        from Bio.PDB import PDBParser
-        resmap = {}
-        iresmap = {}
-        newlines = []
-        residx = 0
-        oldres = None
-        model_number = 1
-        for line in self.lines:
-            fieldtype = line[0:6].strip()
-            if fieldtype == "ENDMDL":
-                model_number += 1
-                if numberOfModels and (model_number > numberOfModels):
-                    break
-                if not numberOfModels:
-                    raise Exception("The logic here does not handle multiple models yet.")
-            if (fieldtype == "ATOM" or (fieldtype == "HETATM" and keepHETATM)) and (float(line[54:60]) != 0):
-                chain = line[21:22]
-                if (chains == True) or (chain in chains):
-                    resid = line[21:27] # Chain, residue sequence number, insertion code
-                    iCode = line[26:27]
-                    if resid != oldres:
-                        residx += 1
-                        newnumbering = "%s%4.i " % (chain, residx)
-                        assert(len(newnumbering) == 6)
-                        id = fieldtype + "-" + resid
-                        resmap[id] = residx
-                        iresmap[residx] = id
-                        oldres = resid
-                    oldlength = len(line)
-                    # Add the original line back including the chain [21] and inserting a blank for the insertion code
-                    line = "%s%4.i %s" % (line[0:22], resmap[fieldtype + "-" + resid], line[27:])
-                    assert(len(line) == oldlength)
-                    newlines.append(line)
-        self.lines = newlines
-        self.ddGresmap = resmap
-        self.ddGiresmap = iresmap
-
-        # Sanity check against a known library
-        tmpfile = "/tmp/ddgtemp.pdb"
-        self.lines = self.lines or ["\n"] # necessary to avoid a crash in the Bio Python module
-        F = open(tmpfile,'w')
-        F.write(string.join(self.lines, "\n"))
-        F.close()
-        parser=PDBParser()
-        structure=parser.get_structure('tmp', tmpfile)
-        os.remove(tmpfile)
-        count = 0
-        for residue in structure.get_residues():
-            count += 1
-        assert(count == residx)
-        assert(len(resmap) == len(iresmap))
 
 
     def CheckForPresenceOf(self, reslist):
