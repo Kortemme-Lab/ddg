@@ -62,15 +62,21 @@ script = '''<ROSETTASCRIPTS>
 def get_pdb_contents_to_pose_residue_map(pdb_file_contents, rosetta_scripts_path, rosetta_database_path, pdb_id = None, extra_flags = ''):
     '''Takes a string containing a PDB file, the RosettaScripts executable, and the Rosetta database and then uses the features database to map PDB residue IDs to pose residue IDs.
        On success, (True, the residue mapping) is returned. On failure, (False, a list of errors) is returned.
-    '''
+
+       Note: extra_flags should typically include '-ignore_zero_occupancy false' and '-ignore_unrecognized_res'.'''
+
     filename = write_temp_file("/tmp", pdb_file_contents)
     success, mapping = get_pdb_to_pose_residue_map(filename, rosetta_scripts_path, rosetta_database_path, pdb_id = pdb_id, extra_flags = extra_flags)
     os.remove(filename)
     return success, mapping
 
+
 def get_pdb_to_pose_residue_map(pdb_path, rosetta_scripts_path, rosetta_database_path, pdb_id = None, extra_flags = ''):
     '''Takes a path to a PDB file, the RosettaScripts executable, and the Rosetta database and then uses the features database to map PDB residue IDs to pose residue IDs.
-       On success, (True, the residue mapping) is returned. On failure, (False, a list of errors) is returned.'''
+       On success, (True, the residue mapping) is returned. On failure, (False, a list of errors) is returned.
+
+       Note: extra_flags should typically include '-ignore_zero_occupancy false' and '-ignore_unrecognized_res'.'''
+
     mapping = {}
     errors = []
     exit_code = 0
@@ -82,7 +88,7 @@ def get_pdb_to_pose_residue_map(pdb_path, rosetta_scripts_path, rosetta_database
         db_path = script_path + ".db3"
         script_handle.write(script % db_path)
         script_handle.close()
-        command_line = '%s -database %s -constant_seed -ignore_unrecognized_res -in:file:s %s -parser:protocol %s -overwrite -out:nooutput %s' % (rosetta_scripts_path, rosetta_database_path, pdb_path, script_path, extra_flags)
+        command_line = '%s -database %s -constant_seed -in:file:s %s -parser:protocol %s -overwrite -out:nooutput %s' % (rosetta_scripts_path, rosetta_database_path, pdb_path, script_path, extra_flags)
 
         exit_code, stdout = commands.getstatusoutput(command_line)
         if exit_code != 0:
@@ -113,6 +119,9 @@ INNER JOIN residues ON residue_pdb_identification.struct_id=residues.struct_id A
         errors.append(str(e))
         errors.append(traceback.format_exc())
         exit_code = 1
+
+    if errors and ((extra_flags.find('-ignore_zero_occupancy false') == -1) or (extra_flags.find('-ignore_unrecognized_res') == -1)):
+        errors.append("Note: extra_flags should typically include both '-ignore_zero_occupancy false' and '-ignore_unrecognized_res'.")
 
     if os.path.exists(script_path):
         os.remove(script_path)
