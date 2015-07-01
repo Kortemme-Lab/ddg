@@ -71,14 +71,15 @@ except:
     import simplejson as json
 
 from rosetta.pdb import PDB, create_mutfile
-from rosetta.basics import Mutation
+from rosetta.basics import ChainMutation
+from rosetta.input_files import Mutfile
 
 
 task_subfolder = 'preminimization'
 mutfiles_subfolder = 'mutfiles'
 generated_scriptname = 'preminimization_step'
 
-def create_input_files(pdb_dir_path, pdb_data_dir, mutfile_data_dir, keypair, dataset_cases, skip_if_exists = False):
+def create_input_files(settings, pdb_dir_path, pdb_data_dir, mutfile_data_dir, keypair, dataset_cases, skip_if_exists = False):
     '''Create the stripped PDB files and the mutfiles for the DDG step. Mutfiles are created at this point as we need the
     original PDB to generate the residue mapping.
     '''
@@ -91,44 +92,81 @@ def create_input_files(pdb_dir_path, pdb_data_dir, mutfile_data_dir, keypair, da
 
     # Strip the PDB to the list of chains. This also renumbers residues in the PDB for Rosetta.
     chains = [chain]
-    pdb.stripForDDG(chains, numberOfModels = 1)
+    pdb.strip_to_chains(chains)
+    pdb.strip_HETATMs()
+    stripped_pdb = PDB('\n'.join(pdb.lines))
 
     # Check to make sure that we haven't stripped all the ATOM lines
-    if not [line for line in pdb.lines if line[0:4] == "ATOM"]:
+    if not [line for line in stripped_pdb.lines if line[0:4] == "ATOM"]:
         raise Exception("No ATOM lines remain in the stripped PDB file %s." % stripped_pdb_path)
 
-    # Check to make sure that CSE and MSE are not present in the PDB
-    unhandled_residues = pdb.CheckForPresenceOf(["CSE", "MSE"])
-    if unhandled_residues:
-        raise Exception("Found residues [%s] in the stripped PDB file %s. These should be changed to run this job under Rosetta." % (', '.join(unhandled_residues), stripped_pdb_path))
+    # Assert that there are no empty sequences
+    assert(sorted(stripped_pdb.atom_sequences.keys()) == sorted(chains))
+    for chain_id, sequence in stripped_pdb.atom_sequences.iteritems():
+        assert(len(sequence) > 0)
+
+    # Check for CSE and MSE
+    try:
+        if 'CSE' in stripped_pdb.residue_types:
+            raise Exception('This case contains a CSE residue which may (or may not) cause an issue with Rosetta depending on the version.')
+        elif 'MSE' in stripped_pdb.residue_types:
+            raise Exception('This case contains an MSE residue which may (or may not) cause an issue with Rosetta depending on the version.')
+            # It looks like MSE (and CSE?) may now be handled - https://www.rosettacommons.org/content/pdb-files-rosetta-format
+    except Exception, e:
+        print('%s: %s, chain %s' % (str(e), str(stripped_pdb.pdb_id), chain))
 
     # Turn the lines array back into a valid PDB file
     if not(skip_if_exists) or not(os.path.exists(stripped_pdb_path)):
-        write_file(stripped_pdb_path, '\n'.join(pdb.lines))
+        write_file(stripped_pdb_path, '\n'.join(stripped_pdb.lines))
+
+    # Create the mapping between PDB and Rosetta residue numbering
+    # Note: In many Rosetta protocols, '-ignore_unrecognized_res' and '-ignore_zero_occupancy false' are used to allow
+    # Rosetta to work with structures with missing data and non-canonicals. In those cases, we should supply both flags
+    # in the string below. Since protocol 16 only uses '-ignore_unrecognized_res', we only use that flag below as otherwise
+    # we could break the mapping.
+    rosetta_scripts_bin = os.path.join(settings['local_rosetta_bin'], 'rosetta_scripts%s' % settings['rosetta_binary_type'])
+    rosetta_database_path = settings['local_rosetta_db_dir']
+    if not os.path.exists(rosetta_scripts_bin):
+        raise Exception('The Rosetta scripts executable "{0}" could not be found. Please check your configuration file.'.format(rosetta_database_path))
+    if not os.path.exists(rosetta_database_path):
+        raise Exception('The path to the Rosetta database "{0}" could not be found. Please check your configuration file.'.format(rosetta_database_path))
+    stripped_pdb.construct_pdb_to_rosetta_residue_map(rosetta_scripts_bin,rosetta_database_path, extra_command_flags = '-ignore_unrecognized_res')
+    atom_to_rosetta_residue_map = stripped_pdb.get_atom_sequence_to_rosetta_json_map()
+    rosetta_to_atom_residue_map = stripped_pdb.get_rosetta_sequence_to_atom_json_map()
+
+    # Save the PDB <-> Rosetta residue mappings to disk
+    write_file(os.path.join(pdb_data_dir, '%s_%s.rosetta2pdb.resmap.json' % (pdb_id, chain)), rosetta_to_atom_residue_map)
+    write_file(os.path.join(pdb_data_dir, '%s_%s.pdb2rosetta.resmap.json' % (pdb_id, chain)), atom_to_rosetta_residue_map)
+
+    # Assert that there are no empty sequences in the Rosetta-processed PDB file
+    total_num_residues = 0
+    d = json.loads(rosetta_to_atom_residue_map)
+    for chain_id in chains:
+        num_chain_residues = len([z for z in d.values() if z[0] == chain_id])
+        total_num_residues += num_chain_residues
+        assert(num_chain_residues > 0)
 
     # Check that the mutated positions exist and that the wild-type matches the PDB
     for dataset_case in dataset_cases:
-        # todo: Hack. This should be removed when PDB homologs are dealt with properly.
-        mutation_objects = []
         assert(dataset_case['PDBFileID'] == pdb_id)
-        for mutation in dataset_case['Mutations']:
-            #if experimentPDB_ID == "1AJ3" and predictionPDB_ID == "1U5P":
-            #    assert(int(mutation['ResidueID']) < 1000)
-            #    mutation['ResidueID'] = str(int(mutation['ResidueID']) + 1762)
-            mutation_objects.append(Mutation(mutation['WildTypeAA'], mutation['ResidueID'], mutation['MutantAA'], mutation['Chain']))
 
-        pdb.validate_mutations(mutation_objects)
+        # Note: I removed a hack here for 1AJ3->1U5P mapping
+        # The JSON file does not have the residue IDs in PDB format (5 characters including insertion code) so we need to repad them for the mapping to work
+        pdb_mutations = [ChainMutation(mutation['WildTypeAA'], PDB.ResidueID2String(mutation['ResidueID']), mutation['MutantAA'], Chain = mutation['Chain']) for mutation in dataset_case['Mutations']]
+        stripped_pdb.validate_mutations(pdb_mutations)
 
-        # Post stripping checks
-        # Get the 'Chain ResidueID' PDB-formatted identifier for each mutation mapped to Rosetta numbering
-        # then check again that the mutated positions exist and that the wild-type matches the PDB
+        # Map the PDB mutations to Rosetta numbering which is used by the mutfile format
+        rosetta_mutations = stripped_pdb.map_pdb_residues_to_rosetta_residues(pdb_mutations)
+        if (len(rosetta_mutations) != len(pdb_mutations)) or (None in set([m.ResidueID for m in rosetta_mutations])):
+            raise Exception('An error occurred in the residue mapping code for DDG case: %s, %s' % (pdb_id, pdb_mutations))
 
-        remappedMutations = pdb.remapMutations(mutation_objects, pdb_id)
-        mutfile = create_mutfile(pdb, remappedMutations)
+        # Create the mutfile
+        mutfile = Mutfile.from_mutagenesis(rosetta_mutations)
         mutfilename = os.path.join(mutfile_data_dir, '%d.mutfile' % (dataset_case['RecordID']))
         if os.path.exists(mutfilename):
             raise Exception('%s already exists. Check that the RecordIDs in the JSON file are all unique.' % mutfilename)
-        write_file(os.path.join(mutfile_data_dir, '%d.mutfile' % (dataset_case['RecordID'])), mutfile)
+        write_file(os.path.join(mutfile_data_dir, '%d.mutfile' % (dataset_case['RecordID'])), str(mutfile))
+
     return stripped_pdb_path
 
 
@@ -177,6 +215,7 @@ if __name__ == '__main__':
     output_data_dir = os.path.join(output_dir, 'data')
     pdb_data_dir = os.path.join(output_data_dir, 'input_pdbs')
     mutfile_data_dir = os.path.join(output_data_dir, mutfiles_subfolder)
+
     for jobdir in [output_dir, task_dir, output_data_dir, pdb_data_dir, mutfile_data_dir]:
         try: os.mkdir(jobdir)
         except: pass
@@ -235,7 +274,7 @@ if __name__ == '__main__':
         #if not os.path.isfile(new_pdb_path):
         #    # Note: We are assuming that the existing file has not been modified to save time copying the files
         #    shutil.copy(pdb_path, new_pdb_path)
-        stripped_pdb_path = create_input_files(pdb_dir_path, pdb_data_dir, mutfile_data_dir, keypair, dataset_cases_by_pdb_chain[keypair])
+        stripped_pdb_path = create_input_files(settings, pdb_dir_path, pdb_data_dir, mutfile_data_dir, keypair, dataset_cases_by_pdb_chain[keypair])
         pdb_relpath = os.path.relpath(stripped_pdb_path, output_dir)
 
         # Set up --in:file:l parameter

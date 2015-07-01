@@ -1167,8 +1167,6 @@ class PDB:
 
         # Apply any PDB-specific hacks
         specific_flag_hacks = None
-        if self.pdb_id and HACKS_pdb_specific_hacks.get(self.pdb_id):
-            specific_flag_hacks = HACKS_pdb_specific_hacks[self.pdb_id]
 
         skeletal_chains = sorted([k for k in self.chain_types.keys() if self.chain_types[k] == 'Protein skeleton'])
         if skeletal_chains:
