@@ -66,7 +66,13 @@ missing_chain_ids = {
 
 ### Whitelist for PDB files with ACE residues (we could allow all to pass but it may be good to manually look at each case)
 
-cases_with_ACE_residues_we_can_ignore = set(['3UB5', '1TIN', '2ZTA', '5CPV', '1ATN', '1LFO', '1OVA', '3PGK', '2FAL', '2SOD', '1SPD', '1UOX', '1UNQ', '1DFJ'])
+cases_with_ACE_residues_we_can_ignore = set(['3UB5', '1TIN', '2ZTA', '5CPV', '1ATN', '1LFO', '1OVA', '3PGK', '2FAL', '2SOD', '1SPD', '1UOX', '1UNQ', '1DFJ', '1B39', '1HRC', '1PNE', '1WEJ', '2BNH'])
+
+
+### Some PDB files have been deprecated but not replaced. Again, it may be good to manually look at each case.
+
+obsolete_pdb_ids_with_no_replacement_entries = set(['1CMW'])
+
 
 ### Parsing-related variables
 
@@ -103,6 +109,22 @@ modified_residues_patch = {
     '1CVW' : { # Note: more recent versions of this file do not require this patch
         'ANS' : 'UNK',
         '0QE' : 'UNK',
+    },
+    '1FAK' : {
+        'CGU' : 'GLU', # Gamma-carboxy-glutamic acid
+    },
+    '1JXQ' : {
+        'PHQ' : 'UNK', # benzyl chlorocarbonate
+        'CF0' : 'UNK', # fluoromethane
+    },
+    '1YJ1' : {
+        'DGN' : 'GLN', # D-glutamine
+    },
+    '2CN0' : {
+        'SIN' : 'UNK', # Succinic acid
+    },
+    '2FTL' : {
+        'IAS' : 'ASP', # Beta-L-aspartic acid/L-isoaspartate. Mismatch to asparagine - "the expected l-Asn residue had been replaced with a non-standard amino acid" (10.1016/j.jmb.2006.11.003).
     },
 }
 
@@ -244,6 +266,7 @@ class PDB:
 
         self.rosetta_to_atom_sequence_maps = {}
         self.rosetta_residues = []
+        self.residue_types = set()                      # the set of 3-letter residue types present in the file (useful for checking against e.g. CSE, MSE)
 
         self.fix_pdb()
         self._split_lines()
@@ -365,6 +388,7 @@ class PDB:
             linetype = line[0:6]
             if linetype == 'ATOM  ' or linetype == 'HETATM' or linetype == 'TER   ':
                 chain_id = line[21]
+                self.residue_types.add(line[17:20].strip())
                 if missing_chain_ids.get(self.pdb_id):
                     chain_id = missing_chain_ids[self.pdb_id]
                 structure_lines.append(line)
@@ -454,6 +478,7 @@ class PDB:
             self.modified_residue_mapping_3 = modified_residue_mapping_3
             self.modified_residues = modified_residues
 
+
     def _get_replacement_pdb_id(self):
         '''Checks to see if the PDB file has been deprecated and, if so, what the new ID is.'''
         deprecation_lines = self.parsed_lines['OBSLTE']
@@ -461,7 +486,10 @@ class PDB:
         if deprecation_lines:
             assert(len(deprecation_lines) == 1)
             tokens = deprecation_lines[0].split()[1:]
-            assert(len(tokens) == 3)
+            if tokens[1].upper() in obsolete_pdb_ids_with_no_replacement_entries:
+                assert(len(tokens) == 2)
+            else:
+                assert(len(tokens) == 3)
             if self.pdb_id:
                 mtchs = date_regex.match(tokens[0])
                 assert(mtchs)
@@ -469,10 +497,11 @@ class PDB:
                 _month = mtchs.group(2)
                 _year = int(mtchs.group(3)) # only two characters?
                 assert(tokens[1] == self.pdb_id)
-                assert(len(tokens[2]) == 4)
                 self.deprecation_date = (_day, _month, _year) # no need to do anything fancier unless this is ever needed
                 self.deprecated = True
-                self.replacement_pdb_id = tokens[2]
+                if len(tokens) == 3:
+                    assert(len(tokens[2]) == 4)
+                    self.replacement_pdb_id = tokens[2]
 
     ### PDB mutating functions ###
 
@@ -718,6 +747,19 @@ class PDB:
             # Hack for 1ELV
             MD = MD.replace('FRAGMENT: CCP2-SP CATALYTIC FRAGMENT: ASP363-ASP-673 SEGMENT PRECEDED BY AN ASP-LEU SEQUENCE ADDED AT THE N-TERMINAL END',
                             'FRAGMENT: CCP2-SP CATALYTIC FRAGMENT; ASP363-ASP-673 SEGMENT PRECEDED BY AN ASP-LEU SEQUENCE ADDED AT THE N-TERMINAL END')
+            # Hack for 1E6E
+            MD = MD.replace('MOLECULE: NADPH\:ADRENODOXIN OXIDOREDUCTASE;', 'MOLECULE: NADPH;ADRENODOXIN OXIDOREDUCTASE;')
+            # Hack for 1JZD
+            MD = MD.replace('MOLECULE: THIOL:DISULFIDE INTERCHANGE PROTEIN', 'MOLECULE: THIOL;DISULFIDE INTERCHANGE PROTEIN')
+            # Hack for 1N2C
+            MD = MD.replace('OTHER_DETAILS: 2\:1 COMPLEX OF HOMODIMERIC FE-PROTEIN', 'OTHER_DETAILS: 2;1 COMPLEX OF HOMODIMERIC FE-PROTEIN')
+            # Hack for 1S6P
+            MD = MD.replace('MOLECULE: POL POLYPROTEIN [CONTAINS: REVERSE TRANSCRIPTASE]', 'MOLECULE: POL POLYPROTEIN [CONTAINS; REVERSE TRANSCRIPTASE]')
+            # Hack for 1Z9E
+            MD = MD.replace('FRAGMENT: SEQUENCE DATABASE RESIDUES 347-471 CONTAINS: HIV- 1 INTEGRASE-BINDING DOMAIN', 'FRAGMENT: SEQUENCE DATABASE RESIDUES 347-471 CONTAINS; HIV- 1 INTEGRASE-BINDING DOMAIN')
+            # Hacks for 2GOX
+            MD = MD.replace('FRAGMENT: FRAGMENT OF ALPHA CHAIN: RESIDUES 996-1287;', 'FRAGMENT: FRAGMENT OF ALPHA CHAIN; RESIDUES 996-1287;')
+            MD = MD.replace('FRAGMENT: C-TERMINAL DOMAIN: RESIDUES 101-165;', 'FRAGMENT: C-TERMINAL DOMAIN; RESIDUES 101-165;')
 
             MOL_fields = [s.strip() for s in MD.split(';') if s.strip()]
 
@@ -903,7 +945,9 @@ class PDB:
                         else:
                             raise Exception("Unknown RNA residue %s." % r)
             else:
+                token_counter = 0
                 for r in tokens:
+                    token_counter += 1
                     if residue_type_3to1_map.get(r):
                         sequence.append(residue_type_3to1_map[r])
                     else:
@@ -918,6 +962,9 @@ class PDB:
                         elif r == 'UNK':
                             continue
                         # Skip these residues
+                        elif r == 'ACE' and token_counter == 1:
+                            # Always allow ACE as the first residue of a chain
+                            sequence.append('X')
                         elif r == 'ACE' and pdb_id in cases_with_ACE_residues_we_can_ignore:
                             sequence.append('X')
                             #continue
