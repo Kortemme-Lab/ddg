@@ -49,6 +49,9 @@ Options:
     --talaris2014
         When this option is set, the talaris2014 score function will be used rather than the default score function. Warning: This option may break when talaris2014 becomes the default Rosetta score function.
 
+    -p --parallel NUM_PROCESSORS
+        If this argument is set then the job setup will use NUM_PROCESSORS which will speed this step up. Otherwise, a single processor will be used.
+
 Authors:
     Kyle Barlow
     Shane O'Connor
@@ -58,6 +61,7 @@ import sys
 import os
 import re
 import shutil
+import traceback
 import time
 import datetime
 import inspect
@@ -173,6 +177,12 @@ def create_input_files(settings, pdb_dir_path, pdb_data_dir, mutfile_data_dir, k
     return stripped_pdb_path
 
 
+def run():
+    # Only import multiprocessing here because it may not be available in old cluster python environments
+    from multiprocessing import Pool
+    import multiprocessing
+
+
 if __name__ == '__main__':
     import pprint
     try:
@@ -193,6 +203,19 @@ if __name__ == '__main__':
     if not os.path.exists(dataset_filepath):
         raise Exception('The dataset file %s does not exist.' % dataset_filepath)
 
+    # Read in any parallel processing options
+    num_processors = 1
+    num_system_processors = multiprocessing.cpu_count()
+    if arguments.get('--parallel'):
+        valid_options = [int(x) for x in arguments['--parallel'] if x.isdigit()]
+        if not valid_options:
+            raise Exception('None of the arguments to --parallel are valid. The argument must be an integer between 1 and the number of processors (%d).' % num_system_processors)
+        else:
+            num_processors = max(valid_options)
+            if 1 > num_processors or num_processors > num_system_processors:
+                raise Exception('The number of processors must be an integer between 1 and %d.' % num_system_processors)
+
+    # Read the dataset from disk
     try:
         dataset = json.loads(read_file(dataset_filepath))
         dataset_cases = dataset['data']
@@ -214,104 +237,116 @@ if __name__ == '__main__':
 
     # Set the job output directory
     output_dir = os.path.join(root_output_directory, job_name) # The root directory for the protocol run
-    task_dir = os.path.join(output_dir, task_subfolder) # The root directory for preminization section of the protocol
-    output_data_dir = os.path.join(output_dir, 'data')
-    pdb_data_dir = os.path.join(output_data_dir, 'input_pdbs')
-    mutfile_data_dir = os.path.join(output_data_dir, mutfiles_subfolder)
+    try:
+        task_dir = os.path.join(output_dir, task_subfolder) # The root directory for preminization section of the protocol
+        output_data_dir = os.path.join(output_dir, 'data')
+        pdb_data_dir = os.path.join(output_data_dir, 'input_pdbs')
+        mutfile_data_dir = os.path.join(output_data_dir, mutfiles_subfolder)
 
-    for jobdir in [output_dir, task_dir, output_data_dir, pdb_data_dir, mutfile_data_dir]:
-        try: os.mkdir(jobdir)
-        except: pass
+        for jobdir in [output_dir, task_dir, output_data_dir, pdb_data_dir, mutfile_data_dir]:
+            try: os.mkdir(jobdir)
+            except: pass
 
-    # Make a copy the dataset so that it can be automatically used by the following steps
-    shutil.copy(dataset_filepath, os.path.join(output_dir, 'dataset.json'))
+        # Make a copy the dataset so that it can be automatically used by the following steps
+        shutil.copy(dataset_filepath, os.path.join(output_dir, 'dataset.json'))
 
-    # Count the number of datapoints per PDB chain
-    count_by_pdb_chain = {}
-    dataset_cases_by_pdb_chain = {}
-    job_dict = {}
-    for ddg_case in dataset_cases:
-        chains = set([r['Chain'] for r in ddg_case['Mutations']])
-        assert(len(chains) == 1)
-        chain = chains.pop()
-        pdb_id = ddg_case['PDBFileID']
-        keypair = (pdb_id, chain)
-        count_by_pdb_chain[keypair] = count_by_pdb_chain.get(keypair, 0)
-        count_by_pdb_chain[keypair] += 1
-        dataset_cases_by_pdb_chain[keypair] = dataset_cases_by_pdb_chain.get(keypair, [])
-        dataset_cases_by_pdb_chain[keypair].append(ddg_case)
+        # Count the number of datapoints per PDB chain
+        count_by_pdb_chain = {}
+        dataset_cases_by_pdb_chain = {}
+        job_dict = {}
+        for ddg_case in dataset_cases:
+            chains = set([r['Chain'] for r in ddg_case['Mutations']])
+            assert(len(chains) == 1)
+            chain = chains.pop()
+            pdb_id = ddg_case['PDBFileID']
+            keypair = (pdb_id, chain)
+            count_by_pdb_chain[keypair] = count_by_pdb_chain.get(keypair, 0)
+            count_by_pdb_chain[keypair] += 1
+            dataset_cases_by_pdb_chain[keypair] = dataset_cases_by_pdb_chain.get(keypair, [])
+            dataset_cases_by_pdb_chain[keypair].append(ddg_case)
 
-    # Create the list of PDB IDs and chains for the dataset
-    print('')
-    if arguments['--test']:
-        pdb_monomers = []
-        print('Creating test run input...')
-        num_cases = 0
-        for keypair, v in sorted(count_by_pdb_chain.iteritems(), key=lambda x:-x[1]):
-            if v <= 10:
-                pdb_monomers.append(keypair)
-                num_cases += v
-                if num_cases >= 20:
-                    break
-    else:
-        pdb_monomers = sorted(count_by_pdb_chain.keys())
+        # Create the list of PDB IDs and chains for the dataset
+        print('')
+        if arguments['--test']:
+            pdb_monomers = []
+            print('Creating test run input...')
+            num_cases = 0
+            for keypair, v in sorted(count_by_pdb_chain.iteritems(), key=lambda x:-x[1]):
+                if v <= 10:
+                    pdb_monomers.append(keypair)
+                    num_cases += v
+                    if num_cases >= 20:
+                        break
+        else:
+            pdb_monomers = sorted(count_by_pdb_chain.keys())
 
-    # Ensure all the input PDB files exist
-    for keypair in pdb_monomers:
-        pdb_path = os.path.join(input_pdb_dir_path, '%s.pdb' % keypair[0])
-        if not os.path.exists(pdb_path):
-            raise Exception('Error: The file %s is missing.' % pdb_path)
+        # Ensure all the input PDB files exist
+        for keypair in pdb_monomers:
+            pdb_path = os.path.join(input_pdb_dir_path, '%s.pdb' % keypair[0])
+            if not os.path.exists(pdb_path):
+                raise Exception('Error: The file %s is missing.' % pdb_path)
 
-    # Write job dict and setup self-contained data directory
-    extra_s = ''
-    if arguments['--talaris2014']:
-        extra_s = ' (using talaris2014)'
-    print('Creating benchmark input:%s' % extra_s)
-    job_dict = {}
+        # Write job dict and setup self-contained data directory
+        extra_s = ''
+        if arguments['--talaris2014']:
+            extra_s = ' (using talaris2014)'
+        print('Creating benchmark input:%s' % extra_s)
+        job_dict = {}
 
-    for keypair in pdb_monomers:
-        sys.stdout.write('.')
-        sys.stdout.flush()
-        sub_dict = {}
+        for keypair in pdb_monomers:
+            sys.stdout.write('.')
+            sys.stdout.flush()
+            sub_dict = {}
 
-        # Create stripped PDB file
-        pdb_dir_path = os.path.join(input_pdb_dir_path, '%s.pdb' % keypair[0])
-        #new_pdb_path = os.path.join(pdb_data_dir, os.path.basename(pdb_path))
-        #if not os.path.isfile(new_pdb_path):
-        #    # Note: We are assuming that the existing file has not been modified to save time copying the files
-        #    shutil.copy(pdb_path, new_pdb_path)
-        stripped_pdb_path = create_input_files(settings, pdb_dir_path, pdb_data_dir, mutfile_data_dir, keypair, dataset_cases_by_pdb_chain[keypair])
-        pdb_relpath = os.path.relpath(stripped_pdb_path, output_dir)
+            # Create stripped PDB file
+            pdb_dir_path = os.path.join(input_pdb_dir_path, '%s.pdb' % keypair[0])
+            #new_pdb_path = os.path.join(pdb_data_dir, os.path.basename(pdb_path))
+            #if not os.path.isfile(new_pdb_path):
+            #    # Note: We are assuming that the existing file has not been modified to save time copying the files
+            #    shutil.copy(pdb_path, new_pdb_path)
+            stripped_pdb_path = create_input_files(settings, pdb_dir_path, pdb_data_dir, mutfile_data_dir, keypair, dataset_cases_by_pdb_chain[keypair])
+            pdb_relpath = os.path.relpath(stripped_pdb_path, output_dir)
 
-        # Set up --in:file:l parameter
-        sub_dict['input_file_list'] = [pdb_relpath]
+            # Set up --in:file:l parameter
+            sub_dict['input_file_list'] = [pdb_relpath]
 
-        job_dict[os.path.join(task_subfolder, '_'.join(keypair))] = sub_dict
-    sys.stdout.write('\n')
+            job_dict[os.path.join(task_subfolder, '_'.join(keypair))] = sub_dict
+        sys.stdout.write('\n')
 
-    with open(os.path.join(output_data_dir, 'job_dict.pickle'), 'w') as f:
-        pickle.dump(job_dict, f)
+        with open(os.path.join(output_data_dir, 'job_dict.pickle'), 'w') as f:
+            pickle.dump(job_dict, f)
 
-    settings['numjobs'] = '%d' % len(pdb_monomers)
-    settings['mem_free'] = '3.0G'
-    settings['scriptname'] = generated_scriptname
-    settings['appname'] = 'minimize_with_cst'
-    settings['rosetta_args_list'] =  [
-        '-in:file:fullatom', '-ignore_unrecognized_res',
-        '-fa_max_dis', '9.0', '-ddg::harmonic_ca_tether', '0.5',
-        '-ddg::constraint_weight', '1.0',
-        '-ddg::out_pdb_prefix', 'min_cst_0.5',
-        '-ddg::sc_min_only', 'false'
-    ]
-    if arguments['--talaris2014']:
-        settings['rosetta_args_list'].extend(['-talaris2014', 'true'])
+        settings['numjobs'] = '%d' % len(pdb_monomers)
+        settings['mem_free'] = '3.0G'
+        settings['scriptname'] = generated_scriptname
+        settings['appname'] = 'minimize_with_cst'
+        settings['rosetta_args_list'] =  [
+            '-in:file:fullatom', '-ignore_unrecognized_res',
+            '-fa_max_dis', '9.0', '-ddg::harmonic_ca_tether', '0.5',
+            '-ddg::constraint_weight', '1.0',
+            '-ddg::out_pdb_prefix', 'min_cst_0.5',
+            '-ddg::sc_min_only', 'false'
+        ]
+        if arguments['--talaris2014']:
+            settings['rosetta_args_list'].extend(['-talaris2014', 'true'])
 
-    settings['output_dir'] = output_dir
+        settings['output_dir'] = output_dir
 
-    write_run_file(settings)
-    job_path = os.path.abspath(output_dir)
-    print('''Job files written to directory: %s. To launch this job:
-    cd %s
-    python %s.py''' % (job_path, job_path, generated_scriptname))
+        write_run_file(settings)
+        job_path = os.path.abspath(output_dir)
+        print('''Job files written to directory: %s. To launch this job:
+        cd %s
+        python %s.py\n''' % (job_path, job_path, generated_scriptname))
+    except Exception, e:
+        print('\nAn exception occurred setting up the preminimization step: "%s".' % str(e))
+        sys.stdout.write('Removing the directory %s: ' % output_dir)
+        try:
+            shutil.rmtree(output_dir)
+            print('done.\n')
+        except Exception, e2:
+            print('failed.\n')
+            print(str(e2))
+            print(traceback.format_exc())
+
 
 
