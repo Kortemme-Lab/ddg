@@ -46,6 +46,9 @@ Options:
     --test
         When this option is set, a shorter version of the benchmark will run with fewer input structures, less fewer DDG experiments, and fewer generated structures. This should be used to test the scripts but not for analysis.
 
+    --talaris2014
+        When this option is set, the talaris2014 score function will be used rather than the default score function. Warning: This option may break when talaris2014 becomes the default Rosetta score function.
+
 Authors:
     Kyle Barlow
     Shane O'Connor
@@ -260,7 +263,10 @@ if __name__ == '__main__':
             raise Exception('Error: The file %s is missing.' % pdb_path)
 
     # Write job dict and setup self-contained data directory
-    print('Copying PDB files:')
+    extra_s = ''
+    if arguments['--talaris2014']:
+        extra_s = ' (using talaris2014)'
+    print('Creating benchmark input:%s' % extra_s)
     job_dict = {}
 
     for keypair in pdb_monomers:
@@ -297,12 +303,15 @@ if __name__ == '__main__':
         '-ddg::out_pdb_prefix', 'min_cst_0.5',
         '-ddg::sc_min_only', 'false'
     ]
+    if arguments['--talaris2014']:
+        settings['rosetta_args_list'].extend(['-talaris2014', 'true'])
+
     settings['output_dir'] = output_dir
 
     write_run_file(settings)
     job_path = os.path.abspath(output_dir)
     print('''Job files written to directory: %s. To launch this job:
     cd %s
-    python %s''' % (job_path, job_path, generated_scriptname))
+    python %s.py''' % (job_path, job_path, generated_scriptname))
 
 
