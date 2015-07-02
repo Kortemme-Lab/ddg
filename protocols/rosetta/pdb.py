@@ -503,15 +503,26 @@ class PDB:
 
     ### PDB mutating functions ###
 
-    def strip_to_chains(self, chains):
+    def strip_to_chains(self, chains, break_at_endmdl = True):
         '''Throw away all ATOM/HETATM/ANISOU/TER lines for chains that are not in the chains list.'''
         if chains:
             chains = set(chains)
 
-            # Remove any structure lines associated with the chains
+            # Remove any structure lines not associated with the chains
             self.lines = [l for l in self.lines if not(l.startswith('ATOM  ') or l.startswith('HETATM') or l.startswith('ANISOU') or l.startswith('TER')) or l[21] in chains]
+
+            # For some Rosetta protocols, only one NMR model should be kept
+            if break_at_endmdl:
+                new_lines = []
+                for l in self.lines:
+                    if l.startswith('ENDMDL'):
+                        new_lines.append(l)
+                        break
+                    new_lines.append(l)
+                self.lines = new_lines
+
             self._update_structure_lines()
-            # todo: this logic should be fine if no other member elements rely on these lines e.g. residue mappings otherwise we need to update those elements here
+            # todo: this logic should be fine if no other member elements rely on these lines e.g. residue mappings otherwise we need to update or clear those elements here
         else:
             raise Exception('The chains argument needs to be supplied.')
 
