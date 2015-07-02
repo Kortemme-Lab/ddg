@@ -190,7 +190,7 @@ if __name__ == '__main__':
     print('Creating constraint files...')
     constraints_files, preminimized_structures = create_constraints_files(preminimized_pdb_data_dir, constraints_data_dir)
 
-    number_of_structural_pairs = arguments['--num_struct']
+    number_of_structural_pairs = arguments['--num_struct'][0]
     if arguments['--test']:
         number_of_structural_pairs = 2 # only create two wildtype/mutant pairs in test mode
 
@@ -252,8 +252,8 @@ if __name__ == '__main__':
 
     write_run_file(settings)
     job_path = os.path.abspath(output_dir)
-    print('''Job files written to directory: %s. To launch this job:
+    print('''Job files written to directory: %s.\n\nTo launch this job:
     cd %s
-    python %s''' % (job_path, job_path, generated_scriptname))
+    python %s.py\n''' % (job_path, job_path, generated_scriptname))
 
 
