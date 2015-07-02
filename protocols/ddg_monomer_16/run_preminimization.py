@@ -50,7 +50,10 @@ Options:
         When this option is set, the talaris2014 score function will be used rather than the default score function. Warning: This option may break when talaris2014 becomes the default Rosetta score function.
 
     -p --parallel NUM_PROCESSORS
-        If this argument is set then the job setup will use NUM_PROCESSORS which will speed this step up. Otherwise, a single processor will be used.
+        If this argument is set then the job setup will use NUM_PROCESSORS which will speed this step up. Otherwise, a single processor will be used. This should run on both Unix and Windows machines.
+
+    --maxp
+        This is a special case of --parallel. If this argument is set then the job setup will use as many processors as are available on the machine.
 
 Authors:
     Kyle Barlow
@@ -65,7 +68,11 @@ import traceback
 import time
 import datetime
 import inspect
-import multiprocessing
+multiprocessing_module_available = True
+try:
+    import multiprocessing
+except:
+    multiprocessing_module_available = False
 import cPickle as pickle
 import getpass
 import rosetta.parse_settings
@@ -85,8 +92,10 @@ from rosetta.input_files import Mutfile
 task_subfolder = 'preminimization'
 mutfiles_subfolder = 'mutfiles'
 generated_scriptname = 'preminimization_step'
+DEFAULT_NUMBER_OF_PROCESSORS_TO_USE = 1 # this can be overridden using the -p command
 
-def create_input_files(settings, pdb_dir_path, pdb_data_dir, mutfile_data_dir, keypair, dataset_cases, skip_if_exists = False):
+
+def create_input_files(job_dict, settings, pdb_dir_path, pdb_data_dir, mutfile_data_dir, keypair, dataset_cases, skip_if_exists = False):
     '''Create the stripped PDB files and the mutfiles for the DDG step. Mutfiles are created at this point as we need the
     original PDB to generate the residue mapping.
     '''
@@ -154,33 +163,65 @@ def create_input_files(settings, pdb_dir_path, pdb_data_dir, mutfile_data_dir, k
         assert(num_chain_residues > 0)
 
     # Check that the mutated positions exist and that the wild-type matches the PDB
-    for dataset_case in dataset_cases:
-        assert(dataset_case['PDBFileID'] == pdb_id)
+    try:
+        for dataset_case in dataset_cases:
+            assert(dataset_case['PDBFileID'] == pdb_id)
 
-        # Note: I removed a hack here for 1AJ3->1U5P mapping
-        # The JSON file does not have the residue IDs in PDB format (5 characters including insertion code) so we need to repad them for the mapping to work
-        pdb_mutations = [ChainMutation(mutation['WildTypeAA'], PDB.ResidueID2String(mutation['ResidueID']), mutation['MutantAA'], Chain = mutation['Chain']) for mutation in dataset_case['Mutations']]
-        stripped_pdb.validate_mutations(pdb_mutations)
+            # Note: I removed a hack here for 1AJ3->1U5P mapping
+            # The JSON file does not have the residue IDs in PDB format (5 characters including insertion code) so we need to repad them for the mapping to work
+            pdb_mutations = [ChainMutation(mutation['WildTypeAA'], PDB.ResidueID2String(mutation['ResidueID']), mutation['MutantAA'], Chain = mutation['Chain']) for mutation in dataset_case['Mutations']]
+            stripped_pdb.validate_mutations(pdb_mutations)
 
-        # Map the PDB mutations to Rosetta numbering which is used by the mutfile format
-        rosetta_mutations = stripped_pdb.map_pdb_residues_to_rosetta_residues(pdb_mutations)
-        if (len(rosetta_mutations) != len(pdb_mutations)) or (None in set([m.ResidueID for m in rosetta_mutations])):
-            raise Exception('An error occurred in the residue mapping code for DDG case: %s, %s' % (pdb_id, pdb_mutations))
+            # Map the PDB mutations to Rosetta numbering which is used by the mutfile format
+            rosetta_mutations = stripped_pdb.map_pdb_residues_to_rosetta_residues(pdb_mutations)
+            if (len(rosetta_mutations) != len(pdb_mutations)) or (None in set([m.ResidueID for m in rosetta_mutations])):
+                raise Exception('An error occurred in the residue mapping code for DDG case: %s, %s' % (pdb_id, pdb_mutations))
 
-        # Create the mutfile
-        mutfile = Mutfile.from_mutagenesis(rosetta_mutations)
-        mutfilename = os.path.join(mutfile_data_dir, '%d.mutfile' % (dataset_case['RecordID']))
-        if os.path.exists(mutfilename):
-            raise Exception('%s already exists. Check that the RecordIDs in the JSON file are all unique.' % mutfilename)
-        write_file(os.path.join(mutfile_data_dir, '%d.mutfile' % (dataset_case['RecordID'])), str(mutfile))
+            # Create the mutfile
+            mutfile = Mutfile.from_mutagenesis(rosetta_mutations)
+            mutfilename = os.path.join(mutfile_data_dir, '%d.mutfile' % (dataset_case['RecordID']))
+            if os.path.exists(mutfilename):
+                raise Exception('%s already exists. Check that the RecordIDs in the JSON file are all unique.' % mutfilename)
+            write_file(os.path.join(mutfile_data_dir, '%d.mutfile' % (dataset_case['RecordID'])), str(mutfile))
+    except Exception, e:
+        print(str(e))
+        print(traceback.format_exc())
 
-    return stripped_pdb_path
+    # Set up --in:file:l parameter
+    pdb_relpath = os.path.relpath(stripped_pdb_path, settings['output_dir'])
+    job_dict[os.path.join(task_subfolder, '_'.join(keypair))] = dict(input_file_list = [pdb_relpath])
+    sys.stdout.write('.'); sys.stdout.flush()
 
 
-def run():
-    # Only import multiprocessing here because it may not be available in old cluster python environments
-    from multiprocessing import Pool
-    import multiprocessing
+def single_job_pack(args):
+    print(args)
+    return single_job(*args)
+
+
+def use_multiple_processors(settings, pdb_monomers, input_pdb_dir_path, pdb_data_dir, mutfile_data_dir, dataset_cases_by_pdb_chain, num_processors):
+    assert(multiprocessing_module_available)
+
+    pool = multiprocessing.Pool(processes = num_processors)#[, initializer[, initargs]]])
+    m = multiprocessing.Manager()
+    job_dict = m.dict()
+
+    pool_jobs = []
+    for keypair in pdb_monomers:
+        pdb_dir_path = os.path.join(input_pdb_dir_path, '%s.pdb' % keypair[0])
+        pool_jobs.append(pool.apply_async(create_input_files, (job_dict, settings, pdb_dir_path, pdb_data_dir, mutfile_data_dir, keypair, dataset_cases_by_pdb_chain[keypair])))
+    pool.close()
+    pool.join()
+    sys.stdout.write('\n')
+    return job_dict._getvalue()
+
+
+def use_single_processor(settings, pdb_monomers, input_pdb_dir_path, pdb_data_dir, mutfile_data_dir, dataset_cases_by_pdb_chain):
+    job_dict = {}
+    for keypair in pdb_monomers:
+        pdb_dir_path = os.path.join(input_pdb_dir_path, '%s.pdb' % keypair[0])
+        create_input_files(job_dict, settings, pdb_dir_path, pdb_data_dir, mutfile_data_dir, keypair, dataset_cases_by_pdb_chain[keypair])
+    sys.stdout.write('\n')
+    return job_dict
 
 
 if __name__ == '__main__':
@@ -204,16 +245,26 @@ if __name__ == '__main__':
         raise Exception('The dataset file %s does not exist.' % dataset_filepath)
 
     # Read in any parallel processing options
-    num_processors = 1
-    num_system_processors = multiprocessing.cpu_count()
-    if arguments.get('--parallel'):
-        valid_options = [int(x) for x in arguments['--parallel'] if x.isdigit()]
-        if not valid_options:
-            raise Exception('None of the arguments to --parallel are valid. The argument must be an integer between 1 and the number of processors (%d).' % num_system_processors)
+    num_system_processors = 1
+    if multiprocessing_module_available:
+        num_system_processors = multiprocessing.cpu_count()
+
+    if arguments.get('--maxp'):
+        num_processors = num_system_processors
+    else:
+        num_processors = min(DEFAULT_NUMBER_OF_PROCESSORS_TO_USE, num_system_processors)
+        if arguments.get('--parallel'):
+            valid_options = [int(x) for x in arguments['--parallel'] if x.isdigit()]
+            if not valid_options:
+                raise Exception('None of the arguments to --parallel are valid. The argument must be an integer between 1 and the number of processors (%d).' % num_system_processors)
+            else:
+                num_processors = max(valid_options)
         else:
-            num_processors = max(valid_options)
-            if 1 > num_processors or num_processors > num_system_processors:
-                raise Exception('The number of processors must be an integer between 1 and %d.' % num_system_processors)
+            # If the user has not specified the number of processors, only one is selected, and more exist then let them know that this process may run faster
+            if num_processors == 1 and num_system_processors > 1:
+                print('The setup is configured to use one processor but this machine has %d processors. The --parallel or --maxp options may make this setup run faster.' % num_system_processors)
+    if 1 > num_processors or num_processors > num_system_processors:
+        raise Exception('The number of processors must be an integer between 1 and %d.' % num_system_processors)
 
     # Read the dataset from disk
     try:
@@ -237,6 +288,7 @@ if __name__ == '__main__':
 
     # Set the job output directory
     output_dir = os.path.join(root_output_directory, job_name) # The root directory for the protocol run
+    settings['output_dir'] = output_dir
     try:
         task_dir = os.path.join(output_dir, task_subfolder) # The root directory for preminization section of the protocol
         output_data_dir = os.path.join(output_dir, 'data')
@@ -291,27 +343,12 @@ if __name__ == '__main__':
         if arguments['--talaris2014']:
             extra_s = ' (using talaris2014)'
         print('Creating benchmark input:%s' % extra_s)
-        job_dict = {}
 
-        for keypair in pdb_monomers:
-            sys.stdout.write('.')
-            sys.stdout.flush()
-            sub_dict = {}
-
-            # Create stripped PDB file
-            pdb_dir_path = os.path.join(input_pdb_dir_path, '%s.pdb' % keypair[0])
-            #new_pdb_path = os.path.join(pdb_data_dir, os.path.basename(pdb_path))
-            #if not os.path.isfile(new_pdb_path):
-            #    # Note: We are assuming that the existing file has not been modified to save time copying the files
-            #    shutil.copy(pdb_path, new_pdb_path)
-            stripped_pdb_path = create_input_files(settings, pdb_dir_path, pdb_data_dir, mutfile_data_dir, keypair, dataset_cases_by_pdb_chain[keypair])
-            pdb_relpath = os.path.relpath(stripped_pdb_path, output_dir)
-
-            # Set up --in:file:l parameter
-            sub_dict['input_file_list'] = [pdb_relpath]
-
-            job_dict[os.path.join(task_subfolder, '_'.join(keypair))] = sub_dict
-        sys.stdout.write('\n')
+        if num_processors == 1:
+            job_dict = use_single_processor(settings, pdb_monomers, input_pdb_dir_path, pdb_data_dir, mutfile_data_dir, dataset_cases_by_pdb_chain)
+        else:
+            print('Setting up the preminimization data using %d processors.' % num_processors)
+            job_dict = use_multiple_processors(settings, pdb_monomers, input_pdb_dir_path, pdb_data_dir, mutfile_data_dir, dataset_cases_by_pdb_chain, num_processors)
 
         with open(os.path.join(output_data_dir, 'job_dict.pickle'), 'w') as f:
             pickle.dump(job_dict, f)
@@ -330,11 +367,9 @@ if __name__ == '__main__':
         if arguments['--talaris2014']:
             settings['rosetta_args_list'].extend(['-talaris2014', 'true'])
 
-        settings['output_dir'] = output_dir
-
         write_run_file(settings)
         job_path = os.path.abspath(output_dir)
-        print('''Job files written to directory: %s. To launch this job:
+        print('''Job files written to directory: %s.\n\nTo launch this job:
         cd %s
         python %s.py\n''' % (job_path, job_path, generated_scriptname))
     except Exception, e:
