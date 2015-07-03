@@ -265,6 +265,6 @@ if __name__ == '__main__':
 
 It is recommended to run this on an SGE cluster in which case use these commands instead:
     cd %s
-    qsub %s.py\n''' % (job_path, job_path, generated_scriptname, generated_scriptname))
+    qsub %s.py\n''' % (job_path, job_path, generated_scriptname, job_path, generated_scriptname))
 
 
