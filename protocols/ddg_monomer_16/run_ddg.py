@@ -46,6 +46,9 @@ Options:
     --test
         When this option is set, a shorter version of the benchmark will run with fewer input structures, less fewer DDG experiments, and fewer generated structures. This should be used to test the scripts but not for analysis.
 
+    --talaris2014
+        When this option is set, the talaris2014 score function will be used rather than the default score function. Warning: This option may break when talaris2014 becomes the default Rosetta score function.
+
 Authors:
     Kyle Barlow
     Shane O'Connor
@@ -186,15 +189,17 @@ if __name__ == '__main__':
         if existing_case_id not in dataset_cases_by_id:
             raise Exception('The dataset case corresponding to %d.mutfile could not be found in %s.' % (existing_case_id, dataset_filepath))
 
-
-    print('Creating constraint files...')
+    # Write job dict and setup self-contained data directory
+    extra_s = ''
+    if arguments['--talaris2014']:
+        extra_s = ' (using talaris2014)'
+    print('Creating constraint files...%s' % extra_s)
     constraints_files, preminimized_structures = create_constraints_files(preminimized_pdb_data_dir, constraints_data_dir)
 
     number_of_structural_pairs = arguments['--num_struct'][0]
     if arguments['--test']:
         number_of_structural_pairs = 2 # only create two wildtype/mutant pairs in test mode
 
-    print(existing_case_ids)
     for existing_case_id in existing_case_ids:
         dataset_case = dataset_cases_by_id[existing_case_id]
         pdb_id = dataset_case['PDBFileID']
@@ -248,12 +253,18 @@ if __name__ == '__main__':
         '-ddg::sc_min_only' ,'false',
         '-ddg::ramp_repulsive', 'true'
     ]
+    if arguments['--talaris2014']:
+        settings['rosetta_args_list'].extend(['-talaris2014', 'true'])
     settings['output_dir'] = output_dir
 
     write_run_file(settings)
     job_path = os.path.abspath(output_dir)
-    print('''Job files written to directory: %s.\n\nTo launch this job:
+    print('''Job files written to directory: %s.\n\nTo launch this job locally (this will take some time):
     cd %s
-    python %s.py\n''' % (job_path, job_path, generated_scriptname))
+    python %s.py
+
+It is recommended to run this on an SGE cluster in which case use these commands instead:
+    cd %s
+    qsub %s.py\n''' % (job_path, job_path, generated_scriptname, generated_scriptname))
 
 
