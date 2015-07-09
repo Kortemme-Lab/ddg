@@ -25,24 +25,6 @@ A mutation outside of the interface will result in a negligible change in total 
 
 As in |DDG|, the metrics used to measure success in this benchmark are: i) the linear correlation (Pearson coefficient) between experimental and predicted values; ii) the mean absolute error (MAE) of same; and iii) the stability classification accuracy, which measures whether a mutation was correctly predicted to be stabilizing, destabilizing, or neutral.
 
----------------------------------
-Included benchmark helper scripts
----------------------------------
-
-There is a helper script included in this folder which can be used to run the benchmark with minimal setup.
-
-**setup_alanine_scanning.py**
-
-When run with no arguments, this script sets up a benchmarking run on the full alanine scanning set with the standard protocol.
-
-The helper setup script generates a job output directory containing the run script *alascan_run.py*.
-This script can be directly run (using all available local processors) or submitted to a SGE cluster via the qsub command.
-As the protocol runs very quickly, the entire benchmark can be run on an average workstation on the scale of minutes.
-
-Expected execution time per alanine point mutation: 5-30 seconds
-
-setup_alanine_scanning.py needs to be configured to run correctly on a user's system. This is explained in `Configuration`_.
-
 -------------
 Configuration
 -------------
@@ -64,6 +46,23 @@ The two locations of the Rosetta installations should be the directories which c
 The file uses the
 `JSON <http://www.json.org/>`_ format.
 
+---------------------------------
+Included benchmark helper scripts
+---------------------------------
+
+There is a helper script included in this folder which can be used to run the benchmark with minimal setup.
+
+**setup_alanine_scanning.py**
+
+When run with no arguments, this script sets up a benchmarking run on the full alanine scanning set with the standard protocol.
+
+The helper setup script generates a job output directory containing the run script *alascan_run.py*.
+This script can be directly run (using all available local processors) or submitted to a SGE cluster via the qsub command.
+As the protocol runs very quickly, the entire benchmark can be run on an average workstation on the scale of minutes.
+
+Expected execution time per alanine point mutation: 5-30 seconds
+
+setup_alanine_scanning.py needs to be configured to run correctly on a user's system. This is explained in `Configuration`_.
 
 ----------------------------
 Paths and extensions
