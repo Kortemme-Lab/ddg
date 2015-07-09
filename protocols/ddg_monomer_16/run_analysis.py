@@ -262,7 +262,9 @@ if __name__ == '__main__':
     try:
         dataset_filepath = os.path.join(output_dir, 'dataset.json')
         dataset = json.loads(read_file(dataset_filepath))
-        dataset_cases = dataset['data']
+        dataset_cases = {} 
+        for dsc in dataset['data']:
+            dataset_cases[dsc['RecordID']] = dsc
     except Exception, e:
         raise Exception('An error occurred parsing the JSON file: %s..' % str(e))
 
@@ -283,6 +285,10 @@ if __name__ == '__main__':
     analysis_csv_input_filepath = os.path.join(output_dir, 'analysis_input.csv')
     analysis_json_input_filepath = os.path.join(output_dir, 'analysis_input.json')
     print('Creating input files %s and %s for the analysis script.' % (analysis_csv_input_filepath, analysis_json_input_filepath))
+    if len(analysis_data) > len(dataset_cases):
+        raise Exception('ERROR: There seems to be an error - there are more predictions than cases in the dataset. Exiting.')
+    elif len(analysis_data) < len(dataset_cases):
+        print('\nWARNING: %d cases missing for analysis; there are %d predictions in the output directory but %d cases in the dataset. The analysis below does not cover the complete dataset.\n' % (len(dataset_cases) - len(analysis_data), len(analysis_data), len(dataset_cases)))
     json_records = []
     csv_file = ['#Experimental,Predicted,ID']
     for record_id, predicted_data in sorted(analysis_data.iteritems()):
