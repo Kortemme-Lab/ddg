@@ -82,6 +82,28 @@ generated_csv = 'benchmark_output.csv'
 generated_json = 'benchmark_output.json'
 ddGMover_regex = re.compile("^protocols.moves.ddGMover:\s*mutate\s*.*?\s*wildtype_dG\s*is:\s*.*?and\s*mutant_dG\s*is:\s*.*?\s*ddG\s*is:\s*(.*)$")
 
+van_der_Waals_volumes = dict(
+    G = 48,
+    A = 67,
+    S = 73,
+    C = 86,
+    P = 90,
+    D = 91,
+    T = 93,
+    N = 96,
+    V = 105,
+    E = 109,
+    Q = 114,
+    H = 118,
+    I = 124,
+    L = 124,
+    M = 124,
+    F = 135,
+    K = 135,
+    Y = 141,
+    R = 148,
+    W = 163,
+)
 
 def read_stdout(ddg_output_path):
     try:
@@ -90,6 +112,35 @@ def read_stdout(ddg_output_path):
     except:
         raise Exception('An error occurred reading the output file %s.' % output_file)
     return rosetta_output
+
+
+def determine_SL_class(record):
+    '''Returns:
+        - SL if all of the mutations are from smaller (by volume) residues to larger residues
+        - LS if all of the mutations are from larger residues to smaller residues
+        - XX if all of the mutations are to and from residues of the same size e.g. M -> L
+        - O  if none of the cases above apply (this occurs when records with multiple mutations mix the types above).'''
+
+    mutation_types = set()
+    for m in record['Mutations']:
+        wt_vol, mut_vol = van_der_Waals_volumes[m['WildTypeAA']], van_der_Waals_volumes[m['MutantAA']]
+        if wt_vol < mut_vol:
+            mutation_types.add('SL')
+        elif wt_vol > mut_vol:
+            mutation_types.add('LS')
+        else:
+            mutation_types.add('XX')
+    if len(mutation_types) == 1:
+        return mutation_types.pop()
+    return 'O'
+
+
+def has_G_or_P(record):
+    '''Returns True if any of the wildtype or mutant residues are glycine or proline and False otherwise.'''
+    for m in record['Mutations']:
+        if m['WildTypeAA'] == 'G' or m['MutantAA'] == 'G' or m['WildTypeAA'] == 'P' or m['MutantAA'] == 'P': # G is more likely
+            return True
+    return False
 
 
 def extract_predicted_ddg(ddg_output_path):
@@ -316,8 +367,6 @@ if __name__ == '__main__':
         raise Exception('ERROR: There seems to be an error - there are more predictions than cases in the dataset. Exiting.')
     elif len(analysis_data) < len(dataset_cases):
         print('\nWARNING: %d cases missing for analysis; there are %d predictions in the output directory but %d cases in the dataset. The analysis below does not cover the complete dataset.\n' % (len(dataset_cases) - len(analysis_data), len(analysis_data), len(dataset_cases)))
-    json_records = []
-    csv_file = ['#Experimental,Predicted,ID']
 
     # ddg_analysis_type can be set to 'DDG' or 'DDG_Top3'.
     # 'DDG' uses the value reported by ddg_monomer.
@@ -332,11 +381,32 @@ if __name__ == '__main__':
         print('\nThe predicted DDG value per case is computed using the %d lowest-scoring mutant structures and the %d lowest-scoring wildtype structures.' % (take_lowest, take_lowest))
 
 
+    json_records = dict(
+        All = [],
+            ByVolume = dict(
+                SL = [], LS = [], XX = [], O = []
+            ),
+            GP = {
+                True : [], False : []
+            },
+    )
+    csv_file = ['#Experimental,Predicted,ID']
+
     for record_id, predicted_data in sorted(analysis_data.iteritems()):
-        json_records.append(dict(Experimental = dataset_cases[record_id]['DDG'], Predicted = predicted_data[ddg_analysis_type], ID = record_id))
-        csv_file.append('%s,%s,%s' % (str(dataset_cases[record_id]['DDG']), str(predicted_data[ddg_analysis_type]), str(record_id)))
+        record = dataset_cases[record_id]
+        json_record = dict(Experimental = record['DDG'], Predicted = predicted_data[ddg_analysis_type], ID = record_id)
+        json_records['ByVolume'][determine_SL_class(record)].append(json_record)
+        json_records['GP'][has_G_or_P(record)].append(json_record)
+        json_records['All'].append(json_record)
+        csv_file.append('%s,%s,%s' % (str(record['DDG']), str(predicted_data[ddg_analysis_type]), str(record_id)))
     write_file(analysis_csv_input_filepath, '\n'.join(csv_file))
-    write_file(analysis_json_input_filepath, json.dumps(json_records, indent = 4))
+    write_file(analysis_json_input_filepath, json.dumps(json_records['All'], indent = 4))
+
+    by_volume_descriptions = dict(
+        SL = 'small-to-large mutations',
+        LS = 'large-to-small mutations',
+        XX = 'no change in volume',
+    )
 
     if not arguments['--skip_analysis']:
         from analysis.stats import get_xy_dataset_statistics, plot, format_stats_for_printing, RInterface
@@ -344,12 +414,33 @@ if __name__ == '__main__':
 
         # Set up the output filename
         print('\nRunning analysis:')
-        output_filename = os.path.join(output_dir, arguments['--scatterplot_filename'][0])
-        print('\n' + '*'*10 + ' Statistics ' +'*'*10)
-        print(format_stats_for_printing(get_xy_dataset_statistics(json_records)))
 
+
+        volume_groups = {}
+        for k, v in van_der_Waals_volumes.iteritems():
+            volume_groups[v] = volume_groups.get(v, [])
+            volume_groups[v].append(k)
+
+        print('\n\nSection 1. Breakdown by volume.')
+        print('A case is considered a small-to-large (resp. large-to-small) mutation if all of the wildtype residues have a smaller (resp. larger) van der Waals volume than the corresponding mutant residue. The order is defined as %s so some cases are considered to have no change in volume e.g. MET -> LEU.' % (' < '.join([''.join(sorted(v)) for k, v in sorted(volume_groups.iteritems())])))
+        for subcase in ('XX', 'SL', 'LS'):
+            print('\n' + '*'*10 + (' Statistics - %s (%d cases)' % (by_volume_descriptions[subcase], len(json_records['ByVolume'][subcase]))) +'*'*10)
+            print(format_stats_for_printing(get_xy_dataset_statistics(json_records['ByVolume'][subcase])))
+
+        print('\n\nSection 2. Separating out mutations involving glycine or proline.')
+        print('This cases may involve changes to secondary structure so we separate them out here.')
+        print('\n' + '*'*10 + (' Statistics - cases with G or P (%d cases)' % (len(json_records['GP'][True]))) +'*'*10)
+        print(format_stats_for_printing(get_xy_dataset_statistics(json_records['GP'][True])))
+        print('\n' + '*'*10 + (' Statistics - cases without G or P (%d cases)' % (len(json_records['GP'][False]))) +'*'*10)
+        print(format_stats_for_printing(get_xy_dataset_statistics(json_records['GP'][False])))
+
+        print('\n\nSection 3. Entire dataset.')
+        print('\n' + '*'*10 + (' Statistics - complete dataset (%d cases)' % len(json_records['All'])) +'*'*10)
+        print(format_stats_for_printing(get_xy_dataset_statistics(json_records['All'])))
+
+        output_filename = os.path.join(output_dir, arguments['--scatterplot_filename'][0])
         print('\nSaving scatterplot to %s.\n' % output_filename)
-        plot(json_records, output_filename, correlation_coefficient_scatterplotplot)
+        plot(json_records['All'], output_filename, correlation_coefficient_scatterplotplot)
         
 
     print('')
