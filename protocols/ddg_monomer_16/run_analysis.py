@@ -51,6 +51,9 @@ Options:
     --use_single_reported_value
         By default, the analysis takes the three lowest-scoring mutant structures and the three lowest-scoring wildtype structures to calculate the DDG value. This approach was taken by Kellogg et al. and should reduce stochastic noise. If this option is set, the single value reported by ddg_monomer is used instead. We do not recommend using this option.
 
+    --include_derived_mutations
+        Some datasets contain duplicated datapoints in the form of derived mutations e.g. the mutation 107L ->1L63 in the Kellogg set is the reverse of the 1L63 -> 107L mutation and measurement. Including derived mutations creates bias in the analysis so we remove them by default. To include these derived values in the analysis, use this flag.
+
 Authors:
     Kyle Barlow
     Shane O'Connor
@@ -392,8 +395,11 @@ if __name__ == '__main__':
     )
     csv_file = ['#Experimental,Predicted,ID']
 
+    include_derived_mutations = arguments['--include_derived_mutations']
     for record_id, predicted_data in sorted(analysis_data.iteritems()):
         record = dataset_cases[record_id]
+        if record['DerivedMutation'] and not include_derived_mutations:
+            continue
         json_record = dict(Experimental = record['DDG'], Predicted = predicted_data[ddg_analysis_type], ID = record_id)
         json_records['ByVolume'][determine_SL_class(record)].append(json_record)
         json_records['GP'][has_G_or_P(record)].append(json_record)
@@ -413,7 +419,10 @@ if __name__ == '__main__':
         correlation_coefficient_scatterplotplot = RInterface.correlation_coefficient_gplot
 
         # Set up the output filename
-        print('\nRunning analysis:')
+        if include_derived_mutations:
+            print('\nRunning analysis (derived mutations will be included):')
+        else:
+            print('\nRunning analysis (derived mutations will be omitted):')
 
 
         volume_groups = {}
