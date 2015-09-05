@@ -447,6 +447,7 @@ if __name__ == '__main__':
         print('\n' + '*'*10 + (' Statistics - complete dataset (%d cases)' % len(json_records['All'])) +'*'*10)
         print(format_stats_for_printing(get_xy_dataset_statistics(json_records['All'])))
 
+
         output_filename = os.path.join(output_dir, arguments['--scatterplot_filename'][0])
         print('\nSaving scatterplot to %s.\n' % output_filename)
         plot(json_records['All'], output_filename, correlation_coefficient_scatterplotplot)

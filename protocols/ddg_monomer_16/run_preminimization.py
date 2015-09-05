@@ -49,6 +49,9 @@ Options:
     --talaris2014
         When this option is set, the talaris2014 score function will be used rather than the default score function. Warning: This option may break when talaris2014 becomes the default Rosetta score function.
 
+    --beta_july15
+        When this option is set, the July 2015 beta score function will be used rather than the default score function. Warning: This option may break when this score function is removed.
+
     -p --parallel NUM_PROCESSORS
         If this argument is set then the job setup will use NUM_PROCESSORS which will speed this step up. Otherwise, a single processor will be used. This should run on both Unix and Windows machines.
 
@@ -342,6 +345,9 @@ if __name__ == '__main__':
         extra_s = ''
         if arguments['--talaris2014']:
             extra_s = ' (using talaris2014)'
+        if arguments['--beta_july15']:
+            assert(not(extra_s))
+            extra_s = ' (using beta_july15)'
         print('Creating benchmark input:%s' % extra_s)
 
         if num_processors == 1:
@@ -366,6 +372,8 @@ if __name__ == '__main__':
         ]
         if arguments['--talaris2014']:
             settings['rosetta_args_list'].extend(['-talaris2014', 'true'])
+        elif arguments['--beta_july15']:
+            settings['rosetta_args_list'].extend(['-beta_july15'])
 
         write_run_file(settings)
         job_path = os.path.abspath(output_dir)
