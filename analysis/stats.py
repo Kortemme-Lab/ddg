@@ -360,8 +360,11 @@ def format_stats_for_printing(stats):
 def plot(analysis_table, output_filename, RFunction):
     #R_return_values = {}
     filetype = os.path.splitext(output_filename)[1].lower()
-    assert(filetype == '.png' or filetype == '.pdf' or filetype == '.eps')
-    filetype = filetype[1:]
+    if not(filetype == '.png' or filetype == '.pdf' or filetype == '.eps'):
+        filetype = 'png'
+        output_filename += '.png'
+    else:
+        filetype = filetype[1:]
     if len(analysis_table) <= 1:
         raise Exception("The analysis table must have at least two points.")
     else:
