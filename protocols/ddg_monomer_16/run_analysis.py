@@ -77,6 +77,7 @@ import getpass
 import gzip
 from rosetta.write_run_file import process as write_run_file
 from analysis.libraries import docopt
+from analysis.libraries import colortext
 from analysis.stats import read_file, read_file_lines, write_file, prompt_yn
 from run_ddg import task_subfolder as ddg_task_subfolder
 try:
@@ -113,7 +114,8 @@ amino_acid_details_ = [
 'T,THR,Threonine,polar,neither,hydrophilic,neutral,NULL,101.1051,93,small,0',
 'V,VAL,Valine,non-polar,aliphatic,hydrophobic,neutral,NULL,99.1326,105,small,0',
 'W,TRP,Tryptophan,non-polar,aromatic,hydrophobic,neutral,NULL,186.2132,163,large,0',
-'Y,TYR,Tyrosine,polar,aromatic,hydrophobic,neutral,10.46,163.176,141,large,0']
+'Y,TYR,Tyrosine,polar,aromatic,hydrophobic,neutral,10.46,163.176,141,large,0' # Note: we treat tyrosine as hydrophobic in the polar/charged vs hydrophobic/Non-polar plot
+]
 
 amino_acid_detail_headers = [t.strip() for t in amino_acid_detail_headers.split(',') if t.strip()]
 for aad in amino_acid_details_:
@@ -131,29 +133,6 @@ for aad in amino_acid_details_:
     d['van der Waals volume'] = float(d['van der Waals volume'])
     try: d['pKa'] = float(d['pKa'])
     except: d['pKa'] = None
-
-van_der_Waals_volumes = dict(
-    G = 48,
-    A = 67,
-    S = 73,
-    C = 86,
-    P = 90,
-    D = 91,
-    T = 93,
-    N = 96,
-    V = 105,
-    E = 109,
-    Q = 114,
-    H = 118,
-    I = 124,
-    L = 124,
-    M = 124,
-    F = 135,
-    K = 135,
-    Y = 141,
-    R = 148,
-    W = 163,
-)
 
 
 def read_stdout(ddg_output_path):
@@ -449,20 +428,66 @@ if __name__ == '__main__':
     )
     csv_file = ['#Experimental,Predicted,ID']
 
+    SCOP_classifications = set()
+    SCOP_folds = set()
+    SCOP_classes = set()
+
     include_derived_mutations = arguments['--include_derived_mutations']
     for record_id, predicted_data in sorted(analysis_data.iteritems()):
         record = dataset_cases[record_id]
         if record['DerivedMutation'] and not include_derived_mutations:
             continue
+  
+        full_scop_classification, scop_class, scop_fold = None, None, None
+        mutations = record['Mutations']
+        scops = set([m['SCOP class'] for m in mutations])
+        if len(scops) > 1:
+            colortext.warning('Warning: There is more than one SCOPe class for record {0}.'.format(record_id))
+        else:
+            full_scop_classification = scops.pop()
+            scop_tokens = full_scop_classification.split('.')
+            scop_class = scop_tokens[0]
+            if len(scop_tokens) > 1:
+                scop_fold = '.'.join(scop_tokens[0:2])
+
+            SCOP_classifications.add(full_scop_classification)
+            SCOP_classes.add(scop_class)
+            SCOP_folds.add(scop_fold)
+
+        DSSPSimpleSSType, DSSPSimpleSSTypes = None, set([m['DSSPSimpleSSType'] for m in mutations])
+        if len(DSSPSimpleSSTypes) == 1:
+            DSSPSimpleSSType = DSSPSimpleSSTypes.pop()
+
+        DSSPType, DSSPTypes = None, set([m['DSSPType'] for m in mutations])
+        if len(DSSPTypes) == 1:
+            DSSPType = DSSPTypes.pop()
+
+        DSSPExposure, DSSPExposures = None, set([m['DSSPExposure'] for m in mutations])
+        if len(DSSPExposures) == 1:
+            DSSPExposure = DSSPExposures.pop()
+
+        mutation_string = '; '.join(['{0} {1}{2}{3}'.format(m['Chain'], m['WildTypeAA'], m['ResidueID'], m['MutantAA']) for m in mutations])
+
         json_record = dict(
             ID = record_id,
+            PDBFileID = record['PDBFileID'],
+            Mutations = mutation_string,
             Experimental = record['DDG'],
             Predicted = predicted_data[ddg_analysis_type],
+            DSSPType = DSSPType,
+            DSSPSimpleSSType = DSSPSimpleSSType,
+            DSSPExposure = DSSPExposure,
+            SCOPClass = scop_class,
+            SCOPFold = scop_fold,
+            SCOPClassification = full_scop_classification,
             )
         json_records['ByVolume'][determine_SL_class(record)].append(json_record)
         json_records['GP'][has_G_or_P(record)].append(json_record)
         json_records['All'].append(json_record)
         csv_file.append('%s,%s,%s' % (str(record['DDG']), str(predicted_data[ddg_analysis_type]), str(record_id)))
+
+    colortext.message('The mutated residues span {0} unique SCOP(e) classifications in {1} unique SCOP(e) folds and {2} unique SCOP(e) classes.'.format(len(SCOP_classifications), len(SCOP_folds), len(SCOP_classes)))
+
     write_file(analysis_csv_input_filepath, '\n'.join(csv_file))
     write_file(analysis_json_input_filepath, json.dumps(json_records['All'], indent = 4))
 
@@ -471,6 +496,7 @@ if __name__ == '__main__':
         LS = 'large-to-small mutations',
         XX = 'no change in volume',
     )
+    sys.exit(0)
 
     if not arguments['--skip_analysis']:
         from analysis.stats import get_xy_dataset_statistics, plot, format_stats_for_printing, RInterface
