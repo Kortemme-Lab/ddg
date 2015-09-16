@@ -1,730 +1,2242 @@
 {
-    "1MYL": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 2.4
-    }, 
-    "2BQA": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 1.8
-    }, 
-    "2HMB": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 2.1
-    }, 
-    "2AFG": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 2.0
-    }, 
-    "1C5G": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 2.6
-    }, 
-    "241L": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 1.7
-    }, 
-    "1YEA": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 1.9
-    }, 
-    "1FMK": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 1.5
-    }, 
-    "1BP2": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 1.7
-    }, 
-    "1RX4": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 2.2
-    }, 
-    "1UBQ": {
+    "107L": {
+        "Chains": {
+            "A": {
+                "Sequence": "MNIFEMLRIDEGLRLKIYKDTEGYYTIGIGHLLTKSPSLNAAKGELDKAIGRNTNGVITKDEAEKLFNQDVDAAVRGILRNAKLKPVYDSLDAVRRAALINMVFQMGETGVAGFTNSLRMLQQKRWDEAAVNLAKSRWYNQTPNRAKRVITTFRTGTWDAYK", 
+                "Type": "Protein"
+            }
+        }, 
         "MethodOfDetermination": "X-RAY DIFFRACTION", 
         "Resolution": 1.8
     }, 
-    "1CHK": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 2.4
-    }, 
-    "2A01": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 2.4
-    }, 
-    "3MBP": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 1.7
-    }, 
-    "1CYO": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 1.5
-    }, 
-    "1ZNJ": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 2.0
-    }, 
-    "2LZM": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 1.7
-    }, 
-    "243L": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 1.75
-    }, 
-    "246L": {
+    "160L": {
+        "Chains": {
+            "A": {
+                "Sequence": "MNIFEMLRIDEGLRLKIYKDTEGYYTIGIGHLLTKSPSLNAAKSELDKAIGRNTNGVITKDEAEKLFNQDVDAAVRGILRNAKLKPVYDSLDAVRRAALINMVFQMGETGVAGFTNSLRALQQKRWDEAAVNLAKSRWYNQTPNRAKRVITTFRTGTWDAYK", 
+                "Type": "Protein"
+            }
+        }, 
         "MethodOfDetermination": "X-RAY DIFFRACTION", 
         "Resolution": 1.8
     }, 
-    "1CYC": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 2.3
-    }, 
-    "239L": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 1.8
-    }, 
-    "1HTI": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 2.8
-    }, 
-    "2CI2": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 2.0
-    }, 
-    "2TS1": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 2.3
-    }, 
-    "1RGG": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 1.2
-    }, 
-    "1L99": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 1.95
-    }, 
-    "1RN1": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 1.84
-    }, 
-    "1IHB": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 1.95
-    }, 
-    "1L90": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 1.75
-    }, 
-    "1POH": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 2.0
-    }, 
-    "2TRX": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 1.68
-    }, 
-    "1BPI": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 1.09
-    }, 
-    "1WQ5": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 2.3
-    }, 
-    "247L": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 1.75
-    }, 
-    "3SSI": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 2.3
-    }, 
-    "1PGA": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 2.07
-    }, 
-    "1ROP": {
+    "161L": {
+        "Chains": {
+            "A": {
+                "Sequence": "MNIFEMLRIDEGLRLKIYKDTEGYYTIGIGHLLTKSPSLNAAKSELDKAIGRNTNGVITKDEAEKLFNQDVDAAVRGILRNAKLKPVYDSLDAVRRAALINMVFQMGETGVAGFTASLRMLQQKRWDEAAVNLAKSRWYNQTPNRAKRVITTFRTGTWDAYK", 
+                "Type": "Protein"
+            }
+        }, 
         "MethodOfDetermination": "X-RAY DIFFRACTION", 
         "Resolution": 1.7
-    }, 
-    "1L67": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 1.9
-    }, 
-    "1L66": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 1.7
-    }, 
-    "1L60": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 1.7
-    }, 
-    "1L63": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 1.75
-    }, 
-    "1L69": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 1.9
-    }, 
-    "1L68": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 1.7
-    }, 
-    "171L": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 2.5
-    }, 
-    "1TPK": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 2.4
-    }, 
-    "1AM7": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 2.3
-    }, 
-    "1IOB": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION;SOLUTION NMR", 
-        "Resolution": 2.0
-    }, 
-    "2HPR": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 2.0
-    }, 
-    "1IGV": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 1.85
-    }, 
-    "1AZP": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 1.6
-    }, 
-    "1FNF": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 2.0
-    }, 
-    "1HFY": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 2.3
-    }, 
-    "164L": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 1.8
-    }, 
-    "237L": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 1.7
-    }, 
-    "1HFZ": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 2.3
-    }, 
-    "1L85": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 2.0
-    }, 
-    "1FXA": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 2.5
-    }, 
-    "1B5M": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 2.7
-    }, 
-    "1BNZ": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 2.0
-    }, 
-    "1QHE": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 2.0
-    }, 
-    "1DIL": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 1.9
     }, 
     "162L": {
+        "Chains": {
+            "A": {
+                "Sequence": "MNIFEMLRIDEGLRLKIYKDTEGYYTIGIGHLLTKSPSLNAAKSELDKAIGRNTNGVITKDEAEKLFNQDVDAAVRGILRNAKLKPVYDSLDAVRRAALINMVFQMGETGVAGFTNSLRMLAQKRWDEAAVNLAKSRWYNQTPNRAKRVITTFRTGTWDAYK", 
+                "Type": "Protein"
+            }
+        }, 
         "MethodOfDetermination": "X-RAY DIFFRACTION", 
         "Resolution": 1.8
     }, 
-    "2CRK": {
+    "163L": {
+        "Chains": {
+            "A": {
+                "Sequence": "MNIFEMLRIDEGLRLKIYKDTEGYYTIGIGHLLTKSPSLNAAKSELDKAIGRNTNGVITKDEAEKLFNQDVDAAVRGILRNAKLKPVYDSLDAVRRAALINMVFQMGETGVAGFTNSLRMLQAKRWDEAAVNLAKSRWYNQTPNRAKRVITTFRTGTWDAYK", 
+                "Type": "Protein"
+            }
+        }, 
         "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 2.35
+        "Resolution": 1.8
     }, 
-    "1STN": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 1.7
-    }, 
-    "1BNI": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 2.1
-    }, 
-    "3BCI": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 1.81
-    }, 
-    "1CSP": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 2.45
-    }, 
-    "244L": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 1.7
-    }, 
-    "1B0O": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 2.5
-    }, 
-    "1LHM": {
+    "164L": {
+        "Chains": {
+            "A": {
+                "Sequence": "MNIFEMLRIDEGLRLKIYKDTEGYYTIGIGHLLTKSPSLNAAKSELDKAIGRNTNGVITKDEAEKLFNQDVDAAVRGILRNAKLKPVYDSLDAVRRAALINMVFQMGETGVAGFTNSLAMLQQKRWDEAAVNLAKSRWYNQTPNRAKRVITTFRTGTWDAYK", 
+                "Type": "Protein"
+            }
+        }, 
         "MethodOfDetermination": "X-RAY DIFFRACTION", 
         "Resolution": 1.8
     }, 
     "165L": {
+        "Chains": {
+            "A": {
+                "Sequence": "MNIFEMLRIDEGLRLKIYKDTEGYYTIGIGHLLTKSPSLNAAKSELDKAIGRNTNGVITKDEAEKLFNQDVDAAVRGILRNAKLKPVYDSLDAVRRAALINMVFQMGETGVAGFTNALRMLQQKRWDEAAVNLAKSRWYNQTPNRAKRVITTFRTGTWDAYK", 
+                "Type": "Protein"
+            }
+        }, 
         "MethodOfDetermination": "X-RAY DIFFRACTION", 
         "Resolution": 1.75
     }, 
-    "1SCE": {
+    "171L": {
+        "Chains": {
+            "A": {
+                "Sequence": "MNIFEMLRIDEGLRLKIYKDTEGYYTIGIGHLLTKSPSLNAAKSALDKAIGRNTNGVITKDEAEKLFNQDVDAAVRGILRNAKLKPVYDSLDAVRRAALINMVFQMGETGVAGFTNSLRMLQQKRWDEAAVNLAKSRWYNQTPNRAKRVITTFRTGTWDAYK", 
+                "Type": "Protein"
+            }
+        }, 
         "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 2.2
+        "Resolution": 2.5
     }, 
-    "1PIN": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 1.35
-    }, 
-    "238L": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 1.8
-    }, 
-    "1REX": {
+    "1A2P": {
+        "Chains": {
+            "A": {
+                "Sequence": "VINTFDGVADYLQTYHKLPDNYITKSEAQALGWVASKGNLADVAPGKSIGGDIFSNREGKLPGKSGRTWREADINYTSGFRNSDRILYSSDWLIYKTTDHYQTFTKIR", 
+                "Type": "Protein"
+            }, 
+            "B": {
+                "Sequence": "INTFDGVADYLQTYHKLPDNYITKSEAQALGWVASKGNLADVAPGKSIGGDIFSNREGKLPGKSGRTWREADINYTSGFRNSDRILYSSDWLIYKTTDHYQTFTKIR", 
+                "Type": "Protein"
+            }, 
+            "C": {
+                "Sequence": "VINTFDGVADYLQTYHKLPDNYITKSEAQALGWVASKGNLADVAPGKSIGGDIFSNREGKLPGKSGRTWREADINYTSGFRNSDRILYSSDWLIYKTTDHYQTFTKIR", 
+                "Type": "Protein"
+            }
+        }, 
         "MethodOfDetermination": "X-RAY DIFFRACTION", 
         "Resolution": 1.5
     }, 
-    "5AZU": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 1.9
-    }, 
-    "1G6N": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 2.1
-    }, 
-    "2IFB": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 2.0
-    }, 
-    "5CRO": {
+    "1AAR": {
+        "Chains": {
+            "A": {
+                "Sequence": "MQIFVKTLTGKTITLEVEPSDTIENVKAKIQDKEGIPPDQQRLIFAGKQLEDGRTLSDYNIQKESTLHLVLRLRGG", 
+                "Type": "Protein"
+            }, 
+            "B": {
+                "Sequence": "MQIFVKTLTGKTITLEVEPSDTIENVKAKIQDKEGIPPDQQRLIFAGKQLEDGRTLSDYNIQKESTLHLVLRLRGG", 
+                "Type": "Protein"
+            }
+        }, 
         "MethodOfDetermination": "X-RAY DIFFRACTION", 
         "Resolution": 2.3
     }, 
-    "3CHY": {
+    "1ACB": {
+        "Chains": {
+            "E": {
+                "Sequence": "CGVPAIQPVLSGLIVNGEEAVPGSWPWQVSLQDKTGFHFCGGSLINENWVVTAAHCGVTTSDVVVAGEFDQGSSSEKIQKLKIAKVFKNSKYNSLTINNDITLLKLSTAASFSQTVSAVCLPSASDDFAAGTTCVTTGWGLTRYANTPDRLQQASLPLLSNTNCKKYWGTKIKDAMICAGASGVSSCMGDSGGPLVCKKNGAWTLVGIVSWGSSTCSTSTPGVYARVTALVNWVQQTLAAN", 
+                "Type": "Protein"
+            }, 
+            "I": {
+                "Sequence": "KSFPEVVGKTVDQAREYFTLHYPQYDVYFLPEGSPVTLDLRYNRVRVFYNPGTNVVNHVPHVG", 
+                "Type": "Protein"
+            }
+        }, 
         "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 1.66
+        "Resolution": 2.0
     }, 
-    "1IFB": {
+    "1AM7": {
+        "Chains": {
+            "A": {
+                "Sequence": "MVEINNQRKAFLDMLAWSEGTDNGRQKTRNHGYDVIVGGELFTDYSDHPRKLVTLNPKLKSTGAGRYQLLSRWWDAYRKQLGLKDFSPKSQDAVALQQIKERGALPMIDRGDIRQAIDRCSNIWASLPGAGYGQFEHKADSLIAKFKEAGGTVR", 
+                "Type": "Protein"
+            }, 
+            "B": {
+                "Sequence": "MVEINNQRKAFLDMLAWSEGTDNGRQKTRNHGYDVIVGGELFTDYSDHPRKLVTLNPKLKSTGAGRYQLLSRWWDAYRKQLGLKDFSPKSQDAVALQQIKERGALPMIDRGDIRQAIDRCSNIWASLPGAGYGQFEHKADSLIAKFKEAGGTVR", 
+                "Type": "Protein"
+            }, 
+            "C": {
+                "Sequence": "MVEINNQRKAFLDMLAWSEGTDNGRQKTRNHGYDVIVGGELFTDYSDHPRKLVTLNPKLKSTGAGRYQLLSRWWDAYRKQLGLKDFSPKSQDAVALQQIKERGALPMIDRGDIRQAIDRCSNIWASLPGAGYGQFEHKADSLIAKFKEAGGTVR", 
+                "Type": "Protein"
+            }
+        }, 
         "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 1.96
-    }, 
-    "1CAH": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 1.88
-    }, 
-    "1LVE": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 1.95
+        "Resolution": 2.3
     }, 
     "1AMQ": {
+        "Chains": {
+            "A": {
+                "Sequence": "MFENITAAPADPILGLADLFRADERPGKINLGIGVYKDETGKTPVLTSVKKAEQYLLENETTKNYLGIDGIPEFGRCTQELLFGKGSALINDKRARTAQTPGGTGALRVAADFLAKNTSVKRVWVSNPSWPNHKSVFNSAGLEVREYAYYDAENHTLDFDALINSLNEAQAGDVVLFHGCCHNPTGIDPTLEQWQTLAQLSVEKGWLPLFDFAYQGFARGLEEDAEGLRAFAAMHKELIVASSYSKNFGLYNERVGACTLVAADSETVDRAFSQMKAAIRANYSNPPAHGASVVATILSNDALRAIWEQELTDMRQRIQRMRQLFVNTLQEKGANRDFSFIIKQNGMFSFSGLTKEQVLRLREEFGVYAVASGRVNVAGMTPDNMAPLCEAIVAVL", 
+                "Type": "Protein"
+            }
+        }, 
         "MethodOfDetermination": "X-RAY DIFFRACTION", 
         "Resolution": 2.2
     }, 
-    "1BVC": {
+    "1ANF": {
+        "Chains": {
+            "A": {
+                "Sequence": "KIEEGKLVIWINGDKGYNGLAEVGKKFEKDTGIKVTVEHPDKLEEKFPQVAATGDGPDIIFWAHDRFGGYAQSGLLAEITPDKAFQDKLYPFTWDAVRYNGKLIAYPIAVEALSLIYNKDLLPNPPKTWEEIPALDKELKAKGKSALMFNLQEPYFTWPLIAADGGYAFKYENGKYDIKDVGVDNAGAKAGLTFLVDLIKNKHMNADTDYSIAEAAFNKGETAMTINGPWAWSNIDTSKVNYGVTVLPTFKGQPSKPFVGVLSAGINAASPNKELAKEFLENYLLTDEGLEAVNKDKPLGAVALKSYEEELAKDPRIAATMENAQKGEIMPNIPQMSAFWYAVRTAVINAASGRQTVDEALKDAQTRITK", 
+                "Type": "Protein"
+            }
+        }, 
         "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 1.5
+        "Resolution": 1.67
     }, 
-    "1BOY": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 2.2
-    }, 
-    "3D2A": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 1.73
-    }, 
-    "1OIA": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 2.4
-    }, 
-    "1BF4": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 1.6
-    }, 
-    "1L02": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 1.7
-    }, 
-    "1L00": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 1.9
-    }, 
-    "236L": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 1.9
-    }, 
-    "1IO2": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 2.0
-    }, 
-    "1KFW": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 1.74
-    }, 
-    "1L08": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 1.7
-    }, 
-    "1LYH": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 1.7
-    }, 
-    "1FTG": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 2.0
-    }, 
-    "1B26": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 3.0
-    }, 
-    "235L": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 1.9
-    }, 
-    "1FLV": {
+    "1ANK": {
+        "Chains": {
+            "A": {
+                "Sequence": "MRIILLGAPGAGKGTQAQFIMEKYGIPQISTGDMLRAAVKSGSELGKQAKDIMDAGKLVTDELVIALVKERIAQEDCRNGFLLDGFPRTIPQADAMKEAGINVDYVLEFDVPDELIVDRIVGRRVHAPSGRVYHVKFNPPKVEGKDDVTGEELTTRKDDQEETVRKRLVEYHQMTAPLIGYYSKEAEAGNTKYAKVDGTKPVAEVRADLEKILG", 
+                "Type": "Protein"
+            }, 
+            "B": {
+                "Sequence": "MRIILLGAPGAGKGTQAQFIMEKYGIPQISTGDMLRAAVKSGSELGKQAKDIMDAGKLVTDELVIALVKERIAQEDCRNGFLLDGFPRTIPQADAMKEAGINVDYVLEFDVPDELIVDRIVGRRVHAPSGRVYHVKFNPPKVEGKDDVTGEELTTRKDDQEETVRKRLVEYHQMTAPLIGYYSKEAEAGNTKYAKVDGTKPVAEVRADLEKILG", 
+                "Type": "Protein"
+            }
+        }, 
         "MethodOfDetermination": "X-RAY DIFFRACTION", 
         "Resolution": 2.0
     }, 
     "1AXB": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 2.0
-    }, 
-    "1LYJ": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 1.8
-    }, 
-    "1C9O": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 1.17
-    }, 
-    "1CDC": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 2.0
-    }, 
-    "1EL1": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 1.9
-    }, 
-    "1Y4Y": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 2.0
-    }, 
-    "253L": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 2.0
-    }, 
-    "1CLW": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 2.0
-    }, 
-    "2RN2": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 1.48
-    }, 
-    "242L": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 1.8
-    }, 
-    "1ONC": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 1.7
-    }, 
-    "1RRO": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 1.3
-    }, 
-    "1BLC": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 2.2
-    }, 
-    "1IFC": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 1.19
-    }, 
-    "1L33": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 1.7
-    }, 
-    "1MGR": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 1.7
-    }, 
-    "1RTB": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 2.5
-    }, 
-    "1IDS": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 2.0
-    }, 
-    "1RTP": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 2.0
-    }, 
-    "1DYB": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 1.75
-    }, 
-    "2ZTA": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 1.8
-    }, 
-    "1ACB": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 2.0
-    }, 
-    "1DYJ": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 1.85
-    }, 
-    "163L": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 1.8
-    }, 
-    "1OH0": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 1.1
-    }, 
-    "1YCC": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 1.23
-    }, 
-    "1SUP": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 1.6
-    }, 
-    "219L": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 1.66
-    }, 
-    "1DPM": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 2.1
-    }, 
-    "2AKY": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 1.96
-    }, 
-    "1L21": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 1.85
-    }, 
-    "1L23": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 1.7
-    }, 
-    "1L22": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 1.7
-    }, 
-    "160L": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 1.8
-    }, 
-    "3BLS": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 2.3
-    }, 
-    "2ADA": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 2.4
-    }, 
-    "1FRD": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 1.7
-    }, 
-    "1QLP": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 2.0
-    }, 
-    "200L": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 1.95
-    }, 
-    "1HZ6": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 1.7
-    }, 
-    "1JIW": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 1.74
-    }, 
-    "1MSI": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 1.25
-    }, 
-    "227L": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 2.0
-    }, 
-    "1SHF": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 1.9
-    }, 
-    "1SHG": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 1.8
-    }, 
-    "1VQB": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 1.8
-    }, 
-    "1IRO": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 1.1
-    }, 
-    "1LZ1": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 1.5
-    }, 
-    "1RHG": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 2.2
-    }, 
-    "3PGK": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 2.5
-    }, 
-    "1ANK": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 2.0
-    }, 
-    "1ANF": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 1.67
-    }, 
-    "2WSY": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 3.05
-    }, 
-    "1LMB": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 1.8
-    }, 
-    "1HK0": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 1.25
-    }, 
-    "1H7M": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 1.96
-    }, 
-    "240L": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 1.75
-    }, 
-    "161L": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 1.7
-    }, 
-    "1CEY": {
-        "MethodOfDetermination": "SOLUTION NMR", 
-        "Resolution": "N/A"
-    }, 
-    "1RIS": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 2.0
-    }, 
-    "4BLM": {
+        "Chains": {
+            "A": {
+                "Sequence": "HPETLVKVKDAEDQLGARVGYIELDLNSGKILESFRPEERFPMMSTFKVLLCGAVLSRIDAGQEQLGRRIHYSQNDLVEYSPVTEKHLTDGMTVRELCSAAITMSDNTAANLLLTTIGGPKELTAFLHNMGDHVTRLDRWEPELNEAIPNDERDTTMPVAMATTLRKLLTGELLTLASRQQLIDWMEADKVAGPLLRSALPAGWFIADKSGAGERGSRGIIAALGPDGKPSRIVVIYTTGSQATMDERNRQIAEIGASLIKHW", 
+                "Type": "Protein"
+            }
+        }, 
         "MethodOfDetermination": "X-RAY DIFFRACTION", 
         "Resolution": 2.0
     }, 
     "1AYE": {
+        "Chains": {
+            "A": {
+                "Sequence": "LETFVGDQVLEIVPSNEEQIKNLLQLEAQEHLQLDFWKSPTTPGETAHVRVPFVNVQAVKVFLESQGIAYSIMIEDVQVLLDKENEEMLFNRRRERSGNFNFGAYHTLEEISQEMDNLVAEHPGLVSKVNIGSSFENRPMNVLKFSTGGDKPAIWLDAGIHAREWVTQATALWTANKIVSDYGKDPSITSILDALDIFLLPVTNPDGYVFSQTKNRMWRKTRSKVSGSLCVGVDPNRNWDAGFGGPGASSNPCSDSYHGPSANSEVEVKSIVDFIKSHGKVKAFIILHSYSQLLMFPYGYKCTKLDDFDELSEVAQKAAQSLRSLHGTKYKVGPICSVIYQASGGSIDWSYDYGIKYSFAFELRDTGRYGFLLPARQILPTAEETWLGLKAIMEHVRDHPY", 
+                "Type": "Protein"
+            }
+        }, 
         "MethodOfDetermination": "X-RAY DIFFRACTION", 
         "Resolution": 1.8
     }, 
-    "1L65": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 1.7
-    }, 
     "1AYF": {
+        "Chains": {
+            "A": {
+                "Sequence": "KITVHFINRDGETLTTKGKIGDSLLDVVVQNNLDIDGFGACEGTLACSTCHLIFEQHIFEKLEAITDEENDMLDLAYGLTDRSRLGCQICLTKAMDNMTVRVP", 
+                "Type": "Protein"
+            }, 
+            "B": {
+                "Sequence": "DKITVHFINRDGETLTTKGKIGDSLLDVVVQNNLDIDGFGACEGTLACSTCHLIFEQHIFEKLEAITDEENDMLDLAYGLTDRSRLGCQICLTKAMDNMTVRVP", 
+                "Type": "Protein"
+            }
+        }, 
         "MethodOfDetermination": "X-RAY DIFFRACTION", 
         "Resolution": 1.85
     }, 
-    "1C2R": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 2.5
-    }, 
-    "1FKJ": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 1.7
-    }, 
-    "1TUP": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 2.2
-    }, 
-    "1A2P": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 1.5
-    }, 
-    "451C": {
+    "1AZP": {
+        "Chains": {
+            "A": {
+                "Sequence": "MVKVKFKYKGEEKEVDTSKIKKVWRVGKMVSFTYDDNGKTGRGAVSEKDAPKELLDMLARAEREKK", 
+                "Type": "Protein"
+            }, 
+            "B": {
+                "Sequence": "GCGATCGC", 
+                "Type": "DNA"
+            }, 
+            "C": {
+                "Sequence": "GCGATCGC", 
+                "Type": "DNA"
+            }
+        }, 
         "MethodOfDetermination": "X-RAY DIFFRACTION", 
         "Resolution": 1.6
     }, 
-    "1FKB": {
+    "1B0O": {
+        "Chains": {
+            "A": {
+                "Sequence": "IVTQTMKGLDIQKVAGTWYSLAMAASDISLLDAQSAPLRVYVEELKPTPEGDLEILLQKWENGECAQKKIIAEKTKIPAVFKIDALNENKVLVLDTDYKKYLLFCMENSAEPEQSLACQCLVRTPEVDDEALEKFDKALKALPMHIRLSFNPTQLEEQCHI", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.5
+    }, 
+    "1B26": {
+        "Chains": {
+            "A": {
+                "Sequence": "SLYEMAVEQFNRAASLMDLESDLAEVLRRPKRVLIVEFPVRMDDGHVEVFTGYRVQHNVARGPAKGGIRYHPDVTLDEVKALAFWMTWKTAVMNLPFGGGKGGVRVDPKKLSRNELERLSRRFFSEIQVIIGPYNDIPAPDVNTNADVIAWYMDTYSMNVGHTVLGIVTGKPVELGGSKGREEATGRGVKVCAGLAMDVLGIDPKKATVAVQGFGNVGQFAALLISQELGSKVVAVSDSRGGIYNPEGFDVEELIRYKKEHGTVVTYPKGERITNEELLELDVDILVPAALEGAIHAGNAERIKAKAVVEGANGPTTPEADEILSRRGILVVPDILANAGGVTVSYFEWVQDLQSFFWDLDQVRNALEKMMKGAFNDVMKVKEKYNVDMRTAAYILAIDRVAYATKKRG", 
+                "Type": "Protein"
+            }, 
+            "B": {
+                "Sequence": "SLYEMAVEQFNRAASLMDLESDLAEVLRRPKRVLIVEFPVRMDDGHVEVFTGYRVQHNVARGPAKGGIRYHPDVTLDEVKALAFWMTWKTAVMNLPFGGGKGGVRVDPKKLSRNELERLSRRFFSEIQVIIGPYNDIPAPDVNTNADVIAWYMDTYSMNVGHTVLGIVTGKPVELGGSKGREEATGRGVKVCAGLAMDVLGIDPKKATVAVQGFGNVGQFAALLISQELGSKVVAVSDSRGGIYNPEGFDVEELIRYKKEHGTVVTYPKGERITNEELLELDVDILVPAALEGAIHAGNAERIKAKAVVEGANGPTTPEADEILSRRGILVVPDILANAGGVTVSYFEWVQDLQSFFWDLDQVRNALEKMMKGAFNDVMKVKEKYNVDMRTAAYILAIDRVAYATKKRG", 
+                "Type": "Protein"
+            }, 
+            "C": {
+                "Sequence": "SLYEMAVEQFNRAASLMDLESDLAEVLRRPKRVLIVEFPVRMDDGHVEVFTGYRVQHNVARGPAKGGIRYHPDVTLDEVKALAFWMTWKTAVMNLPFGGGKGGVRVDPKKLSRNELERLSRRFFSEIQVIIGPYNDIPAPDVNTNADVIAWYMDTYSMNVGHTVLGIVTGKPVELGGSKGREEATGRGVKVCAGLAMDVLGIDPKKATVAVQGFGNVGQFAALLISQELGSKVVAVSDSRGGIYNPEGFDVEELIRYKKEHGTVVTYPKGERITNEELLELDVDILVPAALEGAIHAGNAERIKAKAVVEGANGPTTPEADEILSRRGILVVPDILANAGGVTVSYFEWVQDLQSFFWDLDQVRNALEKMMKGAFNDVMKVKEKYNVDMRTAAYILAIDRVAYATKKRG", 
+                "Type": "Protein"
+            }, 
+            "D": {
+                "Sequence": "SLYEMAVEQFNRAASLMDLESDLAEVLRRPKRVLIVEFPVRMDDGHVEVFTGYRVQHNVARGPAKGGIRYHPDVTLDEVKALAFWMTWKTAVMNLPFGGGKGGVRVDPKKLSRNELERLSRRFFSEIQVIIGPYNDIPAPDVNTNADVIAWYMDTYSMNVGHTVLGIVTGKPVELGGSKGREEATGRGVKVCAGLAMDVLGIDPKKATVAVQGFGNVGQFAALLISQELGSKVVAVSDSRGGIYNPEGFDVEELIRYKKEHGTVVTYPKGERITNEELLELDVDILVPAALEGAIHAGNAERIKAKAVVEGANGPTTPEADEILSRRGILVVPDILANAGGVTVSYFEWVQDLQSFFWDLDQVRNALEKMMKGAFNDVMKVKEKYNVDMRTAAYILAIDRVAYATKKRG", 
+                "Type": "Protein"
+            }, 
+            "E": {
+                "Sequence": "SLYEMAVEQFNRAASLMDLESDLAEVLRRPKRVLIVEFPVRMDDGHVEVFTGYRVQHNVARGPAKGGIRYHPDVTLDEVKALAFWMTWKTAVMNLPFGGGKGGVRVDPKKLSRNELERLSRRFFSEIQVIIGPYNDIPAPDVNTNADVIAWYMDTYSMNVGHTVLGIVTGKPVELGGSKGREEATGRGVKVCAGLAMDVLGIDPKKATVAVQGFGNVGQFAALLISQELGSKVVAVSDSRGGIYNPEGFDVEELIRYKKEHGTVVTYPKGERITNEELLELDVDILVPAALEGAIHAGNAERIKAKAVVEGANGPTTPEADEILSRRGILVVPDILANAGGVTVSYFEWVQDLQSFFWDLDQVRNALEKMMKGAFNDVMKVKEKYNVDMRTAAYILAIDRVAYATKKRG", 
+                "Type": "Protein"
+            }, 
+            "F": {
+                "Sequence": "SLYEMAVEQFNRAASLMDLESDLAEVLRRPKRVLIVEFPVRMDDGHVEVFTGYRVQHNVARGPAKGGIRYHPDVTLDEVKALAFWMTWKTAVMNLPFGGGKGGVRVDPKKLSRNELERLSRRFFSEIQVIIGPYNDIPAPDVNTNADVIAWYMDTYSMNVGHTVLGIVTGKPVELGGSKGREEATGRGVKVCAGLAMDVLGIDPKKATVAVQGFGNVGQFAALLISQELGSKVVAVSDSRGGIYNPEGFDVEELIRYKKEHGTVVTYPKGERITNEELLELDVDILVPAALEGAIHAGNAERIKAKAVVEGANGPTTPEADEILSRRGILVVPDILANAGGVTVSYFEWVQDLQSFFWDLDQVRNALEKMMKGAFNDVMKVKEKYNVDMRTAAYILAIDRVAYATKKRG", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 3.0
+    }, 
+    "1B5M": {
+        "Chains": {
+            "A": {
+                "Sequence": "AVTYYRLEEVAKRNTAEETWMVIHGRVYDITRFLSEHPGGEEVLLEQAGADATESFEDVGHSPDAREMLKQYYIGDVHPNDLKP", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.7
+    }, 
+    "1BF4": {
+        "Chains": {
+            "A": {
+                "Sequence": "ATVKFKYKGEEKEVDISKIKKVWRVGKMISFTYDEGGGKTGRGAVSEKDAPKELLQMLEKQKK", 
+                "Type": "Protein"
+            }, 
+            "B": {
+                "Sequence": "GCGTUCGC", 
+                "Type": "DNA"
+            }, 
+            "C": {
+                "Sequence": "GCGAACGC", 
+                "Type": "DNA"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.6
+    }, 
+    "1BKS": {
+        "Chains": {
+            "A": {
+                "Sequence": "MERYENLFAQLNDRREGAFVPFVTLGDPGIEQSLKIIDTLIDAGADALELGVPFSDPLADGPTIQNANLRAFAAGVTPAQCFEMLALIREKHPTIPIGLLMYANLVFNNGIDAFYARCEQVGVDSVLVADVPVEESAPFRQAALRHNIAPIFICPPNADDDLLRQVASYGRGYTYLLALPLHHLIEKLKEYHAAPALQGFGISSPEQVSAAVRAGAAGAISGSAIVKIIEKNLASPKQMLAELRSFVSAMKAASR", 
+                "Type": "Protein"
+            }, 
+            "B": {
+                "Sequence": "TLLNPYFGEFGGMYVPQILMPALNQLEEAFVRAQKDPEFQAQFADLLKNYAGRPTALTKCQNITAGTRTTLYLKREDLLHGGAHKTNQVLGQALLAKRMGKSEIIAETGAGQHGVASALASALLGLKCRIYMGAKDVERQSPNVFRMRLMGAEVIPVHSGSATLKDACNEALRDWSGSYETAHYMLGTAAGPHPYPTIVREFQRMIGEETKAQILDKEGRLPDAVIACVGGGSNAIGMFADFINDTSVGLIGVEPGGHGIETGEHGAPLKHGRVGIYFGMKAPMMQTADGQIEESYSISAGLDFPSVGPQHAYLNSIGRADYVSITDDEALEAFKTLCRHEGIIPALESSHALAHALKMMREQPEKEQLLVVNLSGRGDKDIFTVHDILKAR", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.2
+    }, 
+    "1BLC": {
+        "Chains": {
+            "A": {
+                "Sequence": "KELNDLEKKYNAHIGVYALDTKSGKEVKFNSDKRFAYASTSKAINSAILLEQVPYNKLNKKVHINKDDIVAYSPILEKYVGKDITLKALIEASMTYSDNTANNKIIKEIGGIKKVKQRLKELGDKVTNPVRYEIELNYYSPKSKKDTSTPAAFGKTLNKLIANGKLSKENKKFLLDLMLNNKSGDTLIKDGVPKDYKVADKSGQAITYASRNDVAFVYPKGQSEPIVLVIFTNKDNKSDKPNDKLISETAKSVMKEF", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.2
+    }, 
+    "1BNI": {
+        "Chains": {
+            "A": {
+                "Sequence": "VINTFDGVADYLQTYHKLPDNYITKSEAQALGWVASKGNLADVAPGKSIGGDIFSNREGKLPGKSGRTWREADINYTSGFRNSDRILYSSDWLIYKTTDHYQTFTKIR", 
+                "Type": "Protein"
+            }, 
+            "B": {
+                "Sequence": "VINTFDGVADYLQTYHKLPDNYITKSEAQALGWVASKGNLADVAPGKSIGGDIFSNREGKLPGKSGRTWREADINYTSGFRNSDRILYSSDWLIYKTTDHYQTFTKIR", 
+                "Type": "Protein"
+            }, 
+            "C": {
+                "Sequence": "INTFDGVADYLQTYHKLPDNYITKSEAQALGWVASKGNLADVAPGKSIGGDIFSNREGKLPGKSGRTWREADINYTSGFRNSDRILYSSDWLIYKTTDHYQTFTKIR", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.1
+    }, 
+    "1BNZ": {
+        "Chains": {
+            "A": {
+                "Sequence": "MATVKFKYKGEEKEVDISKIKKVWRVGKMISFTYDEGGGKTGRGAVSEKDAPKELLQMLEKQKK", 
+                "Type": "Protein"
+            }, 
+            "B": {
+                "Sequence": "GTAATTAC", 
+                "Type": "DNA"
+            }, 
+            "C": {
+                "Sequence": "GTAATTAC", 
+                "Type": "DNA"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.0
+    }, 
+    "1BOY": {
+        "Chains": {
+            "A": {
+                "Sequence": "TTNTVAAYNLTWKSTNFKTILEWEPKPVNQVYTVQISTKSGDWKSKCFYTTDTECDLTDEIVKDVKQTYLARVFSYPAGNVESTGSAGEPLYENSPEFTPYLETNLGQPTIQSFEQVGTKVNVTVEDERTLVRRNNTFLSLRDVFGKDLIYTLYYWKSSSSGKKTAKTNTNEFLIDVDKGENYCFSVQAVIPSRTVNRKSTDSPVECMGQE", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.2
+    }, 
+    "1BP2": {
+        "Chains": {
+            "A": {
+                "Sequence": "ALWQFNGMIKCKIPSSEPLLDFNNYGCYCGLGGSGTPVDDLDRCCQTHDNCYKQAKKLDSCKVLVDNPYTNNYSYSCSNNEITCSSENNACEAFICNCDRNAAICFSKVPYNKEHKNLDKKNC", 
+                "Type": "Protein"
+            }
+        }, 
         "MethodOfDetermination": "X-RAY DIFFRACTION", 
         "Resolution": 1.7
     }, 
-    "1U5P": {
+    "1BPI": {
+        "Chains": {
+            "A": {
+                "Sequence": "RPDFCLEPPYTGPCKARIIRYFYNAKAGLCQTFVYGGCRAKRNNFKSAEDCMRTCGGA", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.09
+    }, 
+    "1BVC": {
+        "Chains": {
+            "A": {
+                "Sequence": "VLSEGEWQLVLHVWAKVEADVAGHGQDILIRLFKSHPETLEKFDRFKHLKTEAEMKASEDLKKHGVTVLTALGAILKKKGHHEAELKPLAQSHATKHKIPIKYLEFISEAIIHVLHSRHPGDFGADAQGAMNKALELFRKDIAAKYKELGYQG", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.5
+    }, 
+    "1C2R": {
+        "Chains": {
+            "A": {
+                "Sequence": "GDAAKGEKEFNKCKTCHSIIAPDGTEIVKGAKTGPNLYGVVGRTAGTYPEFKYKDSIVALGASGFAWTEEDIATYVKDPGAFLKEKLDDKKAKTGMAFKLAKGGEDVAAYLASVVK", 
+                "Type": "Protein"
+            }, 
+            "B": {
+                "Sequence": "GDAAKGEKEFNKCKTCHSIIAPDGTEIVKGAKTGPNLYGVVGRTAGTYPEFKYKDSIVALGASGFAWTEEDIATYVKDPGAFLKEKLDDKKAKTGMAFKLAKGGEDVAAYLASVVK", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.5
+    }, 
+    "1C5G": {
+        "Chains": {
+            "A": {
+                "Sequence": "VHHPPSYVAHLASDFGVRVFQQVAQASKDRNVVFSPYGVASVLAMLQLTTGGETQQQIQAAMGFKIDDKGMAPALRHLYKELMGPWNKDEISTTDAIFVQRDLKLVQGFMPHFFRLFRSTVKQVDFSEVERARFIINDWVKTHTKGMISNLLGKGAVDQLTRLVLVNALYFNGQWKTPFPDSSTHRRLFHKSDGSTVSVPMMAQTNKFNYTEFTTPDGHYYDILELPYHGDTLSMFIAAPYEKEVPLSALTNILSAQLISHWKGNMTRLPRLLVLPKFSLETEVDLRKPLENLGMTDMFRQFQADFTSLSDQEPLHVAQALQKVKIEVNESGTVASSSTAVIVSARMAPEEIIMDRPFLFVVRHNPTGTVLFMGQVMEP", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.6
+    }, 
+    "1C9O": {
+        "Chains": {
+            "A": {
+                "Sequence": "MQRGKVKWFNNEKGYGFIEVEGGSDVFVHFTAIQGEGFKTLEEGQEVSFEIVQGNRGPQAANVVKL", 
+                "Type": "Protein"
+            }, 
+            "B": {
+                "Sequence": "MQRGKVKWFNNEKGYGFIEVEGGSDVFVHFTAIQGEGFKTLEEGQEVSFEIVQGNRGPQAANVVKL", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.17
+    }, 
+    "1CAH": {
+        "Chains": {
+            "A": {
+                "Sequence": "HHWGYGKHNGPEHWHKDFPIAKGERQSPVDIDTHTAKYDPSLKPLSVSYDQATSLRILNNGHAFNVEFDDSQDKAVLKGGPLDGTYRLIQFHFHWGSLDGQGSEHTVDKKKYAAELHLVHWNTKYGDFGKAVQQPDGLAVLGIFLKVGSAKPGLQKVVDVLDSIKTKGKSADFTNFDPRGLLPESLDYWTYPGSLTTPPLLECVTWIVLKEPISVSSEQVLKFRKLNFNGEGEPEELMVDNWRPAQPLKNRQIKASFK", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.88
+    }, 
+    "1CDC": {
+        "Chains": {
+            "A": {
+                "Sequence": "GTVWGALGHGINLNIPNFQMTDDIDEVRWERGSTLVAEFKRKMKPFLKSGAFEILANGDLKIKNLTRDDSGTYNVTVYSTNGTRILDKALDLRILE", 
+                "Type": "Protein"
+            }, 
+            "B": {
+                "Sequence": "GTVWGALGHGINLNIPNFQMTDDIDEVRWERGSTLVAEFKRKMKPFLKSGAFEILANGDLKIKNLTRDDSGTYNVTVYSTNGTRILDKALDLRILE", 
+                "Type": "Protein"
+            }
+        }, 
         "MethodOfDetermination": "X-RAY DIFFRACTION", 
         "Resolution": 2.0
     }, 
-    "1W99": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 1.75
+    "1CEY": {
+        "Chains": {
+            "A": {
+                "Sequence": "ADKELKFLVVDDFSTMRRIVRNLLKELGFNNVEEAEDGVDALNKLQAGGYGFVISDWNMPNMDGLELLKTIRADGAMSALPVLMVTAEAKKENIIAAAQAGASGYVVKPFTAATLEEKLNKIFEKLGM", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "SOLUTION NMR", 
+        "Resolution": "N/A"
     }, 
-    "1IR3": {
+    "1CHK": {
+        "Chains": {
+            "A": {
+                "Sequence": "AGAGLDDPHKKEIAMELVSSAENSSLDWKAQYKYIEDIGDGRGYTGGIIGFCSGTGDMLELVQHYTDLEPGNILAKYLPALKKVNGSASHSGLGTPFTKDWATAAKDTVFQQAQNDERDRVYFDPAVSQAKADGLRALGQFAYYDAIVMHGPGNDPTSFGGIRKTAMKKARTPAQGGDETTYLNGFLDARKAAMLTEAAHDDTSRVDTEQRVFLKAGNLDLNPPLKWKTYGDPYVINS", 
+                "Type": "Protein"
+            }, 
+            "B": {
+                "Sequence": "AGAGLDDPHKKEIAMELVSSAENSSLDWKAQYKYIEDIGDGRGYTGGIIGFCSGTGDMLELVQHYTDLEPGNILAKYLPALKKVNGSASHSGLGTPFTKDWATAAKDTVFQQAQNDERDRVYFDPAVSQAKADGLRALGQFAYYDAIVMHGPGNDPTSFGGIRKTAMKKARTPAQGGDETTYLNGFLDARKAAMLTEAAHDDTSRVDTEQRVFLKAGNLDLNPPLKWKTYGDPYVINS", 
+                "Type": "Protein"
+            }
+        }, 
         "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 1.9
+        "Resolution": 2.4
     }, 
-    "4LYZ": {
+    "1CLW": {
+        "Chains": {
+            "A": {
+                "Sequence": "YSIEADKKFKYSVKLSDYPTLQDAASAAVDGLLIDRDYNFYGGETVDFGGKVLTIECKAKFIGDGNLIFTKLGKGSRIAGVFMESTTTPWVIKPWTDDNQWLTDAAAVVATLKQSKTDGYQPTVSDYVKFPGIETLLPPNAKGQNITSTLEIRECIGVEVHRASGLMAGFLFRGCHFCKMVDANNPSGGKDGIITFENLSGDWGKGNYVIGGRTSYGSASSAQFLRNNGGFERDGGVIGFTSYRAGESGVKTWQGTVGSTTSRNYNLQFRDSVVIYPVWDGFDLGADTDRPGDYPITQYPLHQLPLNHLIDNLLVRGALGVGFGMDGKGMYVSNITVEDCAGSGAYLLTHESVFTNIAIIDTNTKDFQANQIYISGACRVNGLRLIGIRSLTIDAPNSTVSGITGMVDPSRINVANLAEEGLGNIRANSFGYDSAAIKLRIHKLSKTLDSGALYSHINGGAGSGSAYTQLTAISGSTPDAVSLKVNHKDCRGAEIPFVPDIASDDFIKDSSCFLPYWENNSTSLKALVKKPNGELVRLTLATL", 
+                "Type": "Protein"
+            }
+        }, 
         "MethodOfDetermination": "X-RAY DIFFRACTION", 
         "Resolution": 2.0
     }, 
-    "3HHR": {
+    "1CSP": {
+        "Chains": {
+            "A": {
+                "Sequence": "MLEGKVKWFNSEKGFGFIEVEGQDDVFVHFSAIQGEGFKTLEEGQAVSFEIVEGNRGPQAANVTKEA", 
+                "Type": "Protein"
+            }
+        }, 
         "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 2.8
+        "Resolution": 2.45
     }, 
-    "107L": {
-        "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 1.8
-    }, 
-    "1AAR": {
+    "1CYC": {
+        "Chains": {
+            "A": {
+                "Sequence": "GDVAKGKKTFVQKCAQCHTVENGGKHKVGPNLWGLFGRKTGQAEGYSYTDANKSKGIVWNENTLMEYLENPKKYIPGTKMIFAGIKKKGERQDLVAYLKSATS", 
+                "Type": "Protein"
+            }, 
+            "B": {
+                "Sequence": "GDVAKGKKTFVQKCAQCHTVENGGKHKVGPNLWGLFGRKTGQAEGYSYTDANKSKGIVWNENTLMEYLENPKKYIPGTKMIFAGIKKKGERQDLVAYLKSATS", 
+                "Type": "Protein"
+            }
+        }, 
         "MethodOfDetermination": "X-RAY DIFFRACTION", 
         "Resolution": 2.3
     }, 
+    "1CYO": {
+        "Chains": {
+            "A": {
+                "Sequence": "SKAVKYYTLEEIQKHNNSKSTWLILHYKVYDLTKFLEEHPGGEEVLREQAGGDATENFEDVGHSTDARELSKTFIIGELHPDDRSKIT", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.5
+    }, 
+    "1DIL": {
+        "Chains": {
+            "A": {
+                "Sequence": "TVEKSVVFKAEGEHFTDQKGNTIVGSGSGGTTKYFRIPAMCTTSKGTIVVFADARHNTASDQSFIDTAAARSTDGGKTWNKKIAIYNDRVNSKLSRVMDPTCIVANIQGRETILVMVGKWNNNDKTWGAYRDKAPDTDWDLVLYKSTDDGVTFSKVETNIHDIVTKNGTISAMLGGVGSGLQLNDGKLVFPVQMVRTKNITTVLNTSFIYSTDGITWSLPSGYCEGFGSENNIIEFNASLVNNIRNSGLRRSFETKDFGKTWTEFPPMDKKVDNRNHGVQGSTITIPSGNKLVAAHSSAQNKNNDYTRSDISLYAHNLYSGEVKLIDDFYPKVGNASGAGYSCLSYRKNVDKETLYVVYEANGSIEFQDLSRHLPVIKSYN", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.9
+    }, 
+    "1DPM": {
+        "Chains": {
+            "A": {
+                "Sequence": "ARINTVRGPITISEAGFTLTHEHICGSSAGFLRAWPEFFGSRKALAEKAVRGLRRARAAGVRTIVDVSTFDIGRDVSLLAEVSRAADVHIVAATGLWFDPPLSMRLRSVEELTQFFLREIQYGIEDTGIRAGIIKVATTGKATPFQELVLKAAARASLATGVPVTTHTAASQRDGEQQAAIFESEGLSPSRVCIGHSDDTDDLSYLTALAARGYLIGLDHIPHSAIGLEDNASASALLGIRSWQTRALLIKALIDQGYMKQILVSNDWLFGFSSYVTNIMDVMDRVNPDGMAFIPLRVIPFLREKGVPQETLAGITVTNPARFLSPTLR", 
+                "Type": "Protein"
+            }, 
+            "B": {
+                "Sequence": "ARINTVRGPITISEAGFTLTHEHICGSSAGFLRAWPEFFGSRKALAEKAVRGLRRARAAGVRTIVDVSTFDIGRDVSLLAEVSRAADVHIVAATGLWFDPPLSMRLRSVEELTQFFLREIQYGIEDTGIRAGIIKVATTGKATPFQELVLKAAARASLATGVPVTTHTAASQRDGEQQAAIFESEGLSPSRVCIGHSDDTDDLSYLTALAARGYLIGLDHIPHSAIGLEDNASASALLGIRSWQTRALLIKALIDQGYMKQILVSNDWLFGFSSYVTNIMDVMDRVNPDGMAFIPLRVIPFLREKGVPQETLAGITVTNPARFLSPTLR", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.1
+    }, 
+    "1DYB": {
+        "Chains": {
+            "A": {
+                "Sequence": "MNIFEMLRIDEGLRLKIYKDTEGYYTIGIGHLLTKSPSLNAAKSELDKAIGRNCNGVITKDEAEKLFNQDVDAAVRGILRNAKLKPVYDSLDAVRRCALINMVFQMGETGVAGFTNSLRMLQQKRWDEAAGNLAKSRWYNQTPNRAKRVITTFRTGTWDAYK", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.75
+    }, 
+    "1DYJ": {
+        "Chains": {
+            "A": {
+                "Sequence": "MISLIAALAVDRVIGMENAMPWNLPADLAWFKRNTLDKPVIMGRHTWESIGRPLPGRKNIILSSQPGTDDRVTWVKSVDEAIAACGDVPEIMVIGGGRVYEQFLPKAQKLYLTHIDAEVEGDTHFPDYEPDDWESVFSEFHDADAQNSHSYCFEILERR", 
+                "Type": "Protein"
+            }, 
+            "B": {
+                "Sequence": "MISLIAALAVDRVIGMENAMPWNLPADLAWFKRNTLDKPVIMGRHTWESIGRPLPGRKNIILSSQPGTDDRVTWVKSVDEAIAACGDVPEIMVIGGGRVYEQFLPKAQKLYLTHIDAEVEGDTHFPDYEPDDWESVFSEFHDADAQNSHSYCFEILERR", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.85
+    }, 
+    "1EL1": {
+        "Chains": {
+            "A": {
+                "Sequence": "SKIFSKCELARKLKSMGMDGFHGYSLANWVCMAEYESNFNTQAFNGRNSNGSSDYGIFQLNSKWWCKSNSHSSANACNIMCSKFLDDNIDDDIACAKRVVKDPNGMSAWVAWVKHCKGKDLSKYLASCNL", 
+                "Type": "Protein"
+            }, 
+            "B": {
+                "Sequence": "SKIFSKCELARKLKSMGMDGFHGYSLANWVCMAEYESNFNTQAFNGRNSNGSSDYGIFQLNSKWWCKSNSHSSANACNIMCSKFLDDNIDDDIACAKRVVKDPNGMSAWVAWVKHCKGKDLSKYLASCNL", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.9
+    }, 
+    "1FKB": {
+        "Chains": {
+            "A": {
+                "Sequence": "GVQVETISPGDGRTFPKRGQTCVVHYTGMLEDGKKFDSSRDRNKPFKFMLGKQEVIRGWEEGVAQMSVGQRAKLTISPDYAYGATGHPGIIPPHATLVFDVELLKLE", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.7
+    }, 
+    "1FKJ": {
+        "Chains": {
+            "A": {
+                "Sequence": "GVQVETISPGDGRTFPKRGQTCVVHYTGMLEDGKKFDSSRDRNKPFKFMLGKQEVIRGWEEGVAQMSVGQRAKLTISPDYAYGATGHPGIIPPHATLVFDVELLKLE", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.7
+    }, 
+    "1FLV": {
+        "Chains": {
+            "A": {
+                "Sequence": "KKIGLFYGTQTGKTESVAEIIRDEFGNDVVTLHDVSQAEVTDLNDYQYLIIGCPTWNIGELQSDWEGLYSELDDVDFNGKLVAYFGTGDQIGYADNFQDAIGILEEKISQRGGKTVGYWSTDGYDFNDSKALRNGKFVGLALDEDNQSDLTDDRIKSWVAQLKSEFGL", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.0
+    }, 
+    "1FMK": {
+        "Chains": {
+            "A": {
+                "Sequence": "MVTTFVALYDYESRTETDLSFKKGERLQIVNNTEGDWWLAHSLSTGQTGYIPSNYVAPSDSIQAEEWYFGKITRRESERLLLNAENPRGTFLVRESETTKGAYCLSVSDFDNAKGLNVKHYKIRKLDSGGFYITSRTQFNSLQQLVAYYSKHADGLCHRLTTVCPTSKPQTQGLAKDAWEIPRESLRLEVKLGQGCFGEVWMGTWNGTTRVAIKTLKPGTMSPEAFLQEAQVMKKLRHEKLVQLYAVVSEEPIYIVTEYMSKGSLLDFLKGETGKYLRLPQLVDMAAQIASGMAYVERMNYVHRDLRAANILVGENLVCKVADFGLARFPIKWTAPEAALYGRFTIKSDVWSFGILLTELTTKGRVPYPGMVNREVLDQVERGYRMPCPPECPESLHDLMCQCWRKEPEERPTFEYLQAFLEDYFTSTEPQYQPGENL", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.5
+    }, 
+    "1FNF": {
+        "Chains": {
+            "A": {
+                "Sequence": "PLSPPTNLHLEANPDTGVLTVSWERSTTPDITGYRITTTPTNGQQGNSLEEVVHADQSSCTFDNLSPGLEYNVSVYTVKDDKESVPISDTIIPAVPPPTDLRFTNIGPDTMRVTWAPPPSIDLTNFLVRYSPVKNEEDVAELSISPSDNAVVLTNLLPGTEYVVSVSSVYEQHESTPLRGRQKTGLDSPTGIDFSDITANSFTVHWIAPRATITGYRIRHHPEHFSGRPREDRVPHSRNSITLTNLTPGTEYVVSIVALNGREESPLLIGQQSTVSDVPRDLEVVAATPTSLLISWDAPAVTVRYYRITYGETGGNSPVQEFTVPGSKSTATISGLKPGVDYTITVYAVTGRGDSPASSKPISINYRT", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.0
+    }, 
+    "1FRD": {
+        "Chains": {
+            "A": {
+                "Sequence": "ASYQVRLINKKQDIDTTIEIDEETTILDGAEENGIELPFSCHSGSCSSCVGKVVEGEVDQSDQIFLDDEQMGKGFALLCVTYPRSNCTIKTHQEPYLA", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.7
+    }, 
+    "1FTG": {
+        "Chains": {
+            "A": {
+                "Sequence": "KKIGLFYGTQTGKTESVAEIIRDEFGNDVVTLHDVSQAEVTDLNDYQYLIIGCPTWNIGELQSDWEGLYSELDDVDFNGKLVAYFGTGDQIGYADNFQDAIGILEEKISQRGGKTVGYWSTDGYDFNDSKALRNGKFVGLALDEDNQSDLTDDRIKSWVAQLKSEFGL", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.0
+    }, 
+    "1FXA": {
+        "Chains": {
+            "A": {
+                "Sequence": "ATFKVTLINEAEGTKHEIEVPDDEYILDAAEEQGYDLPFSCRAGACSTCAGKLVSGTVDQSDQSFLDDDQIEAGYVLTCVAYPTSDVVIQTHKEEDLY", 
+                "Type": "Protein"
+            }, 
+            "B": {
+                "Sequence": "ATFKVTLINEAEGTKHEIEVPDDEYILDAAEEQGYDLPFSCRAGACSTCAGKLVSGTVDQSDQSFLDDDQIEAGYVLTCVAYPTSDVVIQTHKEEDLY", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.5
+    }, 
+    "1G6N": {
+        "Chains": {
+            "A": {
+                "Sequence": "TDPTLEWFLSHCHIHKYPSKSTLIHQGEKAETLYYIVKGSVAVLIKDEEGKEMILSYLNQGDFIGELGLFEEGQERSAWVRAKTACEVAEISYKKFRQLIQVNPDILMRLSAQMARRLQVTSEKVGNLAFLDVTGRIAQTLLNLAKQPDAMTHPDGMQIKITRQEIGQIVGCSRETVGRILKMLEDQNLISAHGKTIVVY", 
+                "Type": "Protein"
+            }, 
+            "B": {
+                "Sequence": "TDPTLEWFLSHCHIHKYPSKSTLIHQGEKAETLYYIVKGSVAVLIKDEEGKEMILSYLNQGDFIGELGLFEEGQERSAWVRAKTACEVAEISYKKFRQLIQVNPDILMRLSAQMARRLQVTSEKVGNLAFLDVTGRIAQTLLNLAKQPDAMTHPDGMQIKITRQEIGQIVGCSRETVGRILKMLEDQNLISAHGKTIVVYG", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.1
+    }, 
+    "1H7M": {
+        "Chains": {
+            "A": {
+                "Sequence": "GSVDFAFELRKAQDTGKIVMGARKSIQYAKMGGAKLIIVARNARPDIKEDIEYYARLSGIPVYEFEGTSVELGTLLGRPHTVSALAVVDPGESRILALG", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.96
+    }, 
+    "1HFY": {
+        "Chains": {
+            "A": {
+                "Sequence": "EQLTKCEVFQKLKDLKDYGGVSLPEWVCTAFHTSGYDTQAIVQNNDSTEYGLFQINNKIWCKDDQNPHSRNICNISCDKFLDDDLTDDIVCAKKILDKVGINYWLAHKALCSEKLDQWLC", 
+                "Type": "Protein"
+            }, 
+            "B": {
+                "Sequence": "EQLTKCEVFQKLKDLKDYGGVSLPEWVCTAFHTSGYDTQAIVQNNDSTEYGLFQINNKIWCKDDQNPHSRNICNISCDKFLDDDLTDDIVCAKKILDKVGINYWLAHKALCSEKLDQWLC", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.3
+    }, 
+    "1HFZ": {
+        "Chains": {
+            "A": {
+                "Sequence": "MEQLTKCEVFRELKDLKGYGGVSLPEWVCTTFHTSGYDTQAIVQNNDSTEYGLFQINNKIWCKDDQNPHSSNICNISCDKFLDDDLTDDIVCVKKILDKVGINYWLAHKALCSEKLDQWLCEK", 
+                "Type": "Protein"
+            }, 
+            "B": {
+                "Sequence": "MEQLTKCEVFRELKDLKGYGGVSLPEWVCTTFHTSGYDTQAIVQNNDSTEYGLFQINNKIWCKDDQNPHSSNICNISCDKFLDDDLTDDIVCVKKILDKVGINYWLAHKALCSEKLDQWLCE", 
+                "Type": "Protein"
+            }, 
+            "C": {
+                "Sequence": "MEQLTKCEVFRELKDLKGYGGVSLPEWVCTTFHTSGYDTQAIVQNNDSTEYGLFQINNKIWCKDDQNPHSSNICNISCDKFLDDDLTDDIVCVKKILDKVGINYWLAHKALCSEKLDQWLCE", 
+                "Type": "Protein"
+            }, 
+            "D": {
+                "Sequence": "MEQLTKCEVFRELKDLKGYGGVSLPEWVCTTFHTSGYDTQAIVQNNDSTEYGLFQINNKIWCKDDQNPHSSNICNISCDKFLDDDLTDDIVCVKKILDKVGINYWLAHKALCSEKLDQWLCEKL", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.3
+    }, 
+    "1HK0": {
+        "Chains": {
+            "X": {
+                "Sequence": "GKITLYEDRGFQGRHYECSSDHPNLQPYLSRCNSARVDSGCWMLYEQPNYSGLQYFLRRGDYADHQQWMGLSDSVRSCRLIPHSGSHRIRLYEREDYRGQMIEFTEDCSCLQDRFRFNEIHSLNVLEGSWVLYELSNYRGRQYLLMPGDYRRYQDWGATNARVGSLRRVIDFS", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.25
+    }, 
+    "1HTI": {
+        "Chains": {
+            "A": {
+                "Sequence": "APSRKFFVGGNWKMNGRKQSLGELIGTLNAAKVPADTEVVCAPPTAYIDFARQKLDPKIAVAAQNCYKVTNGAFTGEISPGMIKDCGATWVVLGHSERRHVFGESDELIGQKVAHALAEGLGVIACIGEKLDEREAGITEKVVFEQTKVIADNVKDWSKVVLAYEPVWAIGTGKTATPQQAQEVHEKLRGWLKSNVSDAVAQSTRIIYGGSVTGATCKELASQPDVDGFLVGGASLKPEFVDIINAKQ", 
+                "Type": "Protein"
+            }, 
+            "B": {
+                "Sequence": "APSRKFFVGGNWKMNGRKQSLGELIGTLNAAKVPADTEVVCAPPTAYIDFARQKLDPKIAVAAQNCYKVTNGAFTGEISPGMIKDCGATWVVLGHSERRHVFGESDELIGQKVAHALAEGLGVIACIGEKLDEREAGITEKVVFEQTKVIADNVKDWSKVVLAYEPVWAIGTGKTATPQQAQEVHEKLRGWLKSNVSDAVAQSTRIIYGGSVTGATCKELASQPDVDGFLVGGASLKPEFVDIINAKQ", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.8
+    }, 
+    "1HZ6": {
+        "Chains": {
+            "A": {
+                "Sequence": "HHAMEEVTIKANLIFANGSTQTAEFKGTFEKATSEAYAYADTLKKDNGEWTVDVADKGYTLNIKFAG", 
+                "Type": "Protein"
+            }, 
+            "B": {
+                "Sequence": "EEVTIKANLIFANGSTQTAEFKGTFEKATSEAYAYADTLKKDNGEWTVDVADKGYTLNIKFAG", 
+                "Type": "Protein"
+            }, 
+            "C": {
+                "Sequence": "EEVTIKANLIFANGSTQTAEFKGTFEKATSEAYAYADTLKKDNGEWTVDVADKGYTLNIKFAG", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.7
+    }, 
+    "1IDS": {
+        "Chains": {
+            "A": {
+                "Sequence": "AEYTLPDLDWDYGALEPHISGQINELHHSKHHATYVKGANDAVAKLEEARAKEDHSAILLNEKNLAFNLAGHVNHTIWWKNLSPNGGDKPTGELAAAIADAFGSFDKFRAQFHAAATTVQGSGWAALGWDTLGNKLLIFQVYDHQTNFPLGIVPLLLLDMWEHAFYLQYKNVKVDFAKAFWNVVNWADVQSRYAAATS", 
+                "Type": "Protein"
+            }, 
+            "B": {
+                "Sequence": "AEYTLPDLDWDYGALEPHISGQINELHHSKHHATYVKGANDAVAKLEEARAKEDHSAILLNEKNLAFNLAGHVNHTIWWKNLSPNGGDKPTGELAAAIADAFGSFDKFRAQFHAAATTVQGSGWAALGWDTLGNKLLIFQVYDHQTNFPLGIVPLLLLDMWEHAFYLQYKNVKVDFAKAFWNVVNWADVQSRYAAATS", 
+                "Type": "Protein"
+            }, 
+            "C": {
+                "Sequence": "AEYTLPDLDWDYGALEPHISGQINELHHSKHHATYVKGANDAVAKLEEARAKEDHSAILLNEKNLAFNLAGHVNHTIWWKNLSPNGGDKPTGELAAAIADAFGSFDKFRAQFHAAATTVQGSGWAALGWDTLGNKLLIFQVYDHQTNFPLGIVPLLLLDMWEHAFYLQYKNVKVDFAKAFWNVVNWADVQSRYAAATS", 
+                "Type": "Protein"
+            }, 
+            "D": {
+                "Sequence": "AEYTLPDLDWDYGALEPHISGQINELHHSKHHATYVKGANDAVAKLEEARAKEDHSAILLNEKNLAFNLAGHVNHTIWWKNLSPNGGDKPTGELAAAIADAFGSFDKFRAQFHAAATTVQGSGWAALGWDTLGNKLLIFQVYDHQTNFPLGIVPLLLLDMWEHAFYLQYKNVKVDFAKAFWNVVNWADVQSRYAAATS", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.0
+    }, 
+    "1IFB": {
+        "Chains": {
+            "A": {
+                "Sequence": "AFDGTWKVDRNENYEKFMEKMGINVVKRKLGAHDNLKLTITQEGNKFTVKESSNFRNIDVVFELGVDFAYSLADGTELTGTWTMEGNKLVGKFKRVDNGKELIAVREISGNELIQTYTYEGVEAKRIFKKE", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.96
+    }, 
+    "1IFC": {
+        "Chains": {
+            "A": {
+                "Sequence": "AFDGTWKVDRNENYEKFMEKMGINVVKRKLGAHDNLKLTITQEGNKFTVKESSNFRNIDVVFELGVDFAYSLADGTELTGTWTMEGNKLVGKFKRVDNGKELIAVREISGNELIQTYTYEGVEAKRIFKKE", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.19
+    }, 
+    "1IGV": {
+        "Chains": {
+            "A": {
+                "Sequence": "KSPEELKGIFEKYAAKEGDPNQLSKEELKLLLQTEFPSLLKGPSTLDELFEELDKNGDGEVSFEEFQVLVKKISQ", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.85
+    }, 
+    "1IHB": {
+        "Chains": {
+            "A": {
+                "Sequence": "WGNELASAAARGDLEQLTSLLQNNVNVNAQNGFGRTALQVMKLGNPEIARRLLLRGANPDLKDRTGFAVIHDAARAGFLDTLQTLLEFQADVNIEDNEGNLPLHLAAKEGHLRVVEFLVKHTASNVGHRNHKGDTACDLARLYGRNEVVSLMQANG", 
+                "Type": "Protein"
+            }, 
+            "B": {
+                "Sequence": "NELASAAARGDLEQLTSLLQNNVNVNAQNGFGRTALQVMKLGNPEIARRLLLRGANPDLKDRTGFAVIHDAARAGFLDTLQTLLEFQADVNIEDNEGNLPLHLAAKEGHLRVVEFLVKHTASNVGHRNHKGDTACDLARLYGRNEVVSLMQANGAG", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.95
+    }, 
+    "1IO2": {
+        "Chains": {
+            "A": {
+                "Sequence": "MKIAGIDEAGRGPVIGPMVIAAVVVDENSLPKLEELKVRDSKKLTPKRREKLFNEILGVLDDYVILELPPDVIGSREGTLNEFEVENFAKALNSLKVKPDVIYADAADVDEERFARELGERLNFEAEVVAKHKADDIFPVVSAASILAKVTRDRAVEKLKEEYGEIGSGYPSDPRTRAFLENYYREHGEFPPIVRKGWKTLKKIAEKVESEKK", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.0
+    }, 
+    "1IOB": {
+        "Chains": {
+            "A": {
+                "Sequence": "APVRSLNCTLRDSQQKSLVMSGPYELKALHLQGQDMEQQVVFSMSFVQGEESNDKIPVALGLKEKNLYLSCVLKDDKPTLQLESVDPKNYPKKKMEKRFVFNKIEINNKLEFESAQFPNWYISTSQAENMPVFLGGTKGGQDITDFTMQFVSS", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION;SOLUTION NMR", 
+        "Resolution": 2.0
+    }, 
+    "1IR3": {
+        "Chains": {
+            "A": {
+                "Sequence": "SSVFVPDEWEVSREKITLLRELGQGSFGMVYEGNARDIIKGEAETRVAVKTVNESASLRERIEFLNEASVMKGFTCHHVVRLLGVVSKGQPTLVVMELMAHGDLKSYLRSLRPEAENNPGRPPPTLQEMIQMAAEIADGMAYLNAKKFVHRDLAARNCMVAHDFTVKIGDFGMTRDIYETDYYRKGGKGLLPVRWMAPESLKDGVFTTSSDMWSFGVVLWEITSLAEQPYQGLSNEQVLKFVMDGGYLDQPDNCPERVTDLMRMCWQFNPKMRPTFLEIVNLLKDDLHPSFPEVSFFHSEENK", 
+                "Type": "Protein"
+            }, 
+            "B": {
+                "Sequence": "GDYMNM", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.9
+    }, 
+    "1IRO": {
+        "Chains": {
+            "A": {
+                "Sequence": "MKKYTCTVCGYIYNPEDGDPDNGVNPGTDFKDIPDDWVCPLCGVGKDQFEEVE", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.1
+    }, 
+    "1JIW": {
+        "Chains": {
+            "I": {
+                "Sequence": "SSLILLSASDLAGQWTLQQDEAPAICHLELRDSEVAEASGYDLGGDTACLTRWLPSEPRAWRPTPAGIALLERGGLTLMLLGRQGEGDYRVQKGDGGQLVLRRAT", 
+                "Type": "Protein"
+            }, 
+            "P": {
+                "Sequence": "GRSDAYTQVDNFLHAYARGGDELVNGHPSYTVDQAAEQILREQASWQKAPGDSVLTLSYSFLTKPNDFFNTPWKYVSDIYSLGKFSAFSAQQQAQAKLSLQSWSDVTNIHFVDAGQGDQGDLTFGNFSSSVGGAAFAFLPDVPDALKGQSWYLINSSYSANVNPANGNYGRQTLTHEIGHTLGLSHPGDYNAGEGDPTYADATYAEDTRAYSVMSYWEEQNTGQDFKGAYSSAPLLDDIAAIQKLYGANLTTRTGDTVYGFNSNTERDFYSATSSSSKLVFSVWDAGGNDTLDFSGFSQNQKINLNEKALSDVGGLKGNVSIAAGVTVENAIGGSGSDLLIGNDVANVLKGGAGNDILYGGLGADQLWGGAGADTFVYGDIAESSAAAPDTLRDFVSGQDKIDLSGLDAFVNGGLVLQYVDAFAGKAGQAILSYDAASKAGSLAIDFSGDAHADFAINLIGQATQADIVV", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.74
+    }, 
+    "1KFW": {
+        "Chains": {
+            "A": {
+                "Sequence": "PLTSTVNGYRNVGYFAQWGVYGRAFQAKQLDVSGTAKNLTHINYSFGNINNQTLTCFMANKAQGTGPNGSDGAGDAWADFGMGYAADKSVSGKADTWDQPLAGSFNQLKQLKAKNPKLKVMISLGGWTWSKNFSKAAATEASRQKLVSSCIDLYIKGNLPNFEGRGGAGAAAGIFDGIDIDWEWPGTNSGLAGNGVDTVNDRANFKALLAEFRKQLDAYGSTNNKKYVLSAFLPANPADIDAGGWDDPANFKSLDFGSIQGYDLHGAWNPTLTGHQANLYDDPADPRAPSKKFSADKAVKKYLAAGIDPKQLGLGLAAYGRGWTGAKNVSPWGPATDGAPGTYETANEDYDKLKTLGTDHYDAATGSAWRYDGTQWWSYDNIATTKQKTDYIVSKGLGGGMWWELSGDRNGELVGAMSDKFRAAAPGPVTEAAPP", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.74
+    }, 
+    "1L00": {
+        "Chains": {
+            "A": {
+                "Sequence": "MNIFEMLRIDEGLRLKIYKDTEGYYTIGIGHLLTKSPSLNAAKSELDKAIGRNCNGVITKDEAEKLFNQDVDAAVRGILRNAKLKPVYDSLDAVRRCALINMVFAMGETGVAGFTNSLRMLQQKRWDEAAVNLAKSRWYNQTPNRAKRVITTFRTGTWDAYKNL", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.9
+    }, 
+    "1L02": {
+        "Chains": {
+            "A": {
+                "Sequence": "MNIFEMLRIDEGLRLKIYKDTEGYYTIGIGHLLTKSPSLNAAKSELDKAIGRNCNGVITKDEAEKLFNQDVDAAVRGILRNAKLKPVYDSLDAVRRCALINMVFQMGETGVAGFTNSLRMLQQKRWDEAAVNLAKSRWYNQTPNRAKRVITTFRTGAWDAYKNL", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.7
+    }, 
+    "1L08": {
+        "Chains": {
+            "A": {
+                "Sequence": "MNIFEMLRIDEGLRLKIYKDTEGYYTIGIGHLLTKSPSLNAAKSELDKAIGRNCNGVITKDEAEKLFNQDVDAAVRGILRNAKLKPVYDSLDAVRRCALINMVFQMGETGVAGFTNSLRMLQQKRWDEAAVNLAKSRWYNQTPNRAKRVITTFRTGGWDAYKNL", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.7
+    }, 
+    "1L21": {
+        "Chains": {
+            "A": {
+                "Sequence": "MNIFEMLRIDEGLRLKIYKDTEGYYTIGIGHLLTKSPSLNAAKSELDKAIGRNCGGVITKDEAEKLFNQDVDAAVRGILRNAKLKPVYDSLDAVRRCALINMVFQMGETGVAGFTNSLRMLQQKRWDEAAVNLAKSRWYNQTPNRAKRVITTFRTGTWDAYKNL", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.85
+    }, 
+    "1L22": {
+        "Chains": {
+            "A": {
+                "Sequence": "MNIFEMLRIDEGLRLKIYKDTEGYYTIGIGHLLTKSPSLNAAKSELDKAIGRNCNGVITKDEAEKLFNQDVDAAVRGILRNAKLKPVYDSLDAVRRCALINMVFQMGETGVAGFTNSLRMLQQGRWDEAAVNLAKSRWYNQTPNRAKRVITTFRTGTWDAYKNL", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.7
+    }, 
+    "1L23": {
+        "Chains": {
+            "A": {
+                "Sequence": "MNIFEMLRIDEGLRLKIYKDTEGYYTIGIGHLLTKSPSLNAAKSELDKAIGRNCNGVITKDEAEKLFNQDVDAAVRAILRNAKLKPVYDSLDAVRRCALINMVFQMGETGVAGFTNSLRMLQQKRWDEAAVNLAKSRWYNQTPNRAKRVITTFRTGTWDAYKNL", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.7
+    }, 
+    "1L33": {
+        "Chains": {
+            "A": {
+                "Sequence": "MNIFEMLRIDEGLRLKIYKDTEGYYTIGIGHLLTKSPSLNAAKSELDKAIGRNCNGVITKDEAEKLFNQDVDAAVRGILRNAKLKPVYDSLDAVRRCALINMVFQMGETGVAGFTNSLRMLQQKRWDEAAANLAKSRWYNQTPNRAKRVITTFRTGTWDAYKNL", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.7
+    }, 
+    "1L60": {
+        "Chains": {
+            "A": {
+                "Sequence": "MNIFEMLRIDEGLRLKIYKDTEGYYTIGIGHLLTKSPSLNAAKSELDKAIGRNCNGVITKDEAEKLFNQDVDAAVRGILRNAKLKPVYDSLDAVRRCALINMVFQMGETGVAAFTNSLRMLQQKRWDEAAVNLAKSRWYNQTPNRAKRVITTFRTGTWDAYKNL", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.7
+    }, 
+    "1L63": {
+        "Chains": {
+            "A": {
+                "Sequence": "MNIFEMLRIDEGLRLKIYKDTEGYYTIGIGHLLTKSPSLNAAKSELDKAIGRNTNGVITKDEAEKLFNQDVDAAVRGILRNAKLKPVYDSLDAVRRAALINMVFQMGETGVAGFTNSLRMLQQKRWDEAAVNLAKSRWYNQTPNRAKRVITTFRTGTWDAYK", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.75
+    }, 
+    "1L65": {
+        "Chains": {
+            "A": {
+                "Sequence": "MNIFEMLRIDEGLRLKIYKDTEGYYTIGIGHLLTKSPSLNAAKSELAKAIGRNTNGVITKDEAEKLFNQDVDAAVRGILRNAKLKPVYDSLDAVRRAALINMVFQMGETGVAGFTNSLRMLQQKRWDEAAVNLAKSRWYNQTPNRAKRVITTFRTGTWDAYK", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.7
+    }, 
+    "1L66": {
+        "Chains": {
+            "A": {
+                "Sequence": "MNIFEMLRIDEGLRLKIYKDTEGYYTIGIGHLLTKSPSLNAAASELDKAIGRNTNGVITKDEAEKLFNQDVDAAVRGILRNAKLKPVYDSLDAVRRAALINMVFQMGETGVAGFTNSLRMLQQKRWDEAAVNLAKSRWYNQTPNRAKRVITTFRTGTWDAYK", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.7
+    }, 
+    "1L67": {
+        "Chains": {
+            "A": {
+                "Sequence": "MNIFEMLRIDEGLRLKIYKDTEGYYTIGIGHLLTKSPSLNAAKSEADKAIGRNTNGVITKDEAEKLFNQDVDAAVRGILRNAKLKPVYDSLDAVRRAALINMVFQMGETGVAGFTNSLRMLQQKRWDEAAVNLAKSRWYNQTPNRAKRVITTFRTGTWDAYK", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.9
+    }, 
+    "1L68": {
+        "Chains": {
+            "A": {
+                "Sequence": "MNIFEMLRIDEGLRLKIYKDTEGYYTIGIGHLLTKSPSLNAAKAELDKAIGRNTNGVITKDEAEKLFNQDVDAAVRGILRNAKLKPVYDSLDAVRRAALINMVFQMGETGVAGFTNSLRMLQQKRWDEAAVNLAKSRWYNQTPNRAKRVITTFRTGTWDAYK", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.7
+    }, 
+    "1L69": {
+        "Chains": {
+            "A": {
+                "Sequence": "MNIFEMLRIDEGLRLKIYKDTEGYYTIGIGHLLTKSPSLNAAKSELDKAIGRNCNGVITKDEAEKLFNQDVDAAVRGILRNAKLKPVYDSLDAVRRCALINMVFQMGETGVAGFTNSLRMLQQKRWDEAAVNAAKSRWYNQTPNRAKRVITTFRTGTWDAYK", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.9
+    }, 
+    "1L85": {
+        "Chains": {
+            "A": {
+                "Sequence": "MNIFEMLRIDEGLRLKIYKDTEGYYTIGIGHLLTKSPSLNAAKSELDKAIGRNTNGVITKDEAEKLFNQDVDAAVRGILRNAKLKPVYDSLDAVRRAALINMVFQMGETGVAGFTNSLRMLQQKRWDEAAVNLAKSRWYNQTPNRAKRVITTARTGTWDAYK", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.0
+    }, 
+    "1L90": {
+        "Chains": {
+            "A": {
+                "Sequence": "MNIFEMLRIDEGLRLKIYKDTEGYYTIGIGHLLTKSPSLNAAKSELDKAIGRNTNGVITKDEAEKLFNQDVDAAVRGILRNAKLKPVYDSLDAVRRAAAINMVFQMGETGVAGFTNSLRMLQQKRWDEAAVNLAKSRWYNQTPNRAKRVITTFRTGTWDAYK", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.75
+    }, 
+    "1L99": {
+        "Chains": {
+            "A": {
+                "Sequence": "MNIFEMLRIDEGLRLKIYKDTEGYYTIGIGHLLTKSPSLNAAKSELDKAIGRNCNGVITKDEAEKLFNQDVDAAVRGILRNAKLKPVYDSLDAVRRCALINMVFGMGETGVAGFTNSLRMLQQKRWDEAAVNLAKSRWYNQTPNRAKRVITTFRTGTWDAYKNL", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.95
+    }, 
+    "1LHM": {
+        "Chains": {
+            "A": {
+                "Sequence": "KVFERCELARTLKRLGMDGYRGISLANWMCLAKWESGYNTRATNYNAGDRSTDYGIFQINSRYWCNDGKTPGAVNAAHLSCSALLQDNIADAVAAAKRVVRDPQGIRAWVAWRNRCQNRDVRQYVQGCGV", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.8
+    }, 
+    "1LMB": {
+        "Chains": {
+            "1": {
+                "Sequence": "AATACCACTGGCGGTGATAT", 
+                "Type": "DNA"
+            }, 
+            "2": {
+                "Sequence": "TATATCACCGCCAGTGGTAT", 
+                "Type": "DNA"
+            }, 
+            "3": {
+                "Sequence": "PLTQEQLEDARRLKAIYEKKKNELGLSQESVADKMGMGQSGVGALFNGINALNAYNAALLAKILKVSVEEFSPSIAREIYEMYEAVS", 
+                "Type": "Protein"
+            }, 
+            "4": {
+                "Sequence": "STKKKPLTQEQLEDARRLKAIYEKKKNELGLSQESVADKMGMGQSGVGALFNGINALNAYNAALLAKILKVSVEEFSPSIAREIYEMYEAVS", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.8
+    }, 
+    "1LVE": {
+        "Chains": {
+            "A": {
+                "Sequence": "DIVMTQSPDSLAVSLGERATINCKSSQSVLYSSNSKNYLAWYQQKPGQPPKLLIYWASTRESGVPDRFSGSGSGTDFTLTISSLQAEDVAVYYCQQYYSTPYSFGQGTKLEIKR", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.95
+    }, 
+    "1LYH": {
+        "Chains": {
+            "A": {
+                "Sequence": "MNIFEMLRIDEGLRLKIYKDTEGYYTIGIGHLLTKSPSLNAAKSELDKAIGRNTNGVIGKDEAEKLFNQDVDAAVRGILRNAKLKPVYDSLDAVRRAALINMVFQMGETGVAGFTNSLRMLQQKRWDEAAVNLAKSRWYNQTPNRAKRVITTFRTGTWDAYK", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.7
+    }, 
+    "1LYJ": {
+        "Chains": {
+            "A": {
+                "Sequence": "MNIFEMLRIDEGLRLKIYKDTEGYYTIGIGHLLTKSPSLNAAKSELDKAIGRNTNGVIAKDEAEKLFNQDVDAAVRGILRNAKLKPVYDSLDAVRRAALINMVFQMGETGVAGFTNSLRMLQQKRWDEAAVNLAKSRWYNQTPNRAKRVITTFRTGTWDAYK", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.8
+    }, 
+    "1LZ1": {
+        "Chains": {
+            "A": {
+                "Sequence": "KVFERCELARTLKRLGMDGYRGISLANWMCLAKWESGYNTRATNYNAGDRSTDYGIFQINSRYWCNDGKTPGAVNACHLSCSALLQDNIADAVACAKRVVRDPQGIRAWVAWRNRCQNRDVRQYVQGCGV", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.5
+    }, 
+    "1MGR": {
+        "Chains": {
+            "A": {
+                "Sequence": "VKAVGRVCYSALPSQAHDTLDLIDEGGPFPYSQDGVVFQNREGLLPAHSTGYYHEYTVITPGSPTRGARRIITGQQWQEDYYTADHYASFRRVDFAC", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.7
+    }, 
     "1MJC": {
+        "Chains": {
+            "A": {
+                "Sequence": "SGKMTGIVKWFNADKGFGFITPDDGSKDVFVHFSAIQNDGYKSLDEGQKVSFTIESGAKGPAAGNVTSL", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.0
+    }, 
+    "1MSI": {
+        "Chains": {
+            "A": {
+                "Sequence": "AAQASVVANQLIPINTALTLVMMRSEVVTPVGIPAEDIPRLVSMQVNRAVPLGTTLMPDMVKGYAA", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.25
+    }, 
+    "1MYL": {
+        "Chains": {
+            "A": {
+                "Sequence": "KMPQFNLRWPREVLDLVRKVAEENGMSVNSYIYQLVMESFKKEGR", 
+                "Type": "Protein"
+            }, 
+            "B": {
+                "Sequence": "MPQFNLRWPREVLDLVRKVAEENGMSVNSYIYQLVMESFK", 
+                "Type": "Protein"
+            }, 
+            "C": {
+                "Sequence": "MPQFNLRWPREVLDLVRKVAEENGMSVNSYIYQLVMESFKKEGRI", 
+                "Type": "Protein"
+            }, 
+            "D": {
+                "Sequence": "MPQFNLRWPREVLDLVRKVAEENGMSVNSYIYQLVMESFKKEGRI", 
+                "Type": "Protein"
+            }, 
+            "E": {
+                "Sequence": "MPQFNLRWPREVLDLVRKVAEENGMSVNSYIYQLVMESFKK", 
+                "Type": "Protein"
+            }, 
+            "F": {
+                "Sequence": "MPQFNLRWPREVLDLVRKVAEENGMSVNSYIYQLVMESFK", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.4
+    }, 
+    "1N0J": {
+        "Chains": {
+            "A": {
+                "Sequence": "KHSLPDLPYDYGALEPHINAQIMQLHHSKHHAAYVNNLNVTEEKYQEALAKGDVTAQIALQPALKFNGGGHINHSIFWTNLSPNGGGEPKGELLEAIKRDFGSFDKFKEKLTAASVGVQGSGWGWLGFNKERGHLQIAACPNQDPLQGTTGLIPLLGIDVWEHAYYLQYKNVRPDYLKAIWNVINWENVTERYMACKK", 
+                "Type": "Protein"
+            }, 
+            "B": {
+                "Sequence": "KHSLPDLPYDYGALEPHINAQIMQLHHSKHHAAYVNNLNVTEEKYQEALAKGDVTAQIALQPALKFNGGGHINHSIFWTNLSPNGGGEPKGELLEAIKRDFGSFDKFKEKLTAASVGVQGSGWGWLGFNKERGHLQIAACPNQDPLQGTTGLIPLLGIDVWEHAYYLQYKNVRPDYLKAIWNVINWENVTERYMACKK", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.2
+    }, 
+    "1OH0": {
+        "Chains": {
+            "A": {
+                "Sequence": "LPTAQEVQGLMARYIELVDVGDIEAIVQMYADDATVEDPFGQPPIHGREQIAAFYRQGLGGGKVRACLTGPVRASHNGCGAMPFRVEMVWNGQPCALDVIDVMRFDEHGRIQTMQAYWSEVNLSV", 
+                "Type": "Protein"
+            }, 
+            "B": {
+                "Sequence": "LPTAQEVQGLMARYIELVDVGDIEAIVQMYADDATVEDPFGQPPIHGREQIAAFYRQGLGGGKVRACLTGPVRASHNGCGAMPFRVEMVWNGQPCALDVIDVMRFDEHGRIQTMQAYWSEVNLSVREP", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.1
+    }, 
+    "1OIA": {
+        "Chains": {
+            "A": {
+                "Sequence": "VPETRPNHTIYINNLNEKIKKDELKKSLYAIFSQFGQILDILVSRSLKMRGQAFVIFKEVSSATNALRSMQGFPFYDKPMRIQYAKTDSD", 
+                "Type": "Protein"
+            }, 
+            "B": {
+                "Sequence": "TRPNHTIYINNLNEKIKKDELKKSLYAIFSQFGQILDILVSRSLKMRGQAFVIFKEVSSATNALRSMQGFPFYDKPMRIQYAKTDS", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.4
+    }, 
+    "1ONC": {
+        "Chains": {
+            "A": {
+                "Sequence": "EDWLTFQKKHITNTRDVDCDNIMSTNLFHCKDKNTFIYSRPEPVKAICKGIIASKNVLTTSEFYLSDCNVTSRPCKYKLKKSTNKFCVTCENQAPVHFVGVGSC", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.7
+    }, 
+    "1PGA": {
+        "Chains": {
+            "A": {
+                "Sequence": "MTYKLILNGKTLKGETTTEAVDAATAEKVFKQYANDNGVDGEWTYDDATKTFTVTE", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.07
+    }, 
+    "1PIN": {
+        "Chains": {
+            "A": {
+                "Sequence": "KLPPGWEKRMSRSSGRVYYFNHITNASQWERPSGGKNGQGEPARVRCSHLLVKHSQSRRPSSWRQEKITRTKEEALELINGYIQKIKSGEEDFESLASQFSDCSSAKARGDLGAFSRGQMQKPFEDASFALRTGEMSGPVFTDSGIHIILRTE", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.35
+    }, 
+    "1POH": {
+        "Chains": {
+            "A": {
+                "Sequence": "MFQQEVTITAPNGLHTRPAAQFVKEAKGFTSEITVTSNGKSASAKSLFKLQTLGLTQGTVVTISAEGEDEQKAVEHLVKLMAELE", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.0
+    }, 
+    "1QHE": {
+        "Chains": {
+            "A": {
+                "Sequence": "KKIGLFYGTQTGKTESVAEIIRDEFGNDVVTLHDVSQAEVTDLNDYQYLIIGCPTWNIGELQSDWEGLYSELDDVDFNGKLVAYFGTGDQIGYADNFQDAIGILEEKISQRGGKTVGYWSTDGYDFNDSKALRNGKFVGLALDEDNQSDLTDDRIKSWVAQLKSEFGL", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.0
+    }, 
+    "1QLP": {
+        "Chains": {
+            "A": {
+                "Sequence": "FNKITPNLAEFAFSLYRQLAHQSNSTNIFFSPVSIATAFAMLSLGTKADTHDEILEGLNFNLTEIPEAQIHEGFQELLRTLNQPDSQLQLTTGNGLFLSEGLKLVDKFLEDVKKLYHSEAFTVNFGDTEEAKKQINDYVEKGTQGKIVDLVKELDRDTVFALVNYIFFKGKWERPFEVKDTEEEDFHVDQVTTVKVPMMKRLGMFNIQHCKKLSSWVLLMKYLGNATAIFFLPDEGKLQHLENELTHDIITKFLENEDRRSASLHLPKLSITGTYDLKSVLGQLGITKVFSNGADLSGVTEEAPLKLSKAVHKAVLTIDEKGTEAAGAMFLEAIPMSIPPEVKFNKPFVFLMIEQNTKSPLFMGKVVNPTQK", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.0
+    }, 
+    "1REX": {
+        "Chains": {
+            "A": {
+                "Sequence": "KVFERCELARTLKRLGMDGYRGISLANWMCLAKWESGYNTRATNYNAGDRSTDYGIFQINSRYWCNDGKTPGAVNACHLSCSALLQDNIADAVACAKRVVRDPQGIRAWVAWRNRCQNRDVRQYVQGCGV", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.5
+    }, 
+    "1RGG": {
+        "Chains": {
+            "A": {
+                "Sequence": "DVSGTVCLSALPPEATDTLNLIASDGPFPYSQDGVVFQNRESVLPTQSYGYYHEYTVITPGARTRGTRRIITGEATQEDYYTGDHYATFSLIDQTC", 
+                "Type": "Protein"
+            }, 
+            "B": {
+                "Sequence": "DVSGTVCLSALPPEATDTLNLIASDGPFPYSQDGVVFQNRESVLPTQSYGYYHEYTVITPGARTRGTRRIITGEATQEDYYTGDHYATFSLIDQTC", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.2
+    }, 
+    "1RHG": {
+        "Chains": {
+            "A": {
+                "Sequence": "LPQSFLLKCLEQVRKIQGDGAALQEKLCATYKLCHPEELVLLGHSLGIPWAPLLAGCLSQLHSGLFLYQGLLQALEGISPELGPTLDTLQLDVADFATTIWQQMEELGMMPAFASAFQRRAGGVLVASHLQSFLEVSYRVLRHLA", 
+                "Type": "Protein"
+            }, 
+            "B": {
+                "Sequence": "LPQSFLLKCLEQVRKIQGDGAALQEKLCATYKLCHPEELVLLGHSLGIPWAPLSSCLAGCLSQLHSGLFLYQGLLQALEGISPELGPTLDTLQLDVADFATTIWQQMEMPAFASAFQRRAGGVLVASHLQSFLEVSYRVLRHLA", 
+                "Type": "Protein"
+            }, 
+            "C": {
+                "Sequence": "LPQSFLLKCLEQVRKIQGDGAALQEKLCATYKLCHPEELVLLGHSLGIPWAPLLAGCLSQLHSGLFLYQGLLQALEGISPELGPTLDTLQLDVADFATTIWQQMEELGMMPAFASAFQRRAGGVLVASHLQSFLEVSYRVLRHLA", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.2
+    }, 
+    "1RIS": {
+        "Chains": {
+            "A": {
+                "Sequence": "MRRYEVNIVLNPNLDQSQLALEKEIIQRALENYGARVEKVEELGLRRLAYPIAKDPQGYFLWYQVEMPEDRVNDLARELRIRDNVRRVMVVKSQEPF", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.0
+    }, 
+    "1RN1": {
+        "Chains": {
+            "A": {
+                "Sequence": "ACDYTCGSNCYSSSDVSTAQAAGYQLHEDGETVGSNSYPHKYNNEGFDFSVSSPYYEWPILSSGDVYSGGSPGADRVVFNENNQLAGVITHTGASGNNFVECT", 
+                "Type": "Protein"
+            }, 
+            "B": {
+                "Sequence": "CDYTCGSNCYSSSDVSTAQAAGYQLHEDGETVGSNSYPHKYNNYEGFDFSVSSPYYEWPILSSGDVYSGGSPGADRVVFNENNQLAGVITHTGASGNNFVECT", 
+                "Type": "Protein"
+            }, 
+            "C": {
+                "Sequence": "ACDYTCGSNCYSSSDVSTAQAAGYQLHEDGETVGSNSYPHKYNNYEGFDFSVSSPYYEWPILSSGDVYSGGSPGADRVVFNENNQLAGVITHTGASGNNFVECT", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.84
+    }, 
+    "1ROP": {
+        "Chains": {
+            "A": {
+                "Sequence": "MTKQEKTALNMARFIRSQTLTLLEKLNELDADEQADICESLHDHADELYRSCLARF", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.7
+    }, 
+    "1RRO": {
+        "Chains": {
+            "A": {
+                "Sequence": "SITDILSAEDIAAALQECQDPDTFEPQKFFQTSGLSKMSASQVKDIFRFIDNDQSGYLDGDELKYFLQKFQSDARELTESETKSLMDAADNDGDGKIGADEFQEMVHS", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.3
+    }, 
+    "1RTB": {
+        "Chains": {
+            "A": {
+                "Sequence": "KETAAAKFERQHMDSSTSAASSSNYCNQMMKSRNLTKDRCKPVNTFVHESLADVQAVCSQKNVACKNGQTNCYQSYSTMSITDCRETGSSKYPNCAYKTTQANKHIIVACEGNPYVPVHFDASV", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.5
+    }, 
+    "1RTP": {
+        "Chains": {
+            "1": {
+                "Sequence": "SMTDLLSAEDIKKAIGAFTAADSFDHKKFFQMVGLKKKSADDVKKVFHILDKDKSGFIEEDELGSILKGFSSDARDLSAKETKTLMAAGDKDGDGKIGVEEFSTLVAES", 
+                "Type": "Protein"
+            }, 
+            "2": {
+                "Sequence": "SMTDLLSAEDIKKAIGAFTAADSFDHKKFFQMVGLKKKSADDVKKVFHILDKDKSGFIEEDELGSILKGFSSDARDLSAKETKTLMAAGDKDGDGKIGVEEFSTLVAES", 
+                "Type": "Protein"
+            }, 
+            "3": {
+                "Sequence": "SMTDLLSAEDIKKAIGAFTAADSFDHKKFFQMVGLKKKSADDVKKVFHILDKDKSGFIEEDELGSILKGFSSDARDLSAKETKTLMAAGDKDGDGKIGVEEFSTLVAES", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.0
+    }, 
+    "1RX4": {
+        "Chains": {
+            "A": {
+                "Sequence": "MISLIAALAVDRVIGMENAMPWNLPADLAWFKRNTLDKPVIMGRHTWESIGRPLPGRKNIILSSQPGTDDRVTWVKSVDEAIAACGDVPEIMVIGGGRVYEQFLPKAQKLYLTHIDAEVEGDTHFPDYEPDDWESVFSEFHDADAQNSHSYCFEILERR", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.2
+    }, 
+    "1SCE": {
+        "Chains": {
+            "A": {
+                "Sequence": "VPRLLTASERERLEPFIDQIHYSPRYADDEYEYRHVMLPKAMLKAIPTDYFNPETGTLRILQEEEWRGLGITQSLGWEMYEVHVPEPHILLFKREKD", 
+                "Type": "Protein"
+            }, 
+            "B": {
+                "Sequence": "VPRLLTASERERLEPFIDQIHYSPRYADDEYEYRHVMLPKAMLKAIPTDYFNPETGTLRILQEEEWRGLGITQSLGWEMYEVHVPEPHILLFKREKD", 
+                "Type": "Protein"
+            }, 
+            "C": {
+                "Sequence": "SKSGVPRLLTASERERLEPFIDQIHYSPRYADDEYEYRHVMLPKAMLKAIPTDYFNPETGTLRILQEEEWRGLGITQSLGWEMYEVHVPEPHILLFKREKDYQMKSQQRGG", 
+                "Type": "Protein"
+            }, 
+            "D": {
+                "Sequence": "KSGVPRLLTASERERLEPFIDQIHYSPRYADDEYEYRHVMLPKAMLKAIPTDYFNPETGTLRILQEEEWRGLGITQSLGWEMYEVHVPEPHILLFKREKDYQM", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.2
+    }, 
+    "1SHF": {
+        "Chains": {
+            "A": {
+                "Sequence": "VTLFVALYDYEARTEDDLSFHKGEKFQILNSSEGDWWEARSLTTGETGYIPSNYVAPVD", 
+                "Type": "Protein"
+            }, 
+            "B": {
+                "Sequence": "VTLFVALYDYEARTEDDLSFHKGEKFQILNSSEGDWWEARSLTTGETGYIPSNYVAPVD", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.9
+    }, 
+    "1SHG": {
+        "Chains": {
+            "A": {
+                "Sequence": "KELVLALYDYQEKSPREVTMKKGDILTLLNSTNKDWWKVEVNDRQGFVPAAYVKKLD", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.8
+    }, 
+    "1STN": {
+        "Chains": {
+            "A": {
+                "Sequence": "KLHKEPATLIKAIDGDTVKLMYKGQPMTFRLLLVDTPETKHPKKGVEKYGPEASAFTKKMVENAKKIEVEFDKGQRTDKYGRGLAYIYADGKMVNEALVRQGLAKVAYVYKPNNTHEQHLRKSEAQAKKEKLNIWS", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.7
+    }, 
+    "1SUP": {
+        "Chains": {
+            "A": {
+                "Sequence": "AQSVPYGVSQIKAPALHSQGYTGSNVKVAVIDSGIDSSHPDLKVAGGASMVPSETNPFQDNNSHGTHVAGTVAALNNSIGVLGVAPSASLYAVKVLGADGSGQYSWIINGIEWAIANNMDVINMSLGGPSGSAALKAAVDKAVASGVVVVAAAGNEGTSGSSSTVGYPGKYPSVIAVGAVDSSNQRASFSSVGPELDVMAPGVSIQSTLPGNKYGAYNGTSMASPHVAGAAALILSKHPNWTNTQVRSSLENTTTKLGDSFYYGKGLINVQAAAQ", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.6
+    }, 
+    "1TEN": {
+        "Chains": {
+            "A": {
+                "Sequence": "RLDAPSQIEVKDVTDTTALITWFKPLAEIDGIELTYGIKDVPGDRTTIDLTEDENQYSIGNLKPDTEYEVSLISRRGDMSSNPAKETFTT", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.8
+    }, 
+    "1TPK": {
+        "Chains": {
+            "A": {
+                "Sequence": "GNSDCYFGNGSAYRGTHSLTESGASCLPWNSMILIGKVYTAQNPSAQALGLGKHNYCRNPDGDAKPWCHVLKNRRLTWEYCDVPSCST", 
+                "Type": "Protein"
+            }, 
+            "B": {
+                "Sequence": "GNSDCYFGNGSAYRGTHSLTESGASCLPWNSMILIGKVYTAQNPSAQALGLGKHNYCRNPDGDAKPWCHVLKNRRLTWEYCDVPSCST", 
+                "Type": "Protein"
+            }, 
+            "C": {
+                "Sequence": "GNSDCYFGNGSAYRGTHSLTESGASCLPWNSMILIGKVYTAQNPSAQALGLGKHNYCRNPDGDAKPWCHVLKNRRLTWEYCDVPSCST", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.4
+    }, 
+    "1TUP": {
+        "Chains": {
+            "A": {
+                "Sequence": "SSSVPSQKTYQGSYGFRLGFLHSGTAKSVTCTYSPALNKMFCQLAKTCPVQLWVDSTPPPGTRVRAMAIYKQSQHMTEVVRRCPHHERCSDSDGLAPPQHLIRVEGNLRVEYLDDRNTFRHSVVVPYEPPEVGSDCTTIHYNYMCNSSCMGGMNRRPILTIITLEDSSGNLLGRNSFEVRVCACPGRDRRTEEENL", 
+                "Type": "Protein"
+            }, 
+            "B": {
+                "Sequence": "SVPSQKTYQGSYGFRLGFLHSGTAKSVTCTYSPALNKMFCQLAKTCPVQLWVDSTPPPGTRVRAMAIYKQSQHMTEVVRRCPHHERCSDSDGLAPPQHLIRVEGNLRVEYLDDRNTFRHSVVVPYEPPEVGSDCTTIHYNYMCNSSCMGGMNRRPILTIITLEDSSGNLLGRNSFEVRVCACPGRDRRTEEENL", 
+                "Type": "Protein"
+            }, 
+            "C": {
+                "Sequence": "SSVPSQKTYQGSYGFRLGFLHSGTAKSVTCTYSPALNKMFCQLAKTCPVQLWVDSTPPPGTRVRAMAIYKQSQHMTEVVRRCPHHERCSDSDGLAPPQHLIRVEGNLRVEYLDDRNTFRHSVVVPYEPPEVGSDCTTIHYNYMCNSSCMGGMNRRPILTIITLEDSSGNLLGRNSFEVRVCACPGRDRRTEEENL", 
+                "Type": "Protein"
+            }, 
+            "E": {
+                "Sequence": "TTTCCTAGACTTGCCCAATTA", 
+                "Type": "DNA"
+            }, 
+            "F": {
+                "Sequence": "ATAATTGGGCAAGTCTAGGAA", 
+                "Type": "DNA"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.2
+    }, 
+    "1U5P": {
+        "Chains": {
+            "A": {
+                "Sequence": "ANKQQNFNTGIKDFDFWLSEVEALLASEDYGKDLASVNNLLKKHQLLEADISAHEDRLKDLNSQADSLMTSSAFDTSQVKDKRETINGRFQRIKSMAAARRAKLNESHRLHQFFRDMDDEESWIKEKKLLVSSEDYGRDLTGVQNLRKKHKRLEAELAAHEPAIQGVLDTGKKLSDDNTIGKEEIQQRLAQFVDHWKELKQLAAARGQRLE", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.0
+    }, 
+    "1UBQ": {
+        "Chains": {
+            "A": {
+                "Sequence": "MQIFVKTLTGKTITLEVEPSDTIENVKAKIQDKEGIPPDQQRLIFAGKQLEDGRTLSDYNIQKESTLHLVLRLRGG", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.8
+    }, 
+    "1VQB": {
+        "Chains": {
+            "A": {
+                "Sequence": "MIKVEIKPSQAQFTTRSGVSRQGKPYSLNEQLCYVDLGNEYPVLVKITLDEGQPAYAPGLYTVHLSSFKVGQFGSLMIDRLRLVPA", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.8
+    }, 
+    "1W99": {
+        "Chains": {
+            "A": {
+                "Sequence": "TPERVWNDFMTNTGNLIDQTVTAYVRTDANAKMTVVKDYLDQYTTKFNTWKREPNNQSYRTAVITQFNLTSAKLRETAVYFSNLVGYELLLLPIYAQVANFNLLLIRDGLINAQEWSLARSAGDQLYNTMVQYTKEYIAHSITWYNKGLDVLRNKSNGQWITFNDYKREMTIQVLDILALFASYDPRRYPADKIDNTKLSKTEFTREIYTALVESPSSKSIAALEAALTRDVHLFTWLKRVDFWTNTIYQDLRFLSANKIGFSYTNSSAMQESGIYGSSGFGSNLTHQIQLNSNVYKTSITDTSSPSNRVTKMDFYKIDGTLASYNSNITPTPEGLRTTFFGFSTNENTPNQPTVNDYTHILSYIKTDVIDYNSNRVSFAWTHKIVDPNNQIYTDAITQVPAVKSNFLNATAKVIKGPGHTGGDLVALTSNGTLSGRMEIQCKTSIFNDPTRSYGLRIRYAANSPIVLNVSYVLQGVSRGTTISTESTFSRPNNIIPTDLKYEEFRYKDPFDAIVPMRLSSNQLITIAIQPLNMTSNNQVIIDRIEIIPITQSVLDET", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.75
+    }, 
+    "1WQ5": {
+        "Chains": {
+            "A": {
+                "Sequence": "MERYESLFAQLKERKEGAFVPFVTLGDPGIEQSLKIIDTLIEAGADALELGIPFSDQNATLRAFAAGVTPAQCFEMLALIRQKHPTIPIGLLMYANLVFNKGIDEFYAQCEKVGVDSVLVADVPVEESAPFRQAALRHNVAPIFICPPNADDDLLRQIASYGRGYTYLLSRAGVTENRAALPLNHLVAKLKEYNAAPPLQGFGISAPDQVKAAIDAGAAGAISGSAIVKIIEQHINEPEKMLAALKVFVQPMKAATRS", 
+                "Type": "Protein"
+            }, 
+            "B": {
+                "Sequence": "MERYESLFAQLKERKEGAFVPFVTLGDPGIEQSLKIIDTLIEAGADALELGIPFSDPLIQNATLRAFAAGVTPAQCFEMLALIRQKHPTIPIGLLMYANLVFNKGIDEFYAQCEKVGVDSVLVADVPVEESAPFRQAALRHNVAPIFICPPNADDDLLRQIASYGRGYTYLLSRAGVTENRAALPLNHLVAKLKEYNAAPPLQGFGISAPDQVKAAIDAGAAGAISGSAIVKIIEQHINEPEKMLAALKVFVQPMKAATRS", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.3
+    }, 
+    "1Y4Y": {
+        "Chains": {
+            "A": {
+                "Sequence": "AEKTFKVVSDSGIHARPATILVQTASKFNSEIQLEYNGKTVNLKSIMGVMSLGIPKGATIKITAEGADAAEAMAALTDTLAKEGLAE", 
+                "Type": "Protein"
+            }, 
+            "B": {
+                "Sequence": "AEKTFKVVSDSGIHARPATILVQTASKFNSEIQLEYNGKTVNLKSIMGVMSLGIPKGATIKITAEGADAAEAMAALTDTLAKEGLAE", 
+                "Type": "Protein"
+            }, 
+            "C": {
+                "Sequence": "AEKTFKVVSDSGIHARPATILVQTASKFNSEIQLEYNGKTVNLKSIMGVMSLGIPKGATIKITAEGADAAEAMAALTDTLAKEGLAE", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.0
+    }, 
+    "1YCC": {
+        "Chains": {
+            "A": {
+                "Sequence": "TEFKAGSAKKGATLFKTRCLQCHTVEKGGPHKVGPNLHGIFGRHSGQAEGYSYTDANIKKNVLWDENNMSEYLTNPKKYIPGTKMAFGGLKKEKDRNDLITYLKKACE", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.23
+    }, 
+    "1YEA": {
+        "Chains": {
+            "A": {
+                "Sequence": "AKESTGFKPGSAKKGATLFKTRCQQCHTIEEGGPNKVGPNLHGIFGRHSGQVKGYSYTDANINKNVKWDEDSMSEYLTNPKKYIPGTKMAFAGLKKEKDRNDLITYMTKAAK", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.9
+    }, 
+    "1ZNJ": {
+        "Chains": {
+            "A": {
+                "Sequence": "GIVEQCCTSICSLYQLENYCN", 
+                "Type": "Protein"
+            }, 
+            "B": {
+                "Sequence": "FVNQHLCGSHLVEALYLVCGERGFFYTPK", 
+                "Type": "Protein"
+            }, 
+            "C": {
+                "Sequence": "GIVEQCCTSICSLYQLENYCN", 
+                "Type": "Protein"
+            }, 
+            "D": {
+                "Sequence": "FVNQHLCGSHLVEALYLVCGERGFFYTPK", 
+                "Type": "Protein"
+            }, 
+            "E": {
+                "Sequence": "GIVEQCCTSICSLYQLENYCN", 
+                "Type": "Protein"
+            }, 
+            "F": {
+                "Sequence": "VNQHLCGSHLVEALYLVCGERGFFYTPK", 
+                "Type": "Protein"
+            }, 
+            "G": {
+                "Sequence": "GIVEQCCTSICSLYQLENYCN", 
+                "Type": "Protein"
+            }, 
+            "H": {
+                "Sequence": "FVNQHLCGSHLVEALYLVCGERGFFYTPK", 
+                "Type": "Protein"
+            }, 
+            "I": {
+                "Sequence": "GIVEQCCTSICSLYQLENYCN", 
+                "Type": "Protein"
+            }, 
+            "J": {
+                "Sequence": "FVNQHLCGSHLVEALYLVCGERGFFYTPKT", 
+                "Type": "Protein"
+            }, 
+            "K": {
+                "Sequence": "GIVEQCCTSICSLYQLENYCN", 
+                "Type": "Protein"
+            }, 
+            "L": {
+                "Sequence": "FVNQHLCGSHLVEALYLVCGERGFFYTPKT", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.0
+    }, 
+    "200L": {
+        "Chains": {
+            "A": {
+                "Sequence": "MNIFEMLRIDEGLRLKIYKDTEGYYTIGIGHLLTKSPSLNAAKSELDKAIGRNTNGVITKDEAEKLFNQDVDAAVRGILRNAKLKPVYDSLDAVRRAALINMVFQMGETGVAGFTNSLRMAQQKRWDEAAVNLAKSRWYNQTPNRAKRVITTFRTGTWDAYK", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.95
+    }, 
+    "219L": {
+        "Chains": {
+            "A": {
+                "Sequence": "MNIFEMLRIDEGLRLKIYKDTEGYYTIGIGHLLTKSPSLNAAKSELDKAIGRNTNGVITKDEAEKLFNQDVDAAVRGILRNAKLKPVYDSLDAVRRAALINMVFQMGETGVAGFTNSLRMLQQKRWDEAAVNLAKSRWYNQTPNRAKRVITTFRTGTWDAYKNL", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.66
+    }, 
+    "227L": {
+        "Chains": {
+            "A": {
+                "Sequence": "MNIFEMLRIDEGLRLKIYKDTEGYYTIGIGHLLTKSPSLNAAKSELDKAIGRNTNGVITKDEAEKLFNQDVDAAVRGILRNAKLKPVYDSLDAVRRAALINMVAQMGETGVAGFTNSLRMLQQKRWDEAAVNLAKSRWYNQTPNRAKRVITTFRTGTWDAYK", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.0
+    }, 
+    "235L": {
+        "Chains": {
+            "A": {
+                "Sequence": "MNIFEMLRIDEGLRLKIYKDTEGYYTIGIGHLLTKSPSLNAAKSELDKAIGRNTNGVITKDEAEKLFNQDVDAAVRGILRNAKLKPVYDSLDAVRRAALINMVFQMGETGAAGFTNSLRMLQQKRWDEAAVNLAKSRWYNQTPNRAKRVITTFRTGTWDAYK", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.9
+    }, 
+    "236L": {
+        "Chains": {
+            "A": {
+                "Sequence": "MNIFEMLRIDEGLRLKIYKDTEGYYTIGIGHLLTKSPSLNAAKSELDKAIGRNTNGVITKDEAEKLFNQDVDAAVRGILRNAKLKPAYDSLDAVRRAALINMVFQMGETGVAGFTNSLRMLQQKRWDEAAVNLAKSRWYNQTPNRAKRVITTFRTGTWDAYK", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.9
+    }, 
+    "237L": {
+        "Chains": {
+            "A": {
+                "Sequence": "MNIFEMLRIDEGLRLKIYKDTEGYYTIGIGHLLTKSPSLNAAKSELDKAIGRNTNGVITKDEAEKLFNQDVDAAVRGILRNAKLKPVYDSLDAVRRAALINMVFQMGETGVAGFTNSLRMLQQKRWDEAAVNLAKSRWYNQTPNRAKRAITTFRTGTWDAYKNL", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.7
+    }, 
+    "238L": {
+        "Chains": {
+            "A": {
+                "Sequence": "MNIFEMLRIDEGLRLKIYKDTEGYYTIGIGHLLTKSPSLNAAKSELDKAIGRNTNGVITKDEAEKLFNQDVDAAVRGILRNAKLKPVYDSLDAVRRAALINMAFQMGETGVAGFTNSLRMLQQKRWDEAAVNLAKSRWYNQTPNRAKRVITTFRTGTWDAYK", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.8
+    }, 
+    "239L": {
+        "Chains": {
+            "A": {
+                "Sequence": "MNIFEMLRIDEGLRLKAYKDTEGYYTIGIGHLLTKSPSLNAAKSELDKAIGRNTNGVITKDEAEKLFNQDVDAAVRGILRNAKLKPVYDSLDAVRRAALINMVFQMGETGVAGFTNSLRMLQQKRWDEAAVNLAKSRWYNQTPNRAKRVITTFRTGTWDAYK", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.8
+    }, 
+    "240L": {
+        "Chains": {
+            "A": {
+                "Sequence": "MNIFEMLRIDEGLRLKIYKDTEGYYTAGIGHLLTKSPSLNAAKSELDKAIGRNTNGVITKDEAEKLFNQDVDAAVRGILRNAKLKPVYDSLDAVRRAALINMVFQMGETGVAGFTNSLRMLQQKRWDEAAVNLAKSRWYNQTPNRAKRVITTFRTGTWDAYK", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.75
+    }, 
+    "241L": {
+        "Chains": {
+            "A": {
+                "Sequence": "MNIFEMLRIDEGLRLKIYKDTEGYYTIGAGHLLTKSPSLNAAKSELDKAIGRNTNGVITKDEAEKLFNQDVDAAVRGILRNAKLKPVYDSLDAVRRAALINMVFQMGETGVAGFTNSLRMLQQKRWDEAAVNLAKSRWYNQTPNRAKRVITTFRTGTWDAYK", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.7
+    }, 
+    "242L": {
+        "Chains": {
+            "A": {
+                "Sequence": "MNIFEMLRIDEGLRLKIYKDTEGYYTIGIGHLLTKSPSLNAAKSELDKAAGRNTNGVITKDEAEKLFNQDVDAAVRGILRNAKLKPVYDSLDAVRRAALINMVFQMGETGVAGFTNSLRMLQQKRWDEAAVNLAKSRWYNQTPNRAKRVITTFRTGTWDAYKNL", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.8
+    }, 
+    "243L": {
+        "Chains": {
+            "A": {
+                "Sequence": "MNIFEMLRIDEGLRLKIYKDTEGYYTIGIGHLLTKSPSLNAAKSELDKAIGRNTNGVATKDEAEKLFNQDVDAAVRGILRNAKLKPVYDSLDAVRRAALINMVFQMGETGVAGFTNSLRMLQQKRWDEAAVNLAKSRWYNQTPNRAKRVITTFRTGTWDAYK", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.75
+    }, 
+    "244L": {
+        "Chains": {
+            "A": {
+                "Sequence": "MNIFEMLRIDEGLRLKIYKDTEGYYTIGIGHLLTKSPSLNAAKSELDKAIGRNTNGVITKDEAEKLFNQDVDAAVRGILRNAKLKPVYDSLDAVRRAALANMVFQMGETGVAGFTNSLRMLQQKRWDEAAVNLAKSRWYNQTPNRAKRVITTFRTGTWDAYK", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.7
+    }, 
+    "246L": {
+        "Chains": {
+            "A": {
+                "Sequence": "MNIFEMLRIDEGLRLKIYKDTEGYYTIGIGHLLTKSPSLNAAKSELDKAIGRNTNGVITKDEAEKLANQDVDAAVRGILRNAKLKPVYDSLDAVRRAALINMVFQMGETGVAGFTNSLRMLQQKRWDEAAVNLAKSRWYNQTPNRAKRVITTFRTGTWDAYKNL", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.8
+    }, 
+    "247L": {
+        "Chains": {
+            "A": {
+                "Sequence": "MNIFEMLRIDEGLRLKIYKDTEGYYTIGIGHLLTKSPSLNAAKSELDKAIGRNTNGVITKDEAEKLFNQDVDAAVRGILRNAKAKPVYDSLDAVRRAALINMVFQMGETGVAGFTNSLRMLQQKRWDEAAVNLAKSRWYNQTPNRAKRVITTFRTGTWDAYKNL", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.75
+    }, 
+    "253L": {
+        "Chains": {
+            "A": {
+                "Sequence": "MNIFEMLRIDEGLRLKIYKATEGYYTIGIGHLLTKSPSLNAAKSELDKAIGRNTNGVITKDEAEKLFNQDVDAAVRGILRNAKLKPVYDSLDAVRRAALINMVFQMGETGVAGFTNSLRMLQQKRWDEAAVNLAKSRWYNQTPNRAKRVITTFRTGTWDAYKNL", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.0
+    }, 
+    "2A01": {
+        "Chains": {
+            "A": {
+                "Sequence": "DEPPQSPWDRVKDLATVYVDVLKDSGRDYVSQFEGSALGKQLNLKLLDNWDSVTSTFSKLREQLGPVTQEFWDNLEKETEGLRQEMSKDLEEVKAKVQPYLDDFQKKWQEEMELYRQKVEPLRAELQEGARQKLHELQEKLSPLGEEMRDRARAHVDALRTHLAPYSDELRQRLAARLEALKENGGARLAEYHAKATEHLSTLSEKAKPALEDLRQGLLPVLESFKVSFLSALEEYTKKLNTQ", 
+                "Type": "Protein"
+            }, 
+            "B": {
+                "Sequence": "DEPPQSPWDRVKDLATVYVDVLKDSGRDYVSQFEGSALGKQLNLKLLDNWDSVTSTFSKLREQLGPVTQEFWDNLEKETEGLRQEMSKDLEEVKAKVQPYLDDFQKKWQEEMELYRQKVEPLRAELQEGARQKLHELQEKLSPLGEEMRDRARAHVDALRTHLAPYSDELRQRLAARLEALKENGGARLAEYHAKATEHLSTLSEKAKPALEDLRQGLLPVLESFKVSFLSALEEYTKKLNTQ", 
+                "Type": "Protein"
+            }, 
+            "C": {
+                "Sequence": "DEPPQSPWDRVKDLATVYVDVLKDSGRDYVSQFEGSALGKQLNLKLLDNWDSVTSTFSKLREQLGPVTQEFWDNLEKETEGLRQEMSKDLEEVKAKVQPYLDDFQKKWQEEMELYRQKVEPLRAELQEGARQKLHELQEKLSPLGEEMRDRARAHVDALRTHLAPYSDELRQRLAARLEALKENGGARLAEYHAKATEHLSTLSEKAKPALEDLRQGLLPVLESFKVSFLSALEEYTKKLNTQ", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.4
+    }, 
+    "2ADA": {
+        "Chains": {
+            "A": {
+                "Sequence": "TPAFNKPKVELHVHLDGAIKPETILYFGKKRGIALPADTVEELRNIIGMDKPLSLPGFLAKFDYYMPVIAGCREAIKRIAYEFVEMKAKEGVVYVEVRYSPHLLANSKVDPMPWNQTEGDVTPDDVVDLVNQGLQEGEQAFGIKVRSILCCMRHQPSWSLEVLELCKKYNQKTVVAMDLAGDETIEGSSLFPGHVEAYEGAVKNGIHRTVHAGEVGSPEVVREAVDILKTERVGHGYHTIEDEALYNRLLKENMHFEVCPWSSYLTGAWDPKTTHAVVRFKNDKANYSLNTDDPLIFKSTLDTDYQMTKKDMGFTEEEFKRLNINAAKSSFLPEEEKKELLERLYREYQ", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.4
+    }, 
+    "2AFG": {
+        "Chains": {
+            "A": {
+                "Sequence": "KPKLLYCSNGGHFLRILPDGTVDGTRDRSDQHIQLQLSAESVGEVYIKSTETGQYLAMDTDGLLYGSQTPNEECLFLERLEENHYNTYISKKHAEKNWFVGLKKNGSCKRGPRTHYGQKAILFLPLPVS", 
+                "Type": "Protein"
+            }, 
+            "B": {
+                "Sequence": "KPKLLYCSNGGHFLRILPDGTVDGTRDRSDQHIQLQLSAESVGEVYIKSTETGQYLAMDTDGLLYGSQTPNEECLFLERLEENHYNTYISKKHAEKNWFVGLKKNGSCKRGPRTHYGQKAILFLPLPVS", 
+                "Type": "Protein"
+            }, 
+            "C": {
+                "Sequence": "PKLLYCSNGGHFLRILPDGTVDGTRDRSDQHIQLQLSAESVGEVYIKSTETGQYLAMDTDGLLYGSQTPNEECLFLERLEENHYNTYISKKHAEKNWFVGLKKNGSCKRGPRTHYGQKAILFLPLPV", 
+                "Type": "Protein"
+            }, 
+            "D": {
+                "Sequence": "PKLLYCSNGGHFLRILPDGTVDGTRDRSDQHIQLQLSAESVGEVYIKSTETGQYLAMDTDGLLYGSQTPNEECLFLERLEENHYNTYISKKHAEKNWFVGLKKNGSCKRGPRTHYGQKAILFLPLPVS", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.0
+    }, 
+    "2AKY": {
+        "Chains": {
+            "A": {
+                "Sequence": "ESIRMVLIGPPGAGKGTQAPNLQERFHAAHLATGDMLRSQIAKGTQLGLEAKKIMDQGGLVSDDIMVNMIKDELTNNPACKNGFILDGFPRTIPQAEKLDQMLKEQGTPLEKAIELKVDDELLVARITGRLIHPASGRSYHKIFNPPKEDMKDDVTGEALVQRSDDNADALKKRLAAYHAQTEPIVDFYKKTGIWAGVDASQPPATVWADILNKLGKN", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.96
+    }, 
+    "2BQA": {
+        "Chains": {
+            "A": {
+                "Sequence": "KVFERCELARTLKRLGMDGYRGISLANWMCLAKWESGYNTRATNYNAGDRSTDYGIFQINSRYWCNDGKTPGAVNAAHLSCSALLQDNIADAVAAAKRVVRDPQGIRAWVAWRNRCQNRDVRQYVQGCGV", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.8
+    }, 
+    "2CI2": {
+        "Chains": {
+            "I": {
+                "Sequence": "NLKTEWPELVGKSVEEAKKVILQDKPEAQIIVLPVGTIVTMEYRIDRVRLFVDKLDNIAEVPRVG", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.0
+    }, 
+    "2CRK": {
+        "Chains": {
+            "A": {
+                "Sequence": "NKYKLNYKSEEEYPDLSKHNNHMAKVLTPDLYKKLRDKETPSGFTLDDVIQTGVDNPGHPFIMTVGCVAGDEESYTVFKDLFDPIIQDRHGGFKPTDKHKTDLNHENLKGGDDLDPHYVLSSRVRTGRSIKGYTLPPHCSRGERRAVEKLSVEALNSLTGEFKGKYYPLKSMTEQEQQQLIDDHFLFDKPVSPLLLASGMARDWPDARGIWHNDNKSFLVWVNEEDHLRVISMEKGGNMKEVFRRFCVGLQKIEEIFKKAGHPFMWNEHLGYVLTCPSNLGTGLRGGVHVKLAHLSKHPKFEEILTRLRLQKRGTSVFDISNADRLGSSEVEQVQLVVDGVKLMVEMEKKLEKGQSIDDMIPAQK", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.35
+    }, 
+    "2HMB": {
+        "Chains": {
+            "A": {
+                "Sequence": "VDAFLGTWKLVDSKNFDDYMKSLGVGFATRQVASMTKPTTIIEKNGDILTLKTHSTFKNTEISFKLGVEFDETTADDRKVKSIVTLDGGKLVHLQKWDGQETTLVRELIDGKLILTLTHGTAVCTRTYEKE", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.1
+    }, 
+    "2HPR": {
+        "Chains": {
+            "A": {
+                "Sequence": "AQKTFKVTADSGIHARPATVLVQTASKYDADVNLEYNGKTVNLKSIMGVVSLGIAKGAEITISASGADENDALNALEETMKCEGLGE", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.0
+    }, 
+    "2IFB": {
+        "Chains": {
+            "A": {
+                "Sequence": "AFDGTWKVDRNENYEKFMEKMGINVVKRKLGAHDNLKLTITQEGNKFTVKESSNFRNIDVVFELGVDFAYSLADGTELTGTWTMEGNKLVGKFKRVDNGKELIAVREISGNELIQTYTYEGVEAKRIFKKE", 
+                "Type": "Protein"
+            }
+        }, 
         "MethodOfDetermination": "X-RAY DIFFRACTION", 
         "Resolution": 2.0
     }, 
     "2IMM": {
+        "Chains": {
+            "A": {
+                "Sequence": "DIVMTQSPSSLSVSAGERVTMSCKSSQSLLNSGNQKNFLAWYQQKPGQPPKLLIYGASTRESGVPDRFTGSGSGTDFTLTISSVQAEDLAVYYCQNDHSYPLTFGAGTKLELKR", 
+                "Type": "Protein"
+            }
+        }, 
         "MethodOfDetermination": "X-RAY DIFFRACTION", 
         "Resolution": 2.0
     }, 
-    "1TEN": {
+    "2LZM": {
+        "Chains": {
+            "A": {
+                "Sequence": "MNIFEMLRIDEGLRLKIYKDTEGYYTIGIGHLLTKSPSLNAAKSELDKAIGRNCNGVITKDEAEKLFNQDVDAAVRGILRNAKLKPVYDSLDAVRRCALINMVFQMGETGVAGFTNSLRMLQQKRWDEAAVNLAKSRWYNQTPNRAKRVITTFRTGTWDAYKNL", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.7
+    }, 
+    "2RN2": {
+        "Chains": {
+            "A": {
+                "Sequence": "MLKQVEIFTDGSCLGNPGPGGYGAILRYRGREKTFSAGYTRTTNNRMELMAAIVALEALKEHCEVILSTDSQYVRQGITQWIHNWKKRGWKTADKKPVKNVDLWQRLDAALGQHQIKWEWVKGHAGHPENERCDELARAAAMNPTLEDTGYQVEV", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.48
+    }, 
+    "2TRX": {
+        "Chains": {
+            "A": {
+                "Sequence": "SDKIIHLTDDSFDTDVLKADGAILVDFWAEWCGPCKMIAPILDEIADEYQGKLTVAKLNIDQNPGTAPKYGIRGIPTLLLFKNGEVAATKVGALSKGQLKEFLDANLA", 
+                "Type": "Protein"
+            }, 
+            "B": {
+                "Sequence": "SDKIIHLTDDSFDTDVLKADGAILVDFWAEWCGPCKMIAPILDEIADEYQGKLTVAKLNIDQNPGTAPKYGIRGIPTLLLFKNGEVAATKVGALSKGQLKEFLDANLA", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.68
+    }, 
+    "2TS1": {
+        "Chains": {
+            "A": {
+                "Sequence": "MDLLAELQWRGLVNQTTDEDGLRKLLNEERVTLYCGFDPTADSLHIGHLATILTMRRFQQAGHRPIALVGGATGLIGDPSGKKSERTLNAKETVEAWSARIKEQLGRFLDFEADGNPAKIKNNYDWIGPLDVITFLRDVGKHFSVNYMMAKESVQSRIETGISFTEFSYMMLQAYDFLRLYETEGCRLQIGGSDQWGNITAGLELIRKTKGRAFGLTIPLVTKADGTKFGKTESGTIWLDKEKTSPYEFYQFWINTDDRDVIRYLKYFTFLSKEEIEALEQELREAPEKRAAQKTLAEEVTKLVHGEEALRQAIRIS", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.3
+    }, 
+    "2WSY": {
+        "Chains": {
+            "A": {
+                "Sequence": "MERYENLFAQLNDRREGAFVPFVTLGDPGIEQSLKIIDTLIDAGADALELGVPTIQNANLRAFAAGVTPAQCFEMLALIREKHPTIPIGLLMYANLVFNNGIDAFYARCEQVGVDSVLVADVPVEESAPFRQAALRHNIAPIFICPPNADDDLLRQVASYGRGYTYLLIEKLKEYHAAPALQGGISSPEQVSAAVRAGAAGAISGSAIVKIIEKNLASPMLAELRSFVSAMKAASRA", 
+                "Type": "Protein"
+            }, 
+            "B": {
+                "Sequence": "TLLNPYFGEFGGMYVPQILMPALNQLEEAFVRAQKDPEFQAQFADLLKNYAGRPTALTKCQNITAGTRTTLYLKREDLLHGGAHKTNQVLGQALLAKRMGKSEIIAETGAGQHGVASALASALLGLKCRIYMGAKDSPNVFRMRLMGAEVITLKDACNEALRDWSGSYETAHYMLGTAAGPHPYPTIVREFQRMIGEETKAQILDKEGRLPDAVIACVGGGSNAIGMFADFINDTSVGLIGVEPGGHGIETGEHGAPLKHGRVGIYFGMKAPMMQTADGQIEESYSISAGLDFPSVGPQHAYLNSIGRADYVSITDDEALEAFKTLCRHEGIIPALESSHALAHALKMMREQPEKEQLLVVNLSGRGDKDIFTVH", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 3.05
+    }, 
+    "2ZTA": {
+        "Chains": {
+            "A": {
+                "Sequence": "RMKQLEDKVEELLSKNYHLENEVARLKKLVG", 
+                "Type": "Protein"
+            }, 
+            "B": {
+                "Sequence": "RMKQLEDKVEELLSKNYHLENEVARLKKLVG", 
+                "Type": "Protein"
+            }
+        }, 
         "MethodOfDetermination": "X-RAY DIFFRACTION", 
         "Resolution": 1.8
     }, 
-    "1N0J": {
+    "3BCI": {
+        "Chains": {
+            "A": {
+                "Sequence": "GKPLVVVYGDYKCPYCKELDEKVMPKLRKNYIDNHKVEYQFVNLAFLGKDSIVGSRASHAVLMYAPKSFLDFQKQLFAAQQDENKEWLTKELLDKHIKQLHLDKETENKIIKDYKTKDSKSWKAAEKDKKIAKDNHIKTTPTAFINGEKVEDPYDYESYEKLLKD", 
+                "Type": "Protein"
+            }
+        }, 
         "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 2.2
+        "Resolution": 1.81
     }, 
-    "1BKS": {
+    "3BLS": {
+        "Chains": {
+            "A": {
+                "Sequence": "APQQINDIVHRTITPLIEQQKIPGMAVAVIYQGKPYYFTWGYADIAKKQPVTQQTLFELGSVSKTFTGVLGGDAIARGEIKLSDPTTKYWPELTAKQWNGITLLHLATYTAGGLPLQVPDEVKSSSDLLRFYQNWQPAWAPGTQRLYANSSIGLFGALAVKPSGLSFEQAMQTRVFQPLKLNHTWINVPPAEEKNYAWGYREGKAVHVSPGALDAEAYGVKSTIEDMARWVQSNLKPLDINEKTLQQGIQLAQSRYWQTGDMYQGLGWEMLDWPVNPDSIINGSDNKIALAARPVKAITPPTPAVRASWVHKTGATGGFGSYVAFIPEKELGIVMLANKNYPNPARVDAAWQILNAL", 
+                "Type": "Protein"
+            }, 
+            "B": {
+                "Sequence": "APQQINDIVHRTITPLIEQQKIPGMAVAVIYQGKPYYFTWGYADIAKKQPVTQQTLFELGSVSKTFTGVLGGDAIARGEIKLSDPTTKYWPELTAKQWNGITLLHLATYTAGGLPLQVPDEVKSSSDLLRFYQNWQPAWAPGTQRLYANSSIGLFGALAVKPSGLSFEQAMQTRVFQPLKLNHTWINVPPAEEKNYAWGYREGKAVHVSPGALDAEAYGVKSTIEDMARWVQSNLKPLDINEKTLQQGIQLAQSRYWQTGDMYQGLGWEMLDWPVNPDSIINGSDNKIALAARPVKAITPPTPAVRASWVHKTGATGGFGSYVAFIPEKELGIVMLANKNYPNPARVDAAWQILNAL", 
+                "Type": "Protein"
+            }
+        }, 
         "MethodOfDetermination": "X-RAY DIFFRACTION", 
-        "Resolution": 2.2
+        "Resolution": 2.3
+    }, 
+    "3CHY": {
+        "Chains": {
+            "A": {
+                "Sequence": "ADKELKFLVVDDFSTMRRIVRNLLKELGFNNVEEAEDGVDALNKLQAGGYGFVISDWNMPNMDGLELLKTIRADGAMSALPVLMVTAEAKKENIIAAAQAGASGYVVKPFTAATLEEKLNKIFEKLGM", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.66
+    }, 
+    "3D2A": {
+        "Chains": {
+            "A": {
+                "Sequence": "HNPVVMVHGIGGASFNFAGIKSYLVSQGWSRDKLYAVDFWDKTGTNYNNGPVLSRFVQKVLDETGAKKVDIVAHSMGGANTLYYIKNLDGGNKVANVVTLGGANRLTTGKAPPGTDPNQKILYTSIYSSDDMIVMNYLSRLDGARNVQIHGVGHMGLLYSSQVYSLIKEGLNGGGQNTN", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.73
+    }, 
+    "3HHR": {
+        "Chains": {
+            "A": {
+                "Sequence": "FPTIPLSRLFDNAMLRAHRLHQLAFDTYQEFEEAYIPKEQKYSFLQNPQTSLCFSESIPTPSNREETQQKSNLELLRISLLLIQSWLEPVQFLRSVFANSLVYGASDSNVYDLLKDLEEGIQTLMGRLEDGSPRTGQIFKQTYSKFDTDALLKNYGLLYCFRKDMDKVETFLRIVQCRSVEGSCG", 
+                "Type": "Protein"
+            }, 
+            "B": {
+                "Sequence": "EPKFTKCRSPERETFSCHWTDEVHHGPIQLFYTRRNTEWTQEWKECPDYVSAGENSCYFNSSFTSIWIPYCIKLTSNGGTVDEKCFSVDEIVQPDPPIALNWTLLNVSLTGIHADIQVRWEAPRNADIQKGWMVLEYELQYKEVNETKWKMMDPILTTSVPVYSLKVDKEYEVRVRSKQRNSGNYGEFSEVLYVTLP", 
+                "Type": "Protein"
+            }, 
+            "C": {
+                "Sequence": "EPKFTKCRSPERETFSCHWTDEVHHGPIQLFYTRRNTQEWKECPDYVSAGENSCYFNSSFTSIWIPYCIKLTSNGGTVDEKCFSVDEIVQPDPPIALNWTLLNVSLTGIHADIQVRWEAPRNADIQKGWMVLEYELQYKEVNETKWKMMDPILTTSVPVYSLKVDKEYEVRVRSKQRNSGNYGEFSEVLYVTLPQM", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.8
+    }, 
+    "3MBP": {
+        "Chains": {
+            "A": {
+                "Sequence": "KIEEGKLVIWINGDKGYNGLAEVGKKFEKDTGIKVTVEHPDKLEEKFPQVAATGDGPDIIFWAHDRFGGYAQSGLLAEITPDKAFQDKLYPFTWDAVRYNGKLIAYPIAVEALSLIYNKDLLPNPPKTWEEIPALDKELKAKGKSALMFNLQEPYFTWPLIAADGGYAFKYENGKYDIKDVGVDNAGAKAGLTFLVDLIKNKHMNADTDYSIAEAAFNKGETAMTINGPWAWSNIDTSKVNYGVTVLPTFKGQPSKPFVGVLSAGINAASPNKELAKEFLENYLLTDEGLEAVNKDKPLGAVALKSYEEELAKDPRIAATMENAQKGEIMPNIPQMSAFWYAVRTAVINAASGRQTVDEALKDAQTRITK", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.7
+    }, 
+    "3PGK": {
+        "Chains": {
+            "A": {
+                "Sequence": "SLSSKLSVQDLDLKDKRVFIRVDFNVPLDGKKITSNQRIVAALPTIKYVLEHHPRYVVLASHLGRPNGERNEKYSLAPVAKELQSLLGKDVTFLNDCVGPEVEAAVKASAPGSVILLENLRYHIEEEGSRKVDGQKVKASKEDVQKFRHELSSLADVYINDAFGTAHRAHSSMVGFDLPQRAAGFLLEKELKYFGKALENPTRPFLAILGGAKVADKIQLIDNLLDKVDSIIIGGGMAFTFKKVLENTEIGDSIFDKAVGPEIAKLMEKAKAKGVEVVLPVDFIIADAFSASANTKTVTDKEGIPAGWQGLDNGPESRKLFAATVAKATVILWNGPPGVFEFEKFAAGTKALLDEVVKSSAAGNTVIIGGGDTATVAKKYGVTDKISHVSTGGGASLELLEGKELPGVAFLSEKK", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.5
+    }, 
+    "3SSI": {
+        "Chains": {
+            "A": {
+                "Sequence": "LYAPSALVLTVGKGVSATTAAPERAVTLTCAPGPSGTHPAAGSACADLAAVGGDLNALTRGEDVMCPMVYDPVLLTVDGVWQGKRVSYERVFSNECEMNAHGSSVFAF", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.3
+    }, 
+    "451C": {
+        "Chains": {
+            "A": {
+                "Sequence": "EDPEVLFKNKGCVACHAIDTKMVGPAYKDVAAKFAGQAGAEAELAQRIKNGSQGVWGPIPMPPNAVSDDEAQTLAKWVLSQK", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.6
+    }, 
+    "4BLM": {
+        "Chains": {
+            "A": {
+                "Sequence": "DDFAKLEEQFDAKLGIFALDTGTNRTVAYRPDERFAFASTIKALTVGVLLQQKSIEDLNQRITYTRDDLVNYNPITEKHVDTGMTLKELADASLRYSDNAAQNLILKQIGGPESLKKELRKIGDEVTNPERFEPELNEVNPGETQDTSTARALVTSLRAFALEDKLPSEKRELLIDWMKRNTTGDALIRAGVPDGWEVADKTGAASYGTRNDIAIIWPPKGDPVVLAVLSSRDKKDAKYDDKLIAEATKVVMKALN", 
+                "Type": "Protein"
+            }, 
+            "B": {
+                "Sequence": "DDFAKLEEQFDAKLGIFALDTGTNRTVAYRPDERFAFASTIKALTVGVLLQQKSIEDLNQRITYTRDDLVNYNPITEKHVDTGMTLKELADASLRYSDNAAQNLILKQIGGPESLKKELRKIGDEVTNPERFEPELNEVNPGETQDTSTARALVTSLRAFALEDKLPSEKRELLIDWMKRNTTGDALIRAGVPDGWEVADKTGAASYGTRNDIAIIWPPKGDPVVLAVLSSRDKKDAKYDDKLIAEATKVVMKALN", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.0
+    }, 
+    "4LYZ": {
+        "Chains": {
+            "A": {
+                "Sequence": "KVFGRCELAAAMKRHGLDNYRGYSLGNWVCAAKFESNFNTQATNRNTDGSTDYGILQINSRWWCNDGRTPGSRNLCNIPCSALLSSDITASVNCAKKIVSDGNGMNAWVAWRNRCKGTDVQAWIRGCRL", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.0
+    }, 
+    "5AZU": {
+        "Chains": {
+            "A": {
+                "Sequence": "AECSVDIQGNDQMQFNTNAITVDKSCKQFTVNLSHPGNLPKNVMGHNWVLSTAADMQGVVTDGMASGLDKDYLKPDDSRVIAHTKLIGSGEKDSVTFDVSKLKEGEQYMFFCTFPGHSALMKGTLTLK", 
+                "Type": "Protein"
+            }, 
+            "B": {
+                "Sequence": "AECSVDIQGNDQMQFNTNAITVDKSCKQFTVNLSHPGNLPKNVMGHNWVLSTAADMQGVVTDGMASGLDKDYLKPDDSRVIAHTKLIGSGEKDSVTFDVSKLKEGEQYMFFCTFPGHSALMKGTLTLK", 
+                "Type": "Protein"
+            }, 
+            "C": {
+                "Sequence": "AECSVDIQGNDQMQFNTNAITVDKSCKQFTVNLSHPGNLPKNVMGHNWVLSTAADMQGVVTDGMASGLDKDYLKPDDSRVIAHTKLIGSGEKDSVTFDVSKLKEGEQYMFFCTFPGHSALMKGTLTLK", 
+                "Type": "Protein"
+            }, 
+            "D": {
+                "Sequence": "AECSVDIQGNDQMQFNTNAITVDKSCKQFTVNLSHPGNLPKNVMGHNWVLSTAADMQGVVTDGMASGLDKDYLKPDDSRVIAHTKLIGSGEKDSVTFDVSKLKEGEQYMFFCTFPGHSALMKGTLTLK", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 1.9
+    }, 
+    "5CRO": {
+        "Chains": {
+            "A": {
+                "Sequence": "MEQRITLKDYAMRFGQTKTAKDLGVYQSAINKAIHAGRKIFLTINADGSVYAEEVKPFPSN", 
+                "Type": "Protein"
+            }, 
+            "B": {
+                "Sequence": "MEQRITLKDYAMRFGQTKTAKDLGVYQSAINKAIHAGRKIFLTINADGSVYAEEVKPFPSN", 
+                "Type": "Protein"
+            }, 
+            "C": {
+                "Sequence": "MEQRITLKDYAMRFGQTKTAKDLGVYQSAINKAIHAGRKIFLTINADGSVYAEEVKPFPSN", 
+                "Type": "Protein"
+            }, 
+            "O": {
+                "Sequence": "MEQRITLKDYAMRFGQTKTAKDLGVYQSAINKAIHAGRKIFLTINADGSVYAEEVKPFPS", 
+                "Type": "Protein"
+            }
+        }, 
+        "MethodOfDetermination": "X-RAY DIFFRACTION", 
+        "Resolution": 2.3
     }
 }
