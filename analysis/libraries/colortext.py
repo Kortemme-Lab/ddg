@@ -100,20 +100,17 @@ for c in colors:
     allow_colors = False
     try:
         from sys import platform as _platform
-        raise Exception('fd')
-        if _platform == "linux" or _platform == "linux2" or _platform == "darwin:
+        if _platform == "linux" or _platform == "linux2" or _platform == "darwin":
             allow_colors = True
     except: pass
     if allow_colors:
-        print('yar')
-        setattr(sys.modules[__name__], 'w'  + c, lambda s, c=c : print(s, color = c))
-        setattr(sys.modules[__name__], 'p'  + c, lambda s, c=c : print(s, color = c))
-        setattr(sys.modules[__name__], 'm'  + c, lambda s, c=c : print(s, color = c))
+        setattr(sys.modules[__name__], 'w'  + c, lambda s, c=c : write(s, color = c, flush = True))
+        setattr(sys.modules[__name__], 'p'  + c, lambda s, c=c : printf(s, color = c))
+        setattr(sys.modules[__name__], 'm'  + c, lambda s, c=c : make(s, color = c))
     else:
-        print('nar')
-        setattr(sys.modules[__name__], 'w'  + c, lambda s, c=c : print(s)
-        setattr(sys.modules[__name__], 'p'  + c, lambda s, c=c : print(s)
-        setattr(sys.modules[__name__], 'm'  + c, lambda s, c=c : print(s)
+        setattr(sys.modules[__name__], 'w'  + c, lambda s, c=c : sys.stdout(s))
+        setattr(sys.modules[__name__], 'p'  + c, lambda s, c=c : xprint(s))
+        setattr(sys.modules[__name__], 'm'  + c, lambda s, c=c : xjoin(s))
 
 
 class Exception(Exception):
