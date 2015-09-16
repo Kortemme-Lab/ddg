@@ -54,6 +54,9 @@ Options:
     --include_derived_mutations
         Some datasets contain duplicated datapoints in the form of derived mutations e.g. the mutation 107L ->1L63 in the Kellogg set is the reverse of the 1L63 -> 107L mutation and measurement. Including derived mutations creates bias in the analysis so we remove them by default. To include these derived values in the analysis, use this flag.
 
+    --use_existing_benchmark_data
+        When this option is set, the benchmark_data.json file is not regenerated. This saves time on subsequent calls to this analysis script but is disabled by default for safety.
+
 Authors:
     Kyle Barlow
     Shane O'Connor
@@ -351,16 +354,22 @@ if __name__ == '__main__':
 
     # Save the benchmark data to file
     benchmark_data_filepath = os.path.join(output_dir, 'benchmark_data.json')
-    print('Creating %s which contains component and summary scores for each case and generated structure.' % benchmark_data_filepath)
     analysis_data = {}
-    job_dirs = glob.glob(os.path.join(ddg_data_dir, '*'))
-    for jd in job_dirs:
-        if os.path.isdir(jd):
-            jdirname = os.path.split(jd)[1]
-            if jdirname.isdigit():
-                record_id = int(jdirname)
-                analysis_data[record_id] = extract_data(jd, take_lowest)
-    write_file(benchmark_data_filepath, json.dumps(analysis_data, indent = 4))
+    if not(os.path.exists(benchmark_data_filepath)) or arguments.get('--use_existing_benchmark_data') == 0:
+        print('Creating %s which contains component and summary scores for each case and generated structure.' % benchmark_data_filepath)
+        job_dirs = glob.glob(os.path.join(ddg_data_dir, '*'))
+        for jd in job_dirs:
+            if os.path.isdir(jd):
+                jdirname = os.path.split(jd)[1]
+                if jdirname.isdigit():
+                    record_id = int(jdirname)
+                    analysis_data[record_id] = extract_data(jd, take_lowest)
+        write_file(benchmark_data_filepath, json.dumps(analysis_data, indent = 4))
+    else:
+        analysis_data_ = json.loads(read_file(benchmark_data_filepath))
+        for k, v in analysis_data_.iteritems():
+            analysis_data[int(k)] = v
+
 
     # Create XY data
     analysis_csv_input_filepath = os.path.join(output_dir, 'analysis_input.csv')
