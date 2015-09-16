@@ -96,6 +96,8 @@ def rastaprint(s, bgcolor = None, suffix = "\n", effect = None):
 # e.g. colortext.pcyan('test') prints in cyan, colortext.wlightpurple('test') writes in light purple, colortext.mblue('test') returns a blue string
 # Note: Python does not close the scope in for-loops so the closure definition looks odd - we need to explicitly capture the state of the c variable ("c=c")
 # Note: we should handle kwargs here in the future
+def xprint(*args): print(args)
+def xjoin(*args): return ''.join(map(str, args))
 for c in colors:
     allow_colors = False
     try:
