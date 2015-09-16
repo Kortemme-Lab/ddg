@@ -71,6 +71,7 @@ import datetime
 import inspect
 import multiprocessing
 import glob
+import pprint
 import cPickle as pickle
 import getpass
 import gzip
@@ -87,6 +88,49 @@ except:
 generated_csv = 'benchmark_output.csv'
 generated_json = 'benchmark_output.json'
 ddGMover_regex = re.compile("^protocols.moves.ddGMover:\s*mutate\s*.*?\s*wildtype_dG\s*is:\s*.*?and\s*mutant_dG\s*is:\s*.*?\s*ddG\s*is:\s*(.*)$")
+
+polarity_map = {'polar' : 'P', 'charged' : 'C', 'hydrophobic' : 'H'}
+aromaticity_map = {'aliphatic' : 'L', 'aromatic' : 'R', 'neither' : '-'}
+amino_acid_details = {}
+amino_acid_detail_headers = 'Code,Long code,Name,Polarity,Aromaticity,Hydrophobicity pH7,Sidechain acidity,pKa,Average mass,van der Waals volume,Size,Is tiny?'
+amino_acid_details_ = [
+'A,ALA,Alanine,non-polar,aliphatic,hydrophobic,neutral,NULL,71.0788,67,small,1',
+'C,CYS,Cysteine,polar,neither,hydrophilic,neutral,8.7,103.1388,86,small,1',
+'D,ASP,Aspartic acid,charged,neither,hydrophilic,acidic,3.9,115.0886,91,small,0',
+'E,GLU,Glutamic acid,charged,neither,hydrophilic,acidic,4.5,129.1155,109,large,0',
+'F,PHE,Phenylalanine,non-polar,aromatic,hydrophobic,neutral,NULL,147.1766,135,large,0',
+'G,GLY,Glycine,polar,neither,hydrophilic,neutral,NULL,57.0519,48,small,1',
+'H,HIS,Histidine,charged,neither,hydrophilic,basic,6.04,137.1411,118,large,0',
+'I,ILE,Isoleucine,non-polar,aliphatic,hydrophobic,neutral,NULL,113.1594,124,large,0',
+'K,LYS,Lysine,charged,neither,hydrophilic,basic,10.54,128.1741,135,large,0',
+'L,LEU,Leucine,non-polar,aliphatic,hydrophobic,neutral,NULL,113.1594,124,large,0',
+'M,MET,Methionine,non-polar,aliphatic,hydrophobic,neutral,NULL,131.1986,124,large,0',
+'N,ASN,Asparagine,polar,neither,hydrophilic,neutral,NULL,114.1039,96,small,0',
+'P,PRO,Proline,non-polar,neither,hydrophobic,neutral,NULL,97.1167,90,small,0',
+'Q,GLN,Glutamine,polar,neither,hydrophilic,neutral,NULL,128.1307,114,large,0',
+'R,ARG,Arginine,charged,neither,hydrophilic,basic,12.48,156.1875,148,large,0',
+'S,SER,Serine,polar,neither,hydrophilic,neutral,NULL,87.0782,73,small,1',
+'T,THR,Threonine,polar,neither,hydrophilic,neutral,NULL,101.1051,93,small,0',
+'V,VAL,Valine,non-polar,aliphatic,hydrophobic,neutral,NULL,99.1326,105,small,0',
+'W,TRP,Tryptophan,non-polar,aromatic,hydrophobic,neutral,NULL,186.2132,163,large,0',
+'Y,TYR,Tyrosine,polar,aromatic,hydrophobic,neutral,10.46,163.176,141,large,0']
+
+amino_acid_detail_headers = [t.strip() for t in amino_acid_detail_headers.split(',') if t.strip()]
+for aad in amino_acid_details_:
+    tokens = aad.split(',')
+    assert(len(tokens) == len(amino_acid_detail_headers))
+    d = {}
+    for x in range(len(amino_acid_detail_headers)):
+        d[amino_acid_detail_headers[x]] = tokens[x]
+    amino_acid_details[d['Code']] = d
+    del d['Code']
+    d['Polarity'] = polarity_map.get(d['Polarity'], 'H')
+    d['Aromaticity'] = aromaticity_map[d['Aromaticity']]
+    d['Average mass'] = float(d['Average mass'])
+    d['Is tiny?'] = d['Is tiny?'] == 1
+    d['van der Waals volume'] = float(d['van der Waals volume'])
+    try: d['pKa'] = float(d['pKa'])
+    except: d['pKa'] = None
 
 van_der_Waals_volumes = dict(
     G = 48,
@@ -111,6 +155,7 @@ van_der_Waals_volumes = dict(
     W = 163,
 )
 
+
 def read_stdout(ddg_output_path):
     try:
         output_file = os.path.join(ddg_output_path, 'rosetta.out.gz')
@@ -129,7 +174,8 @@ def determine_SL_class(record):
 
     mutation_types = set()
     for m in record['Mutations']:
-        wt_vol, mut_vol = van_der_Waals_volumes[m['WildTypeAA']], van_der_Waals_volumes[m['MutantAA']]
+        wt_vol, mut_vol = amino_acid_details[m['WildTypeAA']]['van der Waals volume'], amino_acid_details[m['MutantAA']]['van der Waals volume']
+
         if wt_vol < mut_vol:
             mutation_types.add('SL')
         elif wt_vol > mut_vol:
@@ -370,7 +416,6 @@ if __name__ == '__main__':
         for k, v in analysis_data_.iteritems():
             analysis_data[int(k)] = v
 
-
     # Create XY data
     analysis_csv_input_filepath = os.path.join(output_dir, 'analysis_input.csv')
     analysis_json_input_filepath = os.path.join(output_dir, 'analysis_input.json')
@@ -409,7 +454,11 @@ if __name__ == '__main__':
         record = dataset_cases[record_id]
         if record['DerivedMutation'] and not include_derived_mutations:
             continue
-        json_record = dict(Experimental = record['DDG'], Predicted = predicted_data[ddg_analysis_type], ID = record_id)
+        json_record = dict(
+            ID = record_id,
+            Experimental = record['DDG'],
+            Predicted = predicted_data[ddg_analysis_type],
+            )
         json_records['ByVolume'][determine_SL_class(record)].append(json_record)
         json_records['GP'][has_G_or_P(record)].append(json_record)
         json_records['All'].append(json_record)
@@ -433,11 +482,11 @@ if __name__ == '__main__':
         else:
             print('\nRunning analysis (derived mutations will be omitted):')
 
-
         volume_groups = {}
-        for k, v in van_der_Waals_volumes.iteritems():
+        for aa_code, aa_details in amino_acid_details.iteritems():
+            v = int(aa_details['van der Waals volume']) # Note: I only convert to int here to match the old script behavior and because all volumes are integer values so it does not do any harm
             volume_groups[v] = volume_groups.get(v, [])
-            volume_groups[v].append(k)
+            volume_groups[v].append(aa_code)
 
         print('\n\nSection 1. Breakdown by volume.')
         print('A case is considered a small-to-large (resp. large-to-small) mutation if all of the wildtype residues have a smaller (resp. larger) van der Waals volume than the corresponding mutant residue. The order is defined as %s so some cases are considered to have no change in volume e.g. MET -> LEU.' % (' < '.join([''.join(sorted(v)) for k, v in sorted(volume_groups.iteritems())])))
