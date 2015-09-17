@@ -617,22 +617,50 @@ plot_colors = dict(
     neon_green = '#39FF14',
     brown = '#774400',
     purple = '#440077',
+    cornflower_blue = '#6495ED',
+    firebrick = '#B22222',
 )
 
 
 def scatterplot_exposure(data, title, csv_filename):
-
+    '''Scatterplot by exposure class.'''
     lines = ['Experimental,Predicted,Exposure,Opacity']
     for record in data:
         lines.append('{0},{1},{2},0.4'.format(record['Experimental'], record['Predicted'], record['WildTypeExposure']))
     write_file(csv_filename, '\n'.join(lines))
-#, alpha = I(opacity) opacity <- ifelse(d$big, 0.9, 0.35)
     plot_scale = '''
 plot_scale <- scale_color_manual(
     values = c( "None" = '#777777', "B" = '%(brown)s', "E" = '%(purple)s'),
     labels = c( "None" = "N/A", "B" = "Buried", "E" = "Exposed"))''' % plot_colors
-
     return scatterplot_color_by_series(data, colorseries = "Exposure", title = title, plot_scale = plot_scale)
+
+
+def scatterplot_charges(data, title, csv_filename):
+    '''Scatterplot by residue charge.'''
+    lines = ['Experimental,Predicted,ResidueCharge,Opacity']
+    for record in data:
+        lines.append('{0},{1},{2},0.4'.format(record['Experimental'], record['Predicted'], record['ResidueCharges']))
+    print('\n'.join(lines))
+    write_file(csv_filename, '\n'.join(lines))
+    plot_scale = '''
+plot_scale <- scale_color_manual(
+    values = c( "None" = '#777777', "Change" = '%(cornflower_blue)s', "Polar/Charged" = 'magenta', "Hydrophobic/Non-polar" = 'green'),
+    labels = c( "None" = "N/A", "Change" = "Change", "Polar/Charged" = "Polar/Charged", "Hydrophobic/Non-polar" = "Hydrophobic/Non-polar"))''' % plot_colors
+    return scatterplot_color_by_series(data, colorseries = "ResidueCharge", title = title, plot_scale = plot_scale, point_opacity = 0.94)
+
+
+def scatterplot_volume(data, title, csv_filename):
+    '''Scatterplot by change in volume upon mutation.'''
+    lines = ['Experimental,Predicted,VolumeChange,Opacity']
+    for record in data:
+        lines.append('{0},{1},{2},0.4'.format(record['Experimental'], record['Predicted'], record['VolumeChange']))
+    print('\n'.join(lines))
+    write_file(csv_filename, '\n'.join(lines))
+    plot_scale = '''
+plot_scale <- scale_color_manual(
+    values = c( "None" = '#777777', "SL" = '%(brown)s', "LS" = '%(purple)s', 'XX' = "%(cornflower_blue)s"),
+    labels = c( "None" = "N/A", "SL" = "Increase", "LS" = "Decrease", "XX" = "No change"))''' % plot_colors
+    return scatterplot_color_by_series(data, colorseries = "VolumeChange", title = title, plot_scale = plot_scale)
 
 
 def scatterplot_GP(data, title, csv_filename):
@@ -951,6 +979,21 @@ if __name__ == '__main__':
 
         plot_filename_prefix = arguments['--plot_filename_prefix'][0]
         plot_filename_prefix = os.path.join(output_dir, '{0}'.format(plot_filename_prefix))
+
+        scatterplot_generic('Experimental vs. Prediction - Residue charges', json_records['All'], scatterplot_charges, '{0}_scatterplot_charges.png'.format(plot_filename_prefix))
+        scatterplot_generic('Experimental vs. Prediction - Change in volume', json_records['All'], scatterplot_volume, '{0}_scatterplot_volume.png'.format(plot_filename_prefix))
+
+        # * PDBFileID : <scatterplot_name>_pdb_id
+        # * AbsoluteError : <scatterplot_name>_abs_error
+        # * StabilityClassification : <scatterplot_name>_stability
+        # * WildTypeDSSPSimpleSSType : <scatterplot_name>_simple_dssp
+        # * WildTypeSCOPClass : <scatterplot_name>_scop_class
+        # * WildTypeSCOPFold : <scatterplot_name>_scop_fold
+        # * WildTypeSCOPClassification : <scatterplot_name>_full_scop_classification
+        # * WildTypeAA : <scatterplot_name>_wtaa
+        # * MutantAA : <scatterplot_name>_mutaa
+        # * PDBResolutionBin : <scatterplot_name>_pdb_res
+        # * MonomerLength : <scatterplot_name>_pdb_length
 
         # Plot a histogram of the absolute errors
         plot_absolute_error_histogram(plot_filename_prefix, json_records['All'])
