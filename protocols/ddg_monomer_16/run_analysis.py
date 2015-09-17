@@ -708,6 +708,38 @@ def scatterplot_scop_classification(data, title, csv_filename):
     return scatterplot_color_by_series(data, colorseries = "WildTypeSCOPClassification", title = title, point_opacity = 0.6)
 
 
+def scatterplot_wildtype_aa(data, title, csv_filename):
+    '''Scatterplot by wildtype residue.'''
+    lines = ['Experimental,Predicted,WildTypeAA,Opacity']
+    for record in data:
+        lines.append('{0},{1},{2},0.4'.format(record['Experimental'], record['Predicted'], record['WildTypeAA']))
+    print('\n'.join(lines))
+    write_file(csv_filename, '\n'.join(lines))
+    plot_scale = '''
+plot_scale <- scale_color_manual(
+    name="Residue",
+    values = c( "None" = '#808080', "A" = '#FF0000', "C" = '#BFBF00', "D" = '#008000', "E" = "#80FFFF", "F" = "#8080FF", "G" = "#BF40BF", "H" = "#A0A424", "I" = "#411BEA", "K" = "#1EAC41", "L" = "#F0C80E", "M" = "#B430E5", "N" = "#ED7651", "P" = "#19CB97", "Q" = "#362698", "R" = "#7E7EB8", "S" = "#603000", "T" = "#A71818", "V" = "#DF8020", "W" = "#E75858", "Y" = "#082008"),
+    labels = c( "None" = "N/A", "A" = "A", "C" = "C", "D" = "D", "E" = "E", "F" = "F", "G" = "G", "H" = "H", "I" = "I", "K" = "K", "L" = "L", "M" = "M", "N" = "N", "P" = "P", "Q" = "Q", "R" = "R", "S" = "S", "T" = "T", "V" = "V", "W" = "W", "Y" = "Y"))
+    ''' % plot_colors
+    return scatterplot_color_by_series(data, colorseries = "WildTypeAA", title = title, plot_scale = plot_scale, point_opacity = 0.6)
+
+
+def scatterplot_mutant_aa(data, title, csv_filename):
+    '''Scatterplot by mutant residue.'''
+    lines = ['Experimental,Predicted,MutantAA,Opacity']
+    for record in data:
+        lines.append('{0},{1},{2},0.4'.format(record['Experimental'], record['Predicted'], record['MutantAA']))
+    print('\n'.join(lines))
+    write_file(csv_filename, '\n'.join(lines))
+    plot_scale = '''
+plot_scale <- scale_color_manual(
+    name="Residue",
+    values = c( "None" = '#808080', "A" = '#FF0000', "C" = '#BFBF00', "D" = '#008000', "E" = "#80FFFF", "F" = "#8080FF", "G" = "#BF40BF", "H" = "#A0A424", "I" = "#411BEA", "K" = "#1EAC41", "L" = "#F0C80E", "M" = "#B430E5", "N" = "#ED7651", "P" = "#19CB97", "Q" = "#362698", "R" = "#7E7EB8", "S" = "#603000", "T" = "#A71818", "V" = "#DF8020", "W" = "#E75858", "Y" = "#082008"),
+    labels = c( "None" = "N/A", "A" = "A", "C" = "C", "D" = "D", "E" = "E", "F" = "F", "G" = "G", "H" = "H", "I" = "I", "K" = "K", "L" = "L", "M" = "M", "N" = "N", "P" = "P", "Q" = "Q", "R" = "R", "S" = "S", "T" = "T", "V" = "V", "W" = "W", "Y" = "Y"))
+    ''' % plot_colors
+    return scatterplot_color_by_series(data, colorseries = "MutantAA", title = title, plot_scale = plot_scale, point_opacity = 0.6)
+
+
 def scatterplot_GP(data, title, csv_filename):
 
     lines = ['Experimental,Predicted,GP,Opacity']
@@ -1026,8 +1058,8 @@ if __name__ == '__main__':
         plot_filename_prefix = os.path.join(output_dir, '{0}'.format(plot_filename_prefix))
 
 
-        # * WildTypeAA : <scatterplot_name>_wtaa
-        # * MutantAA : <scatterplot_name>_mutaa
+        scatterplot_generic('Experimental vs. Prediction - Wildtype', json_records['All'], scatterplot_wildtype_aa, '{0}_scatterplot_scop_wildtype_aa.png'.format(plot_filename_prefix))
+        scatterplot_generic('Experimental vs. Prediction - Mutant', json_records['All'], scatterplot_mutant_aa, '{0}_scatterplot_scop_mutant_aa.png'.format(plot_filename_prefix))
 
         # * PDBResolutionBin : <scatterplot_name>_pdb_res
         # * MonomerLength : <scatterplot_name>_pdb_length
