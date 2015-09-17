@@ -646,7 +646,7 @@ def scatterplot_charges(data, title, csv_filename):
 plot_scale <- scale_color_manual(
     values = c( "None" = '#777777', "Change" = '%(cornflower_blue)s', "Polar/Charged" = 'magenta', "Hydrophobic/Non-polar" = 'green'),
     labels = c( "None" = "N/A", "Change" = "Change", "Polar/Charged" = "Polar/Charged", "Hydrophobic/Non-polar" = "Hydrophobic/Non-polar"))''' % plot_colors
-    return scatterplot_color_by_series(data, colorseries = "ResidueCharge", title = title, plot_scale = plot_scale, point_opacity = 0.94)
+    return scatterplot_color_by_series(data, colorseries = "ResidueCharge", title = title, plot_scale = plot_scale, point_opacity = 0.6)
 
 
 def scatterplot_volume(data, title, csv_filename):
@@ -661,6 +661,21 @@ plot_scale <- scale_color_manual(
     values = c( "None" = '#777777', "SL" = '%(brown)s', "LS" = '%(purple)s', 'XX' = "%(cornflower_blue)s"),
     labels = c( "None" = "N/A", "SL" = "Increase", "LS" = "Decrease", "XX" = "No change"))''' % plot_colors
     return scatterplot_color_by_series(data, colorseries = "VolumeChange", title = title, plot_scale = plot_scale)
+
+
+def scatterplot_ss(data, title, csv_filename):
+    '''Scatterplot by residue charge.'''
+    lines = ['Experimental,Predicted,WTSecondaryStructure,Opacity']
+    for record in data:
+        lines.append('{0},{1},{2},0.4'.format(record['Experimental'], record['Predicted'], record['WildTypeDSSPSimpleSSType']))
+    print('\n'.join(lines))
+    write_file(csv_filename, '\n'.join(lines))
+    plot_scale = '''
+plot_scale <- scale_color_manual(
+    name="Secondary structure",
+    values = c( "None" = '#777777', "H" = 'magenta', "S" = 'orange', "O" = '%(cornflower_blue)s'),
+    labels = c( "None" = "N/A", "H" = "Helix", "S" = "Sheet", "O" = "Other"))''' % plot_colors
+    return scatterplot_color_by_series(data, colorseries = "WTSecondaryStructure", title = title, plot_scale = plot_scale, point_opacity = 0.6)
 
 
 def scatterplot_GP(data, title, csv_filename):
@@ -980,18 +995,13 @@ if __name__ == '__main__':
         plot_filename_prefix = arguments['--plot_filename_prefix'][0]
         plot_filename_prefix = os.path.join(output_dir, '{0}'.format(plot_filename_prefix))
 
-        scatterplot_generic('Experimental vs. Prediction - Residue charges', json_records['All'], scatterplot_charges, '{0}_scatterplot_charges.png'.format(plot_filename_prefix))
-        scatterplot_generic('Experimental vs. Prediction - Change in volume', json_records['All'], scatterplot_volume, '{0}_scatterplot_volume.png'.format(plot_filename_prefix))
-
-        # * PDBFileID : <scatterplot_name>_pdb_id
-        # * AbsoluteError : <scatterplot_name>_abs_error
-        # * StabilityClassification : <scatterplot_name>_stability
-        # * WildTypeDSSPSimpleSSType : <scatterplot_name>_simple_dssp
         # * WildTypeSCOPClass : <scatterplot_name>_scop_class
         # * WildTypeSCOPFold : <scatterplot_name>_scop_fold
         # * WildTypeSCOPClassification : <scatterplot_name>_full_scop_classification
+
         # * WildTypeAA : <scatterplot_name>_wtaa
         # * MutantAA : <scatterplot_name>_mutaa
+
         # * PDBResolutionBin : <scatterplot_name>_pdb_res
         # * MonomerLength : <scatterplot_name>_pdb_length
 
@@ -999,8 +1009,12 @@ if __name__ == '__main__':
         plot_absolute_error_histogram(plot_filename_prefix, json_records['All'])
 
         # Create a series of scatterplots colored by different criteria
-        scatterplot_generic('Experimental vs. Prediction - Glycine/Proline', json_records['All'], scatterplot_GP, '{0}_scatterplot_gp.png'.format(plot_filename_prefix))
         scatterplot_generic('Experimental vs. Prediction - Exposure (cutoff = %0.2f)' % burial_cutoff, json_records['All'], scatterplot_exposure, '{0}_scatterplot_exposure.png'.format(plot_filename_prefix))
+        scatterplot_generic('Experimental vs. Prediction - Residue charges', json_records['All'], scatterplot_charges, '{0}_scatterplot_charges.png'.format(plot_filename_prefix))
+        scatterplot_generic('Experimental vs. Prediction - Change in volume', json_records['All'], scatterplot_volume, '{0}_scatterplot_volume.png'.format(plot_filename_prefix))
+        scatterplot_generic('Experimental vs. Prediction - Wildtype residue s.s.', json_records['All'], scatterplot_ss, '{0}_scatterplot_ss.png'.format(plot_filename_prefix))
+
+        scatterplot_generic('Experimental vs. Prediction - Glycine/Proline', json_records['All'], scatterplot_GP, '{0}_scatterplot_gp.png'.format(plot_filename_prefix))
 
         # Plot the optimum y-cutoff over a range of x-cutoffs for the fraction correct metric. Include the user's cutoff in the range
         scalar_adjustment = plot_optimum_prediction_fraction_correct_cutoffs_over_range(plot_filename_prefix, json_records['All'], min(stability_classication_x_cutoff, 0.5), max(stability_classication_x_cutoff, 3.0))
