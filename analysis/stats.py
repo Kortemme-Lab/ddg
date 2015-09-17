@@ -107,13 +107,12 @@ class RInterface(object):
 
 
     @staticmethod
-    def correlation_coefficient_gplot(inputfname, output_filename, filetype, experiment_field = "Experimental"):
+    def correlation_coefficient_gplot(inputfname, output_filename, filetype, experiment_field = "Experimental", title = ''):
         '''File suffix: pearsons_r_gplot
            Description: Pearson's r
            Filename: ggplot_pearsons.R
            Priority: 1
            '''
-        title = "" #Pearson's r"
         RScript = read_file(os.path.join(script_path, "ggplot_pearsons.R")) % vars()
         return RInterface._runRScript(RScript)
 
@@ -358,7 +357,7 @@ def format_stats_for_printing(stats):
     return '\n'.join(s)
 
 
-def plot(analysis_table, output_filename, RFunction):
+def plot(analysis_table, output_filename, RFunction, title = ''):
     #R_return_values = {}
     filetype = os.path.splitext(output_filename)[1].lower()
     if not(filetype == '.png' or filetype == '.pdf' or filetype == '.eps'):
@@ -371,7 +370,7 @@ def plot(analysis_table, output_filename, RFunction):
     else:
         input_filename = create_csv(analysis_table)
         try:
-            R_output = RFunction(input_filename, output_filename, filetype)
+            R_output = RFunction(input_filename, output_filename, filetype, title = title)
             #R_return_values = RUtilities.parse_R_output(R_output)
             #for k, v in sorted(R_return_values.iteritems()):
             #    print("  %s: %s" % (str(k), str(v)))

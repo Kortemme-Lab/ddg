@@ -87,6 +87,8 @@ import cPickle as pickle
 import getpass
 import gzip
 import numpy
+import subprocess
+import shlex
 import copy
 from rosetta.write_run_file import process as write_run_file
 from analysis.libraries import docopt
@@ -406,7 +408,7 @@ def plot_optimum_prediction_fraction_correct_cutoffs(plot_filename_prefix, recor
     plot_filename = output_filename_prefix + '.png'
     csv_filename = output_filename_prefix + '.txt'
     R_filename = output_filename_prefix + '.R'
-    print('\nSaving scatterplot to %s.\n' % plot_filename)
+    print('Saving scatterplot to %s.' % plot_filename)
 
     # Create CSV input
     lines = ['NeutralityCutoff,FractionCorrect,C']
@@ -456,7 +458,7 @@ def plot_optimum_prediction_fraction_correct_cutoffs_over_range(plot_filename_pr
     plot_filename = output_filename_prefix + '.png'
     csv_filename = output_filename_prefix + '.txt'
     R_filename = output_filename_prefix + '.R'
-    print('\nSaving scatterplot to %s.\n' % plot_filename)
+    print('Saving scatterplot to %s.' % plot_filename)
 
     # Create CSV input
     lines = ['ExperimentalCutoff,BestPredictionCutoff']
@@ -516,7 +518,7 @@ def plot_absolute_error_histogram(plot_filename_prefix,data):
     plot_filename = output_filename_prefix + '.png'
     csv_filename = output_filename_prefix + '.txt'
     R_filename = output_filename_prefix + '.R'
-    print('\nSaving scatterplot to %s.\n' % plot_filename)
+    print('Saving scatterplot to %s.' % plot_filename)
 
     # Create CSV input
     lines = ['DatasetID,AbsoluteError']
@@ -558,11 +560,10 @@ plot_data <- read.csv('%(csv_filename)s', header=T)
 %(plot_commands)s
 
 dev.off()''' % locals()
-    colortext.warning(r_script)
     RInterface._runRScript(r_script)
 
 
-def scatterplot_color_by_series(data, colorseries, xseries = "Experimental", yseries = "Predicted", title = '', plot_scale = '', point_opacity = 0.4):
+def scatterplot_color_by_series(data, colorseries, xseries = "Experimental", yseries = "Predicted", title = '', plot_scale = '', point_opacity = 0.4, extra_commands = ''):
 
     mae = sum([abs(record[xseries] - record[yseries]) for record in data]) / len(data)
     plot_scale_line = ''
@@ -599,7 +600,7 @@ ypos_mae <- maxy - ((maxy - miny) * 0.055)
 
 %(plot_scale_line)s
 
-p <- ggplot(data = plot_data, aes(x = %(xseries)s, y = %(yseries)s)) +%(plot_scale_argument)s
+p <- ggplot(data = plot_data, aes(x = %(xseries)s, y = %(yseries)s)) +%(plot_scale_argument)s %(extra_commands)s
     xlab("Experimental (kcal/mol)") +
     ylab("Predictions (energy units)") +
     ggtitle("%(title)s") +
@@ -640,7 +641,6 @@ def scatterplot_charges(data, title, csv_filename):
     lines = ['Experimental,Predicted,ResidueCharge,Opacity']
     for record in data:
         lines.append('{0},{1},{2},0.4'.format(record['Experimental'], record['Predicted'], record['ResidueCharges']))
-    print('\n'.join(lines))
     write_file(csv_filename, '\n'.join(lines))
     plot_scale = '''
 plot_scale <- scale_color_manual(
@@ -654,7 +654,6 @@ def scatterplot_volume(data, title, csv_filename):
     lines = ['Experimental,Predicted,VolumeChange,Opacity']
     for record in data:
         lines.append('{0},{1},{2},0.4'.format(record['Experimental'], record['Predicted'], record['VolumeChange']))
-    print('\n'.join(lines))
     write_file(csv_filename, '\n'.join(lines))
     plot_scale = '''
 plot_scale <- scale_color_manual(
@@ -668,7 +667,6 @@ def scatterplot_ss(data, title, csv_filename):
     lines = ['Experimental,Predicted,WTSecondaryStructure,Opacity']
     for record in data:
         lines.append('{0},{1},{2},0.4'.format(record['Experimental'], record['Predicted'], record['WildTypeDSSPSimpleSSType']))
-    print('\n'.join(lines))
     write_file(csv_filename, '\n'.join(lines))
     plot_scale = '''
 plot_scale <- scale_color_manual(
@@ -683,7 +681,6 @@ def scatterplot_scop_class(data, title, csv_filename):
     lines = ['Experimental,Predicted,WildTypeSCOPClass,Opacity']
     for record in data:
         lines.append('{0},{1},{2},0.4'.format(record['Experimental'], record['Predicted'], record['WildTypeSCOPClass']))
-    print('\n'.join(lines))
     write_file(csv_filename, '\n'.join(lines))
     return scatterplot_color_by_series(data, colorseries = "WildTypeSCOPClass", title = title, point_opacity = 0.6)
 
@@ -693,7 +690,6 @@ def scatterplot_scop_fold(data, title, csv_filename):
     lines = ['Experimental,Predicted,WildTypeSCOPFold,Opacity']
     for record in data:
         lines.append('{0},{1},{2},0.4'.format(record['Experimental'], record['Predicted'], record['WildTypeSCOPFold']))
-    print('\n'.join(lines))
     write_file(csv_filename, '\n'.join(lines))
     return scatterplot_color_by_series(data, colorseries = "WildTypeSCOPFold", title = title, point_opacity = 0.6)
 
@@ -703,7 +699,6 @@ def scatterplot_scop_classification(data, title, csv_filename):
     lines = ['Experimental,Predicted,WildTypeSCOPClassification,Opacity']
     for record in data:
         lines.append('{0},{1},{2},0.4'.format(record['Experimental'], record['Predicted'], record['WildTypeSCOPClassification']))
-    print('\n'.join(lines))
     write_file(csv_filename, '\n'.join(lines))
     return scatterplot_color_by_series(data, colorseries = "WildTypeSCOPClassification", title = title, point_opacity = 0.6)
 
@@ -713,7 +708,6 @@ def scatterplot_wildtype_aa(data, title, csv_filename):
     lines = ['Experimental,Predicted,WildTypeAA,Opacity']
     for record in data:
         lines.append('{0},{1},{2},0.4'.format(record['Experimental'], record['Predicted'], record['WildTypeAA']))
-    print('\n'.join(lines))
     write_file(csv_filename, '\n'.join(lines))
     plot_scale = '''
 plot_scale <- scale_color_manual(
@@ -729,7 +723,6 @@ def scatterplot_mutant_aa(data, title, csv_filename):
     lines = ['Experimental,Predicted,MutantAA,Opacity']
     for record in data:
         lines.append('{0},{1},{2},0.4'.format(record['Experimental'], record['Predicted'], record['MutantAA']))
-    print('\n'.join(lines))
     write_file(csv_filename, '\n'.join(lines))
     plot_scale = '''
 plot_scale <- scale_color_manual(
@@ -758,9 +751,36 @@ def scatterplot_GP(data, title, csv_filename):
     name="Glycine/Proline",
     values = c( "None" = '#777777', "GP" = '%(neon_green)s', "Other" = '#440077'),
     labels = c( "None" = "N/A", "GP" = "GP", "Other" = "Other"))''' % plot_colors
-
     return scatterplot_color_by_series(data, colorseries = "GP", title = title, plot_scale = plot_scale, point_opacity = 0.75)
 
+
+def scatterplot_pdb_res_binned(data, title, csv_filename):
+    '''Scatterplot by binned PDB resolution.'''
+    lines = ['Experimental,Predicted,PDBResolutionBin,Opacity']
+    for record in data:
+        lines.append('{0},{1},{2},0.4'.format(record['Experimental'], record['Predicted'], record['PDBResolutionBin']))
+    write_file(csv_filename, '\n'.join(lines))
+    plot_scale = '''
+plot_scale <- scale_color_manual(
+    name = "Resolution",
+    values = c( "N/A" = '#777777', "<1.5" = '#0052aE', "1.5-2.0" = '#554C54', '2.0-2.5' = "#FFA17F", '>=2.5' = "#ce4200")
+    )''' % plot_colors
+    return scatterplot_color_by_series(data, colorseries = "PDBResolutionBin", title = title, plot_scale = plot_scale, point_opacity = 0.75)
+
+
+def scatterplot_chain_length(data, title, csv_filename):
+    '''Scatterplot by chain length.'''
+    lines = ['Experimental,Predicted,Residues,Opacity']
+    for record in data:
+        lines.append('{0},{1},{2},0.4'.format(record['Experimental'], record['Predicted'], record['MonomerLength']))
+    write_file(csv_filename, '\n'.join(lines))
+    plot_scale = '''
+plot_scale <- scale_color_manual(
+    name = "Resolution",
+    values = c( "N/A" = '#777777', "<1.5" = '#0052aE', "1.5-2.0" = '#554C54', '2.0-2.5' = "#FFA17F", '>=2.5' = "#ce4200")
+    )''' % plot_colors
+    extra_commands ='\n    scale_colour_gradient(low="yellow", high="#880000") +'
+    return scatterplot_color_by_series(data, colorseries = "Residues", title = title, plot_scale = '', point_opacity = 0.75, extra_commands = extra_commands)
 
 
 if __name__ == '__main__':
@@ -891,7 +911,30 @@ if __name__ == '__main__':
                 True : [], False : []
             },
     )
-    csv_file = ['#ExperimentalDDG,PredictedDDG,DatasetID']
+    csv_headers=[
+        'DatasetID',
+        'PDBFileID',
+        'Mutations',
+        'Experimental',
+        'Predicted',
+        'AbsoluteError',
+        'StabilityClassification',
+        'ResidueCharges',
+        'VolumeChange',
+        'WildTypeDSSPType',
+        'WildTypeDSSPSimpleSSType',
+        'WildTypeDSSPExposure',
+        'WildTypeSCOPClass',
+        'WildTypeSCOPFold',
+        'WildTypeSCOPClassification',
+        'WildTypeExposure',
+        'WildTypeAA',
+        'MutantAA',
+        'PDBResolution',
+        'PDBResolutionBin',
+        'MonomerLength',
+    ]
+    csv_file = [','.join(csv_headers)]
 
     SCOP_classifications = set()
     SCOP_folds = set()
@@ -993,20 +1036,20 @@ if __name__ == '__main__':
         assert(stability_classification == 0 or stability_classification == 1)
         stability_classification = int(stability_classification)
 
-        # Partition the data by PDB resolution with bins: NA, <1.5, 1.5-<2.0, 2.0-<2.5, >=2.5
+        # Partition the data by PDB resolution with bins: N/A, <1.5, 1.5-<2.0, 2.0-<2.5, >=2.5
         pdb_record = pdb_data.get(record['PDBFileID'].upper())
         pdb_resolution_bin = None
         pdb_resolution = pdb_record.get('Resolution')
         if pdb_resolution != None:
             if pdb_resolution < 1.5:
-                pdb_resolution_bin = '< 1.5'
+                pdb_resolution_bin = '<1.5'
             elif pdb_resolution < 2.0:
                 pdb_resolution_bin = '1.5-2.0'
             elif pdb_resolution < 2.5:
                 pdb_resolution_bin = '2.0-2.5'
             else:
                 pdb_resolution_bin = '>=2.5'
-        pdb_resolution_bin = pdb_resolution_bin or 'NA'
+        pdb_resolution_bin = pdb_resolution_bin or 'N/A'
 
         # Create the data matrix
         json_record = dict(
@@ -1033,11 +1076,13 @@ if __name__ == '__main__':
             MonomerLength = len(pdb_record.get('Chains', {}).get(pdb_chain, {}).get('Sequence', '')) or None,
             )
 
-        #pprint.pprint(json_record)
         json_records['ByVolume'][determine_SL_class(record)].append(json_record)
         json_records['GP'][has_G_or_P(record)].append(json_record)
         json_records['All'].append(json_record)
-        csv_file.append('%s,%s,%s' % (str(record['DDG']), str(predicted_data[ddg_analysis_type]), str(record_id)))
+
+        for h in csv_headers:
+            assert(',' not in str(json_record[h]))
+        csv_file.append(','.join([str(json_record[h]) for h in csv_headers]))
 
     colortext.message('The mutated residues span {0} unique SCOP(e) classifications in {1} unique SCOP(e) folds and {2} unique SCOP(e) classes.'.format(len(SCOP_classifications), len(SCOP_folds), len(SCOP_classes)))
 
@@ -1054,15 +1099,34 @@ if __name__ == '__main__':
         from analysis.stats import get_xy_dataset_statistics, plot, format_stats_for_printing, RInterface
         correlation_coefficient_scatterplotplot = RInterface.correlation_coefficient_gplot
 
-        plot_filename_prefix = arguments['--plot_filename_prefix'][0]
-        plot_filename_prefix = os.path.join(output_dir, '{0}'.format(plot_filename_prefix))
+        rel_plot_filename_prefix = arguments['--plot_filename_prefix'][0]
+        subplot_dir = os.path.join(output_dir, 'subplots')
+        try: os.mkdir(subplot_dir)
+        except: pass
+        if not os.path.exists(subplot_dir):
+            raise Exception('Could not create subdirectory {0} for the plots.'.format(subplot_dir))
+        plot_filename_prefix = os.path.join(subplot_dir, '{0}'.format(rel_plot_filename_prefix))
 
+        # Plot the optimum y-cutoff over a range of x-cutoffs for the fraction correct metric. Include the user's cutoff in the range
+        scalar_adjustment = plot_optimum_prediction_fraction_correct_cutoffs_over_range(plot_filename_prefix, json_records['All'], min(stability_classication_x_cutoff, 0.5), max(stability_classication_x_cutoff, 3.0))
 
-        scatterplot_generic('Experimental vs. Prediction - Wildtype', json_records['All'], scatterplot_wildtype_aa, '{0}_scatterplot_scop_wildtype_aa.png'.format(plot_filename_prefix))
-        scatterplot_generic('Experimental vs. Prediction - Mutant', json_records['All'], scatterplot_mutant_aa, '{0}_scatterplot_scop_mutant_aa.png'.format(plot_filename_prefix))
+        # Plot which y-cutoff yields the best value for the fraction correct metric
+        plot_optimum_prediction_fraction_correct_cutoffs(plot_filename_prefix, json_records['All'], stability_classication_x_cutoff)
 
-        # * PDBResolutionBin : <scatterplot_name>_pdb_res
-        # * MonomerLength : <scatterplot_name>_pdb_length
+        # Create an adjusted set of records scaled according to the fraction correct fitting
+        adjusted_records = copy.deepcopy(json_records['All'])
+        for record in adjusted_records:
+            record['Predicted'] = record['Predicted'] / scalar_adjustment
+
+        # Create a scatterplot for the results
+        output_filename = '{0}_scatterplot.png'.format(plot_filename_prefix)
+        print('Saving scatterplot to %s.' % output_filename)
+        plot(json_records['All'], output_filename, correlation_coefficient_scatterplotplot, title = 'Experimental vs. Prediction')
+
+        # Create a scatterplot for the adjusted results
+        output_filename = '{0}_scatterplot_adjusted_with_scalar.png'.format(plot_filename_prefix)
+        print('Saving scatterplot to %s.' % output_filename)
+        plot(adjusted_records, output_filename, correlation_coefficient_scatterplotplot, title = 'Experimental vs. Prediction: adjusted scale')
 
         # Plot a histogram of the absolute errors
         plot_absolute_error_histogram(plot_filename_prefix, json_records['All'])
@@ -1078,28 +1142,11 @@ if __name__ == '__main__':
             scatterplot_generic('Experimental vs. Prediction - WT residue SCOP fold', json_records['All'], scatterplot_scop_fold, '{0}_scatterplot_scop_fold.png'.format(plot_filename_prefix))
         if len(SCOP_classifications) <= 25:
             scatterplot_generic('Experimental vs. Prediction - WT residue SCOP classification', json_records['All'], scatterplot_scop_classification, '{0}_scatterplot_scop_classification.png'.format(plot_filename_prefix))
+        scatterplot_generic('Experimental vs. Prediction - Wildtype', json_records['All'], scatterplot_wildtype_aa, '{0}_scatterplot_wildtype_aa.png'.format(plot_filename_prefix))
+        scatterplot_generic('Experimental vs. Prediction - Mutant', json_records['All'], scatterplot_mutant_aa, '{0}_scatterplot_mutant_aa.png'.format(plot_filename_prefix))
         scatterplot_generic('Experimental vs. Prediction - Glycine/Proline', json_records['All'], scatterplot_GP, '{0}_scatterplot_gp.png'.format(plot_filename_prefix))
-
-        # Plot the optimum y-cutoff over a range of x-cutoffs for the fraction correct metric. Include the user's cutoff in the range
-        scalar_adjustment = plot_optimum_prediction_fraction_correct_cutoffs_over_range(plot_filename_prefix, json_records['All'], min(stability_classication_x_cutoff, 0.5), max(stability_classication_x_cutoff, 3.0))
-
-        # Plot which y-cutoff yields the best value for the fraction correct metric
-        plot_optimum_prediction_fraction_correct_cutoffs(plot_filename_prefix, json_records['All'], stability_classication_x_cutoff)
-
-        # Create an adjusted set of records scaled according to the fraction correct fitting
-        adjusted_records = copy.deepcopy(json_records['All'])
-        for record in adjusted_records:
-            record['Predicted'] = record['Predicted'] / scalar_adjustment
-
-        # Create a scatterplot for the results
-        output_filename = '{0}_scatterplot.png'.format(plot_filename_prefix)
-        print('\nSaving scatterplot to %s.\n' % output_filename)
-        plot(json_records['All'], output_filename, correlation_coefficient_scatterplotplot)
-
-        # Create a scatterplot for the adjusted results
-        output_filename = '{0}_scatterplot_adjusted_with_scalar.png'.format(plot_filename_prefix)
-        print('\nSaving scatterplot to %s.\n' % output_filename)
-        plot(adjusted_records, output_filename, correlation_coefficient_scatterplotplot)
+        scatterplot_generic('Experimental vs. Prediction - PDB resolution', json_records['All'], scatterplot_pdb_res_binned, '{0}_scatterplot_pdb_res_binned.png'.format(plot_filename_prefix))
+        scatterplot_generic('Experimental vs. Prediction - Chain length', json_records['All'], scatterplot_chain_length, '{0}_scatterplot_chain_length.png'.format(plot_filename_prefix))
 
         if include_derived_mutations:
             colortext.message('\nRunning analysis (derived mutations will be included):')
@@ -1137,6 +1184,17 @@ if __name__ == '__main__':
         print('\n' + '*'*10 + (' Statistics - complete dataset (%d cases)' % len(json_records['All'])) +'*'*10)
         print(format_stats_for_printing(get_xy_dataset_statistics(json_records['All'], fcorrect_x_cutoff = stability_classication_x_cutoff, fcorrect_y_cutoff = stability_classication_y_cutoff)))
 
-
+        # Combine the plots into a PDF file
+        plot_file = os.path.join(output_dir, rel_plot_filename_prefix + '_benchmark_plots.pdf')
+        colortext.message('\n\nCreating a PDF containing all of the plots: {0}'.format(plot_file))
+        try:
+            if os.path.exists(plot_file):
+                os.remove(plot_file)
+            p = subprocess.Popen(shlex.split('convert {0} {1}'.format(os.path.join(subplot_dir, '*.png'), rel_plot_filename_prefix + '_benchmark_plots.pdf')), cwd = output_dir)
+            #print(shlex.split('convert {0} {1}'.format(os.path.join(subplot_dir, '*.png'), rel_plot_filename_prefix + '_benchmark_plots.pdf')))
+            stdoutdata, stderrdata = p.communicate()
+            if p.returncode != 0: raise Exception('')
+        except:
+            colortext.error('An error occurred while combining the positional scatterplots using the convert application (ImageMagick).')
 
     print('')
