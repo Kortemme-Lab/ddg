@@ -509,6 +509,41 @@ dev.off()'''
     return average_scalar
 
 
+def plot_absolute_error_histogram(plot_filename_prefix,data):
+
+    # Filenames
+    output_filename_prefix = '{0}_absolute_errors'.format(plot_filename_prefix)
+    plot_filename = output_filename_prefix + '.png'
+    csv_filename = output_filename_prefix + '.txt'
+    R_filename = output_filename_prefix + '.R'
+    print('\nSaving scatterplot to %s.\n' % plot_filename)
+
+    # Create CSV input
+    lines = ['DatasetID,AbsoluteError']
+    for record in data:
+        lines.append('{0},{1}'.format(record['DatasetID'], record['AbsoluteError']))
+    write_file(csv_filename, '\n'.join(lines))
+
+    # Create plot
+    title = 'Distribution of absolute errors (prediction - observed)'
+    r_script = '''library(ggplot2)
+library(gridExtra)
+library(scales)
+library(qualV)
+
+png('%(plot_filename)s', height=4096, width=4096, bg="white", res=600)
+plot_data <- read.csv('%(csv_filename)s', header=T)
+
+m <- ggplot(plot_data, aes(x=AbsoluteError)) +
+    geom_histogram(colour = "darkgreen", fill = "green", binwidth = 0.5) +
+    ggtitle("%(title)s") +
+    xlab("Absolute error (kcal/mol - energy units)") +
+    ylab("Number of cases")
+m
+dev.off()'''
+    RInterface._runRScript(r_script % locals())
+
+
 def scatterplot_generic(title, data, plotfn, plot_filename):
     csv_filename = os.path.splitext(plot_filename)[0] + '.txt'
     plot_commands = plotfn(data, title, csv_filename)
@@ -915,10 +950,14 @@ if __name__ == '__main__':
         correlation_coefficient_scatterplotplot = RInterface.correlation_coefficient_gplot
 
         plot_filename_prefix = arguments['--plot_filename_prefix'][0]
+        plot_filename_prefix = os.path.join(output_dir, '{0}'.format(plot_filename_prefix))
+
+        # Plot a histogram of the absolute errors
+        plot_absolute_error_histogram(plot_filename_prefix, json_records['All'])
 
         # Create a series of scatterplots colored by different criteria
-        scatterplot_generic('Experimental vs. Prediction - Glycine/Proline', json_records['All'], scatterplot_GP, os.path.join(output_dir, '{0}_scatterplot_gp.png'.format(plot_filename_prefix)))
-        scatterplot_generic('Experimental vs. Prediction - Exposure (cutoff = %0.2f)' % burial_cutoff, json_records['All'], scatterplot_exposure, os.path.join(output_dir, '{0}_scatterplot_exposure.png'.format(plot_filename_prefix)))
+        scatterplot_generic('Experimental vs. Prediction - Glycine/Proline', json_records['All'], scatterplot_GP, '{0}_scatterplot_gp.png'.format(plot_filename_prefix))
+        scatterplot_generic('Experimental vs. Prediction - Exposure (cutoff = %0.2f)' % burial_cutoff, json_records['All'], scatterplot_exposure, '{0}_scatterplot_exposure.png'.format(plot_filename_prefix))
 
         # Plot the optimum y-cutoff over a range of x-cutoffs for the fraction correct metric. Include the user's cutoff in the range
         scalar_adjustment = plot_optimum_prediction_fraction_correct_cutoffs_over_range(plot_filename_prefix, json_records['All'], min(stability_classication_x_cutoff, 0.5), max(stability_classication_x_cutoff, 3.0))
@@ -932,12 +971,12 @@ if __name__ == '__main__':
             record['Predicted'] = record['Predicted'] / scalar_adjustment
 
         # Create a scatterplot for the results
-        output_filename = os.path.join(output_dir, '{0}_scatterplot.png'.format(plot_filename_prefix))
+        output_filename = '{0}_scatterplot.png'.format(plot_filename_prefix)
         print('\nSaving scatterplot to %s.\n' % output_filename)
         plot(json_records['All'], output_filename, correlation_coefficient_scatterplotplot)
 
         # Create a scatterplot for the adjusted results
-        output_filename = os.path.join(output_dir, '{0}_scatterplot_adjusted_with_scalar.png'.format(plot_filename_prefix))
+        output_filename = '{0}_scatterplot_adjusted_with_scalar.png'.format(plot_filename_prefix)
         print('\nSaving scatterplot to %s.\n' % output_filename)
         plot(adjusted_records, output_filename, correlation_coefficient_scatterplotplot)
 
