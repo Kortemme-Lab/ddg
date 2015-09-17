@@ -99,6 +99,7 @@ class RInterface(object):
         if os.path.exists(rout):
             rout_contents = read_file(rout)
             delete_file(rout)
+
         if errcode != 0:
             print(rout_contents )
             raise Exception("The R script failed with error code %d." % errcode)
@@ -118,7 +119,7 @@ class RInterface(object):
 
 
 def create_csv(analysis_table):
-    contents = '\n'.join(['ID,Experimental,Predicted'] + ['%s,%s,%s' % (str(l['ID']), str(l['Experimental']), str(l['Predicted'])) for l in analysis_table])
+    contents = '\n'.join(['DatasetID,Experimental,Predicted'] + ['%s,%s,%s' % (str(l['DatasetID']), str(l['Experimental']), str(l['Predicted'])) for l in analysis_table])
     return write_temp_file('.', contents)
 
 
@@ -391,11 +392,11 @@ if __name__ == '__main__':
         exp = random.uniform(-5, 5)
         if random.random() < 0.2:
             pred = exp + random.uniform(-1, 1)
-            test_table.append(dict(ID = x, Experimental = exp, Predicted = pred))
+            test_table.append(dict(DatasetID = x, Experimental = exp, Predicted = pred))
         elif random.random() < 0.5:
             pred = exp + random.uniform(-2, 2)
-            test_table.append(dict(ID = x, Experimental = exp, Predicted = pred))
+            test_table.append(dict(DatasetID = x, Experimental = exp, Predicted = pred))
         else:
-            test_table.append(dict(ID = x, Experimental = exp, Predicted = random.uniform(-5, 5)))
+            test_table.append(dict(DatasetID = x, Experimental = exp, Predicted = random.uniform(-5, 5)))
 
     plot(test_table, 'test.png', RInterface.correlation_coefficient_gplot)
