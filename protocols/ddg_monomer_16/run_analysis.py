@@ -664,7 +664,7 @@ plot_scale <- scale_color_manual(
 
 
 def scatterplot_ss(data, title, csv_filename):
-    '''Scatterplot by residue charge.'''
+    '''Scatterplot by secondary structure.'''
     lines = ['Experimental,Predicted,WTSecondaryStructure,Opacity']
     for record in data:
         lines.append('{0},{1},{2},0.4'.format(record['Experimental'], record['Predicted'], record['WildTypeDSSPSimpleSSType']))
@@ -676,6 +676,36 @@ plot_scale <- scale_color_manual(
     values = c( "None" = '#777777', "H" = 'magenta', "S" = 'orange', "O" = '%(cornflower_blue)s'),
     labels = c( "None" = "N/A", "H" = "Helix", "S" = "Sheet", "O" = "Other"))''' % plot_colors
     return scatterplot_color_by_series(data, colorseries = "WTSecondaryStructure", title = title, plot_scale = plot_scale, point_opacity = 0.6)
+
+
+def scatterplot_scop_class(data, title, csv_filename):
+    '''Scatterplot by SCOPe class.'''
+    lines = ['Experimental,Predicted,WildTypeSCOPClass,Opacity']
+    for record in data:
+        lines.append('{0},{1},{2},0.4'.format(record['Experimental'], record['Predicted'], record['WildTypeSCOPClass']))
+    print('\n'.join(lines))
+    write_file(csv_filename, '\n'.join(lines))
+    return scatterplot_color_by_series(data, colorseries = "WildTypeSCOPClass", title = title, point_opacity = 0.6)
+
+
+def scatterplot_scop_fold(data, title, csv_filename):
+    '''Scatterplot by SCOPe fold.'''
+    lines = ['Experimental,Predicted,WildTypeSCOPFold,Opacity']
+    for record in data:
+        lines.append('{0},{1},{2},0.4'.format(record['Experimental'], record['Predicted'], record['WildTypeSCOPFold']))
+    print('\n'.join(lines))
+    write_file(csv_filename, '\n'.join(lines))
+    return scatterplot_color_by_series(data, colorseries = "WildTypeSCOPFold", title = title, point_opacity = 0.6)
+
+
+def scatterplot_scop_classification(data, title, csv_filename):
+    '''Scatterplot by SCOPe classification.'''
+    lines = ['Experimental,Predicted,WildTypeSCOPClassification,Opacity']
+    for record in data:
+        lines.append('{0},{1},{2},0.4'.format(record['Experimental'], record['Predicted'], record['WildTypeSCOPClassification']))
+    print('\n'.join(lines))
+    write_file(csv_filename, '\n'.join(lines))
+    return scatterplot_color_by_series(data, colorseries = "WildTypeSCOPClassification", title = title, point_opacity = 0.6)
 
 
 def scatterplot_GP(data, title, csv_filename):
@@ -995,9 +1025,6 @@ if __name__ == '__main__':
         plot_filename_prefix = arguments['--plot_filename_prefix'][0]
         plot_filename_prefix = os.path.join(output_dir, '{0}'.format(plot_filename_prefix))
 
-        # * WildTypeSCOPClass : <scatterplot_name>_scop_class
-        # * WildTypeSCOPFold : <scatterplot_name>_scop_fold
-        # * WildTypeSCOPClassification : <scatterplot_name>_full_scop_classification
 
         # * WildTypeAA : <scatterplot_name>_wtaa
         # * MutantAA : <scatterplot_name>_mutaa
@@ -1013,7 +1040,12 @@ if __name__ == '__main__':
         scatterplot_generic('Experimental vs. Prediction - Residue charges', json_records['All'], scatterplot_charges, '{0}_scatterplot_charges.png'.format(plot_filename_prefix))
         scatterplot_generic('Experimental vs. Prediction - Change in volume', json_records['All'], scatterplot_volume, '{0}_scatterplot_volume.png'.format(plot_filename_prefix))
         scatterplot_generic('Experimental vs. Prediction - Wildtype residue s.s.', json_records['All'], scatterplot_ss, '{0}_scatterplot_ss.png'.format(plot_filename_prefix))
-
+        if len(SCOP_classes) <= 25:
+            scatterplot_generic('Experimental vs. Prediction - WT residue SCOP class', json_records['All'], scatterplot_scop_class, '{0}_scatterplot_scop_class.png'.format(plot_filename_prefix))
+        if len(SCOP_folds) <= 25:
+            scatterplot_generic('Experimental vs. Prediction - WT residue SCOP fold', json_records['All'], scatterplot_scop_fold, '{0}_scatterplot_scop_fold.png'.format(plot_filename_prefix))
+        if len(SCOP_classifications) <= 25:
+            scatterplot_generic('Experimental vs. Prediction - WT residue SCOP classification', json_records['All'], scatterplot_scop_classification, '{0}_scatterplot_scop_classification.png'.format(plot_filename_prefix))
         scatterplot_generic('Experimental vs. Prediction - Glycine/Proline', json_records['All'], scatterplot_GP, '{0}_scatterplot_gp.png'.format(plot_filename_prefix))
 
         # Plot the optimum y-cutoff over a range of x-cutoffs for the fraction correct metric. Include the user's cutoff in the range
