@@ -52,8 +52,8 @@ Options:
     --force
         When this option is set, the most recent directory in job_output, if it exists, will be used without prompting the user.
 
-    --skip_analysis
-        When this option is set, the analysis script is not invoked once the analysis files are generated.
+    -X --do_not_generate_plots
+        When this option is set, the analysis files are generated and the metrics are computed but graphical plots are not generated.
 
     --burial_cutoff CUTOFF
         The cutoff below which a residue is considered buried (value should be between 0-1.0). [default: 0.25]
@@ -90,7 +90,6 @@ import multiprocessing
 import re
 import glob
 import pprint
-import cPickle as pickle
 import getpass
 import gzip
 import numpy
@@ -118,8 +117,6 @@ except:
 
 # todo: This methods are now deprecated since we store this information in the dataframe. Update the callers and remove these
 
-#    -p --plot_filename_prefix PLOT_FILENAME_PREFIX
-#        The filename of the scatterplot to be generated in the output directory (unless --skip_analysis is set). [default: analysis]
 
 def determine_SL_class(record):
     '''Returns:
@@ -217,7 +214,10 @@ class BenchmarkManager(object):
         '''Read command-line options.'''
 
         # Output directory. The path where the analysis files should be created.
-        self.analysis_directory = arguments['<analysis_directory>']
+        self.analysis_directory = os.path.abspath(arguments['<analysis_directory>'])
+
+        # Plot-generation option
+        self.generate_plots = not(arguments['--do_not_generate_plots'])
 
         # take-lowest option
         try:
@@ -351,11 +351,10 @@ class BenchmarkManager(object):
                     analysis_data[int(k)] = v
                 colortext.wgrey('\r'); sys.stdout.flush()
 
-            sys.exit(0)
-
             self.benchmark_run_data[benchmark_run_name] = BenchmarkRun(
                 benchmark_run_name,
                 benchmark_run_directory,
+                self.analysis_directory,
                 dataset_cases,
                 analysis_data,
                 arguments['--use_single_reported_value']
@@ -365,26 +364,27 @@ class BenchmarkManager(object):
     def analyze(self):
         '''Runs the analysis for the different benchmark runs.'''
 
-        raise colortext.Exception('implement this')
-
         # change to create analysis directory
-        for benchmark_run_directory in benchmark_run_directories:
-            if not(os.path.exists(benchmark_run_directory)):
-                raise colortext.Exception('The directory %s does not exist.' % benchmark_run_directory)
+        if not(os.path.exists(self.analysis_directory)):
+            try:
+                os.mkdir(self.analysis_directory)
+                assert(os.path.exists(self.analysis_directory))
+            except Exception, e:
+                raise colortext.Exception('An exception occurred creating the directory %s.' % self.analysis_directory)
 
-        if not arguments['--skip_analysis']:
+        benchmark_runs = sorted(self.benchmark_run_data.keys())
+        # todo: add published data here
 
-            benchmark_runs = sorted(self.benchmark_run_data.keys())
-            # todo: add published data here
+        for benchmark_run_name, br in sorted(self.benchmark_run_data.iteritems()):
+            colortext.message('\nRunning the analysis for {0}.'.format(benchmark_run_name))
+            print(self.generate_plots)
+            pass
+            # run individual analysis
 
-            for benchmark_run_data in sorted(self.benchmark_run_data.iteritems()):
+        for x in range(len(benchmark_runs)):
+            for y in range(x + 1, len(benchmark_runs)):
                 pass
-                # run individual analysis
-
-            for x in range(len(benchmark_runs)):
-                for y in range(x + 1, len(benchmark_runs)):
-                    pass
-                    # run comparative analysis
+                # run comparative analysis
 
 
     ###
@@ -571,12 +571,15 @@ class BenchmarkRun(object):
     CAA, PAA, HAA = set(), set(), set()
 
 
-    def __init__(self, benchmark_run_name, benchmark_run_directory, dataset_cases, analysis_data, use_single_reported_value):
+    def __init__(self, benchmark_run_name, benchmark_run_directory, analysis_directory, dataset_cases, analysis_data, use_single_reported_value):
         self.amino_acid_details, self.CAA, self.PAA, self.HAA = BenchmarkRun.get_amino_acid_details()
         self.benchmark_run_name = benchmark_run_name
         self.benchmark_run_directory = benchmark_run_directory
         self.dataset_cases = dataset_cases
         self.analysis_data = analysis_data
+        self.analysis_directory = analysis_directory
+        self.analysis_file_prefix = os.path.join(self.analysis_directory, self.benchmark_run_name + '_')
+        print(self.analysis_file_prefix)
         self.use_single_reported_value = use_single_reported_value
 
 
@@ -636,6 +639,7 @@ class BenchmarkRun(object):
                     BenchmarkRun.PAA.add(aa_code)
                 elif d['Polarity'] == 'H':
                     BenchmarkRun.HAA.add(aa_code)
+        assert(len(BenchmarkRun.CAA.intersection(BenchmarkRun.PAA)) == 0 and len(BenchmarkRun.PAA.intersection(BenchmarkRun.HAA)) == 0 and len(BenchmarkRun.HAA.intersection(BenchmarkRun.CAA)) == 0)
         return BenchmarkRun.amino_acid_details, BenchmarkRun.CAA, BenchmarkRun.PAA, BenchmarkRun.HAA
 
 
