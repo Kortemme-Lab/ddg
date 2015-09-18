@@ -53,13 +53,11 @@ def write_temp_file(path, contents, ftype = 'w', suffix = '', prefix = ''):
 
 def read_file(filepath, binary = False):
     if binary:
-        output_handle = open(filepath, 'rb')
+        with open(filepath, 'rb') as f: contents = f.read()
     elif filepath.endswith('.gz'):
-        output_handle = gzip.open(filepath, 'r')
+        with gzip.open(filepath, 'r') as f: contents = f.read()
     else:
-        output_handle = open(filepath, 'r')
-    contents = output_handle.read()
-    output_handle.close()
+        with open(filepath, 'r') as f: contents = f.read()
     return contents
 
 
