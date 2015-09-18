@@ -29,7 +29,7 @@ The script compiles the analysis files for the benchmark run and then invokes th
  structure and stability. 2011. Proteins. 79(3):830-8. doi: 10.1002/prot.22921.
 
 Usage:
-    run_analysis.py analysis_directory [options]
+    run_analysis.py <analysis_directory> [-b BENCHMARK_RUN_DIRECTORY...] [-n BENCHMARK_RUN_NAME...] [options]
 
 Options:
 
@@ -39,12 +39,16 @@ Options:
         arguments should equal the number of --benchmark_run_name arguments.
 
     -n --benchmark_run_name BENCHMARK_RUN_NAME
-        This argument is used to name each benchmark run specified with -b with a human-readable name and is used to name
-        the generated output files. This number of these arguments should equal the number of --benchmark_run_directory arguments.
+        This argument is used to name each benchmark run specified with -b with a human-readable name and is used as a prefix
+        to name the generated output files. This number of these arguments should equal the number of --benchmark_run_directory arguments.
 
-    -p --plot_filename_prefix PLOT_FILENAME_PREFIX
-        The filename of the scatterplot to be generated in the output directory (unless --skip_analysis is set). [default: analysis]
-    
+    --use_published_data
+        When this option is set, the prediction data from the protocol in row 16 of the paper by Kellogg et al. is included
+        as a benchmark run. This allows users to compare results with the original publication.
+
+    --use_existing_benchmark_data
+        When this option is set, the benchmark_data.json file is not regenerated. This saves time on subsequent calls to this analysis script but is disabled by default for safety.
+
     --force
         When this option is set, the most recent directory in job_output, if it exists, will be used without prompting the user.
 
@@ -71,9 +75,6 @@ Options:
     --include_derived_mutations
         Some datasets contain duplicated datapoints in the form of derived mutations e.g. the mutation 107L ->1L63 in the Kellogg set is the reverse of the 1L63 -> 107L mutation and measurement. Including derived mutations creates bias in the analysis so we remove them by default. To include these derived values in the analysis, use this flag.
 
-    --use_existing_benchmark_data
-        When this option is set, the benchmark_data.json file is not regenerated. This saves time on subsequent calls to this analysis script but is disabled by default for safety.
-
 Authors:
     Shane O'Connor
     Kyle Barlow
@@ -81,12 +82,12 @@ Authors:
 
 import sys
 import os
-import re
 import shutil
 import time
 import datetime
 import inspect
 import multiprocessing
+import re
 import glob
 import pprint
 import cPickle as pickle
@@ -95,13 +96,14 @@ import gzip
 import numpy
 import pprint
 import subprocess
+import traceback
 import shlex
 import copy
 import pandas
 from rosetta.write_run_file import process as write_run_file
 from analysis.libraries import docopt
 from analysis.libraries import colortext
-from analysis.stats import read_file, read_file_lines, write_file, prompt_yn, fraction_correct
+from analysis.stats import read_file, read_file_lines, write_file, prompt_yn, fraction_correct, get_xy_dataset_statistics, plot, format_stats_for_printing, RInterface
 
 from run_ddg import task_subfolder as ddg_task_subfolder
 try:
@@ -111,18 +113,13 @@ except:
 
 
 
-# This module contains two classes.
-# The BenchmarkManager class reads in the script options, extracts the score data from the benchmark runs, and controls
-# the analysis.
-# The BenchmarkRun class creates a dataframe containing the raw data used for analysis. This dataframe is then used to
-# performs analysis for the particular run or between another runs.
-
-
-
 
 ###
 
 # todo: This methods are now deprecated since we store this information in the dataframe. Update the callers and remove these
+
+#    -p --plot_filename_prefix PLOT_FILENAME_PREFIX
+#        The filename of the scatterplot to be generated in the output directory (unless --skip_analysis is set). [default: analysis]
 
 def determine_SL_class(record):
     '''Returns:
@@ -169,10 +166,10 @@ def has_G_or_P(record):
 
 
 
-
+# Regex used to extract data from Rosetta output
 ddGMover_regex = re.compile("^protocols.moves.ddGMover:\s*mutate\s*.*?\s*wildtype_dG\s*is:\s*.*?and\s*mutant_dG\s*is:\s*.*?\s*ddG\s*is:\s*(.*)$")
 
-
+# Colors used in the plots
 plot_colors = dict(
     neon_green = '#39FF14',
     brown = '#774400',
@@ -181,7 +178,7 @@ plot_colors = dict(
     firebrick = '#B22222',
 )
 
-
+# Human-readable descriptions for the volume breakdown
 by_volume_descriptions = dict(
     SL = 'small-to-large mutations',
     LS = 'large-to-small mutations',
@@ -189,71 +186,11 @@ by_volume_descriptions = dict(
 )
 
 
-amino_acid_details = {}
-CAA, PAA, HAA = set(), set(), set()
-
-def get_amino_acid_details():
-    global amino_acid_details
-    global CAA
-    global PAA
-    global HAA
-    if amino_acid_details:
-        return amino_acid_details
-    else:
-        # Amino acid properties
-        polarity_map = {'polar' : 'P', 'charged' : 'C', 'hydrophobic' : 'H'}
-        aromaticity_map = {'aliphatic' : 'L', 'aromatic' : 'R', 'neither' : '-'}
-        amino_acid_detail_headers = 'Code,Long code,Name,Polarity,Aromaticity,Hydrophobicity pH7,Sidechain acidity,pKa,Average mass,van der Waals volume,Size,Is tiny?'
-        amino_acid_details_ = [
-            'A,ALA,Alanine,non-polar,aliphatic,hydrophobic,neutral,NULL,71.0788,67,small,1',
-            'C,CYS,Cysteine,polar,neither,hydrophilic,neutral,8.7,103.1388,86,small,1',
-            'D,ASP,Aspartic acid,charged,neither,hydrophilic,acidic,3.9,115.0886,91,small,0',
-            'E,GLU,Glutamic acid,charged,neither,hydrophilic,acidic,4.5,129.1155,109,large,0',
-            'F,PHE,Phenylalanine,non-polar,aromatic,hydrophobic,neutral,NULL,147.1766,135,large,0',
-            'G,GLY,Glycine,polar,neither,hydrophilic,neutral,NULL,57.0519,48,small,1',
-            'H,HIS,Histidine,charged,neither,hydrophilic,basic,6.04,137.1411,118,large,0',
-            'I,ILE,Isoleucine,non-polar,aliphatic,hydrophobic,neutral,NULL,113.1594,124,large,0',
-            'K,LYS,Lysine,charged,neither,hydrophilic,basic,10.54,128.1741,135,large,0',
-            'L,LEU,Leucine,non-polar,aliphatic,hydrophobic,neutral,NULL,113.1594,124,large,0',
-            'M,MET,Methionine,non-polar,aliphatic,hydrophobic,neutral,NULL,131.1986,124,large,0',
-            'N,ASN,Asparagine,polar,neither,hydrophilic,neutral,NULL,114.1039,96,small,0',
-            'P,PRO,Proline,non-polar,neither,hydrophobic,neutral,NULL,97.1167,90,small,0',
-            'Q,GLN,Glutamine,polar,neither,hydrophilic,neutral,NULL,128.1307,114,large,0',
-            'R,ARG,Arginine,charged,neither,hydrophilic,basic,12.48,156.1875,148,large,0',
-            'S,SER,Serine,polar,neither,hydrophilic,neutral,NULL,87.0782,73,small,1',
-            'T,THR,Threonine,polar,neither,hydrophilic,neutral,NULL,101.1051,93,small,0',
-            'V,VAL,Valine,non-polar,aliphatic,hydrophobic,neutral,NULL,99.1326,105,small,0',
-            'W,TRP,Tryptophan,non-polar,aromatic,hydrophobic,neutral,NULL,186.2132,163,large,0',
-            'Y,TYR,Tyrosine,polar,aromatic,hydrophobic,neutral,10.46,163.176,141,large,0' # Note: we treat tyrosine as hydrophobic in the polar/charged vs hydrophobic/Non-polar plot
-        ]
-
-
-        amino_acid_detail_headers = [t.strip() for t in amino_acid_detail_headers.split(',') if t.strip()]
-        for aad in amino_acid_details_:
-            tokens = aad.split(',')
-            assert(len(tokens) == len(amino_acid_detail_headers))
-            d = {}
-            for x in range(len(amino_acid_detail_headers)):
-                d[amino_acid_detail_headers[x]] = tokens[x]
-            aa_code = d['Code']
-            amino_acid_details[aa_code] = d
-            del d['Code']
-            d['Polarity'] = polarity_map.get(d['Polarity'], 'H')
-            d['Aromaticity'] = aromaticity_map[d['Aromaticity']]
-            d['Average mass'] = float(d['Average mass'])
-            d['Is tiny?'] = d['Is tiny?'] == 1
-            d['van der Waals volume'] = float(d['van der Waals volume'])
-            try: d['pKa'] = float(d['pKa'])
-            except: d['pKa'] = None
-
-            if aa_code == 'Y':
-                HAA.add(aa_code)
-            elif d['Polarity'] == 'C':
-                CAA.add(aa_code)
-            elif d['Polarity'] == 'P':
-                PAA.add(aa_code)
-            elif d['Polarity'] == 'H':
-                HAA.add(aa_code)
+# This module contains two classes.
+# The BenchmarkManager class reads in the script options, extracts the score data from the benchmark runs, and controls
+# the analysis.
+# The BenchmarkRun class creates a dataframe containing the raw data used for analysis. This dataframe is then used to
+# performs analysis for the particular run or between another runs.
 
 
 
@@ -263,105 +200,88 @@ class BenchmarkManager(object):
 
     def __init__(self, arguments):
         '''Read the command-line options and extract the raw data from the benchmark runs.'''
-        get_amino_acid_details()
+
+        # Declare object variables
         self.benchmark_run_data = {}
+        self.analysis_directory = None
+        self.take_lowest = None
+        self.burial_cutoff = None
+        self.stability_classication_x_cutoff, self.stability_classication_y_cutoff = None, None
+
+        # Parse command-line arguments and extract/load the benchmark input data
         self.parse_arguments(arguments)
-        self.load_data()
+        self.setup()
 
 
     def parse_arguments(self, arguments):
         '''Read command-line options.'''
 
+        # Output directory. The path where the analysis files should be created.
+        self.analysis_directory = arguments['<analysis_directory>']
+
         # take-lowest option
         try:
-            assert(arguments['--take_lowest'][0].isdigit())
-            self.take_lowest = int(arguments['--take_lowest'][0])
+            assert(arguments['--take_lowest'].isdigit())
+            self.take_lowest = int(arguments['--take_lowest'])
             assert(self.take_lowest)
         except:
-            colortext.error('take_lowest must be a positive non-zero integer: "%s" was passed.' % arguments['--take_lowest'][0])
-            sys.exit(1)
-
-        print(arguments['analysis_directory'])
-        sys.exit(0)
-        #-o --analysis_directory ANALYSIS_OUTPUT_DIRECTORY
-        #The path where the analysis should be created.
-        for benchmark_run_directory in benchmark_run_directories:
-            if not(os.path.exists(benchmark_run_directory)):
-            raise Exception('The directory %s does not exist.' % benchmark_run_directory)
-
-
+            raise colortext.Exception('take_lowest must be a positive non-zero integer: "%s" was passed.' % arguments['--take_lowest'])
 
         # burial_cutoff option. Residues with a DSSP exposure greater than this value are considered exposed
         try:
-            self.burial_cutoff = float(arguments['--burial_cutoff'][0])
+            self.burial_cutoff = float(arguments['--burial_cutoff'])
             if 0.0 > self.burial_cutoff or self.burial_cutoff > 1.0: raise Exception()
         except ValueError, e:
-            colortext.error('burial_cutoff must be a float.')
-            sys.exit(1)
+            raise colortext.Exception('burial_cutoff must be a float value.')
         except Exception, e:
-            colortext.error('burial_cutoff must be between 0.0 and 1.0 (inclusive).')
-            sys.exit(1)
+            raise colortext.Exception('burial_cutoff must be between 0.0 and 1.0 (inclusive).')
 
         # stability classication cutoff values
         try:
-            self.stability_classication_x_cutoff = abs(float(arguments['--scx_cutoff'][0]))
-            self.stability_classication_y_cutoff = abs(float(arguments['--scy_cutoff'][0]))
+            self.stability_classication_x_cutoff = abs(float(arguments['--scx_cutoff']))
+            self.stability_classication_y_cutoff = abs(float(arguments['--scy_cutoff']))
         except ValueError, e:
-            colortext.error('The stability classification cutoffs (--scx_cutoff, --scy_cutoff) must be floats.')
-            sys.exit(1)
+            raise colortext.Exception('The stability classification cutoffs (--scx_cutoff, --scy_cutoff) must be float values.')
 
 
-
-
-
-
-
-
-
-    def load(self):
+    def setup(self):
         '''Load in the data for all of the specified benchmark_run_directories. This code works on a number of assumptions.
-           Assumptions which should be met by the benchmark setup scripts:
+           Preconditions which should be met by the benchmark setup scripts:
              - the dataset used to run the benchmark is contained in a file called dataset.json in the output directory (this will be created when the benchmark run is set up)
              - the ddg results are stored in a subfolder <ddg_task_subfolder> (defined by the run script)
-           Assumptions set up by this script:
+           Postconditions set up by this script:
              - the extracted benchmark data (analysis_data) is:
                 - stored in a file called benchmark_data.json in the benchmark run root directory; or
                 - created in that location by this script.
-           The loaded data is stored inside BenchmarkRun objects for analysis and cross-analysis.
+           The loaded data is stored inside BenchmarkRun objects for analysis and cross-analysis. For convenience, the
+           analyze method of this class performs all possible single and pair-wise analysis.
         '''
 
         # Determine the benchmark run directories and user-specified names
-        benchmark_run_directories = []
-        benchmark_run_names = []
+        benchmark_run_directories = arguments['--benchmark_run_directory']
+        use_published_data = arguments['--use_published_data']
+        benchmark_run_names = arguments['--benchmark_run_name']
 
         # Check for uniqueness
-        if arguments.get('--benchmark_run_directory'):
-            if len(arguments['--benchmark_run_directory']) != len(set(arguments['--benchmark_run_directory'])):
-                raise Exception('The --benchmark_run_directory options must be unique.')
-        if arguments.get('--benchmark_run_names'):
-            if len(arguments['--benchmark_run_names']) != len(set(arguments['--benchmark_run_names'])):
-                raise Exception('The --benchmark_run_names options must be unique.')
+        if benchmark_run_directories and (len(benchmark_run_directories) != len(set(benchmark_run_directories))):
+            raise colortext.Exception('The --benchmark_run_directory options must be unique.')
+        if benchmark_run_names and (len(benchmark_run_names) != len(set(benchmark_run_names))):
+            raise colortext.Exception('The --benchmark_run_name options must be unique.')
 
-        if arguments.get('--benchmark_run_directory'):
-            if not len(arguments['--benchmark_run_directory'] == len(arguments['--benchmark_run_name'])):
-                raise Exception('Each benchmark_run_directory argument (there are {0}) must have a corresponding benchmark_run_name argument (there are {1}).'.format(len(arguments['--benchmark_run_directory'], len(arguments['--benchmark_run_name']))))
-            benchmark_run_directories = arguments['--benchmark_run_directory']
-            benchmark_run_names = arguments['--benchmark_run_names']
+        # If benchmarks were chosen, make sure the directories exist and have corresponding names. Otherwise, use the most recent run.
+        if benchmark_run_directories:
+            if len(benchmark_run_directories) != len(benchmark_run_names):
+                raise colortext.Exception('Each benchmark_run_directory argument (there are {0}) must have a corresponding benchmark_run_name argument (there are {1}).'.format(len(benchmark_run_directories), len(benchmark_run_names)))
             for benchmark_run_directory in benchmark_run_directories:
                 if not(os.path.exists(benchmark_run_directory)):
-                    raise Exception('The directory %s does not exist.' % benchmark_run_directory)
+                    raise colortext.Exception('The directory %s does not exist.' % benchmark_run_directory)
         else:
             benchmark_run_directory = os.path.abspath('job_output')
-            if len(arguments['--benchmark_run_name']) == 0:
-                benchmark_run_names.append('')
-                colortext.warning('No benchmark_run_name argument was specified. Defaulting to a blank name.')
-            elif len(arguments['--benchmark_run_name']) == 1:
-                benchmark_run_names = arguments['--benchmark_run_name'][0]
-            else:
-                raise Exception('No benchmark_run_directory directory was specified but multiple --benchmark_run_name arguments were.')
             if os.path.exists(benchmark_run_directory):
-                existing_dirs = [os.path.join(benchmark_run_directory, d) for d in os.listdir(benchmark_run_directory) if d.find('ddg_monomer_16') != -1 and os.path.isdir(os.path.join(benchmark_run_directory, d))]
-                most_recent_directory = sorted(existing_dirs)[-1]
+                most_recent_directory = None
+                existing_dirs = sorted([os.path.join(benchmark_run_directory, d) for d in os.listdir(benchmark_run_directory) if d.find('ddg_monomer_16') != -1 and os.path.isdir(os.path.join(benchmark_run_directory, d))])
+                if existing_dirs:
+                    most_recent_directory = existing_dirs[-1]
                 if most_recent_directory:
                     answer = None
                     if arguments.get('--force'):
@@ -370,28 +290,32 @@ class BenchmarkManager(object):
                     else:
                         answer = prompt_yn('\nNo benchmark run path was specified. Use %s (y/n)?' % most_recent_directory)
                     if not answer:
-                        print('No benchmark run was specified. Exiting.\n')
-                        sys.exit(1)
+                        raise colortext.Exception('No benchmark run was specified. Exiting.\n')
                     benchmark_run_directories = [most_recent_directory]
-                else:
-                    print('No output could be found in the job_output directory. Exiting.\n')
-                    sys.exit(1)
+                    if len(benchmark_run_names) == 0:
+                        benchmark_run_names.append('')
+                        colortext.warning('No benchmark_run_name argument was specified. Defaulting to a blank name.')
+                    elif len(benchmark_run_names) > 1:
+                        raise colortext.Exception('No benchmark_run_directory was specified (one recent directory was chosen automatically) but multiple --benchmark_run_name arguments were specified.')
         assert(len(benchmark_run_directories) == len(benchmark_run_names))
 
-        # Load in the data for each benchmark
+        # At least one benchmark run must be chosen (including the published benchmark run)
+        if not use_published_data and len(benchmark_run_directories) == 0:
+            raise colortext.Exception('No benchmark runs were specified and no output could be found in the job_output directory. Exiting.\n')
 
+        # Load in the data for each benchmark
         for x in range(len(benchmark_run_directories)):
 
             benchmark_run_directory = benchmark_run_directories[x]
             benchmark_run_name = benchmark_run_names[x]
-            colortext.warning('Setting up the analysis data for {0} in {1}.'.format(benchmark_run_name, benchmark_run_directory))
+            colortext.message('Setting up the analysis data for {0} in {1}.'.format(benchmark_run_name, benchmark_run_directory))
 
             # Check that the job output directories exist
             output_data_dir = os.path.join(benchmark_run_directory, 'data')
             ddg_data_dir = os.path.join(benchmark_run_directory, ddg_task_subfolder)
             for p in [output_data_dir, ddg_data_dir]:
                 if not os.path.exists(p):
-                    raise Exception('The folder %s was expected to exist after the preminimization step but could not be found.' % p)
+                    raise colortext.Exception('The folder %s was expected to exist after the preminimization step but could not be found.' % p)
 
             # Read in the dataset file
             try:
@@ -401,25 +325,32 @@ class BenchmarkManager(object):
                 for dsc in dataset['data']:
                     dataset_cases[dsc['RecordID']] = dsc
             except Exception, e:
-                raise Exception('An error occurred parsing the JSON file: %s..' % str(e))
+                raise colortext.Exception('An error occurred parsing the JSON file: %s..' % str(e))
 
             # Read the previously extracted benchmark data and structural scores (benchmark_data.json) from file or create that file if it does not exist
             benchmark_data_filepath = os.path.join(benchmark_run_directory, 'benchmark_data.json')
             analysis_data = {}
             if not(os.path.exists(benchmark_data_filepath)) or arguments.get('--use_existing_benchmark_data') == 0:
                 colortext.warning('Creating %s which contains component and summary scores for each case and generated structure.' % benchmark_data_filepath)
-                job_dirs = glob.glob(os.path.join(ddg_data_dir, '*'))
+                job_dirs = sorted([jd for jd in glob.glob(os.path.join(ddg_data_dir, '*')) if os.path.isdir(jd) and os.path.split(jd)[1].isdigit()])
+                c, num_dirs = 0.0, float(len(job_dirs)) / 100.0
                 for jd in job_dirs:
-                    if os.path.isdir(jd):
-                        jdirname = os.path.split(jd)[1]
-                        if jdirname.isdigit():
-                            record_id = int(jdirname)
-                            analysis_data[record_id] = BenchmarkManager.extract_data(jd, self.take_lowest)
+                    jdirname = os.path.split(jd)[1]
+                    record_id = int(jdirname)
+                    c += 1.0
+                    colortext.wcyan('\rProgress: {0:d}%'.format(int(c/num_dirs))); sys.stdout.flush()
+                    analysis_data[record_id] = BenchmarkManager.extract_data(jd, self.take_lowest)
+                colortext.wlightpurple('\rWriting to file...'); sys.stdout.flush()
                 write_file(benchmark_data_filepath, json.dumps(analysis_data, indent = 4, sort_keys=True))
+                colortext.wgrey('\r'); sys.stdout.flush()
             else:
+                colortext.warning('Found an existing benchmark_data.json file containing component and summary scores for each case and generated structure:')
+                colortext.wyellow('\r...loading'); sys.stdout.flush()
                 analysis_data_ = json.loads(read_file(benchmark_data_filepath))
                 for k, v in analysis_data_.iteritems():
                     analysis_data[int(k)] = v
+                colortext.wgrey('\r'); sys.stdout.flush()
+            sys.exit(0)
 
             self.benchmark_run_data[benchmark_run_name] = BenchmarkRun(
                 benchmark_run_name,
@@ -433,7 +364,12 @@ class BenchmarkManager(object):
     def analyze(self):
         '''Runs the analysis for the different benchmark runs.'''
 
-        raise Exception('implement this')
+        raise colortext.Exception('implement this')
+
+        # change to create analysis directory
+        for benchmark_run_directory in benchmark_run_directories:
+            if not(os.path.exists(benchmark_run_directory)):
+                raise colortext.Exception('The directory %s does not exist.' % benchmark_run_directory)
 
         if not arguments['--skip_analysis']:
 
@@ -460,9 +396,10 @@ class BenchmarkManager(object):
            Note: This function is written to handle data from Rosetta at the time of writing. This will need to be altered to
            work with certain older revisions and may need to be adapted to work with future revisions.'''
         scores = {}
-        scores['DDG'] = BenchmarkManager.extract_predicted_ddg(ddg_output_path)
+        rosetta_output_lines = BenchmarkManager.read_stdout(ddg_output_path)
+        scores['DDG'] = BenchmarkManager.extract_predicted_ddg(rosetta_output_lines)
         scores['DDG_components'] = BenchmarkManager.extract_summary_data(ddg_output_path)
-        for k, v in BenchmarkManager.get_ddg_monomer_scores_per_structure(ddg_output_path).iteritems():
+        for k, v in BenchmarkManager.get_ddg_monomer_scores_per_structure(rosetta_output_lines).iteritems():
             assert(k not in scores)
             scores[k] = v
 
@@ -486,13 +423,12 @@ class BenchmarkManager(object):
             output_file = os.path.join(ddg_output_path, 'rosetta.out.gz')
             rosetta_output = read_file_lines(output_file)
         except:
-            raise Exception('An error occurred reading the output file %s.' % output_file)
+            raise colortext.Exception('An error occurred reading the output file %s.' % output_file)
         return rosetta_output
 
 
     @staticmethod
-    def extract_predicted_ddg(ddg_output_path):
-        rosetta_output_lines = BenchmarkManager.read_stdout(ddg_output_path)
+    def extract_predicted_ddg(rosetta_output_lines):
         ddGMover_lines = [l for l in rosetta_output_lines if l.strip() and l.startswith("protocols.moves.ddGMover: mutate")]
         assert(len(ddGMover_lines) == 1)
         ddGMover_line = ddGMover_lines[0].strip()
@@ -521,10 +457,8 @@ class BenchmarkManager(object):
 
 
     @staticmethod
-    def get_ddg_monomer_scores_per_structure(ddg_output_path):
+    def get_ddg_monomer_scores_per_structure(rosetta_output_lines):
         '''Returns a dict mapping the DDG scores from a ddg_monomer run to a list of structure numbers.'''
-
-        rosetta_output_lines = BenchmarkManager.read_stdout(ddg_output_path)
 
         # Parse the stdout into two mappings (one for wildtype structures, one for mutant structures) mapping
         # structure IDs to a dict containing the score components
@@ -616,12 +550,78 @@ class BenchmarkManager(object):
 class BenchmarkRun(object):
     '''A object to contain benchmark run data which can be used to analyze that run or else to cross-analyze the run with another run.'''
 
+    # Class variables
+    amino_acid_details = {}
+    CAA, PAA, HAA = set(), set(), set()
+
+
     def __init__(self, benchmark_run_name, benchmark_run_directory, dataset_cases, analysis_data, use_single_reported_value):
-        self.benchmark_run_name
-        self.benchmark_run_directory
-        self.dataset_cases
-        self.analysis_data
+        self.amino_acid_details, self.CAA, self.PAA, self.HAA = BenchmarkRun.get_amino_acid_details()
+        self.benchmark_run_name = benchmark_run_name
+        self.benchmark_run_directory = benchmark_run_directory
+        self.dataset_cases = dataset_cases
+        self.analysis_data = analysis_data
         self.use_single_reported_value = use_single_reported_value
+
+
+    @staticmethod
+    def get_amino_acid_details():
+        if not BenchmarkRun.amino_acid_details:
+            # Amino acid properties
+            polarity_map = {'polar' : 'P', 'charged' : 'C', 'hydrophobic' : 'H'}
+            aromaticity_map = {'aliphatic' : 'L', 'aromatic' : 'R', 'neither' : '-'}
+            amino_acid_detail_headers = 'Code,Long code,Name,Polarity,Aromaticity,Hydrophobicity pH7,Sidechain acidity,pKa,Average mass,van der Waals volume,Size,Is tiny?'
+            amino_acid_details_ = [
+                'A,ALA,Alanine,non-polar,aliphatic,hydrophobic,neutral,NULL,71.0788,67,small,1',
+                'C,CYS,Cysteine,polar,neither,hydrophilic,neutral,8.7,103.1388,86,small,1',
+                'D,ASP,Aspartic acid,charged,neither,hydrophilic,acidic,3.9,115.0886,91,small,0',
+                'E,GLU,Glutamic acid,charged,neither,hydrophilic,acidic,4.5,129.1155,109,large,0',
+                'F,PHE,Phenylalanine,non-polar,aromatic,hydrophobic,neutral,NULL,147.1766,135,large,0',
+                'G,GLY,Glycine,polar,neither,hydrophilic,neutral,NULL,57.0519,48,small,1',
+                'H,HIS,Histidine,charged,neither,hydrophilic,basic,6.04,137.1411,118,large,0',
+                'I,ILE,Isoleucine,non-polar,aliphatic,hydrophobic,neutral,NULL,113.1594,124,large,0',
+                'K,LYS,Lysine,charged,neither,hydrophilic,basic,10.54,128.1741,135,large,0',
+                'L,LEU,Leucine,non-polar,aliphatic,hydrophobic,neutral,NULL,113.1594,124,large,0',
+                'M,MET,Methionine,non-polar,aliphatic,hydrophobic,neutral,NULL,131.1986,124,large,0',
+                'N,ASN,Asparagine,polar,neither,hydrophilic,neutral,NULL,114.1039,96,small,0',
+                'P,PRO,Proline,non-polar,neither,hydrophobic,neutral,NULL,97.1167,90,small,0',
+                'Q,GLN,Glutamine,polar,neither,hydrophilic,neutral,NULL,128.1307,114,large,0',
+                'R,ARG,Arginine,charged,neither,hydrophilic,basic,12.48,156.1875,148,large,0',
+                'S,SER,Serine,polar,neither,hydrophilic,neutral,NULL,87.0782,73,small,1',
+                'T,THR,Threonine,polar,neither,hydrophilic,neutral,NULL,101.1051,93,small,0',
+                'V,VAL,Valine,non-polar,aliphatic,hydrophobic,neutral,NULL,99.1326,105,small,0',
+                'W,TRP,Tryptophan,non-polar,aromatic,hydrophobic,neutral,NULL,186.2132,163,large,0',
+                'Y,TYR,Tyrosine,polar,aromatic,hydrophobic,neutral,10.46,163.176,141,large,0' # Note: we treat tyrosine as hydrophobic in the polar/charged vs hydrophobic/Non-polar plot
+            ]
+
+            amino_acid_detail_headers = [t.strip() for t in amino_acid_detail_headers.split(',') if t.strip()]
+            for aad in amino_acid_details_:
+                tokens = aad.split(',')
+                assert(len(tokens) == len(amino_acid_detail_headers))
+                d = {}
+                for x in range(len(amino_acid_detail_headers)):
+                    d[amino_acid_detail_headers[x]] = tokens[x]
+                aa_code = d['Code']
+                BenchmarkRun.amino_acid_details[aa_code] = d
+                del d['Code']
+                d['Polarity'] = polarity_map.get(d['Polarity'], 'H')
+                d['Aromaticity'] = aromaticity_map[d['Aromaticity']]
+                d['Average mass'] = float(d['Average mass'])
+                d['Is tiny?'] = d['Is tiny?'] == 1
+                d['van der Waals volume'] = float(d['van der Waals volume'])
+                try: d['pKa'] = float(d['pKa'])
+                except: d['pKa'] = None
+
+                if aa_code == 'Y':
+                    BenchmarkRun.HAA.add(aa_code) # Note: Treating tyrosine as hydrophobic
+                elif d['Polarity'] == 'C':
+                    BenchmarkRun.CAA.add(aa_code)
+                elif d['Polarity'] == 'P':
+                    BenchmarkRun.PAA.add(aa_code)
+                elif d['Polarity'] == 'H':
+                    BenchmarkRun.HAA.add(aa_code)
+        return BenchmarkRun.amino_acid_details, BenchmarkRun.CAA, BenchmarkRun.PAA, BenchmarkRun.HAA
+
 
     def create_dataframe(self):
 
@@ -630,7 +630,7 @@ class BenchmarkRun(object):
         analysis_json_input_filepath = os.path.join(output_dir, 'analysis_input.json')
         print('Creating input files %s and %s for the analysis script.' % (analysis_csv_input_filepath, analysis_json_input_filepath))
         if len(analysis_data) > len(dataset_cases):
-            raise Exception('ERROR: There seems to be an error - there are more predictions than cases in the dataset. Exiting.')
+            raise colortext.Exception('ERROR: There seems to be an error - there are more predictions than cases in the dataset. Exiting.')
         elif len(analysis_data) < len(dataset_cases):
             print('\nWARNING: %d cases missing for analysis; there are %d predictions in the output directory but %d cases in the dataset. The analysis below does not cover the complete dataset.\n' % (len(dataset_cases) - len(analysis_data), len(analysis_data), len(dataset_cases)))
 
@@ -751,7 +751,7 @@ class BenchmarkRun(object):
                 elif (wtaa in HAA) and (mutaa in HAA):
                     residue_charges.add('Hydrophobic/Non-polar')
                 else:
-                     raise Exception('Should not reach here.')
+                     raise colortext.Exception('Should not reach here.')
 
             record_wtaa, wtaas = None, set([m['WildTypeAA'] for m in mutations])
             if len(wtaas) == 1: record_wtaa = wtaas.pop()
@@ -844,16 +844,12 @@ class BenchmarkRun(object):
     def analyze_run(self):
         '''This function runs the analysis, creating plots and the summary file.'''
 
-
-        from analysis.stats import get_xy_dataset_statistics, plot, format_stats_for_printing, RInterface
-        correlation_coefficient_scatterplotplot = RInterface.correlation_coefficient_gplot
-
         rel_plot_filename_prefix = arguments['--plot_filename_prefix'][0]
         subplot_dir = os.path.join(output_dir, 'subplots')
         try: os.mkdir(subplot_dir)
         except: pass
         if not os.path.exists(subplot_dir):
-            raise Exception('Could not create subdirectory {0} for the plots.'.format(subplot_dir))
+            raise colortext.Exception('Could not create subdirectory {0} for the plots.'.format(subplot_dir))
         plot_filename_prefix = os.path.join(subplot_dir, '{0}'.format(rel_plot_filename_prefix))
 
         # Plot the optimum y-cutoff over a range of x-cutoffs for the fraction correct metric. Include the user's cutoff in the range
@@ -870,12 +866,12 @@ class BenchmarkRun(object):
         # Create a scatterplot for the results
         output_filename = '{0}_scatterplot.png'.format(plot_filename_prefix)
         print('Saving scatterplot to %s.' % output_filename)
-        plot(json_records['All'], output_filename, correlation_coefficient_scatterplotplot, title = 'Experimental vs. Prediction')
+        plot(json_records['All'], output_filename, RInterface.correlation_coefficient_gplot, title = 'Experimental vs. Prediction')
 
         # Create a scatterplot for the adjusted results
         output_filename = '{0}_scatterplot_adjusted_with_scalar.png'.format(plot_filename_prefix)
         print('Saving scatterplot to %s.' % output_filename)
-        plot(adjusted_records, output_filename, correlation_coefficient_scatterplotplot, title = 'Experimental vs. Prediction: adjusted scale')
+        plot(adjusted_records, output_filename, RInterface.correlation_coefficient_gplot, title = 'Experimental vs. Prediction: adjusted scale')
 
         # Plot a histogram of the absolute errors
         plot_absolute_error_histogram(plot_filename_prefix, json_records['All'])
@@ -1366,5 +1362,10 @@ if __name__ == '__main__':
         print('Failed while parsing arguments: %s.' % str(e))
         sys.exit(1)
 
-    bm = BenchmarkManager(arguments)
-    bm.analyze()
+    try:
+        bm = BenchmarkManager(arguments)
+        bm.analyze()
+    except Exception, e:
+        colortext.error(str(e))
+        print(traceback.format_exc())
+
