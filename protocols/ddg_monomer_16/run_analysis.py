@@ -350,6 +350,7 @@ class BenchmarkManager(object):
                 for k, v in analysis_data_.iteritems():
                     analysis_data[int(k)] = v
                 colortext.wgrey('\r'); sys.stdout.flush()
+
             sys.exit(0)
 
             self.benchmark_run_data[benchmark_run_name] = BenchmarkRun(
@@ -397,6 +398,7 @@ class BenchmarkManager(object):
            work with certain older revisions and may need to be adapted to work with future revisions.'''
         scores = {}
         rosetta_output_lines = BenchmarkManager.read_stdout(ddg_output_path)
+        scores['Errors'] = BenchmarkManager.extract_errors(rosetta_output_lines)
         scores['DDG'] = BenchmarkManager.extract_predicted_ddg(rosetta_output_lines)
         scores['DDG_components'] = BenchmarkManager.extract_summary_data(ddg_output_path)
         for k, v in BenchmarkManager.get_ddg_monomer_scores_per_structure(rosetta_output_lines).iteritems():
@@ -425,6 +427,20 @@ class BenchmarkManager(object):
         except:
             raise colortext.Exception('An error occurred reading the output file %s.' % output_file)
         return rosetta_output
+
+
+    @staticmethod
+    def extract_errors(rosetta_output_lines):
+        '''Reads in errors from the predictions which can be useful to report to the user.'''
+        errors = {
+            'Derivative error count' : 0,
+        }
+        derivative_error_count = 0
+        for l in rosetta_output_lines:
+            if l.lower().find('inaccurate g') != -1:
+                derivative_error_count += 1
+        errors['Derivative error count'] = derivative_error_count
+        return errors
 
 
     @staticmethod
