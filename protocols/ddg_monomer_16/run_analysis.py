@@ -99,10 +99,11 @@ import traceback
 import shlex
 import copy
 import pandas
+import StringIO
 from rosetta.write_run_file import process as write_run_file
 from analysis.libraries import docopt
 from analysis.libraries import colortext
-from analysis.stats import read_file, read_file_lines, write_file, prompt_yn, fraction_correct, get_xy_dataset_statistics, plot, format_stats_for_printing, RInterface
+from analysis.stats import read_file, read_file_lines, write_file, prompt_yn, fraction_correct, fraction_correct_pandas, get_xy_dataset_statistics, plot, format_stats_for_printing, RInterface
 
 from run_ddg import task_subfolder as ddg_task_subfolder
 try:
@@ -540,7 +541,8 @@ class BenchmarkRun(object):
         self.dataset_cases = dataset_cases
         self.analysis_data = analysis_data
         self.analysis_directory = analysis_directory
-        self.analysis_file_prefix = os.path.join(self.analysis_directory, self.benchmark_run_name + '_')
+        self.subplot_directory = os.path.join(self.analysis_directory, self.benchmark_run_name + '_subplots')
+        self.analysis_file_prefix = os.path.join(self.analysis_directory, self.benchmark_run_name + '_subplots', self.benchmark_run_name + '_')
         self.use_single_reported_value = use_single_reported_value
         self.generate_plots = generate_plots
         self.take_lowest = take_lowest
@@ -610,6 +612,16 @@ class BenchmarkRun(object):
         return BenchmarkRun.amino_acid_details, BenchmarkRun.CAA, BenchmarkRun.PAA, BenchmarkRun.HAA
 
 
+    def create_subplot_directory(self):
+        # Create subplot directory
+        if not(os.path.exists(self.subplot_directory)):
+            try:
+                os.mkdir(self.subplot_directory)
+                assert(os.path.exists(self.subplot_directory))
+            except Exception, e:
+                raise colortext.Exception('An exception occurred creating the subplot directory %s.' % self.subplot_directory)
+
+
     def create_dataframe(self):
         '''This function creates a dataframe (a matrix with one row per dataset record and one column for fields of interest)
            from the benchmark run and the dataset data.
@@ -622,6 +634,10 @@ class BenchmarkRun(object):
         dataset_cases = self.dataset_cases
         amino_acid_details, CAA, PAA, HAA = self.amino_acid_details, self.CAA, self.PAA, self.HAA
         burial_cutoff, stability_classication_x_cutoff, stability_classication_y_cutoff = self.burial_cutoff, self.stability_classication_x_cutoff, self.stability_classication_y_cutoff\
+
+        # Create a directory for plots
+        if self.generate_plots:
+            self.create_subplot_directory()
 
         # Create XY data
         analysis_csv_input_filepath = os.path.join(self.benchmark_run_directory, 'analysis_input.csv')
@@ -646,7 +662,7 @@ class BenchmarkRun(object):
             print('\nThe predicted DDG value per case is computed using the {0} lowest-scoring mutant structures and the {0} lowest-scoring wildtype structures.'.format(self.take_lowest))
 
         # Initialize the data structures
-        dataframe = []
+        records = [] # todo remove
         csv_headers=[
             'DatasetID', 'PDBFileID', 'Mutations', 'NumberOfMutations', 'Experimental', 'Predicted', 'AbsoluteError', 'StabilityClassification',
             'ResidueCharges', 'VolumeChange',
@@ -823,19 +839,45 @@ class BenchmarkRun(object):
                 MonomerLength = len(pdb_record.get('Chains', {}).get(pdb_chain, {}).get('Sequence', '')) or None,
                 )
 
-            dataframe.append(dataframe_record)
-
             for h in csv_headers:
                 assert(',' not in str(dataframe_record[h]))
             csv_file.append(','.join([str(dataframe_record[h]) for h in csv_headers]))
             #assert(sorted(csv_headers) == sorted(dataframe_record.keys()))
 
+            records.append(dataframe_record) #todo remove
+
+        self.records = records #todo remove
+
         colortext.message('The mutated residues span {0} unique SCOP(e) classifications in {1} unique SCOP(e) folds and {2} unique SCOP(e) classes.'.format(len(SCOP_classifications), len(SCOP_folds), len(SCOP_classes)))
 
+        # Create the CSV file in memory (we are not done added data just yet) and pass it to pandas
+        dataframe = pandas.read_csv(StringIO.StringIO('\n'.join(csv_file)), sep=',', header=0, skip_blank_lines=True, index_col = 0)
+
+        # Plot the optimum y-cutoff over a range of x-cutoffs for the fraction correct metric. Include the user's cutoff in the range
+        colortext.warning('Determining a scalar adjustment with which to scale the predicted values to improve the fraction correct measurement.')
+        scalar_adjustment = self.plot_optimum_prediction_fraction_correct_cutoffs_over_range(dataframe, min(self.stability_classication_x_cutoff, 0.5), max(self.stability_classication_x_cutoff, 3.0))
+        print(scalar_adjustment)
+        sys.exit(0)
+        # Plot which y-cutoff yields the best value for the fraction correct metric
+        plot_optimum_prediction_fraction_correct_cutoffs(dataframe, stability_classication_x_cutoff)
+
+        self.analysis_file_prefix
+        self.generate_plots
+        self.subplot_directory
+        sys.exit(0)
+
+
+
+
+        sys.exit(0)
+
+        colortext.warning('Creating CSV files.')
         write_file(analysis_csv_input_filepath, '\n'.join(csv_file))
         write_file(analysis_json_input_filepath, json.dumps(dataframe, indent = 4, sort_keys=True))
 
-        dataframe = pandas.read_csv(analysis_csv_input_filepath, sep=',', header=0, skip_blank_lines=True, index_col  = 0)
+
+
+
 
         #analysis_pandas_input_filepath
         sys.exit(0)
@@ -851,19 +893,6 @@ class BenchmarkRun(object):
     def analyze_run(self):
         '''This function runs the analysis, creating plots and the summary file.'''
 
-        rel_plot_filename_prefix = arguments['--plot_filename_prefix'][0]
-        subplot_dir = os.path.join(output_dir, 'subplots')
-        try: os.mkdir(subplot_dir)
-        except: pass
-        if not os.path.exists(subplot_dir):
-            raise colortext.Exception('Could not create subdirectory {0} for the plots.'.format(subplot_dir))
-        plot_filename_prefix = os.path.join(subplot_dir, '{0}'.format(rel_plot_filename_prefix))
-
-        # Plot the optimum y-cutoff over a range of x-cutoffs for the fraction correct metric. Include the user's cutoff in the range
-        scalar_adjustment = plot_optimum_prediction_fraction_correct_cutoffs_over_range(plot_filename_prefix, json_records['All'], min(stability_classication_x_cutoff, 0.5), max(stability_classication_x_cutoff, 3.0))
-
-        # Plot which y-cutoff yields the best value for the fraction correct metric
-        plot_optimum_prediction_fraction_correct_cutoffs(plot_filename_prefix, json_records['All'], stability_classication_x_cutoff)
 
         # Create an adjusted set of records scaled according to the fraction correct fitting
         adjusted_records = copy.deepcopy(json_records['All'])
@@ -946,15 +975,15 @@ class BenchmarkRun(object):
         try:
             if os.path.exists(plot_file):
                 os.remove(plot_file)
-            p = subprocess.Popen(shlex.split('convert {0} {1}'.format(os.path.join(subplot_dir, '*.png'), rel_plot_filename_prefix + '_benchmark_plots.pdf')), cwd = output_dir)
-            #print(shlex.split('convert {0} {1}'.format(os.path.join(subplot_dir, '*.png'), rel_plot_filename_prefix + '_benchmark_plots.pdf')))
+            p = subprocess.Popen(shlex.split('convert {0} {1}'.format(os.path.join(subplot_directory, '*.png'), rel_plot_filename_prefix + '_benchmark_plots.pdf')), cwd = output_dir)
+            #print(shlex.split('convert {0} {1}'.format(os.path.join(subplot_directory, '*.png'), rel_plot_filename_prefix + '_benchmark_plots.pdf')))
             stdoutdata, stderrdata = p.communicate()
             if p.returncode != 0: raise Exception('')
         except:
             colortext.error('An error occurred while combining the positional scatterplots using the convert application (ImageMagick).')
 
 
-    def determine_optimum_fraction_correct_cutoffs(self, records, stability_classication_x_cutoff):
+    def determine_optimum_fraction_correct_cutoffs(self, dataframe, stability_classication_x_cutoff):
         '''Determines the value of stability_classication_y_cutoff which approximately maximizes the fraction correct
            measurement w.r.t. a fixed stability_classication_x_cutoff. This function uses discrete sampling and so it
            may miss the actual maximum. We use two rounds of sampling: i) a coarse-grained sampling (0.1 energy unit
@@ -963,14 +992,47 @@ class BenchmarkRun(object):
 
         # Determine the value for the fraction correct y-value (predicted) cutoff which will approximately yield the
         # maximum fraction-correct value
-        x_values = [record['Experimental'] for record in records]
-        y_values = [record['Predicted'] for record in records]
+
+
+        fraction_correct_range = []
+
+        t1 = time.time()
+
+        # Round 1 : Coarse sampling. Test 0.5 -> 8.0 in 0.1 increments
+        for z in range(5, 80):
+            w = float(z) / 10.0
+            fraction_correct_range.append((w, fraction_correct_pandas(dataframe, 'Experimental', 'Predicted', x_cutoff = stability_classication_x_cutoff, y_cutoff = w)))
+        fraction_correct_range_1 = copy.deepcopy(fraction_correct_range) # todo remove
+
+        max_value_cutoff, max_value = fraction_correct_range[0][0], fraction_correct_range[0][1]
+        for p in fraction_correct_range:
+            if p[1] > max_value:
+                max_value_cutoff, max_value = p[0], p[1]
+
+        # Round 2 : Finer sampling. Test max_value_cutoff - 0.1 -> max_value_cutoff + 0.1 in 0.01 increments
+        for z in range(int((max_value_cutoff - 0.1) * 100), int((max_value_cutoff + 0.1) * 100)):
+            w = float(z) / 100.0
+            fraction_correct_range.append((w, fraction_correct_pandas(dataframe, 'Experimental', 'Predicted', x_cutoff = stability_classication_x_cutoff, y_cutoff = w)))
+        fraction_correct_range = sorted(set(fraction_correct_range)) # sort so that we find the lowest cutoff value in case of duplicate fraction correct values
+        max_value_cutoff, max_value = fraction_correct_range[0][0], fraction_correct_range[0][1]
+        for p in fraction_correct_range:
+            if p[1] > max_value:
+                max_value_cutoff, max_value = p[0], p[1]
+
+        print('Pandas! Pandas! Pandas!', time.time() - t1)
+
+
+        t1 = time.time()
+        x_values = [record['Experimental'] for record in self.records]
+        y_values = [record['Predicted'] for record in self.records]
         fraction_correct_range = []
 
         # Round 1 : Coarse sampling. Test 0.5 -> 8.0 in 0.1 increments
         for z in range(5, 80):
             w = float(z) / 10.0
             fraction_correct_range.append((w, fraction_correct(x_values, y_values, x_cutoff = stability_classication_x_cutoff, y_cutoff = w)))
+        fraction_correct_range_2 = copy.deepcopy(fraction_correct_range) # todo remove
+
         max_value_cutoff, max_value = fraction_correct_range[0][0], fraction_correct_range[0][1]
         for p in fraction_correct_range:
             if p[1] > max_value:
@@ -986,13 +1048,22 @@ class BenchmarkRun(object):
             if p[1] > max_value:
                 max_value_cutoff, max_value = p[0], p[1]
 
+        print('Just like old times!', time.time() - t1)
+
+        assert(len(fraction_correct_range_1) == len(fraction_correct_range_2))
+        for x in range(len(fraction_correct_range_2)):
+            assert(fraction_correct_range_1[x][0] == fraction_correct_range_2[x][0])
+            assert(abs(fraction_correct_range_1[x][1] - fraction_correct_range_2[x][1] < 0.001))
+        sys.exit(0)
         return max_value_cutoff, max_value, fraction_correct_range
 
 
-    def plot_optimum_prediction_fraction_correct_cutoffs(self, plot_filename_prefix, records, stability_classication_x_cutoff):
+    def plot_optimum_prediction_fraction_correct_cutoffs(self, dataframe, stability_classication_x_cutoff):
+
+        plot_filename_prefix = self.analysis_file_prefix
 
         # Determine the optimal values
-        max_value_cutoff, max_value, fraction_correct_range = determine_optimum_fraction_correct_cutoffs(records, stability_classication_x_cutoff)
+        max_value_cutoff, max_value, fraction_correct_range = self.determine_optimum_fraction_correct_cutoffs(records, stability_classication_x_cutoff)
 
         # Filenames
         output_filename_prefix = '{0}_optimum_fraction_correct_at_{1}_kcal_mol'.format(plot_filename_prefix, '%.2f' % stability_classication_x_cutoff)
@@ -1040,16 +1111,16 @@ dev.off()'''
         RInterface._runRScript(r_script % locals())
 
 
-    def plot_optimum_prediction_fraction_correct_cutoffs_over_range(self, plot_filename_prefix, records, min_stability_classication_x_cutoff, max_stability_classication_x_cutoff):
-        '''Plots the optimum cutoff for the predictions to maximize the fraction correct metric over a range of experimental cutoffs.
+    def plot_optimum_prediction_fraction_correct_cutoffs_over_range(self, dataframe, min_stability_classication_x_cutoff, max_stability_classication_x_cutoff):
+        '''Takes a pandas dataframe
+           Plots the optimum cutoff for the predictions to maximize the fraction correct metric over a range of experimental cutoffs.
            Returns the average scalar corresponding to the best value of fraction correct over a range of cutoff values for the experimental cutoffs.'''
 
         # Filenames
-        output_filename_prefix = '{0}_optimum_fraction_correct_at_varying_kcal_mol'.format(plot_filename_prefix)
+        output_filename_prefix = '{0}_optimum_fraction_correct_at_varying_kcal_mol'.format(self.analysis_file_prefix)
         plot_filename = output_filename_prefix + '.png'
         csv_filename = output_filename_prefix + '.txt'
         R_filename = output_filename_prefix + '.R'
-        print('Saving scatterplot to %s.' % plot_filename)
 
         # Create CSV input
         lines = ['ExperimentalCutoff,BestPredictionCutoff']
@@ -1058,13 +1129,17 @@ dev.off()'''
         y_values = []
         avg_scale = 0
         while x_cutoff < max_stability_classication_x_cutoff + 0.1:
-            max_value_cutoff, max_value, fraction_correct_range = determine_optimum_fraction_correct_cutoffs(records, x_cutoff)
-            lines.append(','.join(map(str, (x_cutoff, max_value_cutoff))))
+            max_value_cutoff, max_value, fraction_correct_range = self.determine_optimum_fraction_correct_cutoffs(dataframe, x_cutoff)
+            if self.generate_plots:
+                lines.append(','.join(map(str, (x_cutoff, max_value_cutoff))))
             x_values.append(x_cutoff)
             y_values.append(max_value_cutoff)
-            avg_scale += max_value_cutoff / x_cutoff
+            # todo avg_scale += max_value_cutoff / x_cutoff
             x_cutoff += 0.1
-        write_file(csv_filename, '\n'.join(lines))
+        sys.exit(0)
+
+        if self.generate_plots:
+            write_file(csv_filename, '\n'.join(lines))
 
         # Determine the average scalar needed to fit the plot
         avg_scale = avg_scale / len(x_values)
@@ -1076,8 +1151,11 @@ dev.off()'''
         plot_label_2 = 'sigma == %0.2f' % numpy.std(scalars)
 
         # Create plot
-        title = 'Optimum cutoff for fraction correct metric at varying experimental cutoffs'
-        r_script = '''library(ggplot2)
+        if self.generate_plots:
+            print('Saving scatterplot to %s.' % plot_filename)
+
+            title = 'Optimum cutoff for fraction correct metric at varying experimental cutoffs'
+            r_script = '''library(ggplot2)
 library(gridExtra)
 library(scales)
 library(qualV)
@@ -1098,7 +1176,8 @@ p <- ggplot(data = plot_data, aes(x = ExperimentalCutoff, y = BestPredictionCuto
  geom_text(hjust=0, size=4, color="black", aes(0.5, max_y - 0.5, fontface="plain", family = "sans", label="%(plot_label_2)s"), parse = T)
 p
 dev.off()'''
-        RInterface._runRScript(r_script % locals())
+            RInterface._runRScript(r_script % locals())
+
         return average_scalar
 
 

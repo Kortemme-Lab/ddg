@@ -210,6 +210,36 @@ def fraction_correct(x_values, y_values, x_cutoff = 1.0, y_cutoff = 1.0):
     return correct / float(num_points)
 
 
+def fraction_correct_pandas(dataframe, x_label, y_label, x_cutoff = 1.0, y_cutoff = 1.0):
+    '''A little (<6%) slower than fraction_correct due to the data extraction overhead.'''
+    return fraction_correct(dataframe[x_label].values.tolist(), dataframe[y_label].values.tolist(), x_cutoff = x_cutoff, y_cutoff = y_cutoff)
+
+
+def fraction_correct_pandas_2(dataframe, x_label, y_label, x_cutoff = 1.0, y_cutoff = 1.0):
+    '''About 10x slower than fraction_correct.'''
+
+    return (
+                ((dataframe[x_label] >= x_cutoff) & (dataframe[y_label] >= y_cutoff)) |
+                ((dataframe[x_label] <= -x_cutoff) & (dataframe[y_label] <= -y_cutoff)) |
+                ((-x_cutoff < dataframe[x_label]) & (dataframe[x_label] < x_cutoff) & (-y_cutoff < dataframe[y_label]) & (dataframe[y_label] < y_cutoff))
+            ).astype('float').sum() / float(len(dataframe))
+
+
+def fraction_correct_pandas_3(dataframe, x_label, y_label, x_cutoff = 1.0, y_cutoff = 1.0):
+    '''About 100x slower than fraction_correct.'''
+    correct = 0.0
+    for r in dataframe.iterrows():
+        x = r[1][x_label]
+        y = r[1][y_label]
+        if (x >= x_cutoff) and (y >= y_cutoff): # both positive
+            correct += 1.0
+        elif (x <= -x_cutoff) and (y <= -y_cutoff): # both negative
+            correct += 1.0
+        elif (-x_cutoff < x < x_cutoff) and (-y_cutoff < y < y_cutoff): # both neutral
+            correct += 1.0
+    return correct / float(len(dataframe))
+
+
 def fraction_correct_fuzzy_linear_create_vector(z, z_cutoff, z_fuzzy_range):
     '''A helper function for fraction_correct_fuzzy_linear.'''
     import numpy
