@@ -337,7 +337,10 @@ class BenchmarkManager(object):
 
         for benchmark_run_name, br in sorted(self.benchmark_run_data.iteritems()):
             colortext.message('\nRunning the analysis for {0}.'.format(benchmark_run_name))
+            t1 = time.time()
             br.create_dataframe()
+            print('time taken:', time.time() - t1)
+
 
             pass
             # run individual analysis
@@ -550,6 +553,10 @@ class BenchmarkRun(object):
         self.burial_cutoff = burial_cutoff
         self.stability_classication_x_cutoff = stability_classication_x_cutoff
         self.stability_classication_y_cutoff = stability_classication_y_cutoff
+        self.scalar_adjustment = None
+        self.analysis_csv_input_filepath = os.path.join(self.benchmark_run_directory, 'analysis_input.csv')
+        self.analysis_json_input_filepath = os.path.join(self.benchmark_run_directory, 'analysis_input.json')
+        self.analysis_pandas_input_filepath = os.path.join(self.benchmark_run_directory, 'analysis_input.pandas')
 
 
     @staticmethod
@@ -629,6 +636,15 @@ class BenchmarkRun(object):
            We take the approach of marking these records as None (to be read as: N/A).
            Another approach is to take averages of continuous and binary values.
         '''
+        #data_frame
+        #scalar_adjustment
+
+        if os.path.exists(self.analysis_pandas_input_filepath):
+            store = pandas.HDFStore(self.analysis_pandas_input_filepath)
+            self.dataframe = store['dataframe']
+            self.scalar_adjustment = store['scalar_adjustment'].to_dict()['scalar_adjustment']
+            store.close()
+            return
 
         analysis_data = self.analysis_data
         dataset_cases = self.dataset_cases
@@ -640,10 +656,7 @@ class BenchmarkRun(object):
             self.create_subplot_directory()
 
         # Create XY data
-        analysis_csv_input_filepath = os.path.join(self.benchmark_run_directory, 'analysis_input.csv')
-        analysis_json_input_filepath = os.path.join(self.benchmark_run_directory, 'analysis_input.json')
-        analysis_pandas_input_filepath = os.path.join(self.benchmark_run_directory, 'analysis_input.pandas')
-        print('Creating the analysis input file %s and human-readable CSV and JSON versions %s and %s.' % (analysis_pandas_input_filepath, analysis_csv_input_filepath, analysis_json_input_filepath))
+        print('Creating the analysis input file %s and human-readable CSV and JSON versions %s and %s.' % (self.analysis_pandas_input_filepath, self.analysis_csv_input_filepath, self.analysis_json_input_filepath))
         if len(analysis_data) > len(dataset_cases):
             raise colortext.Exception('ERROR: There seems to be an error - there are more predictions than cases in the dataset. Exiting.')
         elif len(analysis_data) < len(dataset_cases):
@@ -662,7 +675,6 @@ class BenchmarkRun(object):
             print('\nThe predicted DDG value per case is computed using the {0} lowest-scoring mutant structures and the {0} lowest-scoring wildtype structures.'.format(self.take_lowest))
 
         # Initialize the data structures
-        records = [] # todo remove
         csv_headers=[
             'DatasetID', 'PDBFileID', 'Mutations', 'NumberOfMutations', 'Experimental', 'Predicted', 'AbsoluteError', 'StabilityClassification',
             'ResidueCharges', 'VolumeChange',
@@ -791,7 +803,7 @@ class BenchmarkRun(object):
             # Calculate the stability classification and absolute_error for this case
             stability_classification = fraction_correct([record['DDG']], [predicted_data[ddg_analysis_type]], x_cutoff = stability_classication_x_cutoff, y_cutoff = stability_classication_y_cutoff)
             assert(stability_classification == 0 or stability_classification == 1)
-            stability_classification = int(stability_classification)
+            #stability_classification = int(stability_classification)
             absolute_error = abs(record['DDG'] - predicted_data[ddg_analysis_type])
 
             # Partition the data by PDB resolution with bins: N/A, <1.5, 1.5-<2.0, 2.0-<2.5, >=2.5
@@ -824,7 +836,7 @@ class BenchmarkRun(object):
                 StabilityClassification = stability_classification,
                 ResidueCharges = residue_charge,
                 VolumeChange = volume_change,
-                HasGPMutation = has_gp_mutation,
+                HasGPMutation = int(has_gp_mutation),
                 WildTypeDSSPType = DSSPType,
                 WildTypeDSSPSimpleSSType = DSSPSimpleSSType,
                 WildTypeDSSPExposure = DSSPExposure,
@@ -844,10 +856,6 @@ class BenchmarkRun(object):
             csv_file.append(','.join([str(dataframe_record[h]) for h in csv_headers]))
             #assert(sorted(csv_headers) == sorted(dataframe_record.keys()))
 
-            records.append(dataframe_record) #todo remove
-
-        self.records = records #todo remove
-
         colortext.message('The mutated residues span {0} unique SCOP(e) classifications in {1} unique SCOP(e) folds and {2} unique SCOP(e) classes.'.format(len(SCOP_classifications), len(SCOP_folds), len(SCOP_classes)))
 
         # Create the CSV file in memory (we are not done added data just yet) and pass it to pandas
@@ -855,70 +863,37 @@ class BenchmarkRun(object):
 
         # Plot the optimum y-cutoff over a range of x-cutoffs for the fraction correct metric. Include the user's cutoff in the range
         colortext.warning('Determining a scalar adjustment with which to scale the predicted values to improve the fraction correct measurement.')
-        scalar_adjustment = self.plot_optimum_prediction_fraction_correct_cutoffs_over_range(dataframe, min(self.stability_classication_x_cutoff, 0.5), max(self.stability_classication_x_cutoff, 3.0))
-        print(scalar_adjustment)
+        self.scalar_adjustment = self.plot_optimum_prediction_fraction_correct_cutoffs_over_range(dataframe, min(self.stability_classication_x_cutoff, 0.5), max(self.stability_classication_x_cutoff, 3.0), suppress_plot = True)
 
         # Add new columns derived from the adjusted values
-        dataframe['Predicted_adj'] = dataframe['Predicted'] / scalar_adjustment
+        dataframe['Predicted_adj'] = dataframe['Predicted'] / self.scalar_adjustment
         dataframe['AbsoluteError_adj'] = (dataframe['Experimental'] - dataframe['Predicted_adj']).abs()
         add_fraction_correct_values_to_dataframe(dataframe, 'Experimental', 'Predicted_adj', 'StabilityClassification_adj',  x_cutoff = stability_classication_x_cutoff, y_cutoff = stability_classication_y_cutoff)
+        self.dataframe = dataframe
 
+        # Write the dataframe out to CSV
+        dataframe.to_csv(self.analysis_csv_input_filepath, sep = ',', header = True)
 
-        sys.exit(0)
+        # Write the dataframe out to JSON
+        # Note: I rolled my own as dataframe.to_dict(orient = 'records') gives us the correct format but discards the DatasetID (index) field
+        json_records = {}
+        indices = dataframe.index.values.tolist()
+        for i in indices:
+            json_records[i] = {}
+        for k, v in dataframe.to_dict().iteritems():
+            for i, v in v.iteritems():
+                assert(k not in json_records[i])
+                json_records[i][k] = v
+        write_file(self.analysis_json_input_filepath, json.dumps(json_records, indent = 4, sort_keys=True))
 
-        print(dataframe['AbsoluteError_adj'].mean())
-        print(dataframe['StabilityClassification_adj'].mean())
-        #dataframe['AbsoluteError_adj'] = dataframe['AbsoluteError'] / scalar_adjustment
-        #dataframe['Predicted_adj'] = dataframe['StabilityClassification'] / scalar_adjustment
-        sys.exit(0)
-        # Create an adjusted set of records scaled according to the fraction correct fitting
-        adjusted_records = copy.deepcopy(records)
-        for record in adjusted_records:
-            record['Predicted'] = record['Predicted'] / scalar_adjustment
-        import numpy
-        x_values = [r['Experimental'] for r in adjusted_records]
-        y_values = [r['Predicted'] for r in adjusted_records]
-        num_points = len(x_values)
-        assert(num_points == len(y_values) and num_points > 0)
-        print(numpy.sum(numpy.apply_along_axis(numpy.abs, 0, numpy.subtract(x_values, y_values))) / float(num_points))
+        # Write the values computed in this function out to disk
+        if os.path.exists(self.analysis_pandas_input_filepath):
+            os.remove(self.analysis_pandas_input_filepath)
+        store = pandas.HDFStore(self.analysis_pandas_input_filepath)
+        store['dataframe'] = dataframe
+        store['scalar_adjustment'] = pandas.Series(dict(scalar_adjustment = self.scalar_adjustment))
+        store.close()
 
-        print(dataframe['Predicted_adj'])
-        print(y_values)
-
-
-
-            #print(dataframe['Predicted'] / scalar_adjustment)
-        #Predicted = predicted_data[ddg_analysis_type],
-        #AbsoluteError = absolute_error,
-        #StabilityClassification = stability_classification,
-
-
-        sys.exit(0)
-        # Plot which y-cutoff yields the best value for the fraction correct metric
-        plot_optimum_prediction_fraction_correct_cutoffs(dataframe, stability_classication_x_cutoff)
-
-        self.analysis_file_prefix
-        self.generate_plots
-        self.subplot_directory
-        sys.exit(0)
-
-
-
-
-        sys.exit(0)
-
-        colortext.warning('Creating CSV files.')
-        write_file(analysis_csv_input_filepath, '\n'.join(csv_file))
-        write_file(analysis_json_input_filepath, json.dumps(dataframe, indent = 4, sort_keys=True))
-
-
-
-
-
-        #analysis_pandas_input_filepath
-        sys.exit(0)
-
-        ##todo self.generate_plots
 
     def compare(self, other):
         '''Compare this benchmark run with another run.'''
@@ -928,6 +903,22 @@ class BenchmarkRun(object):
 
     def analyze_run(self):
         '''This function runs the analysis, creating plots and the summary file.'''
+
+        raise Exception('implement this')
+        # Plot which y-cutoff yields the best value for the fraction correct metric
+        plot_optimum_prediction_fraction_correct_cutoffs(dataframe, stability_classication_x_cutoff)
+        print(dataframe['AbsoluteError_adj'].mean())
+        print(dataframe['StabilityClassification_adj'].mean())
+        self.analysis_file_prefix
+        self.generate_plots
+        self.subplot_directory
+        sys.exit(0)
+        #analysis_pandas_input_filepath
+        sys.exit(0)
+
+        ##todo self.generate_plots
+
+
 
 
         # Create an adjusted set of records scaled according to the fraction correct fitting
@@ -1107,7 +1098,7 @@ dev.off()'''
         RInterface._runRScript(r_script % locals())
 
 
-    def plot_optimum_prediction_fraction_correct_cutoffs_over_range(self, dataframe, min_stability_classication_x_cutoff, max_stability_classication_x_cutoff):
+    def plot_optimum_prediction_fraction_correct_cutoffs_over_range(self, dataframe, min_stability_classication_x_cutoff, max_stability_classication_x_cutoff, suppress_plot = False):
         '''Takes a pandas dataframe
            Plots the optimum cutoff for the predictions to maximize the fraction correct metric over a range of experimental cutoffs.
            Returns the average scalar corresponding to the best value of fraction correct over a range of cutoff values for the experimental cutoffs.'''
@@ -1124,16 +1115,17 @@ dev.off()'''
         x_values = []
         y_values = []
         avg_scale = 0
+        plot_graph = self.generate_plots and not(suppress_plot)
         while x_cutoff < max_stability_classication_x_cutoff + 0.1:
             max_value_cutoff, max_value, fraction_correct_range = self.determine_optimum_fraction_correct_cutoffs(dataframe, x_cutoff)
-            if self.generate_plots:
+            if plot_graph:
                 lines.append(','.join(map(str, (x_cutoff, max_value_cutoff))))
             x_values.append(x_cutoff)
             y_values.append(max_value_cutoff)
             avg_scale += max_value_cutoff / x_cutoff
             x_cutoff += 0.1
 
-        if self.generate_plots:
+        if plot_graph:
             write_file(csv_filename, '\n'.join(lines))
 
         # Determine the average scalar needed to fit the plot
@@ -1146,7 +1138,7 @@ dev.off()'''
         plot_label_2 = 'sigma == %0.2f' % numpy.std(scalars)
 
         # Create plot
-        if self.generate_plots:
+        if plot_graph:
             print('Saving scatterplot to %s.' % plot_filename)
 
             title = 'Optimum cutoff for fraction correct metric at varying experimental cutoffs'
