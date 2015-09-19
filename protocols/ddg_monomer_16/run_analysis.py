@@ -47,7 +47,8 @@ Options:
         as a benchmark run. This allows users to compare results with the original publication.
 
     --use_existing_benchmark_data
-        When this option is set, the benchmark_data.json file is not regenerated. This saves time on subsequent calls to this analysis script but is disabled by default for safety.
+        When this option is set, the benchmark_data.json and the pandas HDF5 file is not regenerated. This saves time on
+        subsequent calls to this analysis script but is disabled by default.
 
     --force
         When this option is set, the most recent directory in job_output, if it exists, will be used without prompting the user.
@@ -318,6 +319,7 @@ class BenchmarkManager(object):
                 burial_cutoff = self.burial_cutoff,
                 stability_classication_x_cutoff = self.stability_classication_x_cutoff,
                 stability_classication_y_cutoff = self.stability_classication_y_cutoff,
+                use_existing_benchmark_data = arguments['--use_existing_benchmark_data']
             )
 
 
@@ -337,10 +339,7 @@ class BenchmarkManager(object):
 
         for benchmark_run_name, br in sorted(self.benchmark_run_data.iteritems()):
             colortext.message('\nRunning the analysis for {0}.'.format(benchmark_run_name))
-            t1 = time.time()
             br.create_dataframe()
-            print('time taken:', time.time() - t1)
-
 
             pass
             # run individual analysis
@@ -537,7 +536,7 @@ class BenchmarkRun(object):
 
     def __init__(self, benchmark_run_name, benchmark_run_directory, analysis_directory, dataset_cases, analysis_data, use_single_reported_value,
                  take_lowest = 3, generate_plots = True, include_derived_mutations = False, burial_cutoff = 0.25,
-                 stability_classication_x_cutoff = 1.0, stability_classication_y_cutoff = 1.0):
+                 stability_classication_x_cutoff = 1.0, stability_classication_y_cutoff = 1.0, use_existing_benchmark_data = False):
         self.amino_acid_details, self.CAA, self.PAA, self.HAA = BenchmarkRun.get_amino_acid_details()
         self.benchmark_run_name = benchmark_run_name
         self.benchmark_run_directory = benchmark_run_directory
@@ -557,6 +556,7 @@ class BenchmarkRun(object):
         self.analysis_csv_input_filepath = os.path.join(self.benchmark_run_directory, 'analysis_input.csv')
         self.analysis_json_input_filepath = os.path.join(self.benchmark_run_directory, 'analysis_input.json')
         self.analysis_pandas_input_filepath = os.path.join(self.benchmark_run_directory, 'analysis_input.pandas')
+        self.use_existing_benchmark_data = use_existing_benchmark_data
 
 
     @staticmethod
@@ -635,11 +635,11 @@ class BenchmarkRun(object):
            For rows with multiple mutations, there may be multiple values for some fields e.g. wildtype residue exposure.
            We take the approach of marking these records as None (to be read as: N/A).
            Another approach is to take averages of continuous and binary values.
+           This function also determines a scalar_adjustment used to scale the predictions to try to improve the fraction
+           correct score and the MAE.
         '''
-        #data_frame
-        #scalar_adjustment
 
-        if os.path.exists(self.analysis_pandas_input_filepath):
+        if self.use_existing_benchmark_data and os.path.exists(self.analysis_pandas_input_filepath):
             store = pandas.HDFStore(self.analysis_pandas_input_filepath)
             self.dataframe = store['dataframe']
             self.scalar_adjustment = store['scalar_adjustment'].to_dict()['scalar_adjustment']
