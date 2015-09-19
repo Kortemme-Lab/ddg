@@ -118,7 +118,7 @@ except:
 # todo: This methods are now deprecated since we store this information in the dataframe. Update the callers and remove these
 
 
-def determine_SL_class(record):
+def determine_SL_class(record, amino_acid_details):
     '''Returns:
         - SL if all of the mutations are from smaller (by volume) residues to larger residues
         - LS if all of the mutations are from larger residues to smaller residues
@@ -203,6 +203,7 @@ class BenchmarkManager(object):
         self.analysis_directory = None
         self.take_lowest = None
         self.burial_cutoff = None
+        self.include_derived_mutations = None
         self.stability_classication_x_cutoff, self.stability_classication_y_cutoff = None, None
 
         # Parse command-line arguments and extract/load the benchmark input data
@@ -218,6 +219,9 @@ class BenchmarkManager(object):
 
         # Plot-generation option
         self.generate_plots = not(arguments['--do_not_generate_plots'])
+
+        # Whether or not we include records marked as derived in the analysis
+        self.include_derived_mutations = arguments['--include_derived_mutations']
 
         # take-lowest option
         try:
@@ -358,8 +362,12 @@ class BenchmarkManager(object):
                 dataset_cases,
                 analysis_data,
                 arguments['--use_single_reported_value'],
+                include_derived_mutations = self.include_derived_mutations,
                 take_lowest = self.take_lowest,
-                generate_plots = self.generate_plots
+                generate_plots = self.generate_plots,
+                burial_cutoff = self.burial_cutoff,
+                stability_classication_x_cutoff = self.stability_classication_x_cutoff,
+                stability_classication_y_cutoff = self.stability_classication_y_cutoff,
             )
 
 
@@ -574,7 +582,9 @@ class BenchmarkRun(object):
     CAA, PAA, HAA = set(), set(), set()
 
 
-    def __init__(self, benchmark_run_name, benchmark_run_directory, analysis_directory, dataset_cases, analysis_data, use_single_reported_value, take_lowest = 3, generate_plots = True):
+    def __init__(self, benchmark_run_name, benchmark_run_directory, analysis_directory, dataset_cases, analysis_data, use_single_reported_value,
+                 take_lowest = 3, generate_plots = True, include_derived_mutations = False, burial_cutoff = 0.25,
+                 stability_classication_x_cutoff = 1.0, stability_classication_y_cutoff = 1.0):
         self.amino_acid_details, self.CAA, self.PAA, self.HAA = BenchmarkRun.get_amino_acid_details()
         self.benchmark_run_name = benchmark_run_name
         self.benchmark_run_directory = benchmark_run_directory
@@ -582,10 +592,13 @@ class BenchmarkRun(object):
         self.analysis_data = analysis_data
         self.analysis_directory = analysis_directory
         self.analysis_file_prefix = os.path.join(self.analysis_directory, self.benchmark_run_name + '_')
-        print(self.analysis_file_prefix)
         self.use_single_reported_value = use_single_reported_value
         self.generate_plots = generate_plots
         self.take_lowest = take_lowest
+        self.include_derived_mutations = include_derived_mutations
+        self.burial_cutoff = burial_cutoff
+        self.stability_classication_x_cutoff = stability_classication_x_cutoff
+        self.stability_classication_y_cutoff = stability_classication_y_cutoff
 
 
     @staticmethod
@@ -649,14 +662,22 @@ class BenchmarkRun(object):
 
 
     def create_dataframe(self):
+        '''This function creates a dataframe (a matrix with one row per dataset record and one column for fields of interest)
+           from the benchmark run and the dataset data.
+           For rows with multiple mutations, there may be multiple values for some fields e.g. wildtype residue exposure.
+           We take the approach of marking these records as None (to be read as: N/A).
+           Another approach is to take averages of continuous and binary values.
+        '''
+
+        analysis_data = self.analysis_data
+        dataset_cases = self.dataset_cases
+        amino_acid_details, CAA, PAA, HAA = self.amino_acid_details, self.CAA, self.PAA, self.HAA
+        burial_cutoff, stability_classication_x_cutoff, stability_classication_y_cutoff = self.burial_cutoff, self.stability_classication_x_cutoff, self.stability_classication_y_cutoff\
 
         # Create XY data
         analysis_csv_input_filepath = os.path.join(self.benchmark_run_directory, 'analysis_input.csv')
         analysis_json_input_filepath = os.path.join(self.benchmark_run_directory, 'analysis_input.json')
         analysis_pandas_input_filepath = os.path.join(self.benchmark_run_directory, 'analysis_input.pandas')
-        analysis_data = self.analysis_data
-        dataset_cases = self.dataset_cases
-
         print('Creating the analysis input file %s and human-readable CSV and JSON versions %s and %s.' % (analysis_pandas_input_filepath, analysis_csv_input_filepath, analysis_json_input_filepath))
         if len(analysis_data) > len(dataset_cases):
             raise colortext.Exception('ERROR: There seems to be an error - there are more predictions than cases in the dataset. Exiting.')
@@ -674,85 +695,64 @@ class BenchmarkRun(object):
             print('\nThe predicted DDG value per case is computed using the {0} lowest-scoring mutant structures and the {0} lowest-scoring wildtype structures as in the paper by Kellogg et al.'.format(self.take_lowest))
         else:
             print('\nThe predicted DDG value per case is computed using the {0} lowest-scoring mutant structures and the {0} lowest-scoring wildtype structures.'.format(self.take_lowest))
-        sys.exit(0)
-        json_records = dict(
-            All = [],
-                ByVolume = dict(
-                    SL = [], LS = [], XX = [], O = []
-                ),
-                GP = {
-                    True : [], False : []
-                },
-        )
+
+        # Initialize the data structures
+        dataframe = []
         csv_headers=[
-            'DatasetID',
-            'PDBFileID',
-            'Mutations',
-            'Experimental',
-            'Predicted',
-            'AbsoluteError',
-            'StabilityClassification',
-            'ResidueCharges',
-            'VolumeChange',
-            'WildTypeDSSPType',
-            'WildTypeDSSPSimpleSSType',
-            'WildTypeDSSPExposure',
-            'WildTypeSCOPClass',
-            'WildTypeSCOPFold',
-            'WildTypeSCOPClassification',
-            'WildTypeExposure',
-            'WildTypeAA',
-            'MutantAA',
-            'PDBResolution',
-            'PDBResolutionBin',
-            'MonomerLength',
+            'DatasetID', 'PDBFileID', 'Mutations', 'Experimental', 'Predicted', 'AbsoluteError', 'StabilityClassification',
+            'ResidueCharges', 'VolumeChange',
+            'WildTypeDSSPType', 'WildTypeDSSPSimpleSSType', 'WildTypeDSSPExposure',
+            'WildTypeSCOPClass', 'WildTypeSCOPFold', 'WildTypeSCOPClassification',
+            'WildTypeExposure', 'WildTypeAA', 'MutantAA',
+            'PDBResolution', 'PDBResolutionBin', 'MonomerLength',
         ]
         csv_file = [','.join(csv_headers)]
 
+        # Keep track of the SCOPe classifications to report later
         SCOP_classifications = set()
         SCOP_folds = set()
         SCOP_classes = set()
 
-        include_derived_mutations = arguments['--include_derived_mutations']
+        pdb_reads = 0
+        t1 = time.time()
+
+        # Create the dataframe
         for record_id, predicted_data in sorted(analysis_data.iteritems()):
+
             record = dataset_cases[record_id]
-            if record['DerivedMutation'] and not include_derived_mutations:
+
+            # Ignore derived mutations if appropriate
+            if record['DerivedMutation'] and not self.include_derived_mutations:
                 continue
 
-            full_scop_classification, scop_class, scop_fold = None, None, None
-            mutations = record['Mutations']
-            scops = set([m['SCOP class'] for m in mutations])
-            if len(scops) > 1:
-                colortext.warning('Warning: There is more than one SCOPe class for record {0}.'.format(record_id))
-            else:
-                full_scop_classification = scops.pop()
-                scop_tokens = full_scop_classification.split('.')
-                scop_class = scop_tokens[0]
-                if len(scop_tokens) > 1:
-                    scop_fold = '.'.join(scop_tokens[0:2])
-
-                SCOP_classifications.add(full_scop_classification)
-                SCOP_classes.add(scop_class)
-                SCOP_folds.add(scop_fold)
-
-            DSSPSimpleSSType, DSSPSimpleSSTypes = None, set([m['DSSPSimpleSSType'] for m in mutations])
-            if len(DSSPSimpleSSTypes) == 1: DSSPSimpleSSType = DSSPSimpleSSTypes.pop()
-
-            DSSPType, DSSPTypes = None, set([m['DSSPType'] for m in mutations])
-            if len(DSSPTypes) == 1: DSSPType = DSSPTypes.pop()
-
-            DSSPExposure, DSSPExposures = None, set([m['DSSPExposure'] for m in mutations])
-            if len(DSSPExposures) == 1: DSSPExposure = DSSPExposures.pop()
-
-            mutation_string = '; '.join(['{0} {1}{2}{3}'.format(m['Chain'], m['WildTypeAA'], m['ResidueID'], m['MutantAA']) for m in mutations])
-
+            # Initialize variables. For ambiguous cases where the set of distinct values has multiple values, we default to None
             residue_charge, residue_charges = None, set()
             exposure, exposures = None, set()
             volume_change, volume_changes = None, set()
+            record_wtaa, wtaas = None, set()
+            record_mutaa, mutaas = None, set()
+            DSSPSimpleSSType, DSSPSimpleSSTypes = None, set()
+            DSSPType, DSSPTypes = None, set()
+            DSSPExposure, DSSPExposures = None, set()
+            scops = set()
+            pdb_chains = set()
+
+            mutations = record['Mutations']
+            mutation_string = []
             for m in mutations:
 
                 wtaa = m['WildTypeAA']
                 mutaa = m['MutantAA']
+                mutation_string.append('{0} {1}{2}{3}'.format(m['Chain'], m['WildTypeAA'], m['ResidueID'], m['MutantAA']))
+
+                # Residue types and chain
+                wtaas.add(wtaa)
+                mutaas.add(mutaa)
+                pdb_chains.add(m['Chain'])
+                scops.add(m['SCOP class'])
+                DSSPSimpleSSTypes.add(m['DSSPSimpleSSType'])
+                DSSPTypes.add(m['DSSPType'])
+                DSSPExposures.add(m['DSSPExposure'])
 
                 # Burial
                 if m['DSSPExposure'] != None:
@@ -781,33 +781,57 @@ class BenchmarkRun(object):
                 else:
                      raise colortext.Exception('Should not reach here.')
 
-            record_wtaa, wtaas = None, set([m['WildTypeAA'] for m in mutations])
-            if len(wtaas) == 1: record_wtaa = wtaas.pop()
+            # Create a string representing the mutations (useful for labeling rather than analysis)
+            mutation_string = '; '.join(mutation_string)
 
-            record_mutaa, mutaas = None, set([m['MutantAA'] for m in mutations])
-            if len(mutaas) == 1: record_mutaa = mutaas.pop()
-
-            pdb_chain, pdb_chains = None, set([m['Chain'] for m in mutations])
-            assert(len(pdb_chains) == 1)
-            pdb_chain = pdb_chains.pop()
-
-            # Take unique values
+            # Taking unique values, determine the residue charges of the wildtype and mutant residues, the wildtype residue exposure, and the relative change in van der Waals volume
             if len(residue_charges) == 1: residue_charge = residue_charges.pop()
             if len(exposures) == 1: exposure = exposures.pop()
             if len(volume_changes) == 1: volume_change = volume_changes.pop()
 
+            # Taking unique values, determine the wildtype and mutant residue types
+            all_residues = wtaas.union(mutaas)
+            if len(wtaas) == 1: record_wtaa = wtaas.pop()
+            if len(mutaas) == 1: record_mutaa = mutaas.pop()
+            assert(len(pdb_chains) == 1) # we expect monomeric cases
+            pdb_chain = pdb_chains.pop()
+
+            # Taking unique values, determine the secondary structure and residue exposures from the DSSP data in the dataset
+            if len(DSSPSimpleSSTypes) == 1: DSSPSimpleSSType = DSSPSimpleSSTypes.pop()
+            if len(DSSPTypes) == 1: DSSPType = DSSPTypes.pop()
+            if len(DSSPExposures) == 1: DSSPExposure = DSSPExposures.pop()
+
+            # Determine the SCOP classification from the SCOPe data in the dataset
+            full_scop_classification, scop_class, scop_fold = None, None, None
+            if len(scops) > 1:
+                colortext.warning('Warning: There is more than one SCOPe class for record {0}.'.format(record_id))
+            else:
+                full_scop_classification = scops.pop()
+                scop_tokens = full_scop_classification.split('.')
+                scop_class = scop_tokens[0]
+                if len(scop_tokens) > 1:
+                    scop_fold = '.'.join(scop_tokens[0:2])
+
+                # SCOP classification counters
+                SCOP_classifications.add(full_scop_classification)
+                SCOP_classes.add(scop_class)
+                SCOP_folds.add(scop_fold)
+
             # Set the PDB input path
             pdb_data = {}
             try:
+                pdb_reads += 1
                 pdb_data_ = json.loads(read_file('../../input/json/pdbs.json'))
                 for k, v in pdb_data_.iteritems():
                     pdb_data[k.upper()] = v
             except Exception, e:
                 colortext.error('input/json/pdbs.json could not be found - PDB-specific analysis cannot be performed.')
 
+            # Calculate the stability classification and absolute_error for this case
             stability_classification = fraction_correct([record['DDG']], [predicted_data[ddg_analysis_type]], x_cutoff = stability_classication_x_cutoff, y_cutoff = stability_classication_y_cutoff)
             assert(stability_classification == 0 or stability_classification == 1)
             stability_classification = int(stability_classification)
+            absolute_error = abs(record['DDG'] - predicted_data[ddg_analysis_type])
 
             # Partition the data by PDB resolution with bins: N/A, <1.5, 1.5-<2.0, 2.0-<2.5, >=2.5
             pdb_record = pdb_data.get(record['PDBFileID'].upper())
@@ -824,17 +848,22 @@ class BenchmarkRun(object):
                     pdb_resolution_bin = '>=2.5'
             pdb_resolution_bin = pdb_resolution_bin or 'N/A'
 
+            # Mark mutations involving glycine or proline
+            has_gp_mutation = 'G' in all_residues or 'P' in all_residues
+
             # Create the data matrix
-            json_record = dict(
+            dataframe_record = dict(
                 DatasetID = record_id,
                 PDBFileID = record['PDBFileID'],
                 Mutations = mutation_string,
+                NumberOfMutations = len(mutations),
                 Experimental = record['DDG'],
                 Predicted = predicted_data[ddg_analysis_type],
-                AbsoluteError = abs(record['DDG'] - predicted_data[ddg_analysis_type]),
+                AbsoluteError = absolute_error,
                 StabilityClassification = stability_classification,
                 ResidueCharges = residue_charge,
                 VolumeChange = volume_change,
+                HasGPMutation = has_gp_mutation,
                 WildTypeDSSPType = DSSPType,
                 WildTypeDSSPSimpleSSType = DSSPSimpleSSType,
                 WildTypeDSSPExposure = DSSPExposure,
@@ -849,14 +878,22 @@ class BenchmarkRun(object):
                 MonomerLength = len(pdb_record.get('Chains', {}).get(pdb_chain, {}).get('Sequence', '')) or None,
                 )
 
-            json_records['ByVolume'][determine_SL_class(record)].append(json_record)
-            json_records['GP'][has_G_or_P(record)].append(json_record)
-            json_records['All'].append(json_record)
+            assert(determine_SL_class(record, amino_acid_details) == dataframe_record['VolumeChange'])
+            assert(has_gp_mutation == has_G_or_P(record))
+
+            #assert()
+
+            #    json_records['ByVolume'][determine_SL_class(record)].append(json_record)
+            #json_records['GP'][has_G_or_P(record)].append(json_record)
+            dataframe.append(dataframe_record)
 
             for h in csv_headers:
-                assert(',' not in str(json_record[h]))
-            csv_file.append(','.join([str(json_record[h]) for h in csv_headers]))
+                assert(',' not in str(dataframe_record[h]))
+            csv_file.append(','.join([str(dataframe_record[h]) for h in csv_headers]))
 
+        print('pdb_reads', pdb_reads)
+        print(time.time() - t1)
+        sys.exit(0)
         colortext.message('The mutated residues span {0} unique SCOP(e) classifications in {1} unique SCOP(e) folds and {2} unique SCOP(e) classes.'.format(len(SCOP_classifications), len(SCOP_folds), len(SCOP_classes)))
 
         write_file(analysis_csv_input_filepath, '\n'.join(csv_file))
@@ -922,7 +959,7 @@ class BenchmarkRun(object):
         scatterplot_generic('Experimental vs. Prediction - PDB resolution', json_records['All'], scatterplot_pdb_res_binned, '{0}_scatterplot_pdb_res_binned.png'.format(plot_filename_prefix))
         scatterplot_generic('Experimental vs. Prediction - Chain length', json_records['All'], scatterplot_chain_length, '{0}_scatterplot_chain_length.png'.format(plot_filename_prefix))
 
-        if include_derived_mutations:
+        if self.include_derived_mutations:
             colortext.message('\nRunning analysis (derived mutations will be included):')
         else:
             colortext.message('\nRunning analysis (derived mutations will be omitted):')
