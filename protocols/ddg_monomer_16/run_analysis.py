@@ -111,60 +111,9 @@ except:
     import simplejson as json
 
 
-
-
-###
-
-# todo: This methods are now deprecated since we store this information in the dataframe. Update the callers and remove these
-
-
-def determine_SL_class(record, amino_acid_details):
-    '''Returns:
-        - SL if all of the mutations are from smaller (by volume) residues to larger residues
-        - LS if all of the mutations are from larger residues to smaller residues
-        - XX if all of the mutations are to and from residues of the same size e.g. M -> L
-        - O  if none of the cases above apply (this occurs when records with multiple mutations mix the types above).'''
-
-    mutation_types = set()
-    for m in record['Mutations']:
-        wt_vol, mut_vol = amino_acid_details[m['WildTypeAA']]['van der Waals volume'], amino_acid_details[m['MutantAA']]['van der Waals volume']
-
-        if wt_vol < mut_vol:
-            mutation_types.add('SL')
-        elif wt_vol > mut_vol:
-            mutation_types.add('LS')
-        else:
-            mutation_types.add('XX')
-    if len(mutation_types) == 1:
-        return mutation_types.pop()
-    return 'O'
-
-
-def has_G_or_P(record):
-    '''Returns True if any of the wildtype or mutant residues are glycine or proline and False otherwise.'''
-    for m in record['Mutations']:
-        if m['WildTypeAA'] == 'G' or m['MutantAA'] == 'G' or m['WildTypeAA'] == 'P' or m['MutantAA'] == 'P': # G is more likely
-            return True
-    return False
-####
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 # Regex used to extract data from Rosetta output
 ddGMover_regex = re.compile("^protocols.moves.ddGMover:\s*mutate\s*.*?\s*wildtype_dG\s*is:\s*.*?and\s*mutant_dG\s*is:\s*.*?\s*ddG\s*is:\s*(.*)$")
+
 
 # Colors used in the plots
 plot_colors = dict(
@@ -174,6 +123,7 @@ plot_colors = dict(
     cornflower_blue = '#6495ED',
     firebrick = '#B22222',
 )
+
 
 # Human-readable descriptions for the volume breakdown
 by_volume_descriptions = dict(
@@ -188,7 +138,6 @@ by_volume_descriptions = dict(
 # the analysis.
 # The BenchmarkRun class creates a dataframe containing the raw data used for analysis. This dataframe is then used to
 # performs analysis for the particular run or between another runs.
-
 
 
 class BenchmarkManager(object):
@@ -699,11 +648,11 @@ class BenchmarkRun(object):
         # Initialize the data structures
         dataframe = []
         csv_headers=[
-            'DatasetID', 'PDBFileID', 'Mutations', 'Experimental', 'Predicted', 'AbsoluteError', 'StabilityClassification',
+            'DatasetID', 'PDBFileID', 'Mutations', 'NumberOfMutations', 'Experimental', 'Predicted', 'AbsoluteError', 'StabilityClassification',
             'ResidueCharges', 'VolumeChange',
             'WildTypeDSSPType', 'WildTypeDSSPSimpleSSType', 'WildTypeDSSPExposure',
             'WildTypeSCOPClass', 'WildTypeSCOPFold', 'WildTypeSCOPClassification',
-            'WildTypeExposure', 'WildTypeAA', 'MutantAA',
+            'WildTypeExposure', 'WildTypeAA', 'MutantAA', 'HasGPMutation',
             'PDBResolution', 'PDBResolutionBin', 'MonomerLength',
         ]
         csv_file = [','.join(csv_headers)]
@@ -713,13 +662,9 @@ class BenchmarkRun(object):
         SCOP_folds = set()
         SCOP_classes = set()
 
-        pdb_reads = 0
-        t1 = time.time()
-
         # Set the PDB input path
         pdb_data = {}
         try:
-            pdb_reads += 1
             pdb_data_ = json.loads(read_file('../../input/json/pdbs.json'))
             for k, v in pdb_data_.iteritems():
                 pdb_data[k.upper()] = v
@@ -878,26 +823,22 @@ class BenchmarkRun(object):
                 MonomerLength = len(pdb_record.get('Chains', {}).get(pdb_chain, {}).get('Sequence', '')) or None,
                 )
 
-            assert(determine_SL_class(record, amino_acid_details) == dataframe_record['VolumeChange'])
-            assert(has_gp_mutation == has_G_or_P(record))
-
-            #assert()
-
-            #    json_records['ByVolume'][determine_SL_class(record)].append(json_record)
-            #json_records['GP'][has_G_or_P(record)].append(json_record)
             dataframe.append(dataframe_record)
 
             for h in csv_headers:
                 assert(',' not in str(dataframe_record[h]))
             csv_file.append(','.join([str(dataframe_record[h]) for h in csv_headers]))
+            #assert(sorted(csv_headers) == sorted(dataframe_record.keys()))
 
-        print('pdb_reads', pdb_reads)
-        print(time.time() - t1)
-        sys.exit(0)
         colortext.message('The mutated residues span {0} unique SCOP(e) classifications in {1} unique SCOP(e) folds and {2} unique SCOP(e) classes.'.format(len(SCOP_classifications), len(SCOP_folds), len(SCOP_classes)))
 
         write_file(analysis_csv_input_filepath, '\n'.join(csv_file))
-        write_file(analysis_json_input_filepath, json.dumps(json_records['All'], indent = 4, sort_keys=True))
+        write_file(analysis_json_input_filepath, json.dumps(dataframe, indent = 4, sort_keys=True))
+
+        dataframe = pandas.read_csv(analysis_csv_input_filepath, sep=',', header=0, skip_blank_lines=True, index_col  = 0)
+
+        #analysis_pandas_input_filepath
+        sys.exit(0)
 
         ##todo self.generate_plots
 
@@ -971,11 +912,15 @@ class BenchmarkRun(object):
             volume_groups[v] = volume_groups.get(v, [])
             volume_groups[v].append(aa_code)
 
+        raise Exception('splice the dataframe to create the ByVolume subset')
+
         print('\n\nSection 1. Breakdown by volume.')
         print('A case is considered a small-to-large (resp. large-to-small) mutation if all of the wildtype residues have a smaller (resp. larger) van der Waals volume than the corresponding mutant residue. The order is defined as %s so some cases are considered to have no change in volume e.g. MET -> LEU.' % (' < '.join([''.join(sorted(v)) for k, v in sorted(volume_groups.iteritems())])))
         for subcase in ('XX', 'SL', 'LS'):
             print('\n' + '*'*10 + (' Statistics - %s (%d cases)' % (by_volume_descriptions[subcase], len(json_records['ByVolume'][subcase]))) +'*'*10)
             print(format_stats_for_printing(get_xy_dataset_statistics(json_records['ByVolume'][subcase], fcorrect_x_cutoff = stability_classication_x_cutoff, fcorrect_y_cutoff = stability_classication_y_cutoff)))
+
+        raise Exception('splice the dataframe to create the GP subset')
 
         print('\n\nSection 2. Separating out mutations involving glycine or proline.')
         print('This cases may involve changes to secondary structure so we separate them out here.')
@@ -1375,10 +1320,7 @@ plot_scale <- scale_color_manual(
 
         lines = ['Experimental,Predicted,GP,Opacity']
         for record in data:
-            residues = set([record['WildTypeAA'], record['MutantAA']])
-            if None in residues:
-                case_type, opacity = None, 0.5
-            elif 'G' in residues or 'P' in residues:
+            if record['HasGPMutation']:
                 case_type, opacity = 'GP', 0.9
             else:
                 case_type, opacity = 'Other', 0.5
