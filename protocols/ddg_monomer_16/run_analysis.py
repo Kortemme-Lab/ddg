@@ -103,7 +103,7 @@ import StringIO
 from rosetta.write_run_file import process as write_run_file
 from analysis.libraries import docopt
 from analysis.libraries import colortext
-from analysis.stats import read_file, read_file_lines, write_file, prompt_yn, fraction_correct, fraction_correct_pandas, get_xy_dataset_statistics, plot, format_stats_for_printing, RInterface
+from analysis.stats import read_file, read_file_lines, write_file, prompt_yn, fraction_correct, fraction_correct_pandas, add_fraction_correct_values_to_dataframe, get_xy_dataset_statistics, plot, format_stats_for_printing, RInterface
 
 from run_ddg import task_subfolder as ddg_task_subfolder
 try:
@@ -857,6 +857,46 @@ class BenchmarkRun(object):
         colortext.warning('Determining a scalar adjustment with which to scale the predicted values to improve the fraction correct measurement.')
         scalar_adjustment = self.plot_optimum_prediction_fraction_correct_cutoffs_over_range(dataframe, min(self.stability_classication_x_cutoff, 0.5), max(self.stability_classication_x_cutoff, 3.0))
         print(scalar_adjustment)
+
+        # Add new columns derived from the adjusted values
+        dataframe['Predicted_adj'] = dataframe['Predicted'] / scalar_adjustment
+        dataframe['AbsoluteError_adj'] = (dataframe['Experimental'] - dataframe['Predicted_adj']).abs()
+        add_fraction_correct_values_to_dataframe(dataframe, 'Experimental', 'Predicted_adj', 'StabilityClassification_adj',  x_cutoff = stability_classication_x_cutoff, y_cutoff = stability_classication_y_cutoff)
+
+        # remove
+        for r in dataframe.iterrows():
+            stability_classification = fraction_correct([r[1]['Experimental']], [r[1]['Predicted_adj']], x_cutoff = stability_classication_x_cutoff, y_cutoff = stability_classication_y_cutoff)
+            assert(stability_classification != r[1]['StabilityClassification_adj'])
+
+        sys.exit(0)
+
+        print(dataframe['AbsoluteError_adj'].mean())
+        print(dataframe['StabilityClassification_adj'].mean())
+        #dataframe['AbsoluteError_adj'] = dataframe['AbsoluteError'] / scalar_adjustment
+        #dataframe['Predicted_adj'] = dataframe['StabilityClassification'] / scalar_adjustment
+        sys.exit(0)
+        # Create an adjusted set of records scaled according to the fraction correct fitting
+        adjusted_records = copy.deepcopy(records)
+        for record in adjusted_records:
+            record['Predicted'] = record['Predicted'] / scalar_adjustment
+        import numpy
+        x_values = [r['Experimental'] for r in adjusted_records]
+        y_values = [r['Predicted'] for r in adjusted_records]
+        num_points = len(x_values)
+        assert(num_points == len(y_values) and num_points > 0)
+        print(numpy.sum(numpy.apply_along_axis(numpy.abs, 0, numpy.subtract(x_values, y_values))) / float(num_points))
+
+        print(dataframe['Predicted_adj'])
+        print(y_values)
+
+
+
+            #print(dataframe['Predicted'] / scalar_adjustment)
+        #Predicted = predicted_data[ddg_analysis_type],
+        #AbsoluteError = absolute_error,
+        #StabilityClassification = stability_classification,
+
+
         sys.exit(0)
         # Plot which y-cutoff yields the best value for the fraction correct metric
         plot_optimum_prediction_fraction_correct_cutoffs(dataframe, stability_classication_x_cutoff)
@@ -993,16 +1033,12 @@ class BenchmarkRun(object):
         # Determine the value for the fraction correct y-value (predicted) cutoff which will approximately yield the
         # maximum fraction-correct value
 
-
         fraction_correct_range = []
-
-        t1 = time.time()
 
         # Round 1 : Coarse sampling. Test 0.5 -> 8.0 in 0.1 increments
         for z in range(5, 80):
             w = float(z) / 10.0
             fraction_correct_range.append((w, fraction_correct_pandas(dataframe, 'Experimental', 'Predicted', x_cutoff = stability_classication_x_cutoff, y_cutoff = w)))
-        fraction_correct_range_1 = copy.deepcopy(fraction_correct_range) # todo remove
 
         max_value_cutoff, max_value = fraction_correct_range[0][0], fraction_correct_range[0][1]
         for p in fraction_correct_range:
@@ -1019,42 +1055,6 @@ class BenchmarkRun(object):
             if p[1] > max_value:
                 max_value_cutoff, max_value = p[0], p[1]
 
-        print('Pandas! Pandas! Pandas!', time.time() - t1)
-
-
-        t1 = time.time()
-        x_values = [record['Experimental'] for record in self.records]
-        y_values = [record['Predicted'] for record in self.records]
-        fraction_correct_range = []
-
-        # Round 1 : Coarse sampling. Test 0.5 -> 8.0 in 0.1 increments
-        for z in range(5, 80):
-            w = float(z) / 10.0
-            fraction_correct_range.append((w, fraction_correct(x_values, y_values, x_cutoff = stability_classication_x_cutoff, y_cutoff = w)))
-        fraction_correct_range_2 = copy.deepcopy(fraction_correct_range) # todo remove
-
-        max_value_cutoff, max_value = fraction_correct_range[0][0], fraction_correct_range[0][1]
-        for p in fraction_correct_range:
-            if p[1] > max_value:
-                max_value_cutoff, max_value = p[0], p[1]
-
-        # Round 2 : Finer sampling. Test max_value_cutoff - 0.1 -> max_value_cutoff + 0.1 in 0.01 increments
-        for z in range(int((max_value_cutoff - 0.1) * 100), int((max_value_cutoff + 0.1) * 100)):
-            w = float(z) / 100.0
-            fraction_correct_range.append((w, fraction_correct(x_values, y_values, x_cutoff = stability_classication_x_cutoff, y_cutoff = w)))
-        fraction_correct_range = sorted(set(fraction_correct_range)) # sort so that we find the lowest cutoff value in case of duplicate fraction correct values
-        max_value_cutoff, max_value = fraction_correct_range[0][0], fraction_correct_range[0][1]
-        for p in fraction_correct_range:
-            if p[1] > max_value:
-                max_value_cutoff, max_value = p[0], p[1]
-
-        print('Just like old times!', time.time() - t1)
-
-        assert(len(fraction_correct_range_1) == len(fraction_correct_range_2))
-        for x in range(len(fraction_correct_range_2)):
-            assert(fraction_correct_range_1[x][0] == fraction_correct_range_2[x][0])
-            assert(abs(fraction_correct_range_1[x][1] - fraction_correct_range_2[x][1] < 0.001))
-        sys.exit(0)
         return max_value_cutoff, max_value, fraction_correct_range
 
 
@@ -1134,9 +1134,8 @@ dev.off()'''
                 lines.append(','.join(map(str, (x_cutoff, max_value_cutoff))))
             x_values.append(x_cutoff)
             y_values.append(max_value_cutoff)
-            # todo avg_scale += max_value_cutoff / x_cutoff
+            avg_scale += max_value_cutoff / x_cutoff
             x_cutoff += 0.1
-        sys.exit(0)
 
         if self.generate_plots:
             write_file(csv_filename, '\n'.join(lines))

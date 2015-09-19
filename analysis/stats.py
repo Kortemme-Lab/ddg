@@ -191,6 +191,28 @@ def gamma_CC(values_list1, values_list2):
     return gamma(ranks_list1, ranks_list2)[3]
 
 
+def fraction_correct_values(indices, x_values, y_values, x_cutoff = 1.0, y_cutoff = 1.0):
+    '''
+    An approximation to the metric used in the Kellogg et al. paper: "The fraction correct is defined as the number of mutations categorized correctly divided by the total number of mutations in the benchmark set."
+    '''
+    num_points = len(indices)
+    assert(num_points == len(x_values) == len(y_values))
+    correct = []
+    for i in range(num_points):
+        index = indices[i]
+        x = x_values[i]
+        y = y_values[i]
+        if (x >= x_cutoff) and (y >= y_cutoff): # both positive
+            correct.append(1.0)
+        elif (x <= -x_cutoff) and (y <= -y_cutoff): # both negative
+            correct.append(1.0)
+        elif (-x_cutoff < x < x_cutoff) and (-y_cutoff < y < y_cutoff): # both neutral
+            correct.append(1.0)
+        else:
+            correct.append(0.0)
+    return correct
+
+
 def fraction_correct(x_values, y_values, x_cutoff = 1.0, y_cutoff = 1.0):
     '''
     An approximation to the metric used in the Kellogg et al. paper: "The fraction correct is defined as the number of mutations categorized correctly divided by the total number of mutations in the benchmark set."
@@ -213,6 +235,12 @@ def fraction_correct(x_values, y_values, x_cutoff = 1.0, y_cutoff = 1.0):
 def fraction_correct_pandas(dataframe, x_label, y_label, x_cutoff = 1.0, y_cutoff = 1.0):
     '''A little (<6%) slower than fraction_correct due to the data extraction overhead.'''
     return fraction_correct(dataframe[x_label].values.tolist(), dataframe[y_label].values.tolist(), x_cutoff = x_cutoff, y_cutoff = y_cutoff)
+
+
+def add_fraction_correct_values_to_dataframe(dataframe, x_label, y_label, new_label, x_cutoff = 1.0, y_cutoff = 1.0):
+    '''Adds a new column (new_label) to the dataframe with the fraction correct computed over X and Y values.'''
+    new_series_values = fraction_correct_values(dataframe.index.values.tolist(), dataframe[x_label].values.tolist(), dataframe[y_label].values.tolist(), x_cutoff = x_cutoff, y_cutoff = y_cutoff)
+    dataframe.insert(len(dataframe.columns), new_label, new_series_values)
 
 
 def fraction_correct_fuzzy_linear_create_vector(z, z_cutoff, z_fuzzy_range):
