@@ -716,6 +716,16 @@ class BenchmarkRun(object):
         pdb_reads = 0
         t1 = time.time()
 
+        # Set the PDB input path
+        pdb_data = {}
+        try:
+            pdb_reads += 1
+            pdb_data_ = json.loads(read_file('../../input/json/pdbs.json'))
+            for k, v in pdb_data_.iteritems():
+                pdb_data[k.upper()] = v
+        except Exception, e:
+            colortext.error('input/json/pdbs.json could not be found - PDB-specific analysis cannot be performed.')
+
         # Create the dataframe
         for record_id, predicted_data in sorted(analysis_data.iteritems()):
 
@@ -736,9 +746,9 @@ class BenchmarkRun(object):
             DSSPExposure, DSSPExposures = None, set()
             scops = set()
             pdb_chains = set()
+            mutation_string = []
 
             mutations = record['Mutations']
-            mutation_string = []
             for m in mutations:
 
                 wtaa = m['WildTypeAA']
@@ -816,16 +826,6 @@ class BenchmarkRun(object):
                 SCOP_classifications.add(full_scop_classification)
                 SCOP_classes.add(scop_class)
                 SCOP_folds.add(scop_fold)
-
-            # Set the PDB input path
-            pdb_data = {}
-            try:
-                pdb_reads += 1
-                pdb_data_ = json.loads(read_file('../../input/json/pdbs.json'))
-                for k, v in pdb_data_.iteritems():
-                    pdb_data[k.upper()] = v
-            except Exception, e:
-                colortext.error('input/json/pdbs.json could not be found - PDB-specific analysis cannot be performed.')
 
             # Calculate the stability classification and absolute_error for this case
             stability_classification = fraction_correct([record['DDG']], [predicted_data[ddg_analysis_type]], x_cutoff = stability_classication_x_cutoff, y_cutoff = stability_classication_y_cutoff)
