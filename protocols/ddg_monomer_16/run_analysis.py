@@ -863,10 +863,6 @@ class BenchmarkRun(object):
         dataframe['AbsoluteError_adj'] = (dataframe['Experimental'] - dataframe['Predicted_adj']).abs()
         add_fraction_correct_values_to_dataframe(dataframe, 'Experimental', 'Predicted_adj', 'StabilityClassification_adj',  x_cutoff = stability_classication_x_cutoff, y_cutoff = stability_classication_y_cutoff)
 
-        # remove
-        for r in dataframe.iterrows():
-            stability_classification = fraction_correct([r[1]['Experimental']], [r[1]['Predicted_adj']], x_cutoff = stability_classication_x_cutoff, y_cutoff = stability_classication_y_cutoff)
-            assert(stability_classification != r[1]['StabilityClassification_adj'])
 
         sys.exit(0)
 
