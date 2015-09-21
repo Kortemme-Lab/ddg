@@ -53,8 +53,11 @@ Options:
     --force
         When this option is set, the most recent directory in job_output, if it exists, will be used without prompting the user.
 
-    -X --do_not_generate_plots
-        When this option is set, the analysis files are generated and the metrics are computed but graphical plots are not generated.
+    -G --do_not_generate_plots
+        When this option is set, the graphical plots are not generated.
+
+    -R --do_not_report_analysis
+        When this option is set, the analyses are not printed to screen.
 
     --burial_cutoff CUTOFF
         The cutoff below which a residue is considered buried (value should be between 0-1.0). [default: 0.25]
@@ -170,6 +173,7 @@ class BenchmarkManager(object):
 
         # Plot-generation option
         self.generate_plots = not(arguments['--do_not_generate_plots'])
+        self.report_analysis = not(arguments['--do_not_report_analysis'])
 
         # Whether or not we include records marked as derived in the analysis
         self.include_derived_mutations = arguments['--include_derived_mutations']
@@ -316,6 +320,7 @@ class BenchmarkManager(object):
                 include_derived_mutations = self.include_derived_mutations,
                 take_lowest = self.take_lowest,
                 generate_plots = self.generate_plots,
+                report_analysis = self.report_analysis,
                 burial_cutoff = self.burial_cutoff,
                 stability_classication_x_cutoff = self.stability_classication_x_cutoff,
                 stability_classication_y_cutoff = self.stability_classication_y_cutoff,
@@ -539,7 +544,7 @@ class BenchmarkRun(object):
 
 
     def __init__(self, benchmark_run_name, benchmark_run_directory, analysis_directory, dataset_cases, analysis_data, use_single_reported_value,
-                 take_lowest = 3, generate_plots = True, include_derived_mutations = False, burial_cutoff = 0.25,
+                 take_lowest = 3, generate_plots = True, report_analysis = True, include_derived_mutations = False, burial_cutoff = 0.25,
                  stability_classication_x_cutoff = 1.0, stability_classication_y_cutoff = 1.0, use_existing_benchmark_data = False):
         self.amino_acid_details, self.CAA, self.PAA, self.HAA = BenchmarkRun.get_amino_acid_details()
         self.benchmark_run_name = benchmark_run_name
@@ -551,6 +556,7 @@ class BenchmarkRun(object):
         self.analysis_file_prefix = os.path.join(self.analysis_directory, self.benchmark_run_name + '_subplots', self.benchmark_run_name + '_')
         self.use_single_reported_value = use_single_reported_value
         self.generate_plots = generate_plots
+        self.report_analysis = report_analysis
         self.take_lowest = take_lowest
         self.include_derived_mutations = include_derived_mutations
         self.burial_cutoff = burial_cutoff
@@ -913,9 +919,17 @@ class BenchmarkRun(object):
             self.plot()
 
 
+    def report(self, str, fn = None):
+        if self.report_analysis:
+            if fn:
+                fn(str)
+            else:
+                print(str)
+
+
     def calculate_metrics(self):
         '''Calculates the main metrics for the benchmark run and writes them to file.'''
-        
+
         dataframe = self.dataframe
         scalar_adjustment = self.scalar_adjustment
 
@@ -925,9 +939,9 @@ class BenchmarkRun(object):
             metrics_textfile.append('\nRunning analysis (derived mutations will be included):')
         else:
             metrics_textfile.append('\nRunning analysis (derived mutations will be omitted):')
-        colortext.message(metrics_textfile[-1])
+        self.report(metrics_textfile[-1], fn = colortext.message)
         metrics_textfile.append('The stability classification cutoffs are: Experimental=%0.2f kcal/mol, Predicted=%0.2f energy units.' % (self.stability_classication_x_cutoff, self.stability_classication_y_cutoff))
-        colortext.warning(metrics_textfile[-1])
+        self.report(metrics_textfile[-1], fn = colortext.warning)
 
         amino_acid_details, CAA, PAA, HAA = self.amino_acid_details, self.CAA, self.PAA, self.HAA
 
@@ -940,57 +954,49 @@ class BenchmarkRun(object):
 
         metrics_textfile.append('\n\nSection 1. Breakdown by volume.')
         metrics_textfile.append('A case is considered a small-to-large (resp. large-to-small) mutation if all of the wildtype residues have a smaller (resp. larger) van der Waals volume than the corresponding mutant residue. The order is defined as %s so some cases are considered to have no change in volume e.g. MET -> LEU.' % (' < '.join([''.join(sorted(v)) for k, v in sorted(volume_groups.iteritems())])))
-        print('\n'.join(metrics_textfile[-2:]))
+        self.report('\n'.join(metrics_textfile[-2:]), fn = colortext.sprint)
         for subcase in ('XX', 'SL', 'LS'):
             subcase_dataframe = dataframe[dataframe['VolumeChange'] == subcase]
             metrics_textfile.append('\n' + '*'*10 + (' Statistics - %s (%d cases)' % (by_volume_descriptions[subcase], len(subcase_dataframe))) +'*'*10)
             metrics_textfile.append(format_stats_for_printing(get_xy_dataset_statistics_pandas(subcase_dataframe, 'Experimental', 'Predicted', fcorrect_x_cutoff = self.stability_classication_x_cutoff, fcorrect_y_cutoff = self.stability_classication_y_cutoff)))
-            print('\n'.join(metrics_textfile[-2:]))
+            self.report('\n'.join(metrics_textfile[-2:]), fn = colortext.sprint)
 
         metrics_textfile.append('\n\nSection 2. Separating out mutations involving glycine or proline.')
         metrics_textfile.append('This cases may involve changes to secondary structure so we separate them out here.')
         subcase_dataframe = dataframe[dataframe['HasGPMutation'] == 1]
         metrics_textfile.append('\n' + '*'*10 + (' Statistics - cases with G or P (%d cases)' % (len(subcase_dataframe))) +'*'*10)
         metrics_textfile.append(format_stats_for_printing(get_xy_dataset_statistics_pandas(subcase_dataframe, 'Experimental', 'Predicted', fcorrect_x_cutoff = self.stability_classication_x_cutoff, fcorrect_y_cutoff = self.stability_classication_y_cutoff)))
-        print('\n'.join(metrics_textfile[-4:]))
+        self.report('\n'.join(metrics_textfile[-4:]), fn = colortext.sprint)
         subcase_dataframe = dataframe[dataframe['HasGPMutation'] == 0]
         metrics_textfile.append('\n' + '*'*10 + (' Statistics - cases without G or P (%d cases)' % (len(subcase_dataframe))) +'*'*10)
         metrics_textfile.append(format_stats_for_printing(get_xy_dataset_statistics_pandas(subcase_dataframe, 'Experimental', 'Predicted', fcorrect_x_cutoff = self.stability_classication_x_cutoff, fcorrect_y_cutoff = self.stability_classication_y_cutoff)))
-        print('\n'.join(metrics_textfile[-2:]))
+        self.report('\n'.join(metrics_textfile[-2:]), fn = colortext.sprint)
 
 
         metrics_textfile.append('\nSection 3. Entire dataset using a scaling factor of 1/%.03f to improve the fraction correct metric.' % scalar_adjustment)
-        print(metrics_textfile[-1])
+        self.report(metrics_textfile[-1], fn = colortext.sprint)
         metrics_textfile.append('Warning: Results in this section use an averaged scaling factor to improve the value for the fraction correct metric. This scalar will vary over benchmark runs so these results should not be interpreted as performance results; they should be considered as what could be obtained if the predicted values were scaled by a "magic" value.')
-        colortext.warning(metrics_textfile[-1])
+        self.report(metrics_textfile[-1], fn = colortext.warning)
         metrics_textfile.append('\n' + '*'*10 + (' Statistics - complete dataset (%d cases)' % len(dataframe)) +'*'*10)
         # For these statistics, we assume that we have reduced any scaling issues and use the same cutoff for the Y-axis as the user specified for the X-axis
         metrics_textfile.append(format_stats_for_printing(get_xy_dataset_statistics_pandas(dataframe, 'Experimental', 'Predicted_adj', fcorrect_x_cutoff = self.stability_classication_x_cutoff, fcorrect_y_cutoff = self.stability_classication_x_cutoff)))
-        print('\n'.join(metrics_textfile[-2:]))
+        self.report('\n'.join(metrics_textfile[-2:]), fn = colortext.sprint)
 
         metrics_textfile.append('\n\nSection 4. Entire dataset.')
-        print(metrics_textfile[-1])
+        self.report(metrics_textfile[-1], fn = colortext.sprint)
         metrics_textfile.append('Overall statistics')
-        colortext.message(metrics_textfile[-1])
+        self.report(metrics_textfile[-1], fn = colortext.message)
         metrics_textfile.append('\n' + '*'*10 + (' Statistics - complete dataset (%d cases)' % len(dataframe)) +'*'*10)
         metrics_textfile.append(format_stats_for_printing(get_xy_dataset_statistics_pandas(dataframe, 'Experimental', 'Predicted', fcorrect_x_cutoff = self.stability_classication_x_cutoff, fcorrect_y_cutoff = self.stability_classication_y_cutoff)))
-        print('\n'.join(metrics_textfile[-2:]))
+        self.report('\n'.join(metrics_textfile[-2:]), fn = colortext.sprint)
 
         # Write the analysis to file
         write_file(self.metrics_filepath, '\n'.join(metrics_textfile))
 
 
-    def compare(self, other):
-        '''Compare this benchmark run with another run.'''
-        pass
-        #todo implement this
-
-
     def plot(self):
 
-        raise Exception('implement this')
-
-        sys.exit(0)
+        dataframe = self.dataframe
         print(dataframe['AbsoluteError_adj'].mean())
         print(dataframe['StabilityClassification_adj'].mean())
         self.analysis_file_prefix
@@ -1054,6 +1060,12 @@ class BenchmarkRun(object):
             if p.returncode != 0: raise Exception('')
         except:
             colortext.error('An error occurred while combining the positional scatterplots using the convert application (ImageMagick).')
+
+
+    def compare(self, other):
+        '''Compare this benchmark run with another run.'''
+        pass
+        #todo implement this
 
 
     def determine_optimum_fraction_correct_cutoffs(self, dataframe, stability_classication_x_cutoff):
