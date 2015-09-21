@@ -59,6 +59,9 @@ Options:
     -R --do_not_report_analysis
         When this option is set, the analyses are not printed to screen.
 
+    --silent
+        When this option is set, nothing is written to the terminal.
+
     --burial_cutoff CUTOFF
         The cutoff below which a residue is considered buried (value should be between 0-1.0). [default: 0.25]
 
@@ -144,8 +147,22 @@ by_volume_descriptions = dict(
 # The BenchmarkRun class creates a dataframe containing the raw data used for analysis. This dataframe is then used to
 # performs analysis for the particular run or between another runs.
 
+class ReportingObject(object):
 
-class BenchmarkManager(object):
+
+    def __init__(self, silent = False):
+        self.silent = silent
+
+
+    def log(self, str, fn = None):
+        if not self.silent:
+            if fn:
+                fn(str)
+            else:
+                print(str)
+
+
+class BenchmarkManager(ReportingObject):
     '''This class is responsible for extract the data from benchmark runs and creating BenchmarkRun objects which can then be called to perform analysis.'''
 
 
@@ -174,6 +191,7 @@ class BenchmarkManager(object):
         # Plot-generation option
         self.generate_plots = not(arguments['--do_not_generate_plots'])
         self.report_analysis = not(arguments['--do_not_report_analysis'])
+        self.silent = arguments['--silent']
 
         # Whether or not we include records marked as derived in the analysis
         self.include_derived_mutations = arguments['--include_derived_mutations']
@@ -245,7 +263,7 @@ class BenchmarkManager(object):
                     answer = None
                     if arguments.get('--force'):
                         answer = True
-                        print('\nRunning analysis from the run in %s.' % most_recent_directory)
+                        self.log('\nRunning analysis from the run in %s.' % most_recent_directory)
                     else:
                         answer = prompt_yn('\nNo benchmark run path was specified. Use %s (y/n)?' % most_recent_directory)
                     if not answer:
@@ -253,7 +271,7 @@ class BenchmarkManager(object):
                     benchmark_run_directories = [most_recent_directory]
                     if len(benchmark_run_names) == 0:
                         benchmark_run_names.append('')
-                        colortext.warning('No benchmark_run_name argument was specified. Defaulting to a blank name.')
+                        colortext.warning('No benchmark_run_name argument was specified. Defaulting to a blank name.') # we write to stdout here despite the user option
                     elif len(benchmark_run_names) > 1:
                         raise colortext.Exception('No benchmark_run_directory was specified (one recent directory was chosen automatically) but multiple --benchmark_run_name arguments were specified.')
         assert(len(benchmark_run_directories) == len(benchmark_run_names))
@@ -267,7 +285,7 @@ class BenchmarkManager(object):
 
             benchmark_run_directory = benchmark_run_directories[x]
             benchmark_run_name = benchmark_run_names[x]
-            colortext.message('Setting up the analysis data for {0} in {1}.'.format(benchmark_run_name, benchmark_run_directory))
+            self.log('Setting up the analysis data for {0} in {1}.'.format(benchmark_run_name, benchmark_run_directory), fn = colortext.message)
 
             # Check that the job output directories exist
             output_data_dir = os.path.join(benchmark_run_directory, 'data')
@@ -290,25 +308,31 @@ class BenchmarkManager(object):
             benchmark_data_filepath = os.path.join(benchmark_run_directory, 'benchmark_data.json')
             analysis_data = {}
             if not(os.path.exists(benchmark_data_filepath)) or arguments.get('--use_existing_benchmark_data') == 0:
-                colortext.warning('Creating %s which contains component and summary scores for each case and generated structure.' % benchmark_data_filepath)
+                self.log('Creating %s which contains component and summary scores for each case and generated structure.' % benchmark_data_filepath, fn = colortext.warning)
+
                 job_dirs = sorted([jd for jd in glob.glob(os.path.join(ddg_data_dir, '*')) if os.path.isdir(jd) and os.path.split(jd)[1].isdigit()])
                 c, num_dirs = 0.0, float(len(job_dirs)) / 100.0
                 for jd in job_dirs:
                     jdirname = os.path.split(jd)[1]
                     record_id = int(jdirname)
                     c += 1.0
-                    colortext.wcyan('\rProgress: {0:d}%'.format(int(c/num_dirs))); sys.stdout.flush()
+                    self.log('\rProgress: {0:d}%'.format(int(c/num_dirs)), colortext.wcyan)
+                    if not self.silent: sys.stdout.flush()
                     analysis_data[record_id] = BenchmarkManager.extract_data(jd, self.take_lowest)
-                colortext.wlightpurple('\rWriting to file...'); sys.stdout.flush()
+                self.log('\rWriting to file...', colortext.wlightpurple)
+                if not self.silent: sys.stdout.flush()
                 write_file(benchmark_data_filepath, json.dumps(analysis_data, indent = 4, sort_keys=True))
-                colortext.wgrey('\r'); sys.stdout.flush()
+                self.log('\r', colortext.wgrey)
+                if not self.silent: sys.stdout.flush()
             else:
-                colortext.warning('Found an existing benchmark_data.json file containing component and summary scores for each case and generated structure:')
-                colortext.wyellow('\r...loading'); sys.stdout.flush()
+                self.log('Found an existing benchmark_data.json file containing component and summary scores for each case and generated structure:', colortext.warning)
+                self.log('\r...loading', colortext.wyellow)
+                if not self.silent: sys.stdout.flush()
                 analysis_data_ = json.loads(read_file(benchmark_data_filepath))
                 for k, v in analysis_data_.iteritems():
                     analysis_data[int(k)] = v
-                colortext.wgrey('\r'); sys.stdout.flush()
+                self.log('\r', colortext.wgrey)
+                if not self.silent: sys.stdout.flush()
 
             self.benchmark_run_data[benchmark_run_name] = BenchmarkRun(
                 benchmark_run_name,
@@ -321,6 +345,7 @@ class BenchmarkManager(object):
                 take_lowest = self.take_lowest,
                 generate_plots = self.generate_plots,
                 report_analysis = self.report_analysis,
+                silent = self.silent,
                 burial_cutoff = self.burial_cutoff,
                 stability_classication_x_cutoff = self.stability_classication_x_cutoff,
                 stability_classication_y_cutoff = self.stability_classication_y_cutoff,
@@ -344,12 +369,12 @@ class BenchmarkManager(object):
 
         # Create the dataframes for each benchmark
         for benchmark_run_name, br in sorted(self.benchmark_run_data.iteritems()):
-            colortext.message('\nExtracting the run-data the analysis for {0}.'.format(benchmark_run_name))
+            self.log('\nExtracting the run-data the analysis for {0}.'.format(benchmark_run_name), colortext.message)
             br.create_dataframe()
 
         # Run the individual analysis
         for benchmark_run_name, br in sorted(self.benchmark_run_data.iteritems()):
-            colortext.message('\nRunning the analysis for {0}.'.format(benchmark_run_name))
+            self.log('\nRunning the analysis for {0}.'.format(benchmark_run_name), colortext.message)
             br.analyze()
 
         # Compare the benchmark runs against each other
@@ -535,7 +560,7 @@ class BenchmarkManager(object):
 
 
 
-class BenchmarkRun(object):
+class BenchmarkRun(ReportingObject):
     '''A object to contain benchmark run data which can be used to analyze that run or else to cross-analyze the run with another run.'''
 
     # Class variables
@@ -544,7 +569,7 @@ class BenchmarkRun(object):
 
 
     def __init__(self, benchmark_run_name, benchmark_run_directory, analysis_directory, dataset_cases, analysis_data, use_single_reported_value,
-                 take_lowest = 3, generate_plots = True, report_analysis = True, include_derived_mutations = False, burial_cutoff = 0.25,
+                 take_lowest = 3, generate_plots = True, report_analysis = True, include_derived_mutations = False, silent = False, burial_cutoff = 0.25,
                  stability_classication_x_cutoff = 1.0, stability_classication_y_cutoff = 1.0, use_existing_benchmark_data = False):
         self.amino_acid_details, self.CAA, self.PAA, self.HAA = BenchmarkRun.get_amino_acid_details()
         self.benchmark_run_name = benchmark_run_name
@@ -557,6 +582,7 @@ class BenchmarkRun(object):
         self.use_single_reported_value = use_single_reported_value
         self.generate_plots = generate_plots
         self.report_analysis = report_analysis
+        self.silent = silent
         self.take_lowest = take_lowest
         self.include_derived_mutations = include_derived_mutations
         self.burial_cutoff = burial_cutoff
@@ -631,6 +657,14 @@ class BenchmarkRun(object):
         return BenchmarkRun.amino_acid_details, BenchmarkRun.CAA, BenchmarkRun.PAA, BenchmarkRun.HAA
 
 
+    def report(self, str, fn = None):
+        if (not self.silent) and (self.report_analysis):
+            if fn:
+                fn(str)
+            else:
+                print(str)
+
+
     def create_subplot_directory(self):
         # Create subplot directory
         if not(os.path.exists(self.subplot_directory)):
@@ -670,11 +704,11 @@ class BenchmarkRun(object):
             self.create_subplot_directory()
 
         # Create XY data
-        print('Creating the analysis input file %s and human-readable CSV and JSON versions %s and %s.' % (self.analysis_pandas_input_filepath, self.analysis_csv_input_filepath, self.analysis_json_input_filepath))
+        self.log('Creating the analysis input file %s and human-readable CSV and JSON versions %s and %s.' % (self.analysis_pandas_input_filepath, self.analysis_csv_input_filepath, self.analysis_json_input_filepath))
         if len(analysis_data) > len(dataset_cases):
             raise colortext.Exception('ERROR: There seems to be an error - there are more predictions than cases in the dataset. Exiting.')
         elif len(analysis_data) < len(dataset_cases):
-            colortext.error('\nWARNING: %d cases missing for analysis; there are %d predictions in the output directory but %d cases in the dataset. The analysis below does not cover the complete dataset.\n' % (len(dataset_cases) - len(analysis_data), len(analysis_data), len(dataset_cases)))
+            self.log('\nWARNING: %d cases missing for analysis; there are %d predictions in the output directory but %d cases in the dataset. The analysis below does not cover the complete dataset.\n' % (len(dataset_cases) - len(analysis_data), len(analysis_data), len(dataset_cases)), colortext.error)
 
         # ddg_analysis_type can be set to 'DDG' or 'DDG_Top[x]' (e.g. 'DDG_Top3').
         # 'DDG' uses the value reported by ddg_monomer.
@@ -687,7 +721,7 @@ class BenchmarkRun(object):
             self.ddg_analysis_type_description = '\nThe predicted DDG value per case is computed using the {0} lowest-scoring mutant structures and the {0} lowest-scoring wildtype structures as in the paper by Kellogg et al.'.format(self.take_lowest)
         else:
             self.ddg_analysis_type_description = '\nThe predicted DDG value per case is computed using the {0} lowest-scoring mutant structures and the {0} lowest-scoring wildtype structures.'.format(self.take_lowest)
-        print(self.ddg_analysis_type_description)
+        self.log(self.ddg_analysis_type_description)
 
         # Initialize the data structures
         csv_headers=[
@@ -712,7 +746,7 @@ class BenchmarkRun(object):
             for k, v in pdb_data_.iteritems():
                 pdb_data[k.upper()] = v
         except Exception, e:
-            colortext.error('input/json/pdbs.json could not be found - PDB-specific analysis cannot be performed.')
+            self.log('input/json/pdbs.json could not be found - PDB-specific analysis cannot be performed.', colortext.error)
 
         # Create the dataframe
         for record_id, predicted_data in sorted(analysis_data.iteritems()):
@@ -802,7 +836,7 @@ class BenchmarkRun(object):
             # Determine the SCOP classification from the SCOPe data in the dataset
             full_scop_classification, scop_class, scop_fold = None, None, None
             if len(scops) > 1:
-                colortext.warning('Warning: There is more than one SCOPe class for record {0}.'.format(record_id))
+                self.log('Warning: There is more than one SCOPe class for record {0}.'.format(record_id), colortext.warning)
             else:
                 full_scop_classification = scops.pop()
                 scop_tokens = full_scop_classification.split('.')
@@ -871,13 +905,13 @@ class BenchmarkRun(object):
             csv_file.append(','.join([str(dataframe_record[h]) for h in csv_headers]))
             #assert(sorted(csv_headers) == sorted(dataframe_record.keys()))
 
-        colortext.message('The mutated residues span {0} unique SCOP(e) classifications in {1} unique SCOP(e) folds and {2} unique SCOP(e) classes.'.format(len(SCOP_classifications), len(SCOP_folds), len(SCOP_classes)))
+        self.log('The mutated residues span {0} unique SCOP(e) classifications in {1} unique SCOP(e) folds and {2} unique SCOP(e) classes.'.format(len(SCOP_classifications), len(SCOP_folds), len(SCOP_classes)), colortext.message)
 
         # Create the CSV file in memory (we are not done added data just yet) and pass it to pandas
         dataframe = pandas.read_csv(StringIO.StringIO('\n'.join(csv_file)), sep=',', header=0, skip_blank_lines=True, index_col = 0)
 
         # Plot the optimum y-cutoff over a range of x-cutoffs for the fraction correct metric. Include the user's cutoff in the range
-        colortext.warning('Determining a scalar adjustment with which to scale the predicted values to improve the fraction correct measurement.')
+        self.log('Determining a scalar adjustment with which to scale the predicted values to improve the fraction correct measurement.', colortext.warning)
         self.scalar_adjustment = self.plot_optimum_prediction_fraction_correct_cutoffs_over_range(dataframe, min(self.stability_classication_x_cutoff, 0.5), max(self.stability_classication_x_cutoff, 3.0), suppress_plot = True)
 
         # Add new columns derived from the adjusted values
@@ -917,14 +951,6 @@ class BenchmarkRun(object):
         self.calculate_metrics()
         if self.generate_plots:
             self.plot()
-
-
-    def report(self, str, fn = None):
-        if self.report_analysis:
-            if fn:
-                fn(str)
-            else:
-                print(str)
 
 
     def calculate_metrics(self):
@@ -997,8 +1023,8 @@ class BenchmarkRun(object):
     def plot(self):
 
         dataframe = self.dataframe
-        print(dataframe['AbsoluteError_adj'].mean())
-        print(dataframe['StabilityClassification_adj'].mean())
+        self.log(dataframe['AbsoluteError_adj'].mean())
+        self.log(dataframe['StabilityClassification_adj'].mean())
         self.analysis_file_prefix
         self.generate_plots
         self.subplot_directory
@@ -1020,12 +1046,12 @@ class BenchmarkRun(object):
 
         # Create a scatterplot for the results
         output_filename = '{0}_scatterplot.png'.format(plot_filename_prefix)
-        print('Saving scatterplot to %s.' % output_filename)
+        self.log('Saving scatterplot to %s.' % output_filename)
         plot(json_records['All'], output_filename, RInterface.correlation_coefficient_gplot, title = 'Experimental vs. Prediction')
 
         # Create a scatterplot for the adjusted results
         output_filename = '{0}_scatterplot_adjusted_with_scalar.png'.format(plot_filename_prefix)
-        print('Saving scatterplot to %s.' % output_filename)
+        self.log('Saving scatterplot to %s.' % output_filename)
         plot(adjusted_records, output_filename, RInterface.correlation_coefficient_gplot, title = 'Experimental vs. Prediction: adjusted scale')
 
         # Plot a histogram of the absolute errors
@@ -1050,16 +1076,16 @@ class BenchmarkRun(object):
 
         # Combine the plots into a PDF file
         plot_file = os.path.join(output_dir, rel_plot_filename_prefix + '_benchmark_plots.pdf')
-        colortext.message('\n\nCreating a PDF containing all of the plots: {0}'.format(plot_file))
+        self.log('\n\nCreating a PDF containing all of the plots: {0}'.format(plot_file), colortext.message)
         try:
             if os.path.exists(plot_file):
                 os.remove(plot_file)
             p = subprocess.Popen(shlex.split('convert {0} {1}'.format(os.path.join(subplot_directory, '*.png'), rel_plot_filename_prefix + '_benchmark_plots.pdf')), cwd = output_dir)
-            #print(shlex.split('convert {0} {1}'.format(os.path.join(subplot_directory, '*.png'), rel_plot_filename_prefix + '_benchmark_plots.pdf')))
+            #self.log(shlex.split('convert {0} {1}'.format(os.path.join(subplot_directory, '*.png'), rel_plot_filename_prefix + '_benchmark_plots.pdf')))
             stdoutdata, stderrdata = p.communicate()
             if p.returncode != 0: raise Exception('')
         except:
-            colortext.error('An error occurred while combining the positional scatterplots using the convert application (ImageMagick).')
+            self.log('An error occurred while combining the positional scatterplots using the convert application (ImageMagick).', colortext.error)
 
 
     def compare(self, other):
@@ -1115,7 +1141,7 @@ class BenchmarkRun(object):
         plot_filename = output_filename_prefix + '.png'
         csv_filename = output_filename_prefix + '.txt'
         R_filename = output_filename_prefix + '.R'
-        print('Saving scatterplot to %s.' % plot_filename)
+        self.log('Saving scatterplot to %s.' % plot_filename)
 
         # Create CSV input
         lines = ['NeutralityCutoff,FractionCorrect,C']
@@ -1197,7 +1223,7 @@ dev.off()'''
 
         # Create plot
         if plot_graph:
-            print('Saving scatterplot to %s.' % plot_filename)
+            self.log('Saving scatterplot to %s.' % plot_filename)
 
             title = 'Optimum cutoff for fraction correct metric at varying experimental cutoffs'
             r_script = '''library(ggplot2)
@@ -1233,7 +1259,7 @@ dev.off()'''
         plot_filename = output_filename_prefix + '.png'
         csv_filename = output_filename_prefix + '.txt'
         R_filename = output_filename_prefix + '.R'
-        print('Saving scatterplot to %s.' % plot_filename)
+        self.log('Saving scatterplot to %s.' % plot_filename)
 
         # Create CSV input
         lines = ['DatasetID,AbsoluteError']
