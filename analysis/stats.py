@@ -232,14 +232,14 @@ def fraction_correct(x_values, y_values, x_cutoff = 1.0, y_cutoff = 1.0):
     return correct / float(num_points)
 
 
-def fraction_correct_pandas(dataframe, x_label, y_label, x_cutoff = 1.0, y_cutoff = 1.0):
+def fraction_correct_pandas(dataframe, x_series, y_series, x_cutoff = 1.0, y_cutoff = 1.0):
     '''A little (<6%) slower than fraction_correct due to the data extraction overhead.'''
-    return fraction_correct(dataframe[x_label].values.tolist(), dataframe[y_label].values.tolist(), x_cutoff = x_cutoff, y_cutoff = y_cutoff)
+    return fraction_correct(dataframe[x_series].values.tolist(), dataframe[y_series].values.tolist(), x_cutoff = x_cutoff, y_cutoff = y_cutoff)
 
 
-def add_fraction_correct_values_to_dataframe(dataframe, x_label, y_label, new_label, x_cutoff = 1.0, y_cutoff = 1.0):
+def add_fraction_correct_values_to_dataframe(dataframe, x_series, y_series, new_label, x_cutoff = 1.0, y_cutoff = 1.0):
     '''Adds a new column (new_label) to the dataframe with the fraction correct computed over X and Y values.'''
-    new_series_values = fraction_correct_values(dataframe.index.values.tolist(), dataframe[x_label].values.tolist(), dataframe[y_label].values.tolist(), x_cutoff = x_cutoff, y_cutoff = y_cutoff)
+    new_series_values = fraction_correct_values(dataframe.index.values.tolist(), dataframe[x_series].values.tolist(), dataframe[y_series].values.tolist(), x_cutoff = x_cutoff, y_cutoff = y_cutoff)
     dataframe.insert(len(dataframe.columns), new_label, new_series_values)
 
 
@@ -345,6 +345,24 @@ def get_xy_dataset_statistics(analysis_table, fcorrect_x_cutoff = 1.0, fcorrect_
 
     x_values = [record['Experimental'] for record in analysis_table]
     y_values = [record['Predicted'] for record in analysis_table]
+    return _get_xy_dataset_statistics(x_values, y_values, fcorrect_x_cutoff = fcorrect_x_cutoff, fcorrect_y_cutoff = fcorrect_y_cutoff, x_fuzzy_range = x_fuzzy_range, y_scalar = y_scalar)
+
+
+def get_xy_dataset_statistics_pandas(dataframe, x_series, y_series, fcorrect_x_cutoff = 1.0, fcorrect_y_cutoff = 1.0, x_fuzzy_range = 0.1, y_scalar = 1.0):
+    '''
+    A version of _get_xy_dataset_statistics which accepts a pandas dataframe rather than X- and Y-value lists.
+    :param dataframe: A pandas dataframe
+    :param x_series: The column name of the X-axis series
+    :param y_series: The column name of the Y-axis series
+    :param fcorrect_x_cutoff: The X-axis cutoff value for the fraction correct metric.
+    :param fcorrect_y_cutoff: The Y-axis cutoff value for the fraction correct metric.
+    :param x_fuzzy_range: The X-axis fuzzy range value for the fuzzy fraction correct metric.
+    :param y_scalar: The Y-axis scalar multiplier for the fuzzy fraction correct metric (used to calculate y_cutoff and y_fuzzy_range in that metric)
+    :return: A table of statistics.
+    '''
+
+    x_values = dataframe[x_series].tolist()
+    y_values = dataframe[y_series].tolist()
     return _get_xy_dataset_statistics(x_values, y_values, fcorrect_x_cutoff = fcorrect_x_cutoff, fcorrect_y_cutoff = fcorrect_y_cutoff, x_fuzzy_range = x_fuzzy_range, y_scalar = y_scalar)
 
 
