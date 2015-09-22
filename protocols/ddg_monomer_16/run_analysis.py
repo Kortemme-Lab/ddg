@@ -53,6 +53,10 @@ Options:
     --force
         When this option is set, the most recent directory in job_output, if it exists, will be used without prompting the user.
 
+    --recreate_graphs
+        When this option is set, all plots are regenerated. This is disabled by default to allow subsequent analysis to
+        run faster.
+
     -G --do_not_generate_plots
         When this option is set, the graphical plots are not generated.
 
@@ -110,7 +114,7 @@ import StringIO
 from rosetta.write_run_file import process as write_run_file
 from analysis.libraries import docopt
 from analysis.libraries import colortext
-from analysis.stats import read_file, read_file_lines, write_file, prompt_yn, fraction_correct, fraction_correct_pandas, add_fraction_correct_values_to_dataframe, get_xy_dataset_statistics_pandas, plot, format_stats_for_printing, RInterface
+from analysis.stats import read_file, read_file_lines, write_file, prompt_yn, fraction_correct, fraction_correct_pandas, add_fraction_correct_values_to_dataframe, get_xy_dataset_statistics_pandas, format_stats_for_printing, RInterface, plot_pandas
 
 from run_ddg import task_subfolder as ddg_task_subfolder
 try:
@@ -141,14 +145,8 @@ by_volume_descriptions = dict(
 )
 
 
-# This module contains two classes.
-# The BenchmarkManager class reads in the script options, extracts the score data from the benchmark runs, and controls
-# the analysis.
-# The BenchmarkRun class creates a dataframe containing the raw data used for analysis. This dataframe is then used to
-# performs analysis for the particular run or between another runs.
-
 class ReportingObject(object):
-
+    '''A simple class to allow stdout suppression.'''
 
     def __init__(self, silent = False):
         self.silent = silent
@@ -160,6 +158,13 @@ class ReportingObject(object):
                 fn(str)
             else:
                 print(str)
+
+
+# This module contains two main classes.
+# The BenchmarkManager class reads in the script options, extracts the score data from the benchmark runs, and controls
+# the analysis.
+# The BenchmarkRun class creates a dataframe containing the raw data used for analysis. This dataframe is then used to
+# performs analysis for the particular run or between another runs.
 
 
 class BenchmarkManager(ReportingObject):
@@ -280,6 +285,9 @@ class BenchmarkManager(ReportingObject):
         if not use_published_data and len(benchmark_run_directories) == 0:
             raise colortext.Exception('No benchmark runs were specified and no output could be found in the job_output directory. Exiting.\n')
 
+        if self.analysis_directory in benchmark_run_directories:
+            raise colortext.Exception('The analysis output directory {0} cannot be one of the input benchmark directories.'.format(self.analysis_directory))
+
         # Load in the data for each benchmark
         for x in range(len(benchmark_run_directories)):
 
@@ -349,7 +357,8 @@ class BenchmarkManager(ReportingObject):
                 burial_cutoff = self.burial_cutoff,
                 stability_classication_x_cutoff = self.stability_classication_x_cutoff,
                 stability_classication_y_cutoff = self.stability_classication_y_cutoff,
-                use_existing_benchmark_data = arguments['--use_existing_benchmark_data']
+                use_existing_benchmark_data = arguments['--use_existing_benchmark_data'],
+                recreate_graphs = arguments['--recreate_graphs']
             )
 
 
@@ -569,7 +578,7 @@ class BenchmarkRun(ReportingObject):
 
 
     def __init__(self, benchmark_run_name, benchmark_run_directory, analysis_directory, dataset_cases, analysis_data, use_single_reported_value,
-                 take_lowest = 3, generate_plots = True, report_analysis = True, include_derived_mutations = False, silent = False, burial_cutoff = 0.25,
+                 take_lowest = 3, generate_plots = True, report_analysis = True, include_derived_mutations = False, recreate_graphs = False, silent = False, burial_cutoff = 0.25,
                  stability_classication_x_cutoff = 1.0, stability_classication_y_cutoff = 1.0, use_existing_benchmark_data = False):
         self.amino_acid_details, self.CAA, self.PAA, self.HAA = BenchmarkRun.get_amino_acid_details()
         self.benchmark_run_name = benchmark_run_name
@@ -586,15 +595,22 @@ class BenchmarkRun(ReportingObject):
         self.take_lowest = take_lowest
         self.include_derived_mutations = include_derived_mutations
         self.burial_cutoff = burial_cutoff
+        self.recreate_graphs = recreate_graphs
         self.stability_classication_x_cutoff = stability_classication_x_cutoff
         self.stability_classication_y_cutoff = stability_classication_y_cutoff
         self.scalar_adjustment = None
         self.analysis_csv_input_filepath = os.path.join(self.benchmark_run_directory, 'analysis_input.csv')
         self.analysis_json_input_filepath = os.path.join(self.benchmark_run_directory, 'analysis_input.json')
+        self.analysis_raw_data_input_filepath = os.path.join(self.benchmark_run_directory, 'benchmark_data.json')
         self.analysis_pandas_input_filepath = os.path.join(self.benchmark_run_directory, 'analysis_input.pandas')
         self.metrics_filepath = os.path.join(self.analysis_directory, '{0}_metrics.txt'.format(self.benchmark_run_name))
         self.use_existing_benchmark_data = use_existing_benchmark_data
         self.ddg_analysis_type_description = None
+        assert(os.path.exists(self.analysis_csv_input_filepath))
+        assert(os.path.exists(self.analysis_json_input_filepath))
+        assert(os.path.exists(self.analysis_raw_data_input_filepath))
+        if self.generate_plots:
+            self.create_subplot_directory() # Create a directory for plots
 
 
     @staticmethod
@@ -699,10 +715,6 @@ class BenchmarkRun(ReportingObject):
         amino_acid_details, CAA, PAA, HAA = self.amino_acid_details, self.CAA, self.PAA, self.HAA
         burial_cutoff, stability_classication_x_cutoff, stability_classication_y_cutoff = self.burial_cutoff, self.stability_classication_x_cutoff, self.stability_classication_y_cutoff\
 
-        # Create a directory for plots
-        if self.generate_plots:
-            self.create_subplot_directory()
-
         # Create XY data
         self.log('Creating the analysis input file %s and human-readable CSV and JSON versions %s and %s.' % (self.analysis_pandas_input_filepath, self.analysis_csv_input_filepath, self.analysis_json_input_filepath))
         if len(analysis_data) > len(dataset_cases):
@@ -733,11 +745,6 @@ class BenchmarkRun(ReportingObject):
             'PDBResolution', 'PDBResolutionBin', 'MonomerLength',
         ]
         csv_file = [','.join(csv_headers)]
-
-        # Keep track of the SCOPe classifications to report later
-        SCOP_classifications = set()
-        SCOP_folds = set()
-        SCOP_classes = set()
 
         # Set the PDB input path
         pdb_data = {}
@@ -844,11 +851,6 @@ class BenchmarkRun(ReportingObject):
                 if len(scop_tokens) > 1:
                     scop_fold = '.'.join(scop_tokens[0:2])
 
-                # SCOP classification counters
-                SCOP_classifications.add(full_scop_classification)
-                SCOP_classes.add(scop_class)
-                SCOP_folds.add(scop_fold)
-
             # Calculate the stability classification and absolute_error for this case
             stability_classification = fraction_correct([record['DDG']], [predicted_data[self.ddg_analysis_type]], x_cutoff = stability_classication_x_cutoff, y_cutoff = stability_classication_y_cutoff)
             assert(stability_classification == 0 or stability_classification == 1)
@@ -905,14 +907,18 @@ class BenchmarkRun(ReportingObject):
             csv_file.append(','.join([str(dataframe_record[h]) for h in csv_headers]))
             #assert(sorted(csv_headers) == sorted(dataframe_record.keys()))
 
-        self.log('The mutated residues span {0} unique SCOP(e) classifications in {1} unique SCOP(e) folds and {2} unique SCOP(e) classes.'.format(len(SCOP_classifications), len(SCOP_folds), len(SCOP_classes)), colortext.message)
-
         # Create the CSV file in memory (we are not done added data just yet) and pass it to pandas
         dataframe = pandas.read_csv(StringIO.StringIO('\n'.join(csv_file)), sep=',', header=0, skip_blank_lines=True, index_col = 0)
 
+        # Report the SCOPe classification counts
+        SCOP_classifications = set(dataframe['WildTypeSCOPClassification'].values.tolist())
+        SCOP_folds = set(dataframe['WildTypeSCOPFold'].values.tolist())
+        SCOP_classes = set(dataframe['WildTypeSCOPClass'].values.tolist())
+        self.log('The mutated residues span {0} unique SCOP(e) classifications in {1} unique SCOP(e) folds and {2} unique SCOP(e) classes.'.format(len(SCOP_classifications), len(SCOP_folds), len(SCOP_classes)), colortext.message)
+
         # Plot the optimum y-cutoff over a range of x-cutoffs for the fraction correct metric. Include the user's cutoff in the range
         self.log('Determining a scalar adjustment with which to scale the predicted values to improve the fraction correct measurement.', colortext.warning)
-        self.scalar_adjustment = self.plot_optimum_prediction_fraction_correct_cutoffs_over_range(dataframe, min(self.stability_classication_x_cutoff, 0.5), max(self.stability_classication_x_cutoff, 3.0), suppress_plot = True)
+        self.scalar_adjustment, plot_filename = self.plot_optimum_prediction_fraction_correct_cutoffs_over_range(dataframe, min(self.stability_classication_x_cutoff, 0.5), max(self.stability_classication_x_cutoff, 3.0), suppress_plot = True)
 
         # Add new columns derived from the adjusted values
         dataframe['Predicted_adj'] = dataframe['Predicted'] / self.scalar_adjustment
@@ -949,8 +955,7 @@ class BenchmarkRun(ReportingObject):
     def analyze(self):
         '''This function runs the analysis and creates the plots and summary file.'''
         self.calculate_metrics()
-        if self.generate_plots:
-            self.plot()
+        self.plot()
 
 
     def calculate_metrics(self):
@@ -1022,66 +1027,87 @@ class BenchmarkRun(ReportingObject):
 
     def plot(self):
 
-        dataframe = self.dataframe
-        self.log(dataframe['AbsoluteError_adj'].mean())
-        self.log(dataframe['StabilityClassification_adj'].mean())
-        self.analysis_file_prefix
-        self.generate_plots
-        self.subplot_directory
-        sys.exit(0)
+        if not self.generate_plots:
+            return
 
+        dataframe = self.dataframe
+        graph_order = []
 
         # Plot which y-cutoff yields the best value for the fraction correct metric
-        if self.generate_plots:
-            scalar_adjustment = self.plot_optimum_prediction_fraction_correct_cutoffs_over_range(dataframe, min(self.stability_classication_x_cutoff, 0.5), max(self.stability_classication_x_cutoff, 3.0), suppress_plot = False)
-            assert(self.scalar_adjustment == scalar_adjustment)
+        scalar_adjustment, scalar_adjustment_calculation_plot = self.plot_optimum_prediction_fraction_correct_cutoffs_over_range(min(self.stability_classication_x_cutoff, 0.5), max(self.stability_classication_x_cutoff, 3.0), suppress_plot = False)
+        assert(self.scalar_adjustment == scalar_adjustment)
 
         # Plot which the optimum y-cutoff given the specified or default x-cutoff
-        plot_optimum_prediction_fraction_correct_cutoffs(dataframe, stability_classication_x_cutoff)
-
-        # Create an adjusted set of records scaled according to the fraction correct fitting
-        adjusted_records = copy.deepcopy(json_records['All'])
-        for record in adjusted_records:
-            record['Predicted'] = record['Predicted'] / scalar_adjustment
+        optimal_predictive_cutoff_plot = self.plot_optimum_prediction_fraction_correct_cutoffs(self.stability_classication_x_cutoff)
 
         # Create a scatterplot for the results
-        output_filename = '{0}_scatterplot.png'.format(plot_filename_prefix)
-        self.log('Saving scatterplot to %s.' % output_filename)
-        plot(json_records['All'], output_filename, RInterface.correlation_coefficient_gplot, title = 'Experimental vs. Prediction')
-
-        # Create a scatterplot for the adjusted results
-        output_filename = '{0}_scatterplot_adjusted_with_scalar.png'.format(plot_filename_prefix)
-        self.log('Saving scatterplot to %s.' % output_filename)
-        plot(adjusted_records, output_filename, RInterface.correlation_coefficient_gplot, title = 'Experimental vs. Prediction: adjusted scale')
+        main_scatterplot = '{0}main_scatterplot.png'.format(self.analysis_file_prefix)
+        if not(os.path.exists(main_scatterplot) and not(self.recreate_graphs)):
+            self.log('Saving scatterplot to %s.' % main_scatterplot)
+            plot_pandas(dataframe, 'Experimental', 'Predicted', main_scatterplot, RInterface.correlation_coefficient_gplot, title = 'Experimental vs. Prediction')
+        graph_order.append(self.create_section_slide('{0}section_1.png'.format(self.analysis_file_prefix), 'Main metrics'))
+        graph_order.append(main_scatterplot)
 
         # Plot a histogram of the absolute errors
-        plot_absolute_error_histogram(plot_filename_prefix, json_records['All'])
+        graph_order.append(self.plot_absolute_error_histogram())
+        graph_order.append(self.create_section_slide('{0}section_2.png'.format(self.analysis_file_prefix), 'Adjustments', 'Optimization of the cutoffs\nfor the fraction correct metric'))
+        graph_order.append(scalar_adjustment_calculation_plot)
+        graph_order.append(optimal_predictive_cutoff_plot)
 
-        # Create a series of scatterplots colored by different criteria
-        scatterplot_generic('Experimental vs. Prediction - Exposure (cutoff = %0.2f)' % burial_cutoff, json_records['All'], scatterplot_exposure, '{0}_scatterplot_exposure.png'.format(plot_filename_prefix))
-        scatterplot_generic('Experimental vs. Prediction - Residue charges', json_records['All'], scatterplot_charges, '{0}_scatterplot_charges.png'.format(plot_filename_prefix))
-        scatterplot_generic('Experimental vs. Prediction - Change in volume', json_records['All'], scatterplot_volume, '{0}_scatterplot_volume.png'.format(plot_filename_prefix))
-        scatterplot_generic('Experimental vs. Prediction - Wildtype residue s.s.', json_records['All'], scatterplot_ss, '{0}_scatterplot_ss.png'.format(plot_filename_prefix))
+        # Create a scatterplot for the adjusted results
+        main_adj_scatterplot = '{0}main_adjusted_with_scalar_scatterplot.png'.format(self.analysis_file_prefix)
+        if not(os.path.exists(main_adj_scatterplot) and not(self.recreate_graphs)):
+            self.log('Saving scatterplot to %s.' % main_adj_scatterplot)
+            plot_pandas(dataframe, 'Experimental', 'Predicted_adj', main_adj_scatterplot, RInterface.correlation_coefficient_gplot, title = 'Experimental vs. Prediction: adjusted scale')
+        graph_order.append(main_adj_scatterplot)
+
+        # Scatterplots colored by residue context / change on mutation
+        graph_order.append(self.create_section_slide('{0}section_3.png'.format(self.analysis_file_prefix), 'Residue context'))
+        graph_order.append(self.scatterplot_generic('Experimental vs. Prediction - Residue charges', self.scatterplot_charges, '{0}scatterplot_charges.png'.format(self.analysis_file_prefix)))
+        graph_order.append(self.scatterplot_generic('Experimental vs. Prediction - Exposure (cutoff = %0.2f)' % self.burial_cutoff, self.scatterplot_exposure, '{0}scatterplot_exposure.png'.format(self.analysis_file_prefix)))
+        graph_order.append(self.scatterplot_generic('Experimental vs. Prediction - Change in volume', self.scatterplot_volume, '{0}scatterplot_volume.png'.format(self.analysis_file_prefix)))
+        graph_order.append(self.scatterplot_generic('Experimental vs. Prediction - Wildtype residue s.s.', self.scatterplot_ss, '{0}scatterplot_ss.png'.format(self.analysis_file_prefix)))
+
+        # Scatterplots colored by SCOPe classification
+        graph_order.append(self.create_section_slide('{0}section_4.png'.format(self.analysis_file_prefix), 'SCOPe classes'))
+        SCOP_classifications = set(dataframe['WildTypeSCOPClassification'].values.tolist())
+        SCOP_folds = set(dataframe['WildTypeSCOPFold'].values.tolist())
+        SCOP_classes = set(dataframe['WildTypeSCOPClass'].values.tolist())
         if len(SCOP_classes) <= 25:
-            scatterplot_generic('Experimental vs. Prediction - WT residue SCOP class', json_records['All'], scatterplot_scop_class, '{0}_scatterplot_scop_class.png'.format(plot_filename_prefix))
+            graph_order.append(self.scatterplot_generic('Experimental vs. Prediction - WT residue SCOP class', self.scatterplot_scop_class, '{0}scatterplot_scop_class.png'.format(self.analysis_file_prefix)))
         if len(SCOP_folds) <= 25:
-            scatterplot_generic('Experimental vs. Prediction - WT residue SCOP fold', json_records['All'], scatterplot_scop_fold, '{0}_scatterplot_scop_fold.png'.format(plot_filename_prefix))
+            graph_order.append(self.scatterplot_generic('Experimental vs. Prediction - WT residue SCOP fold', self.scatterplot_scop_fold, '{0}scatterplot_scop_fold.png'.format(self.analysis_file_prefix)))
         if len(SCOP_classifications) <= 25:
-            scatterplot_generic('Experimental vs. Prediction - WT residue SCOP classification', json_records['All'], scatterplot_scop_classification, '{0}_scatterplot_scop_classification.png'.format(plot_filename_prefix))
-        scatterplot_generic('Experimental vs. Prediction - Wildtype', json_records['All'], scatterplot_wildtype_aa, '{0}_scatterplot_wildtype_aa.png'.format(plot_filename_prefix))
-        scatterplot_generic('Experimental vs. Prediction - Mutant', json_records['All'], scatterplot_mutant_aa, '{0}_scatterplot_mutant_aa.png'.format(plot_filename_prefix))
-        scatterplot_generic('Experimental vs. Prediction - Glycine/Proline', json_records['All'], scatterplot_GP, '{0}_scatterplot_gp.png'.format(plot_filename_prefix))
-        scatterplot_generic('Experimental vs. Prediction - PDB resolution', json_records['All'], scatterplot_pdb_res_binned, '{0}_scatterplot_pdb_res_binned.png'.format(plot_filename_prefix))
-        scatterplot_generic('Experimental vs. Prediction - Chain length', json_records['All'], scatterplot_chain_length, '{0}_scatterplot_chain_length.png'.format(plot_filename_prefix))
+            graph_order.append(self.scatterplot_generic('Experimental vs. Prediction - WT residue SCOP classification', self.scatterplot_scop_classification, '{0}scatterplot_scop_classification.png'.format(self.analysis_file_prefix)))
+
+        # Scatterplots colored by residue types
+        graph_order.append(self.create_section_slide('{0}section_5.png'.format(self.analysis_file_prefix), 'Residue types'))
+        graph_order.append(self.scatterplot_generic('Experimental vs. Prediction - Wildtype', self.scatterplot_wildtype_aa, '{0}scatterplot_wildtype_aa.png'.format(self.analysis_file_prefix)))
+        graph_order.append(self.scatterplot_generic('Experimental vs. Prediction - Mutant', self.scatterplot_mutant_aa, '{0}scatterplot_mutant_aa.png'.format(self.analysis_file_prefix)))
+        graph_order.append(self.scatterplot_generic('Experimental vs. Prediction - Glycine/Proline', self.scatterplot_GP, '{0}scatterplot_gp.png'.format(self.analysis_file_prefix)))
+
+        # Scatterplots colored PDB resolution and chain length
+        graph_order.append(self.create_section_slide('{0}section_6.png'.format(self.analysis_file_prefix), 'Chain properties'))
+        graph_order.append(self.scatterplot_generic('Experimental vs. Prediction - PDB resolution', self.scatterplot_pdb_res_binned, '{0}scatterplot_pdb_res_binned.png'.format(self.analysis_file_prefix)))
+        graph_order.append(self.scatterplot_generic('Experimental vs. Prediction - Chain length', self.scatterplot_chain_length, '{0}scatterplot_chain_length.png'.format(self.analysis_file_prefix)))
+
+        relative_graph_paths = [os.path.join(self.benchmark_run_name + '_subplots', os.path.split(g)[1]) for g in graph_order]
+        for rp in relative_graph_paths:
+            print(rp)
+            assert(os.path.exists(os.path.join(self.analysis_directory, rp)))
+
+        # Copy the analysis input files into the analysis directory - these files are duplicated but it makes it easier to share data
+        shutil.copyfile(self.analysis_csv_input_filepath, os.path.join(self.analysis_directory, self.benchmark_run_name + '_' + os.path.split(self.analysis_csv_input_filepath)[1]))
+        shutil.copyfile(self.analysis_json_input_filepath, os.path.join(self.analysis_directory, self.benchmark_run_name + '_' + os.path.split(self.analysis_json_input_filepath)[1]))
+        shutil.copyfile(self.analysis_raw_data_input_filepath, os.path.join(self.analysis_directory, self.benchmark_run_name + '_' + os.path.split(self.analysis_raw_data_input_filepath)[1]))
 
         # Combine the plots into a PDF file
-        plot_file = os.path.join(output_dir, rel_plot_filename_prefix + '_benchmark_plots.pdf')
+        plot_file = os.path.join(self.analysis_directory, '{0}_benchmark_plots.pdf'.format(self.benchmark_run_name))
         self.log('\n\nCreating a PDF containing all of the plots: {0}'.format(plot_file), colortext.message)
         try:
             if os.path.exists(plot_file):
                 os.remove(plot_file)
-            p = subprocess.Popen(shlex.split('convert {0} {1}'.format(os.path.join(subplot_directory, '*.png'), rel_plot_filename_prefix + '_benchmark_plots.pdf')), cwd = output_dir)
-            #self.log(shlex.split('convert {0} {1}'.format(os.path.join(subplot_directory, '*.png'), rel_plot_filename_prefix + '_benchmark_plots.pdf')))
+            p = subprocess.Popen(shlex.split('convert {0} {1}'.format(' '.join(relative_graph_paths), plot_file)), cwd = self.analysis_directory)
             stdoutdata, stderrdata = p.communicate()
             if p.returncode != 0: raise Exception('')
         except:
@@ -1129,19 +1155,68 @@ class BenchmarkRun(ReportingObject):
         return max_value_cutoff, max_value, fraction_correct_range
 
 
-    def plot_optimum_prediction_fraction_correct_cutoffs(self, dataframe, stability_classication_x_cutoff):
+    def create_section_slide(self, plot_filename, title, subtitle = ''):
 
-        plot_filename_prefix = self.analysis_file_prefix
+        if os.path.exists(plot_filename) and not(self.recreate_graphs):
+            return plot_filename
+
+        R_filename = os.path.splitext(plot_filename)[0] + '.R'
+
+        title_size = 8
+        longest_line = max(map(len, title.split('\n')))
+        if longest_line <= 11:
+            title_size = 16
+        elif longest_line <= 16:
+            title_size = 12
+        elif longest_line <= 19:
+            title_size = 10
+
+        subtitle_size = 6
+        longest_line = max(map(len, subtitle.split('\n')))
+        if longest_line <= 11:
+            subtitle_size = 16
+        elif longest_line <= 16:
+            subtitle_size = 12
+        elif longest_line <= 19:
+            subtitle_size = 10
+        elif longest_line <= 32:
+            subtitle_size = 8
+        subtitle_size = min(title_size - 2, subtitle_size)
+
+        # Create plot
+        if self.generate_plots:
+            r_script = '''library(ggplot2)
+library(gridExtra)
+library(scales)
+library(qualV)
+
+png('%(plot_filename)s', height=4096, width=4096, bg="white", res=600)
+
+p <- ggplot(mtcars, aes(x = wt, y = mpg)) + geom_blank() +
+     coord_cartesian(xlim = c(0, 100), ylim = c(0, 100)) +
+     theme(axis.ticks.x=element_blank(), axis.ticks.y=element_blank(), axis.text.x=element_blank(), axis.text.y=element_blank(), axis.title.x=element_blank(), axis.title.y=element_blank()) +
+     geom_text(hjust=0, vjust=1, size=%(title_size)d, color="black", aes(5, 90, fontface="plain", family = "Times", face = "bold", label="%(title)s")) +
+     geom_text(hjust=0, vjust=1, size=%(subtitle_size)d, color="black", aes(5, 50, fontface="plain", family = "Times", face = "bold", label="%(subtitle)s"))
+p
+dev.off()'''
+            self.log('Section slide %s.' % plot_filename)
+            RInterface._runRScript(r_script % locals())
+            return plot_filename
+
+
+    def plot_optimum_prediction_fraction_correct_cutoffs(self, stability_classication_x_cutoff):
 
         # Determine the optimal values
-        max_value_cutoff, max_value, fraction_correct_range = self.determine_optimum_fraction_correct_cutoffs(records, stability_classication_x_cutoff)
+        max_value_cutoff, max_value, fraction_correct_range = self.determine_optimum_fraction_correct_cutoffs(self.dataframe, stability_classication_x_cutoff)
 
         # Filenames
-        output_filename_prefix = '{0}_optimum_fraction_correct_at_{1}_kcal_mol'.format(plot_filename_prefix, '%.2f' % stability_classication_x_cutoff)
+        output_filename_prefix = '{0}optimum_fraction_correct_at_{1}_kcal_mol'.format(self.analysis_file_prefix, '%.2f' % stability_classication_x_cutoff)
         plot_filename = output_filename_prefix + '.png'
         csv_filename = output_filename_prefix + '.txt'
         R_filename = output_filename_prefix + '.R'
-        self.log('Saving scatterplot to %s.' % plot_filename)
+
+        if os.path.exists(plot_filename) and not(self.recreate_graphs):
+            return plot_filename
 
         # Create CSV input
         lines = ['NeutralityCutoff,FractionCorrect,C']
@@ -1153,8 +1228,9 @@ class BenchmarkRun(ReportingObject):
         write_file(csv_filename, '\n'.join(lines))
 
         # Create plot
-        title = 'Optimum cutoff for fraction correct metric at %0.2f kcal/mol' % stability_classication_x_cutoff
-        r_script = '''library(ggplot2)
+        if self.generate_plots:
+            title = 'Optimum cutoff for fraction correct metric at %0.2f kcal/mol' % stability_classication_x_cutoff
+            r_script = '''library(ggplot2)
 library(gridExtra)
 library(scales)
 library(qualV)
@@ -1179,17 +1255,20 @@ p <- ggplot(data = plot_data, aes(x = NeutralityCutoff, y = FractionCorrect)) +
  geom_text(hjust=0, size=4, color="black", aes(6.5, best_y, fontface="plain", family = "sans", label=sprintf("Max = %(max_value)0.2f\\nCutoff = %(max_value_cutoff)0.2f")))
 p
 dev.off()'''
-        RInterface._runRScript(r_script % locals())
+            self.log('Saving plot of approximate optimal fraction correct cutoffs to %s.' % plot_filename)
+            RInterface._runRScript(r_script % locals())
+            return plot_filename
 
 
-    def plot_optimum_prediction_fraction_correct_cutoffs_over_range(self, dataframe, min_stability_classication_x_cutoff, max_stability_classication_x_cutoff, suppress_plot = False):
-        '''Takes a pandas dataframe
-           Plots the optimum cutoff for the predictions to maximize the fraction correct metric over a range of experimental cutoffs.
+    def plot_optimum_prediction_fraction_correct_cutoffs_over_range(self, min_stability_classication_x_cutoff, max_stability_classication_x_cutoff, suppress_plot = False):
+        '''Plots the optimum cutoff for the predictions to maximize the fraction correct metric over a range of experimental cutoffs.
            Returns the average scalar corresponding to the best value of fraction correct over a range of cutoff values for the experimental cutoffs.'''
 
         # Filenames
-        output_filename_prefix = '{0}_optimum_fraction_correct_at_varying_kcal_mol'.format(self.analysis_file_prefix)
-        plot_filename = output_filename_prefix + '.png'
+        output_filename_prefix = '{0}optimum_fraction_correct_at_varying_kcal_mol'.format(self.analysis_file_prefix)
+        plot_filename = None
+        if not suppress_plot:
+            plot_filename = output_filename_prefix + '.png'
         csv_filename = output_filename_prefix + '.txt'
         R_filename = output_filename_prefix + '.R'
 
@@ -1201,7 +1280,7 @@ dev.off()'''
         avg_scale = 0
         plot_graph = self.generate_plots and not(suppress_plot)
         while x_cutoff < max_stability_classication_x_cutoff + 0.1:
-            max_value_cutoff, max_value, fraction_correct_range = self.determine_optimum_fraction_correct_cutoffs(dataframe, x_cutoff)
+            max_value_cutoff, max_value, fraction_correct_range = self.determine_optimum_fraction_correct_cutoffs(self.dataframe, x_cutoff)
             if plot_graph:
                 lines.append(','.join(map(str, (x_cutoff, max_value_cutoff))))
             x_values.append(x_cutoff)
@@ -1223,10 +1302,12 @@ dev.off()'''
 
         # Create plot
         if plot_graph:
-            self.log('Saving scatterplot to %s.' % plot_filename)
+            if not(os.path.exists(plot_filename) and not(self.recreate_graphs)):
+                self.log('Saving scatterplot to %s.' % plot_filename)
+                self.log('Saving plot of approximate optimal fraction correct cutoffs over varying experimental cutoffs to %s.' % plot_filename)
 
-            title = 'Optimum cutoff for fraction correct metric at varying experimental cutoffs'
-            r_script = '''library(ggplot2)
+                title = 'Optimum cutoff for fraction correct metric at varying experimental cutoffs'
+                r_script = '''library(ggplot2)
 library(gridExtra)
 library(scales)
 library(qualV)
@@ -1247,27 +1328,31 @@ p <- ggplot(data = plot_data, aes(x = ExperimentalCutoff, y = BestPredictionCuto
  geom_text(hjust=0, size=4, color="black", aes(0.5, max_y - 0.5, fontface="plain", family = "sans", label="%(plot_label_2)s"), parse = T)
 p
 dev.off()'''
-            RInterface._runRScript(r_script % locals())
+                RInterface._runRScript(r_script % locals())
 
-        return average_scalar
+        return average_scalar, plot_filename
 
 
-    def plot_absolute_error_histogram(self, plot_filename_prefix,data):
+    def plot_absolute_error_histogram(self):
 
         # Filenames
-        output_filename_prefix = '{0}_absolute_errors'.format(plot_filename_prefix)
+        output_filename_prefix = '{0}absolute_errors'.format(self.analysis_file_prefix)
         plot_filename = output_filename_prefix + '.png'
         csv_filename = output_filename_prefix + '.txt'
         R_filename = output_filename_prefix + '.R'
-        self.log('Saving scatterplot to %s.' % plot_filename)
+
+        if os.path.exists(plot_filename) and not(self.recreate_graphs):
+            return plot_filename
 
         # Create CSV input
-        lines = ['DatasetID,AbsoluteError']
-        for record in data:
-            lines.append('{0},{1}'.format(record['DatasetID'], record['AbsoluteError']))
-        write_file(csv_filename, '\n'.join(lines))
+        new_dataframe = self.dataframe[['AbsoluteError']]
+        new_dataframe.to_csv(csv_filename, sep = ',', header = True)
+
+        if not self.generate_plots:
+            return
 
         # Create plot
+        self.log('Saving scatterplot to %s.' % plot_filename)
         title = 'Distribution of absolute errors (prediction - observed)'
         r_script = '''library(ggplot2)
 library(gridExtra)
@@ -1285,11 +1370,15 @@ m <- ggplot(plot_data, aes(x=AbsoluteError)) +
 m
 dev.off()'''
         RInterface._runRScript(r_script % locals())
+        return plot_filename
 
 
-    def scatterplot_generic(self, title, data, plotfn, plot_filename):
+    def scatterplot_generic(self, title, plotfn, plot_filename):
+        if os.path.exists(plot_filename) and not(self.recreate_graphs):
+            return plot_filename
+
         csv_filename = os.path.splitext(plot_filename)[0] + '.txt'
-        plot_commands = plotfn(data, title, csv_filename)
+        plot_commands = plotfn(title, csv_filename)
         r_script = '''library(ggplot2)
 library(gridExtra)
 library(scales)
@@ -1301,12 +1390,24 @@ plot_data <- read.csv('%(csv_filename)s', header=T)
 %(plot_commands)s
 
 dev.off()''' % locals()
-        RInterface._runRScript(r_script)
+        if self.generate_plots:
+            self.log('Saving scatterplot to %s.' % plot_filename)
+            RInterface._runRScript(r_script)
+            return plot_filename
 
 
-    def scatterplot_color_by_series(self, data, colorseries, xseries = "Experimental", yseries = "Predicted", title = '', plot_scale = '', point_opacity = 0.4, extra_commands = ''):
+    def scatterplot_color_by_series(self, colorseries, xseries = "Experimental", yseries = "Predicted", title = '', plot_scale = '', point_opacity = 0.4, extra_commands = ''):
 
-        mae = sum([abs(record[xseries] - record[yseries]) for record in data]) / len(data)
+        # Compute MAE
+        mae_str = ''
+        if xseries == 'Experimental':
+            if yseries == 'Predicted':
+                mae_str = self.dataframe['AbsoluteError'].mean()
+            elif yseries == 'Predicted_adj':
+                mae_str = self.dataframe['AbsoluteError_adj'].mean()
+        if mae_str:
+            mae_str = 'MAE = {0:.3f}'.format(mae_str)
+
         plot_scale_line = ''
         plot_scale_argument = ''
         if plot_scale:
@@ -1349,168 +1450,202 @@ p <- ggplot(data = plot_data, aes(x = %(xseries)s, y = %(yseries)s)) +%(plot_sca
     geom_abline(size = 0.25, intercept = lmv_intercept, slope = lmv_Predicted) +
     geom_abline(color="blue",size = 0.25, intercept = 0, slope = fitlmv_Predicted) +
     geom_text(hjust=0, size=4, aes(xpos, ypos_cor, fontface="plain", family = "sans", label=sprintf("R = %%0.3f", round(rvalue, digits = 4)))) +
-    geom_text(hjust=0, size=4, aes(xpos, ypos_mae, fontface="plain", family = "sans", label=sprintf("MAE = %%0.3f", round(%(mae)s, digits = 4))))
+    geom_text(hjust=0, size=4, aes(xpos, ypos_mae, fontface="plain", family = "sans", label="%(mae_str)s"))
 p
 
 ''' % locals()
 
 
-
-    def scatterplot_exposure(self, data, title, csv_filename):
-        '''Scatterplot by exposure class.'''
-        lines = ['Experimental,Predicted,Exposure,Opacity']
-        for record in data:
-            lines.append('{0},{1},{2},0.4'.format(record['Experimental'], record['Predicted'], record['WildTypeExposure']))
-        write_file(csv_filename, '\n'.join(lines))
-        plot_scale = '''
-plot_scale <- scale_color_manual(
-    values = c( "None" = '#777777', "B" = '%(brown)s', "E" = '%(purple)s'),
-    labels = c( "None" = "N/A", "B" = "Buried", "E" = "Exposed"))''' % plot_colors
-        return self.scatterplot_color_by_series(data, colorseries = "Exposure", title = title, plot_scale = plot_scale)
-
-
-    def scatterplot_charges(self, data, title, csv_filename):
+    def scatterplot_charges(self, title, csv_filename):
         '''Scatterplot by residue charge.'''
-        lines = ['Experimental,Predicted,ResidueCharge,Opacity']
-        for record in data:
-            lines.append('{0},{1},{2},0.4'.format(record['Experimental'], record['Predicted'], record['ResidueCharges']))
-        write_file(csv_filename, '\n'.join(lines))
+
+        # Create CSV input
+        new_dataframe = self.dataframe.copy()
+        new_dataframe = new_dataframe[['Experimental', 'Predicted', 'ResidueCharges']]
+        new_dataframe['Opacity'] = 0.4
+        new_dataframe.to_csv(csv_filename, sep = ',', header = True)
+
         plot_scale = '''
 plot_scale <- scale_color_manual(
     values = c( "None" = '#777777', "Change" = '%(cornflower_blue)s', "Polar/Charged" = 'magenta', "Hydrophobic/Non-polar" = 'green'),
     labels = c( "None" = "N/A", "Change" = "Change", "Polar/Charged" = "Polar/Charged", "Hydrophobic/Non-polar" = "Hydrophobic/Non-polar"))''' % plot_colors
-        return self.scatterplot_color_by_series(data, colorseries = "ResidueCharge", title = title, plot_scale = plot_scale, point_opacity = 0.6)
+        return self.scatterplot_color_by_series(colorseries = "ResidueCharges", title = title, plot_scale = plot_scale, point_opacity = 0.6)
 
 
-    def scatterplot_volume(self, data, title, csv_filename):
+    def scatterplot_exposure(self, title, csv_filename):
+        '''Scatterplot by exposure class.'''
+
+        # Create CSV input
+        new_dataframe = self.dataframe.copy()
+        new_dataframe = new_dataframe[['Experimental', 'Predicted', 'WildTypeExposure']]
+        new_dataframe['Opacity'] = 0.4
+        new_dataframe.columns = ['Experimental', 'Predicted', 'Exposure', 'Opacity'] # rename the exposure column
+        new_dataframe.to_csv(csv_filename, sep = ',', header = True)
+
+        plot_scale = '''
+plot_scale <- scale_color_manual(
+    values = c( "None" = '#777777', "B" = '%(brown)s', "E" = '%(purple)s'),
+    labels = c( "None" = "N/A", "B" = "Buried", "E" = "Exposed"))''' % plot_colors
+        return self.scatterplot_color_by_series(colorseries = "Exposure", title = title, plot_scale = plot_scale)
+
+
+    def scatterplot_volume(self, title, csv_filename):
         '''Scatterplot by change in volume upon mutation.'''
-        lines = ['Experimental,Predicted,VolumeChange,Opacity']
-        for record in data:
-            lines.append('{0},{1},{2},0.4'.format(record['Experimental'], record['Predicted'], record['VolumeChange']))
-        write_file(csv_filename, '\n'.join(lines))
+
+        # Create CSV input
+        new_dataframe = self.dataframe.copy()
+        new_dataframe = new_dataframe[['Experimental', 'Predicted', 'VolumeChange']]
+        new_dataframe['Opacity'] = 0.4
+        new_dataframe.to_csv(csv_filename, sep = ',', header = True)
+
         plot_scale = '''
 plot_scale <- scale_color_manual(
     values = c( "None" = '#777777', "SL" = '%(brown)s', "LS" = '%(purple)s', 'XX' = "%(cornflower_blue)s"),
     labels = c( "None" = "N/A", "SL" = "Increase", "LS" = "Decrease", "XX" = "No change"))''' % plot_colors
-        return self.scatterplot_color_by_series(data, colorseries = "VolumeChange", title = title, plot_scale = plot_scale)
+        return self.scatterplot_color_by_series(colorseries = "VolumeChange", title = title, plot_scale = plot_scale)
 
 
-    def scatterplot_ss(self, data, title, csv_filename):
+    def scatterplot_ss(self, title, csv_filename):
         '''Scatterplot by secondary structure.'''
-        lines = ['Experimental,Predicted,WTSecondaryStructure,Opacity']
-        for record in data:
-            lines.append('{0},{1},{2},0.4'.format(record['Experimental'], record['Predicted'], record['WildTypeDSSPSimpleSSType']))
-        write_file(csv_filename, '\n'.join(lines))
+
+        # Create CSV input
+        new_dataframe = self.dataframe.copy()
+        new_dataframe = new_dataframe[['Experimental', 'Predicted', 'WildTypeDSSPSimpleSSType']]
+        new_dataframe['Opacity'] = 0.4
+        new_dataframe.columns = ['Experimental', 'Predicted', 'WTSecondaryStructure', 'Opacity'] # rename the s.s. column
+        new_dataframe.to_csv(csv_filename, sep = ',', header = True)
+
         plot_scale = '''
 plot_scale <- scale_color_manual(
     name="Secondary structure",
     values = c( "None" = '#777777', "H" = 'magenta', "S" = 'orange', "O" = '%(cornflower_blue)s'),
     labels = c( "None" = "N/A", "H" = "Helix", "S" = "Sheet", "O" = "Other"))''' % plot_colors
-        return self.scatterplot_color_by_series(data, colorseries = "WTSecondaryStructure", title = title, plot_scale = plot_scale, point_opacity = 0.6)
+        return self.scatterplot_color_by_series(colorseries = "WTSecondaryStructure", title = title, plot_scale = plot_scale, point_opacity = 0.6)
 
 
-    def scatterplot_scop_class(self, data, title, csv_filename):
+    def scatterplot_scop_class(self, title, csv_filename):
         '''Scatterplot by SCOPe class.'''
-        lines = ['Experimental,Predicted,WildTypeSCOPClass,Opacity']
-        for record in data:
-            lines.append('{0},{1},{2},0.4'.format(record['Experimental'], record['Predicted'], record['WildTypeSCOPClass']))
-        write_file(csv_filename, '\n'.join(lines))
-        return self.scatterplot_color_by_series(data, colorseries = "WildTypeSCOPClass", title = title, point_opacity = 0.6)
+
+        # Create CSV input
+        new_dataframe = self.dataframe.copy()
+        new_dataframe = new_dataframe[['Experimental', 'Predicted', 'WildTypeSCOPClass']]
+        new_dataframe['Opacity'] = 0.4
+        new_dataframe.to_csv(csv_filename, sep = ',', header = True)
+
+        return self.scatterplot_color_by_series(colorseries = "WildTypeSCOPClass", title = title, point_opacity = 0.6)
 
 
-    def scatterplot_scop_fold(self, data, title, csv_filename):
+    def scatterplot_scop_fold(self, title, csv_filename):
         '''Scatterplot by SCOPe fold.'''
-        lines = ['Experimental,Predicted,WildTypeSCOPFold,Opacity']
-        for record in data:
-            lines.append('{0},{1},{2},0.4'.format(record['Experimental'], record['Predicted'], record['WildTypeSCOPFold']))
-        write_file(csv_filename, '\n'.join(lines))
-        return self.scatterplot_color_by_series(data, colorseries = "WildTypeSCOPFold", title = title, point_opacity = 0.6)
+
+        # Create CSV input
+        new_dataframe = self.dataframe.copy()
+        new_dataframe = new_dataframe[['Experimental', 'Predicted', 'WildTypeSCOPFold']]
+        new_dataframe['Opacity'] = 0.4
+        new_dataframe.to_csv(csv_filename, sep = ',', header = True)
+
+        return self.scatterplot_color_by_series(colorseries = "WildTypeSCOPFold", title = title, point_opacity = 0.6)
 
 
-    def scatterplot_scop_classification(self, data, title, csv_filename):
+    def scatterplot_scop_classification(self, title, csv_filename):
         '''Scatterplot by SCOPe classification.'''
-        lines = ['Experimental,Predicted,WildTypeSCOPClassification,Opacity']
-        for record in data:
-            lines.append('{0},{1},{2},0.4'.format(record['Experimental'], record['Predicted'], record['WildTypeSCOPClassification']))
-        write_file(csv_filename, '\n'.join(lines))
-        return self.scatterplot_color_by_series(data, colorseries = "WildTypeSCOPClassification", title = title, point_opacity = 0.6)
+
+        # Create CSV input
+        new_dataframe = self.dataframe.copy()
+        new_dataframe = new_dataframe[['Experimental', 'Predicted', 'WildTypeSCOPClassification']]
+        new_dataframe['Opacity'] = 0.4
+        new_dataframe.to_csv(csv_filename, sep = ',', header = True)
+
+        return self.scatterplot_color_by_series(colorseries = "WildTypeSCOPClassification", title = title, point_opacity = 0.6)
 
 
-    def scatterplot_wildtype_aa(self, data, title, csv_filename):
+    def scatterplot_wildtype_aa(self, title, csv_filename):
         '''Scatterplot by wildtype residue.'''
-        lines = ['Experimental,Predicted,WildTypeAA,Opacity']
-        for record in data:
-            lines.append('{0},{1},{2},0.4'.format(record['Experimental'], record['Predicted'], record['WildTypeAA']))
-        write_file(csv_filename, '\n'.join(lines))
+
+        # Create CSV input
+        new_dataframe = self.dataframe.copy()
+        new_dataframe = new_dataframe[['Experimental', 'Predicted', 'WildTypeAA']]
+        new_dataframe['Opacity'] = 0.4
+        new_dataframe.to_csv(csv_filename, sep = ',', header = True)
+
         plot_scale = '''
 plot_scale <- scale_color_manual(
     name="Residue",
     values = c( "None" = '#808080', "A" = '#FF0000', "C" = '#BFBF00', "D" = '#008000', "E" = "#80FFFF", "F" = "#8080FF", "G" = "#BF40BF", "H" = "#A0A424", "I" = "#411BEA", "K" = "#1EAC41", "L" = "#F0C80E", "M" = "#B430E5", "N" = "#ED7651", "P" = "#19CB97", "Q" = "#362698", "R" = "#7E7EB8", "S" = "#603000", "T" = "#A71818", "V" = "#DF8020", "W" = "#E75858", "Y" = "#082008"),
     labels = c( "None" = "N/A", "A" = "A", "C" = "C", "D" = "D", "E" = "E", "F" = "F", "G" = "G", "H" = "H", "I" = "I", "K" = "K", "L" = "L", "M" = "M", "N" = "N", "P" = "P", "Q" = "Q", "R" = "R", "S" = "S", "T" = "T", "V" = "V", "W" = "W", "Y" = "Y"))
     ''' % plot_colors
-        return self.scatterplot_color_by_series(data, colorseries = "WildTypeAA", title = title, plot_scale = plot_scale, point_opacity = 0.6)
+        return self.scatterplot_color_by_series(colorseries = "WildTypeAA", title = title, plot_scale = plot_scale, point_opacity = 0.6)
 
 
-    def scatterplot_mutant_aa(self, data, title, csv_filename):
+    def scatterplot_mutant_aa(self, title, csv_filename):
         '''Scatterplot by mutant residue.'''
-        lines = ['Experimental,Predicted,MutantAA,Opacity']
-        for record in data:
-            lines.append('{0},{1},{2},0.4'.format(record['Experimental'], record['Predicted'], record['MutantAA']))
-        write_file(csv_filename, '\n'.join(lines))
+
+        # Create CSV input
+        new_dataframe = self.dataframe.copy()
+        new_dataframe = new_dataframe[['Experimental', 'Predicted', 'MutantAA']]
+        new_dataframe['Opacity'] = 0.4
+        new_dataframe.to_csv(csv_filename, sep = ',', header = True)
+
         plot_scale = '''
 plot_scale <- scale_color_manual(
     name="Residue",
     values = c( "None" = '#808080', "A" = '#FF0000', "C" = '#BFBF00', "D" = '#008000', "E" = "#80FFFF", "F" = "#8080FF", "G" = "#BF40BF", "H" = "#A0A424", "I" = "#411BEA", "K" = "#1EAC41", "L" = "#F0C80E", "M" = "#B430E5", "N" = "#ED7651", "P" = "#19CB97", "Q" = "#362698", "R" = "#7E7EB8", "S" = "#603000", "T" = "#A71818", "V" = "#DF8020", "W" = "#E75858", "Y" = "#082008"),
     labels = c( "None" = "N/A", "A" = "A", "C" = "C", "D" = "D", "E" = "E", "F" = "F", "G" = "G", "H" = "H", "I" = "I", "K" = "K", "L" = "L", "M" = "M", "N" = "N", "P" = "P", "Q" = "Q", "R" = "R", "S" = "S", "T" = "T", "V" = "V", "W" = "W", "Y" = "Y"))
     ''' % plot_colors
-        return self.scatterplot_color_by_series(data, colorseries = "MutantAA", title = title, plot_scale = plot_scale, point_opacity = 0.6)
+        return self.scatterplot_color_by_series(colorseries = "MutantAA", title = title, plot_scale = plot_scale, point_opacity = 0.6)
 
 
-    def scatterplot_GP(self, data, title, csv_filename):
+    def scatterplot_GP(self, title, csv_filename):
 
-        lines = ['Experimental,Predicted,GP,Opacity']
-        for record in data:
-            if record['HasGPMutation']:
-                case_type, opacity = 'GP', 0.9
-            else:
-                case_type, opacity = 'Other', 0.5
-            lines.append('{0},{1},{2},{3}'.format(record['Experimental'], record['Predicted'], case_type, opacity))
-        write_file(csv_filename, '\n'.join(lines))
+        # Create CSV input
+        new_dataframe = self.dataframe.copy()
+        new_dataframe = new_dataframe[['Experimental', 'Predicted', 'HasGPMutation']]
+        new_dataframe['GP'] = numpy.where(new_dataframe['HasGPMutation'] == 1, 'GP', 'Other')
+        new_dataframe['Opacity'] = numpy.where(new_dataframe['HasGPMutation'] == 1, 0.9, 0.5)
+        new_dataframe = new_dataframe[['Experimental', 'Predicted', 'GP', 'Opacity']]
+        new_dataframe.to_csv(csv_filename, sep = ',', header = True)
 
         plot_scale = '''plot_scale <- scale_color_manual(
     name="Glycine/Proline",
     values = c( "None" = '#777777', "GP" = '%(neon_green)s', "Other" = '#440077'),
     labels = c( "None" = "N/A", "GP" = "GP", "Other" = "Other"))''' % plot_colors
-        return self.scatterplot_color_by_series(data, colorseries = "GP", title = title, plot_scale = plot_scale, point_opacity = 0.75)
+        return self.scatterplot_color_by_series(colorseries = "GP", title = title, plot_scale = plot_scale, point_opacity = 0.75)
 
 
-    def scatterplot_pdb_res_binned(self, data, title, csv_filename):
+    def scatterplot_pdb_res_binned(self, title, csv_filename):
         '''Scatterplot by binned PDB resolution.'''
-        lines = ['Experimental,Predicted,PDBResolutionBin,Opacity']
-        for record in data:
-            lines.append('{0},{1},{2},0.4'.format(record['Experimental'], record['Predicted'], record['PDBResolutionBin']))
-        write_file(csv_filename, '\n'.join(lines))
+
+        # Create CSV input
+        new_dataframe = self.dataframe.copy()
+        new_dataframe = new_dataframe[['Experimental', 'Predicted', 'PDBResolutionBin']]
+        new_dataframe['Opacity'] = 0.4
+        new_dataframe.to_csv(csv_filename, sep = ',', header = True)
+
         plot_scale = '''
 plot_scale <- scale_color_manual(
     name = "Resolution",
     values = c( "N/A" = '#777777', "<1.5" = '#0052aE', "1.5-2.0" = '#554C54', '2.0-2.5' = "#FFA17F", '>=2.5' = "#ce4200")
     )''' % plot_colors
-        return self.scatterplot_color_by_series(data, colorseries = "PDBResolutionBin", title = title, plot_scale = plot_scale, point_opacity = 0.75)
+        return self.scatterplot_color_by_series(colorseries = "PDBResolutionBin", title = title, plot_scale = plot_scale, point_opacity = 0.75)
 
 
-    def scatterplot_chain_length(self, data, title, csv_filename):
+    def scatterplot_chain_length(self, title, csv_filename):
         '''Scatterplot by chain length.'''
-        lines = ['Experimental,Predicted,Residues,Opacity']
-        for record in data:
-            lines.append('{0},{1},{2},0.4'.format(record['Experimental'], record['Predicted'], record['MonomerLength']))
-        write_file(csv_filename, '\n'.join(lines))
+
+        # Create CSV input
+        new_dataframe = self.dataframe.copy()
+        new_dataframe = new_dataframe[['Experimental', 'Predicted', 'MonomerLength']]
+        new_dataframe['Opacity'] = 0.4
+        new_dataframe.columns = ['Experimental', 'Predicted', 'Residues', 'Opacity'] # rename the monomer length column
+        new_dataframe.to_csv(csv_filename, sep = ',', header = True)
+
         plot_scale = '''
 plot_scale <- scale_color_manual(
     name = "Resolution",
     values = c( "N/A" = '#777777', "<1.5" = '#0052aE', "1.5-2.0" = '#554C54', '2.0-2.5' = "#FFA17F", '>=2.5' = "#ce4200")
     )''' % plot_colors
         extra_commands ='\n    scale_colour_gradient(low="yellow", high="#880000") +'
-        return self.scatterplot_color_by_series(data, colorseries = "Residues", title = title, plot_scale = '', point_opacity = 0.75, extra_commands = extra_commands)
+        return self.scatterplot_color_by_series(colorseries = "Residues", title = title, plot_scale = '', point_opacity = 0.75, extra_commands = extra_commands)
 
 
 if __name__ == '__main__':
