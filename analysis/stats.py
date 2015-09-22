@@ -407,7 +407,6 @@ def format_stats_for_printing(stats):
 
 
 def plot(analysis_table, output_filename, RFunction, title = ''):
-    #R_return_values = {}
     filetype = os.path.splitext(output_filename)[1].lower()
     if not(filetype == '.png' or filetype == '.pdf' or filetype == '.eps'):
         filetype = 'png'
@@ -420,14 +419,34 @@ def plot(analysis_table, output_filename, RFunction, title = ''):
         input_filename = create_csv(analysis_table)
         try:
             R_output = RFunction(input_filename, output_filename, filetype, title = title)
-            #R_return_values = RUtilities.parse_R_output(R_output)
-            #for k, v in sorted(R_return_values.iteritems()):
-            #    print("  %s: %s" % (str(k), str(v)))
         except Exception, e:
             print(traceback.format_exc())
             delete_file(input_filename)
             raise Exception(e)
         delete_file(input_filename)
+    return output_filename
+
+
+def plot_pandas(dataframe, x_series, y_series, output_filename, RFunction, title = ''):
+    new_dataframe = dataframe[[x_series, y_series]]
+    new_dataframe.columns = ['Experimental', 'Predicted'] # todo: this is hacky - make the inner function more general
+
+    csv_filename = os.path.splitext(output_filename)[0] + '.txt'
+    filetype = os.path.splitext(output_filename)[1].lower()
+    if not(filetype == '.png' or filetype == '.pdf' or filetype == '.eps'):
+        filetype = 'png'
+        output_filename += '.png'
+    else:
+        filetype = filetype[1:]
+    if len(new_dataframe) <= 1:
+        raise Exception("The analysis table must have at least two points.")
+    else:
+        new_dataframe.to_csv(csv_filename, sep = ',', header = True)
+        try:
+            R_output = RFunction(csv_filename, output_filename, filetype, title = title)
+        except Exception, e:
+            print(traceback.format_exc())
+            raise Exception(e)
     return output_filename
 
 
