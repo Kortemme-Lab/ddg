@@ -1085,6 +1085,14 @@ class BenchmarkRun(ReportingObject):
         metrics_textfile.append(format_stats_for_printing(get_xy_dataset_statistics_pandas(dataframe, 'Experimental', 'Predicted', fcorrect_x_cutoff = self.stability_classication_x_cutoff, fcorrect_y_cutoff = self.stability_classication_y_cutoff)))
         self.report('\n'.join(metrics_textfile[-2:]), fn = colortext.sprint)
 
+        # There is probably a better way of writing the pandas code here
+        record_with_most_errors = (dataframe[['PDBFileID', 'NumberOfDerivativeErrors', 'Mutations']].sort('NumberOfDerivativeErrors')).tail(1)
+        record_index = record_with_most_errors.index.tolist()[0]
+        pdb_id, num_errors, mutation_str = dataframe.loc[record_index, 'PDBFileID'], dataframe.loc[record_index, 'NumberOfDerivativeErrors'], dataframe.loc[record_index, 'Mutations']
+        if num_errors > 0:
+            metrics_textfile.append('\n\nDerivative errors were found in the run. The case with the most amount of derivative errors is {0}, {1} with {2} errors.'.format(pdb_id, mutation_str, num_errors))
+            self.report(metrics_textfile[-1], fn = colortext.warning)
+
         # Write the analysis to file
         write_file(self.metrics_filepath, '\n'.join(metrics_textfile))
 
