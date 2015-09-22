@@ -742,7 +742,7 @@ class BenchmarkRun(ReportingObject):
             'WildTypeDSSPType', 'WildTypeDSSPSimpleSSType', 'WildTypeDSSPExposure',
             'WildTypeSCOPClass', 'WildTypeSCOPFold', 'WildTypeSCOPClassification',
             'WildTypeExposure', 'WildTypeAA', 'MutantAA', 'HasGPMutation',
-            'PDBResolution', 'PDBResolutionBin', 'MonomerLength',
+            'PDBResolution', 'PDBResolutionBin', 'MonomerLength', 'NumberOfDerivativeErrors',
         ]
         csv_file = [','.join(csv_headers)]
 
@@ -776,6 +776,7 @@ class BenchmarkRun(ReportingObject):
             scops = set()
             pdb_chains = set()
             mutation_string = []
+            num_derivative_errors = predicted_data.get('Errors', {}).get('Derivative error count', 0)
 
             mutations = record['Mutations']
             for m in mutations:
@@ -900,15 +901,17 @@ class BenchmarkRun(ReportingObject):
                 PDBResolution = pdb_record.get('Resolution'),
                 PDBResolutionBin = pdb_resolution_bin,
                 MonomerLength = len(pdb_record.get('Chains', {}).get(pdb_chain, {}).get('Sequence', '')) or None,
+                NumberOfDerivativeErrors = num_derivative_errors,
                 )
 
             for h in csv_headers:
                 assert(',' not in str(dataframe_record[h]))
             csv_file.append(','.join([str(dataframe_record[h]) for h in csv_headers]))
-            #assert(sorted(csv_headers) == sorted(dataframe_record.keys()))
+            assert(sorted(csv_headers) == sorted(dataframe_record.keys()))
 
         # Create the CSV file in memory (we are not done added data just yet) and pass it to pandas
         dataframe = pandas.read_csv(StringIO.StringIO('\n'.join(csv_file)), sep=',', header=0, skip_blank_lines=True, index_col = 0)
+        self.dataframe = dataframe
 
         # Report the SCOPe classification counts
         SCOP_classifications = set(dataframe['WildTypeSCOPClassification'].values.tolist())
@@ -918,13 +921,12 @@ class BenchmarkRun(ReportingObject):
 
         # Plot the optimum y-cutoff over a range of x-cutoffs for the fraction correct metric. Include the user's cutoff in the range
         self.log('Determining a scalar adjustment with which to scale the predicted values to improve the fraction correct measurement.', colortext.warning)
-        self.scalar_adjustment, plot_filename = self.plot_optimum_prediction_fraction_correct_cutoffs_over_range(dataframe, min(self.stability_classication_x_cutoff, 0.5), max(self.stability_classication_x_cutoff, 3.0), suppress_plot = True)
+        self.scalar_adjustment, plot_filename = self.plot_optimum_prediction_fraction_correct_cutoffs_over_range(min(self.stability_classication_x_cutoff, 0.5), max(self.stability_classication_x_cutoff, 3.0), suppress_plot = True)
 
         # Add new columns derived from the adjusted values
         dataframe['Predicted_adj'] = dataframe['Predicted'] / self.scalar_adjustment
         dataframe['AbsoluteError_adj'] = (dataframe['Experimental'] - dataframe['Predicted_adj']).abs()
         add_fraction_correct_values_to_dataframe(dataframe, 'Experimental', 'Predicted_adj', 'StabilityClassification_adj',  x_cutoff = stability_classication_x_cutoff, y_cutoff = stability_classication_y_cutoff)
-        self.dataframe = dataframe
 
         # Write the dataframe out to CSV
         dataframe.to_csv(self.analysis_csv_input_filepath, sep = ',', header = True)
@@ -1090,6 +1092,11 @@ class BenchmarkRun(ReportingObject):
         graph_order.append(self.create_section_slide('{0}section_6.png'.format(self.analysis_file_prefix), 'Chain properties'))
         graph_order.append(self.scatterplot_generic('Experimental vs. Prediction - PDB resolution', self.scatterplot_pdb_res_binned, '{0}scatterplot_pdb_res_binned.png'.format(self.analysis_file_prefix)))
         graph_order.append(self.scatterplot_generic('Experimental vs. Prediction - Chain length', self.scatterplot_chain_length, '{0}scatterplot_chain_length.png'.format(self.analysis_file_prefix)))
+
+
+        #self.plot_barchart_errors()
+
+        #return
 
         relative_graph_paths = [os.path.join(self.benchmark_run_name + '_subplots', os.path.split(g)[1]) for g in graph_order]
         for rp in relative_graph_paths:
@@ -1331,6 +1338,20 @@ dev.off()'''
                 RInterface._runRScript(r_script % locals())
 
         return average_scalar, plot_filename
+
+    def plot_barchart_errors(self):
+
+        # Filenames
+        output_filename_prefix = '{0}errors_by_pdb_id'.format(self.analysis_file_prefix)
+        plot_filename = output_filename_prefix + '.png'
+        csv_filename = output_filename_prefix + '.txt'
+        R_filename = output_filename_prefix + '.R'
+
+        if os.path.exists(plot_filename) and not(self.recreate_graphs):
+            return plot_filename
+
+
+
 
 
     def plot_absolute_error_histogram(self):
