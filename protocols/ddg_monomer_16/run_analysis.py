@@ -1093,14 +1093,13 @@ class BenchmarkRun(ReportingObject):
         graph_order.append(self.scatterplot_generic('Experimental vs. Prediction - PDB resolution', self.scatterplot_pdb_res_binned, '{0}scatterplot_pdb_res_binned.png'.format(self.analysis_file_prefix)))
         graph_order.append(self.scatterplot_generic('Experimental vs. Prediction - Chain length', self.scatterplot_chain_length, '{0}scatterplot_chain_length.png'.format(self.analysis_file_prefix)))
 
+        # Errors / debugging
+        graph_order.append(self.create_section_slide('{0}section_7.png'.format(self.analysis_file_prefix), 'Errors / debugging'))
+        graph_order.append(self.plot_derivative_error_barchart())
 
-        #self.plot_barchart_errors()
-
-        #return
-
+        # Make sure all of the graphs have been created
         relative_graph_paths = [os.path.join(self.benchmark_run_name + '_subplots', os.path.split(g)[1]) for g in graph_order]
         for rp in relative_graph_paths:
-            print(rp)
             assert(os.path.exists(os.path.join(self.analysis_directory, rp)))
 
         # Copy the analysis input files into the analysis directory - these files are duplicated but it makes it easier to share data
@@ -1113,6 +1112,7 @@ class BenchmarkRun(ReportingObject):
         self.log('\n\nCreating a PDF containing all of the plots: {0}'.format(plot_file), colortext.message)
         try:
             if os.path.exists(plot_file):
+                #raise Exception('remove this exception') #todo
                 os.remove(plot_file)
             p = subprocess.Popen(shlex.split('convert {0} {1}'.format(' '.join(relative_graph_paths), plot_file)), cwd = self.analysis_directory)
             stdoutdata, stderrdata = p.communicate()
@@ -1339,7 +1339,8 @@ dev.off()'''
 
         return average_scalar, plot_filename
 
-    def plot_barchart_errors(self):
+
+    def plot_derivative_error_barchart(self):
 
         # Filenames
         output_filename_prefix = '{0}errors_by_pdb_id'.format(self.analysis_file_prefix)
@@ -1347,11 +1348,45 @@ dev.off()'''
         csv_filename = output_filename_prefix + '.txt'
         R_filename = output_filename_prefix + '.R'
 
+        new_dataframe = self.dataframe.copy()
+        new_dataframe = new_dataframe[['PDBFileID', 'NumberOfDerivativeErrors']]
+        new_dataframe.columns = ['PDB', 'AverageDerivativeErrorCount']
+        new_dataframe = new_dataframe.groupby(['PDB'])['AverageDerivativeErrorCount'].mean()
+        new_dataframe.to_csv(csv_filename, sep = ',', header = True)
+
         if os.path.exists(plot_filename) and not(self.recreate_graphs):
             return plot_filename
 
+        # Create plot
+        firebrick = plot_colors['firebrick']
+        brown = plot_colors['brown']
+        self.log('Saving barchart to %s.' % plot_filename)
+        title = 'Average count of Inaccurate G! errors by PDB ID'
+        r_script = '''library(ggplot2)
+library(gridExtra)
+library(scales)
+library(qualV)
 
+png('%(plot_filename)s', height=4096, width=4096, bg="white", res=600)
+plot_data <- read.csv('%(csv_filename)s', header=T)
 
+b <- ggplot(plot_data, aes(x=PDB, y=AverageDerivativeErrorCount)) +
+     geom_bar(stat='identity', colour = "%(brown)s", fill = "%(firebrick)s") +
+     ggtitle("%(title)s") +
+     xlab("PDB ID") +
+     ylab("Derivative errors (average)") +
+     coord_flip()
+b
+
+#m <- ggplot(plot_data, aes(x=AbsoluteError)) +
+#    geom_histogram(colour = "%(brown)s", fill = "%(firebrick)s", binwidth = 0.5) +
+#    ggtitle("%(title)s") +
+#    xlab("Absolute error (kcal/mol - energy units)") +
+#    ylab("Number of cases")
+#m
+dev.off()'''
+        RInterface._runRScript(r_script % locals())
+        return plot_filename
 
 
     def plot_absolute_error_histogram(self):
