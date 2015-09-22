@@ -198,6 +198,14 @@ class BenchmarkManager(ReportingObject):
         # Output directory. The path where the analysis files should be created.
         self.analysis_directory = os.path.abspath(arguments['<analysis_directory>'])
 
+        # Create analysis directory
+        if not(os.path.exists(self.analysis_directory)):
+            try:
+                os.mkdir(self.analysis_directory)
+                assert(os.path.exists(self.analysis_directory))
+            except Exception, e:
+                raise colortext.Exception('An exception occurred creating the directory %s.' % self.analysis_directory)
+
         # Plot-generation option
         self.generate_plots = not(arguments['--do_not_generate_plots'])
         self.report_analysis = not(arguments['--do_not_report_analysis'])
@@ -423,14 +431,6 @@ class BenchmarkManager(ReportingObject):
 
     def analyze(self):
         '''Runs the analysis for the different benchmark runs.'''
-
-        # change to create analysis directory
-        if not(os.path.exists(self.analysis_directory)):
-            try:
-                os.mkdir(self.analysis_directory)
-                assert(os.path.exists(self.analysis_directory))
-            except Exception, e:
-                raise colortext.Exception('An exception occurred creating the directory %s.' % self.analysis_directory)
 
         benchmark_runs = sorted(self.benchmark_run_data.keys())
         # todo: add published data here
