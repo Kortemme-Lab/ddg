@@ -33,6 +33,11 @@ Usage:
 
 Options:
 
+    -j --benchmark_run_json BENCHMARK_RUN_JSON
+        The path to a JSON file describing the benchmark runs being analyzed. Either this option or the -b and -n options
+        should be used but not both. If this option is used then more information will be added to the title slide of the
+        generated report. An example of the file format is provided in benchmark_runs.json.example.
+
     -b --benchmark_run_directory BENCHMARK_RUN_DIRECTORY
         The path to a directory previously generated from the run_preminimization script which contains a completed
         benchmark run. This defaults to the most recent directory in job_output, if this exists. This number of these
@@ -243,43 +248,91 @@ class BenchmarkManager(ReportingObject):
         benchmark_run_directories = arguments['--benchmark_run_directory']
         use_published_data = arguments['--use_published_data']
         benchmark_run_names = arguments['--benchmark_run_name']
+        benchmark_run_json = arguments['--benchmark_run_json']
+        benchmark_run_descriptions = []
+        benchmark_run_credits = []
+
+        if benchmark_run_json and (len(benchmark_run_directories) > 0 and len(benchmark_run_directories) > 0):
+            raise colortext.Exception('The -j (--benchmark_run_json) option cannot be used if either of the -b (--benchmark_run_directory) or -n (--benchmark_run_name) options are used.')
+
+        if benchmark_run_json:
+            benchmark_json_runs = []
+            if not os.path.exists(benchmark_run_json):
+                raise colortext.Exception('The file {0} does not exist.'.format(benchmark_run_json))
+            try:
+                benchmark_run_json = json.loads(read_file(benchmark_run_json))
+            except Exception, e:
+                raise colortext.Exception('An error occurred parsing {0}: "{1}".'.format(benchmark_run_json, str(e)))
+
+            try:
+                c = [benchmark_run.get('Order') for benchmark_run in benchmark_run_json]
+                if None in c:
+                    c.remove(None)
+                c = [int(x) for x in c if str(x).isdigit()]
+                if c:
+                    c = max(c) + 1
+                else:
+                    c = 1
+                print(c)
+                for benchmark_run in benchmark_run_json:
+                    if benchmark_run.get('Order') and str(benchmark_run.get('Order')).isdigit():
+                        order = int(benchmark_run['Order'])
+                    else:
+                        order = c
+                        c += 1
+                    benchmark_json_runs.append((order, benchmark_run['Path'], benchmark_run['Name'], benchmark_run.get('Description', ''), benchmark_run.get('Credit', '')))
+                benchmark_json_runs = sorted(benchmark_json_runs)
+                benchmark_run_directories = [os.path.normpath(os.path.expanduser(x[1])) for x in benchmark_json_runs]
+                benchmark_run_names = [x[2] for x in benchmark_json_runs]
+                benchmark_run_descriptions = [x[3] for x in benchmark_json_runs]
+                benchmark_run_credits = [x[4] for x in benchmark_json_runs]
+            except Exception, e:
+                raise colortext.Exception('An error occurred parsing {0}: "{1}".'.format(benchmark_run_json, str(e)))
+        else:
+            # If benchmarks were chosen, make sure the directories exist and have corresponding names. Otherwise, use the most recent run.
+            if benchmark_run_directories:
+                if len(benchmark_run_directories) != len(benchmark_run_names):
+                    raise colortext.Exception('Each benchmark_run_directory argument (there are {0}) must have a corresponding benchmark_run_name argument (there are {1}).'.format(len(benchmark_run_directories), len(benchmark_run_names)))
+                for benchmark_run_directory in benchmark_run_directories:
+                    if not(os.path.exists(benchmark_run_directory)):
+                        raise colortext.Exception('The directory %s does not exist.' % benchmark_run_directory)
+            else:
+                benchmark_run_directory = os.path.abspath('job_output')
+                if os.path.exists(benchmark_run_directory):
+                    most_recent_directory = None
+                    existing_dirs = sorted([os.path.join(benchmark_run_directory, d) for d in os.listdir(benchmark_run_directory) if d.find('ddg_monomer_16') != -1 and os.path.isdir(os.path.join(benchmark_run_directory, d))])
+                    if existing_dirs:
+                        most_recent_directory = existing_dirs[-1]
+                    if most_recent_directory:
+                        answer = None
+                        if arguments.get('--force'):
+                            answer = True
+                            self.log('\nRunning analysis from the run in %s.' % most_recent_directory)
+                        else:
+                            answer = prompt_yn('\nNo benchmark run path was specified. Use %s (y/n)?' % most_recent_directory)
+                        if not answer:
+                            raise colortext.Exception('No benchmark run was specified. Exiting.\n')
+                        benchmark_run_directories = [most_recent_directory]
+                        if len(benchmark_run_names) == 0:
+                            benchmark_run_names.append('')
+                            colortext.warning('No benchmark_run_name argument was specified. Defaulting to a blank name.') # we write to stdout here despite the user option
+                        elif len(benchmark_run_names) > 1:
+                            raise colortext.Exception('No benchmark_run_directory was specified (one recent directory was chosen automatically) but multiple --benchmark_run_name arguments were specified.')
 
         # Check for uniqueness
         if benchmark_run_directories and (len(benchmark_run_directories) != len(set(benchmark_run_directories))):
-            raise colortext.Exception('The --benchmark_run_directory options must be unique.')
+            raise colortext.Exception('The benchmark run directories must be unique.')
         if benchmark_run_names and (len(benchmark_run_names) != len(set(benchmark_run_names))):
-            raise colortext.Exception('The --benchmark_run_name options must be unique.')
+            raise colortext.Exception('The benchmark names e options must be unique.')
 
-        # If benchmarks were chosen, make sure the directories exist and have corresponding names. Otherwise, use the most recent run.
-        if benchmark_run_directories:
-            if len(benchmark_run_directories) != len(benchmark_run_names):
-                raise colortext.Exception('Each benchmark_run_directory argument (there are {0}) must have a corresponding benchmark_run_name argument (there are {1}).'.format(len(benchmark_run_directories), len(benchmark_run_names)))
-            for benchmark_run_directory in benchmark_run_directories:
-                if not(os.path.exists(benchmark_run_directory)):
-                    raise colortext.Exception('The directory %s does not exist.' % benchmark_run_directory)
-        else:
-            benchmark_run_directory = os.path.abspath('job_output')
-            if os.path.exists(benchmark_run_directory):
-                most_recent_directory = None
-                existing_dirs = sorted([os.path.join(benchmark_run_directory, d) for d in os.listdir(benchmark_run_directory) if d.find('ddg_monomer_16') != -1 and os.path.isdir(os.path.join(benchmark_run_directory, d))])
-                if existing_dirs:
-                    most_recent_directory = existing_dirs[-1]
-                if most_recent_directory:
-                    answer = None
-                    if arguments.get('--force'):
-                        answer = True
-                        self.log('\nRunning analysis from the run in %s.' % most_recent_directory)
-                    else:
-                        answer = prompt_yn('\nNo benchmark run path was specified. Use %s (y/n)?' % most_recent_directory)
-                    if not answer:
-                        raise colortext.Exception('No benchmark run was specified. Exiting.\n')
-                    benchmark_run_directories = [most_recent_directory]
-                    if len(benchmark_run_names) == 0:
-                        benchmark_run_names.append('')
-                        colortext.warning('No benchmark_run_name argument was specified. Defaulting to a blank name.') # we write to stdout here despite the user option
-                    elif len(benchmark_run_names) > 1:
-                        raise colortext.Exception('No benchmark_run_directory was specified (one recent directory was chosen automatically) but multiple --benchmark_run_name arguments were specified.')
+        # Make sure the arrays are of the same size
         assert(len(benchmark_run_directories) == len(benchmark_run_names))
+        if not benchmark_run_descriptions:
+            benchmark_run_descriptions = ['' for x in range(len(benchmark_run_directories))]
+        if not benchmark_run_credits:
+            benchmark_run_credits = ['' for x in range(len(benchmark_run_directories))]
+        assert(len(benchmark_run_directories) == len(benchmark_run_descriptions))
+        assert(len(benchmark_run_directories) == len(benchmark_run_credits))
 
         # At least one benchmark run must be chosen (including the published benchmark run)
         if not use_published_data and len(benchmark_run_directories) == 0:
@@ -293,6 +346,8 @@ class BenchmarkManager(ReportingObject):
 
             benchmark_run_directory = benchmark_run_directories[x]
             benchmark_run_name = benchmark_run_names[x]
+            benchmark_run_description = benchmark_run_descriptions[x]
+            benchmark_run_credit = benchmark_run_credits[x]
             self.log('Setting up the analysis data for {0} in {1}.'.format(benchmark_run_name, benchmark_run_directory), fn = colortext.message)
 
             # Check that the job output directories exist
@@ -306,6 +361,7 @@ class BenchmarkManager(ReportingObject):
             try:
                 dataset_filepath = os.path.join(benchmark_run_directory, 'dataset.json')
                 dataset = json.loads(read_file(dataset_filepath))
+                dataset_description = dataset.get('description', 'Unknown dataset')
                 dataset_cases = {}
                 for dsc in dataset['data']:
                     dataset_cases[dsc['RecordID']] = dsc
@@ -349,6 +405,9 @@ class BenchmarkManager(ReportingObject):
                 dataset_cases,
                 analysis_data,
                 arguments['--use_single_reported_value'],
+                description = benchmark_run_description,
+                dataset_description = dataset_description,
+                credit = benchmark_run_credit,
                 include_derived_mutations = self.include_derived_mutations,
                 take_lowest = self.take_lowest,
                 generate_plots = self.generate_plots,
@@ -578,7 +637,7 @@ class BenchmarkRun(ReportingObject):
 
 
     def __init__(self, benchmark_run_name, benchmark_run_directory, analysis_directory, dataset_cases, analysis_data, use_single_reported_value,
-                 take_lowest = 3, generate_plots = True, report_analysis = True, include_derived_mutations = False, recreate_graphs = False, silent = False, burial_cutoff = 0.25,
+                 description = None, dataset_description = None, credit = None, take_lowest = 3, generate_plots = True, report_analysis = True, include_derived_mutations = False, recreate_graphs = False, silent = False, burial_cutoff = 0.25,
                  stability_classication_x_cutoff = 1.0, stability_classication_y_cutoff = 1.0, use_existing_benchmark_data = False):
         self.amino_acid_details, self.CAA, self.PAA, self.HAA = BenchmarkRun.get_amino_acid_details()
         self.benchmark_run_name = benchmark_run_name
@@ -589,6 +648,9 @@ class BenchmarkRun(ReportingObject):
         self.subplot_directory = os.path.join(self.analysis_directory, self.benchmark_run_name + '_subplots')
         self.analysis_file_prefix = os.path.join(self.analysis_directory, self.benchmark_run_name + '_subplots', self.benchmark_run_name + '_')
         self.use_single_reported_value = use_single_reported_value
+        self.description = description
+        self.dataset_description = dataset_description
+        self.credit = credit
         self.generate_plots = generate_plots
         self.report_analysis = report_analysis
         self.silent = silent
@@ -1035,6 +1097,23 @@ class BenchmarkRun(ReportingObject):
         dataframe = self.dataframe
         graph_order = []
 
+        # Create a subtitle for the first page
+        subtitle = self.benchmark_run_name
+        if self.description:
+            tokens = self.description.split(' ')
+            description_lines = []
+            s = []
+            for t in tokens:
+                if s and (len(s) + len(t) + 1 > 32):
+                    description_lines.append(' '.join(s))
+                    s = [t]
+                else:
+                    s.append(t)
+            if s: description_lines.append(' '.join(s))
+            subtitle += '\n{0}'.format('\n'.join(description_lines))
+        if self.dataset_description:
+            subtitle += '\n{0}'.format(self.dataset_description)
+
         # Plot which y-cutoff yields the best value for the fraction correct metric
         scalar_adjustment, scalar_adjustment_calculation_plot = self.plot_optimum_prediction_fraction_correct_cutoffs_over_range(min(self.stability_classication_x_cutoff, 0.5), max(self.stability_classication_x_cutoff, 3.0), suppress_plot = False)
         assert(self.scalar_adjustment == scalar_adjustment)
@@ -1047,21 +1126,23 @@ class BenchmarkRun(ReportingObject):
         if not(os.path.exists(main_scatterplot) and not(self.recreate_graphs)):
             self.log('Saving scatterplot to %s.' % main_scatterplot)
             plot_pandas(dataframe, 'Experimental', 'Predicted', main_scatterplot, RInterface.correlation_coefficient_gplot, title = 'Experimental vs. Prediction')
-        graph_order.append(self.create_section_slide('{0}section_1.png'.format(self.analysis_file_prefix), 'Main metrics'))
+
+        graph_order.append(self.create_section_slide('{0}section_1.png'.format(self.analysis_file_prefix), 'Main metrics', subtitle, self.credit))
         graph_order.append(main_scatterplot)
 
         # Plot a histogram of the absolute errors
-        graph_order.append(self.plot_absolute_error_histogram())
+        graph_order.append(self.plot_absolute_error_histogram('{0}absolute_errors'.format(self.analysis_file_prefix), 'AbsoluteError'))
         graph_order.append(self.create_section_slide('{0}section_2.png'.format(self.analysis_file_prefix), 'Adjustments', 'Optimization of the cutoffs\nfor the fraction correct metric'))
         graph_order.append(scalar_adjustment_calculation_plot)
         graph_order.append(optimal_predictive_cutoff_plot)
 
-        # Create a scatterplot for the adjusted results
+        # Create a scatterplot and histogram for the adjusted results
         main_adj_scatterplot = '{0}main_adjusted_with_scalar_scatterplot.png'.format(self.analysis_file_prefix)
         if not(os.path.exists(main_adj_scatterplot) and not(self.recreate_graphs)):
             self.log('Saving scatterplot to %s.' % main_adj_scatterplot)
             plot_pandas(dataframe, 'Experimental', 'Predicted_adj', main_adj_scatterplot, RInterface.correlation_coefficient_gplot, title = 'Experimental vs. Prediction: adjusted scale')
         graph_order.append(main_adj_scatterplot)
+        graph_order.append(self.plot_absolute_error_histogram('{0}absolute_errors_adjusted_with_scalar'.format(self.analysis_file_prefix), 'AbsoluteError_adj'))
 
         # Scatterplots colored by residue context / change on mutation
         graph_order.append(self.create_section_slide('{0}section_3.png'.format(self.analysis_file_prefix), 'Residue context'))
@@ -1112,7 +1193,7 @@ class BenchmarkRun(ReportingObject):
         self.log('\n\nCreating a PDF containing all of the plots: {0}'.format(plot_file), colortext.message)
         try:
             if os.path.exists(plot_file):
-                #raise Exception('remove this exception') #todo
+                # raise Exception('remove this exception') #todo
                 os.remove(plot_file)
             p = subprocess.Popen(shlex.split('convert {0} {1}'.format(' '.join(relative_graph_paths), plot_file)), cwd = self.analysis_directory)
             stdoutdata, stderrdata = p.communicate()
@@ -1162,7 +1243,7 @@ class BenchmarkRun(ReportingObject):
         return max_value_cutoff, max_value, fraction_correct_range
 
 
-    def create_section_slide(self, plot_filename, title, subtitle = ''):
+    def create_section_slide(self, plot_filename, title, subtitle = '', footer = ''):
 
         if os.path.exists(plot_filename) and not(self.recreate_graphs):
             return plot_filename
@@ -1190,6 +1271,8 @@ class BenchmarkRun(ReportingObject):
             subtitle_size = 8
         subtitle_size = min(title_size - 2, subtitle_size)
 
+        footer_size = 6
+
         # Create plot
         if self.generate_plots:
             r_script = '''library(ggplot2)
@@ -1203,7 +1286,8 @@ p <- ggplot(mtcars, aes(x = wt, y = mpg)) + geom_blank() +
      coord_cartesian(xlim = c(0, 100), ylim = c(0, 100)) +
      theme(axis.ticks.x=element_blank(), axis.ticks.y=element_blank(), axis.text.x=element_blank(), axis.text.y=element_blank(), axis.title.x=element_blank(), axis.title.y=element_blank()) +
      geom_text(hjust=0, vjust=1, size=%(title_size)d, color="black", aes(5, 90, fontface="plain", family = "Times", face = "bold", label="%(title)s")) +
-     geom_text(hjust=0, vjust=1, size=%(subtitle_size)d, color="black", aes(5, 50, fontface="plain", family = "Times", face = "bold", label="%(subtitle)s"))
+     geom_text(hjust=0, vjust=1, size=%(subtitle_size)d, color="black", aes(5, 50, fontface="plain", family = "Times", face = "bold", label="%(subtitle)s")) +
+     geom_text(hjust=0, vjust=1, size=%(footer_size)d, color="black", aes(5, 5, fontface="italic", family = "Times", face = "bold", label="%(footer)s"))
 p
 dev.off()'''
             self.log('Section slide %s.' % plot_filename)
@@ -1389,10 +1473,9 @@ dev.off()'''
         return plot_filename
 
 
-    def plot_absolute_error_histogram(self):
+    def plot_absolute_error_histogram(self, output_filename_prefix, data_series):
 
         # Filenames
-        output_filename_prefix = '{0}absolute_errors'.format(self.analysis_file_prefix)
         plot_filename = output_filename_prefix + '.png'
         csv_filename = output_filename_prefix + '.txt'
         R_filename = output_filename_prefix + '.R'
@@ -1401,7 +1484,7 @@ dev.off()'''
             return plot_filename
 
         # Create CSV input
-        new_dataframe = self.dataframe[['AbsoluteError']]
+        new_dataframe = self.dataframe[[data_series]]
         new_dataframe.to_csv(csv_filename, sep = ',', header = True)
 
         if not self.generate_plots:
@@ -1418,7 +1501,7 @@ library(qualV)
 png('%(plot_filename)s', height=4096, width=4096, bg="white", res=600)
 plot_data <- read.csv('%(csv_filename)s', header=T)
 
-m <- ggplot(plot_data, aes(x=AbsoluteError)) +
+m <- ggplot(plot_data, aes(x=%(data_series)s)) +
     geom_histogram(colour = "darkgreen", fill = "green", binwidth = 0.5) +
     ggtitle("%(title)s") +
     xlab("Absolute error (kcal/mol - energy units)") +
