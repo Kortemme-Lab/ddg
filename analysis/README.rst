@@ -61,6 +61,13 @@ the stability of a mutant, should be considered alongside the correlation and MA
 Running analysis
 ================
 
+The analyze.py script in this directory performs basic analysis, reporting the values of the metrics above.
+
+More detailed analysis can be performed by implementing Python classes which interact with the classes defined in the
+reports directory. An example implementation is provided in protocols/ddg_monomer_16/run_analysis.py. These reporting
+classes break the analysis down over different criteria and may be useful in development. They rely on a number of tools
+including R_ and pandas_.
+
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Paths and extensions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -151,3 +158,7 @@ Note that it is not necessary to call the analyze.py explicitly for the included
 
 
 .. [1] Kellogg, EH, Leaver-Fay, A, Baker, D. Role of conformational sampling in computing mutation-induced changes in protein structure and stability. 2011. Proteins. 79(3):830-8. `doi: 10.1002/prot.22921 <https://dx.doi.org/10.1002/prot.22921>`_.
+
+.. _R: https://www.r-project.org
+
+.. _pandas: http://pandas.pydata.org
