@@ -1090,7 +1090,7 @@ class BenchmarkRun(ReportingObject):
         record_index = record_with_most_errors.index.tolist()[0]
         pdb_id, num_errors, mutation_str = dataframe.loc[record_index, 'PDBFileID'], dataframe.loc[record_index, 'NumberOfDerivativeErrors'], dataframe.loc[record_index, 'Mutations']
         if num_errors > 0:
-            metrics_textfile.append('\n\nDerivative errors were found in the run. The case with the most amount of derivative errors is {0}, {1} with {2} errors.'.format(pdb_id, mutation_str, num_errors))
+            metrics_textfile.append('\n\nDerivative errors were found in the run. Record #{0} - {1}, {2} - has the most amount ({3}) of derivative errors.'.format(record_index, pdb_id, mutation_str, num_errors))
             self.report(metrics_textfile[-1], fn = colortext.warning)
 
         # Write the analysis to file
