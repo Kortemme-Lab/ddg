@@ -214,7 +214,7 @@ class DDGBenchmarkManager(ReportingObject):
         if benchmark_run_directories and (len(benchmark_run_directories) != len(set(benchmark_run_directories))):
             raise colortext.Exception('The benchmark run directories must be unique.')
         if benchmark_run_names and (len(benchmark_run_names) != len(set(benchmark_run_names))):
-            raise colortext.Exception('The benchmark names e options must be unique.')
+            raise colortext.Exception('The benchmark names options must be unique.')
 
         # Make sure the arrays are of the same size
         assert(len(benchmark_run_directories) == len(benchmark_run_names))
@@ -295,7 +295,7 @@ class DDGBenchmarkManager(ReportingObject):
                 self.analysis_directory,
                 dataset_cases,
                 analysis_data,
-                arguments['--use_single_reported_value'],
+                use_single_reported_value = arguments['--use_single_reported_value'],
                 description = benchmark_run_description,
                 dataset_description = dataset_description,
                 credit = benchmark_run_credit,
