@@ -37,10 +37,10 @@ import StringIO
 try: import json
 except: import simplejson as json
 
-from analysis.libraries import colortext
-from analysis.libraries.colors import rgb_colors as plot_colors
-from analysis.stats import read_file, write_file, fraction_correct, fraction_correct_pandas, add_fraction_correct_values_to_dataframe, get_xy_dataset_statistics_pandas, format_stats_for_printing, RInterface, plot_pandas
-from analysis.libraries.loggers import ReportingObject
+from analysis.tools import colortext
+from analysis.tools.colors import rgb_colors as plot_colors
+from analysis.tools.stats import read_file, write_file, fraction_correct, fraction_correct_pandas, add_fraction_correct_values_to_dataframe, get_xy_dataset_statistics_pandas, format_stats_for_printing, RInterface, plot_pandas
+from analysis.tools.loggers import ReportingObject
 
 
 # This module contains one main class.

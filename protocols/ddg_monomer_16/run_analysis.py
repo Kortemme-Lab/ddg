@@ -107,9 +107,9 @@ try: import json
 except: import simplejson as json
 
 from analysis.libraries import docopt
-from analysis.libraries import colortext
-from analysis.stats import read_file_lines
-from analysis.libraries.ddg_analyzer import DDGBenchmarkManager
+from analysis.tools import colortext
+from analysis.tools.stats import read_file_lines
+from analysis.reports.ddg_analyzer import DDGBenchmarkManager
 
 
 # This module contains one main class.

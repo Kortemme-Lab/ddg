@@ -81,7 +81,7 @@ import getpass
 import rosetta.parse_settings
 from rosetta.write_run_file import process as write_run_file
 from analysis.libraries import docopt
-from analysis.stats import read_file, write_file
+from analysis.tools.stats import read_file, write_file
 try:
     import json
 except:

@@ -33,10 +33,10 @@ import pandas
 try: import json
 except: import simplejson as json
 
-from analysis.libraries import colortext
-from analysis.stats import read_file, write_file, prompt_yn
-from analysis.libraries.loggers import ReportingObject
-from ddg_monomeric_stability_analysis import BenchmarkRun
+from analysis.tools import colortext
+from analysis.tools.stats import read_file, write_file, prompt_yn
+from analysis.tools.loggers import ReportingObject
+from ddg_monomeric_stability_analysis import BenchmarkRun as DefaultBenchmarkRunClass
 
 
 # This module contains one main class.
@@ -52,12 +52,13 @@ class DDGBenchmarkManager(ReportingObject):
     '''This class is responsible for extract the data from benchmark runs and creating BenchmarkRun objects which can then be called to perform analysis.'''
 
 
-    def __init__(self, arguments):
+    def __init__(self, arguments, BenchmarkRunClass = DefaultBenchmarkRunClass):
         '''Read the command-line options and extract the raw data from the benchmark runs.'''
 
         # Declare object variables
         self.benchmark_run_data = {}            # a mapping from benchmark names to BenchmarkRun objects
         self.analysis_directory = None
+        self.BenchmarkRunClass = BenchmarkRunClass
         self.take_lowest = None
         self.burial_cutoff = None
         self.include_derived_mutations = None
@@ -289,7 +290,7 @@ class DDGBenchmarkManager(ReportingObject):
                 self.log('\r', colortext.wgrey)
                 if not self.silent: sys.stdout.flush()
 
-            self.benchmark_run_data[benchmark_run_name] = BenchmarkRun(
+            self.benchmark_run_data[benchmark_run_name] = BenchmarkRunClass(
                 benchmark_run_name,
                 benchmark_run_directory,
                 self.analysis_directory,

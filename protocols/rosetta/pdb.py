@@ -32,7 +32,7 @@ import types
 
 from basics import Residue, PDBResidue, Sequence, SequenceMap, residue_type_3to1_map, protonated_residue_type_3to1_map, non_canonical_amino_acids, protonated_residues_types_3, residue_types_3, Mutation, ChainMutation, SimpleMutation
 from basics import dna_nucleotides, rna_nucleotides, dna_nucleotides_3to1_map, dna_nucleotides_2to1_map, non_canonical_dna, non_canonical_rna, all_recognized_dna, all_recognized_rna
-from analysis.stats import read_file, write_file
+from analysis.tools.stats import read_file, write_file
 from map_pdb_residues import get_pdb_contents_to_pose_residue_map
 
 

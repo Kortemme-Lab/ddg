@@ -42,7 +42,7 @@ Authors:
 import sys
 import os
 from libraries import docopt
-from stats import get_xy_dataset_statistics, plot, read_file, RInterface, format_stats_for_printing
+from tools.stats import get_xy_dataset_statistics, plot, read_file, RInterface, format_stats_for_printing
 
 correlation_coefficient_scatterplotplot = RInterface.correlation_coefficient_gplot
 

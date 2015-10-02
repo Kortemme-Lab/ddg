@@ -29,7 +29,7 @@ import cPickle as pickle
 import sqlite3
 import itertools
 
-import analysis.stats as stats
+import analysis.tools.stats as stats
 from setup_alanine_scanning import parse_mutations_file
 
 pickle_name = os.path.join('data', 'job_dict.pickle')

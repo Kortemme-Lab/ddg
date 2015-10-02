@@ -26,7 +26,7 @@
 import os
 import json
 from rosetta.pdb import PDB
-from analysis.stats import read_file, write_file
+from analysis.tools.stats import read_file, write_file
 
 def update_pdbs_json():
     '''This function was used to update the pdbs.json file to include chain sequences and types.'''
