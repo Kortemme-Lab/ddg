@@ -36,7 +36,7 @@ except: import simplejson as json
 from analysis.libraries import colortext
 from analysis.stats import read_file, write_file, prompt_yn
 from analysis.libraries.loggers import ReportingObject
-from ddg_monomer_analysis import BenchmarkRun
+from ddg_monomeric_stability_analysis import BenchmarkRun
 
 
 # This module contains one main class.
