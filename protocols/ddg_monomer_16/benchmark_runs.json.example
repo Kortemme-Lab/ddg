@@ -1,0 +1,17 @@
+[
+    {
+        "Description": "My test #3 at revision 1234", 
+        "Name": "mytest3", 
+        "Path": "/path/to/my/data",
+        "Order" : 1,
+        "Credit" : "My name"
+    },
+    {
+        "Description": "My test #6 at revision 2345", 
+        "Name": "mytest6", 
+        "Path": "/new/path/to/my/data",
+        "Order" : 2,
+        "Credit" : "My name"
+    }
+]
+
