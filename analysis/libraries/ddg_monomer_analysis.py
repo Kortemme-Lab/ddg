@@ -47,6 +47,8 @@ from analysis.libraries.loggers import ReportingObject
 #
 # The BenchmarkRun class creates a dataframe containing the raw data used for analysis. This dataframe is then used to
 # performs analysis for the particular run or between another runs.
+#
+# This class should not be specific to a particular computational method so it can be reusable for generic analysis.
 
 
 class BenchmarkRun(ReportingObject):
