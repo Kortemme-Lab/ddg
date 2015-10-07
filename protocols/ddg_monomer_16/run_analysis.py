@@ -109,7 +109,7 @@ except: import simplejson as json
 from analysis.libraries import docopt
 from analysis.tools import colortext
 from analysis.tools.stats import read_file_lines
-from analysis.reports.ddg_analyzer import DDGBenchmarkManager
+from tools.benchmarking.analysis.ddg_analyzer import DDGBenchmarkManager
 
 
 # This module contains one main class.

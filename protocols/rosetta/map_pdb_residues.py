@@ -40,9 +40,11 @@ import os
 import tempfile
 import commands
 import traceback
+
 from optparse import OptionParser # todo: deprecated since Python 2.7
 
-from fsio import write_temp_file, read_file
+from tools.fs.fsio import read_file, write_file
+
 
 script = '''<ROSETTASCRIPTS>
   <MOVERS>

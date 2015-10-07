@@ -23,7 +23,10 @@
 # THE SOFTWARE.
 
 """\
-Outputs statistics and a scatterplot for the given XY data set.
+A simple application to outputs statistics and a scatterplot for the given XY data set.
+See reports/ddg_analyzer.py for a more fully-featured application for detailed analyses and
+protocols/ddg_monomer_16/run_analysis.py for an example of how to specialize this application to a particular computational
+method.
 
 Usage:
     analyze.py [options] <inputfile>...
@@ -33,7 +36,7 @@ Options:
         File name for the generated scatterplot [default: scatterplot.png]
 
 The input file should be a comma-separated values file where the first three columns are:
- ID,Experimental,Predicted
+  ID,Experimental,Predicted
 
 Authors:
     Shane O'Connor
@@ -41,8 +44,14 @@ Authors:
 
 import sys
 import os
+
 from libraries import docopt
-from tools.stats import get_xy_dataset_statistics, plot, read_file, RInterface, format_stats_for_printing
+
+from tools.stats import get_xy_dataset_statistics, format_stats_for_printing
+from tools.fs.fsio import read_file
+from tools.benchmarking.analysis.plot import plot
+from tools.plot.rtools import RInterface
+
 
 correlation_coefficient_scatterplotplot = RInterface.correlation_coefficient_gplot
 
