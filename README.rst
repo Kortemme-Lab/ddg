@@ -61,6 +61,15 @@ The benchmark is hosted on GitHub. The most recent version can be checked out us
 
   git clone https://github.com/Kortemme-Lab/ddg.git
 
+
+The code herein relies on a repository of utilities and applications developed by the Kortemme Lab. This can be
+downloaded here:
+
+::
+
+  git clone https://github.com/Kortemme-Lab/klab.git
+
+
 ---------------------------
 Directories in this archive
 ---------------------------
@@ -69,14 +78,15 @@ This archive contains the following directories:
 
 - *input* : contains the input files for the benchmarks. These take the form of PDB files and datasets of experimental |DDG| values. The input files are described in more detail in input/README.rst;
 - *output/sample* : contains sample output data that can be used to test the stand-alone analysis script;
-- *analysis* : contains the stand-alone analysis script (analyze.py) and the analysis functions (stats.py). All protocols are expected to produce output that will work with both scripts. These scripts do not need to be called directly - each benchmark has a separate analysis step which performs analysis;
+- *analysis* : contains the stand-alone analysis script (analyze.py). Standalone analysis functions can be found in the klab repository (stats/misc.py). All protocols are expected to produce output that will work with both scripts. These scripts do not need to be called directly - each benchmark has a separate analysis step which performs analysis;
 - *protocols* : contains the scripts needed to run the benchmarks. The scripts for each protocol are provided in a specific subdirectory;
 - *protocols/alanine-scanning* : contains the scripts needed to run the alanine scanning benchmark using a Rosetta protocol;
 - *protocols/ddg_monomer_16* : contains the scripts needed to run the protein stability benchmark using the Rosetta ddg_monomer protocol;
 - *protocols/rosetta* : contains utility code used to run the Rosetta protocols;
-- *hpc* : contains scripts that can be used to run the entire benchmark using specific cluster architectures. For practical reasons, a limited number of cluster systems are supported. Please feel free to provide scripts which run the benchmark for your particular cluster system.
-- *hpc/sge/ddg_monomer_16* : contains scripts that can be used to run the the protein stability benchmark using ddg_monomer on a Sun Grid Engine cluster.
-
+- *hpc* : contains scripts that can be used to run the entire benchmark using specific cluster architectures. For practical reasons, a limited number of cluster systems are supported. Please feel free to provide scripts which run the benchmark for your particular cluster system;
+- *hpc/sge/ddg_monomer_16* : contains instructions on how to run the the protein stability benchmark using ddg_monomer on a Sun Grid Engine cluster;
+- *hpc/sge/alanine-scanning* : contains instructions on how to run the the alanine-scanning using the supplied RosettaScript on a Sun Grid Engine cluster;
+- *libraries*: contains third-party libraries. See LICENSE-3RD-PARTY for licensing details.
 
 =========
 Protocols
