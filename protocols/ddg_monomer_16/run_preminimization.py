@@ -79,13 +79,13 @@ except: import simplejson as json
 
 from libraries import docopt
 
-import rosetta.parse_settings
-from rosetta.write_run_file import process as write_run_file
-
 from klab.fs.fsio import read_file, write_file
 from klab.bio.pdb import PDB
 from klab.bio.basics import ChainMutation
 from klab.rosetta.input_files import Mutfile
+
+import rosetta.parse_settings
+from rosetta.write_run_file import process as write_run_file
 
 
 task_subfolder = 'preminimization'

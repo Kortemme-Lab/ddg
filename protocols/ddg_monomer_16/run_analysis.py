@@ -109,7 +109,8 @@ from libraries import docopt
 
 from klab import colortext
 from klab.fs.fsio import read_file_lines
-from klab.benchmarking.analysis.ddg_analyzer import DDGBenchmarkManager
+
+from rosetta.ddg_analyzer import DDGBenchmarkManager
 
 
 # This module contains one main class.
