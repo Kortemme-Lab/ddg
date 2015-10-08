@@ -107,9 +107,9 @@ except: import simplejson as json
 
 from libraries import docopt
 
-from tools import colortext
-from tools.fs.fsio import read_file_lines
-from tools.benchmarking.analysis.ddg_analyzer import DDGBenchmarkManager
+from klab import colortext
+from klab.fs.fsio import read_file_lines
+from klab.benchmarking.analysis.ddg_analyzer import DDGBenchmarkManager
 
 
 # This module contains one main class.

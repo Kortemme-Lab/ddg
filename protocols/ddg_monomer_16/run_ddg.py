@@ -67,8 +67,8 @@ from libraries import docopt
 import rosetta.parse_settings
 from rosetta.write_run_file import process as write_run_file
 
-from tools.fsio.fs import read_file, write_file
-from tools.tui.utils import prompt_yn
+from klab.fsio.fs import read_file, write_file
+from klab.tui.utils import prompt_yn
 from run_preminimization import task_subfolder as preminimization_task_subfolder, mutfiles_subfolder
 
 

@@ -29,7 +29,10 @@ import cPickle as pickle
 import sqlite3
 import itertools
 
-import analysis.tools.stats as stats
+import klab.stats.misc as stats
+from klab.benchmarking.analysis.plot import plot
+from klab.plot.rtools import RInterface
+
 from setup_alanine_scanning import parse_mutations_file
 
 pickle_name = os.path.join('data', 'job_dict.pickle')
@@ -166,13 +169,13 @@ if __name__ == '__main__':
             for pt_id, pt_i, pt_j in zip(data_ids, i_data_points, j_data_points):
                 table_for_plot.append(dict(ID = pt_id, Experimental = pt_i, Predicted = pt_j))
 
-            stats.plot(
+            plot(
                 table_for_plot,
                 os.path.join(
                     analysis_output_dir,
                     '%s-%s-%s_vs_%s.pdf' % ( os.path.basename(output_dir), name, i_name, j_name)
                 ),
-                stats.RInterface.correlation_coefficient_gplot
+                RInterface.correlation_coefficient_gplot
             )
 
         def compress(data, selectors, invert=False):

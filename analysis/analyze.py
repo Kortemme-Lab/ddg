@@ -47,10 +47,10 @@ import os
 
 from libraries import docopt
 
-from tools.stats import get_xy_dataset_statistics, format_stats_for_printing
-from tools.fs.fsio import read_file
-from tools.benchmarking.analysis.plot import plot
-from tools.plot.rtools import RInterface
+from klab.stats import get_xy_dataset_statistics, format_stats_for_printing
+from klab.fs.fsio import read_file
+from klab.benchmarking.analysis.plot import plot
+from klab.plot.rtools import RInterface
 
 
 correlation_coefficient_scatterplotplot = RInterface.correlation_coefficient_gplot

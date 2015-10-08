@@ -254,7 +254,6 @@ def make_pack_resfile(pack_resfile_path, close_residues_list):
             f.write('%d%s %s NATAA\n' % (atom_resnum, atom_insertion_code, atom_chain))
 
 if __name__ == "__main__":
-    import pprint
     try:
         arguments = docopt.docopt(__doc__.format(**locals()))
     except Exception, e:

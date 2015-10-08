@@ -26,8 +26,8 @@
 import os
 import json
 
-from tools.bio.pdb import PDB
-from tools.fs.fsio import read_file, write_file
+from klab.bio.pdb import PDB
+from klab.fs.fsio import read_file, write_file
 
 
 def update_pdbs_json():
