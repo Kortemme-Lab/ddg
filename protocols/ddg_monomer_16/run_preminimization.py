@@ -65,31 +65,27 @@ Authors:
 
 import sys
 import os
-import re
 import shutil
 import traceback
 import time
-import datetime
-import inspect
-multiprocessing_module_available = True
-try:
-    import multiprocessing
-except:
-    multiprocessing_module_available = False
 import cPickle as pickle
 import getpass
+
+multiprocessing_module_available = True
+try: import multiprocessing
+except: multiprocessing_module_available = False
+try: import json
+except: import simplejson as json
+
+from libraries import docopt
+
 import rosetta.parse_settings
 from rosetta.write_run_file import process as write_run_file
-from analysis.libraries import docopt
-from analysis.tools.stats import read_file, write_file
-try:
-    import json
-except:
-    import simplejson as json
 
-from rosetta.pdb import PDB, create_mutfile
-from rosetta.basics import ChainMutation
-from rosetta.input_files import Mutfile
+from tools.fs.fsio import read_file, write_file
+from tools.bio.pdb import PDB
+from tools.bio.basics import ChainMutation
+from tools.rosetta.input_files import Mutfile
 
 
 task_subfolder = 'preminimization'
@@ -228,7 +224,6 @@ def use_single_processor(settings, pdb_monomers, input_pdb_dir_path, pdb_data_di
 
 
 if __name__ == '__main__':
-    import pprint
     try:
         arguments = docopt.docopt(__doc__.format(**locals()))
     except Exception, e:

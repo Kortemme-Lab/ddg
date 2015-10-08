@@ -56,25 +56,20 @@ Authors:
 
 import sys
 import os
-import re
 import shutil
-import time
-import datetime
-import inspect
-import multiprocessing
 import glob
 import cPickle as pickle
-import getpass
-import gzip
+try: import json
+except: import simplejson as json
+
+from libraries import docopt
+
 import rosetta.parse_settings
 from rosetta.write_run_file import process as write_run_file
-from analysis.libraries import docopt
-from analysis.tools.stats import read_file, write_file, prompt_yn
+
+from tools.fsio.fs import read_file, write_file
+from tools.tui.utils import prompt_yn
 from run_preminimization import task_subfolder as preminimization_task_subfolder, mutfiles_subfolder
-try:
-    import json
-except:
-    import simplejson as json
 
 
 task_subfolder = 'ddg'
@@ -113,7 +108,6 @@ def create_constraints_files(preminimized_pdb_data_dir, constraints_data_dir):
 
 
 if __name__ == '__main__':
-    import pprint
     try:
         arguments = docopt.docopt(__doc__.format(**locals()))
     except Exception, e:

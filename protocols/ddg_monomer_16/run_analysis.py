@@ -102,13 +102,13 @@ import sys
 import os
 import re
 import traceback
-import pandas
 try: import json
 except: import simplejson as json
 
-from analysis.libraries import docopt
-from analysis.tools import colortext
-from analysis.tools.stats import read_file_lines
+from libraries import docopt
+
+from tools import colortext
+from tools.fs.fsio import read_file_lines
 from tools.benchmarking.analysis.ddg_analyzer import DDGBenchmarkManager
 
 

@@ -44,7 +44,6 @@ Authors:
     Kyle Barlow
 """
 
-import multiprocessing
 import os
 from rosetta.write_run_file import process as write_run_file
 import shutil
@@ -52,13 +51,14 @@ import sys
 import time
 import inspect
 import cPickle as pickle
-import re
 import getpass
-import interfaces_defs
+
+from libraries import docopt
+
 import rosetta.parse_settings
-import argparse
-from analysis.libraries import docopt
 import identify_interface
+import interfaces_defs
+
 
 input_pdb_dir_path = '../../input/pdbs/hydrogen_pdbs'
 extra_name = '' # something like _talaris if needed
