@@ -34,7 +34,7 @@
 
         <MOVERS>
 	  <MinMover name=minmover scorefxn=fa_talaris2014  chi=1 bb=1 jump=ALL cartesian=0 type=lbfgs_armijo tolerance=0.001/>
-	  <ddG name=ddgmover scorefxn=fa_talaris2014 chain_num=%%chainstomove%% repack_unbound=false repack_bound=false relax_bound=false task_operations=rrf_pack/>
+	  <ddG name=ddgmover scorefxn=fa_talaris2014 chain_num=%%chainstomove%% repack_unbound=false repack_bound=false relax_bound=false task_operations=rrf/>
         </MOVERS>
 
         <FILTERS>
