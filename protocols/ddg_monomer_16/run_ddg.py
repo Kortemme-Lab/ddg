@@ -49,6 +49,12 @@ Options:
     --talaris2014
         When this option is set, the talaris2014 score function will be used rather than the default score function. Warning: This option may break when talaris2014 becomes the default Rosetta score function.
 
+    --beta_july15
+        When this option is set, the July 2015 beta score function will be used rather than the default score function. Warning: This option may break when this score function is removed.
+    
+    --beta_nov15
+        When this option is set, the November 2015 beta score function will be used rather than the default score function. Warning: This option may break when this score function is removed.
+
 Authors:
     Kyle Barlow
     Shane O'Connor
@@ -193,6 +199,13 @@ if __name__ == '__main__':
     extra_s = ''
     if arguments['--talaris2014']:
         extra_s = ' (using talaris2014)'
+    if arguments['--beta_july15']:
+        assert(not(extra_s))
+        extra_s = ' (using beta_july15)'
+    if arguments['--beta_nov15']:
+        assert(not(extra_s))
+        extra_s = ' (using beta_nov15)'
+
     print('Creating constraint files...%s' % extra_s)
     constraints_files, preminimized_structures = create_constraints_files(preminimized_pdb_data_dir, constraints_data_dir)
 
@@ -255,6 +268,10 @@ if __name__ == '__main__':
     ]
     if arguments['--talaris2014']:
         settings['rosetta_args_list'].extend(['-talaris2014', 'true'])
+    elif arguments['--beta_july15']:
+        settings['rosetta_args_list'].extend(['-beta_july15'])
+    elif arguments['--beta_nov15']:
+        settings['rosetta_args_list'].extend(['-beta_nov15'])
     settings['output_dir'] = output_dir
 
     write_run_file(settings)
