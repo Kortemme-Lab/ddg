@@ -52,6 +52,9 @@ Options:
     --beta_july15
         When this option is set, the July 2015 beta score function will be used rather than the default score function. Warning: This option may break when this score function is removed.
 
+    --beta_nov15
+        When this option is set, the November 2015 beta score function will be used rather than the default score function. Warning: This option may break when this score function is removed.
+    
     -p --parallel NUM_PROCESSORS
         If this argument is set then the job setup will use NUM_PROCESSORS which will speed this step up. Otherwise, a single processor will be used. This should run on both Unix and Windows machines.
 
@@ -348,6 +351,9 @@ if __name__ == '__main__':
         if arguments['--beta_july15']:
             assert(not(extra_s))
             extra_s = ' (using beta_july15)'
+        if arguments['--beta_nov15']:
+            assert(not(extra_s))
+            extra_s = ' (using beta_nov15)'
         print('Creating benchmark input:%s' % extra_s)
 
         if num_processors == 1:
@@ -374,6 +380,8 @@ if __name__ == '__main__':
             settings['rosetta_args_list'].extend(['-talaris2014', 'true'])
         elif arguments['--beta_july15']:
             settings['rosetta_args_list'].extend(['-beta_july15'])
+        elif arguments['--beta_nov15']:
+            settings['rosetta_args_list'].extend(['-beta_nov15'])
 
         write_run_file(settings)
         job_path = os.path.abspath(output_dir)
