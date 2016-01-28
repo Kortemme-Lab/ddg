@@ -55,7 +55,9 @@ def read_file(filepath, binary = False):
     if binary:
         with open(filepath, 'rb') as f: contents = f.read()
     elif filepath.endswith('.gz'):
-        with gzip.open(filepath, 'r') as f: contents = f.read()
+        f = gzip.open(filepath, 'r') # this is necessary for older versions of Python (2.6)
+        contents = f.read()
+        f.close()
     else:
         with open(filepath, 'r') as f: contents = f.read()
     return contents
