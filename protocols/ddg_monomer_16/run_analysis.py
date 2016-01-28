@@ -82,6 +82,11 @@ Options:
         The cutoff (absolute value) below which a predicted DDG is considered neutral. The cutoff is currently symmetric
         (neutrality is defined as the region -SCY energy units to SCY energy units). [default: 1.0]
 
+    --cap_predictions CAP
+        The value at which to cap absolute predicted values. This may be useful to see how predictions compare in the absence
+        of extreme outliers as all predicted values (before scaling) will lie between -CAP and +CAP. This option is not used
+        by default.
+
     --take_lowest N
         When this option is set, the average of the N lowest-scoring (most stable) mutant and wildtypes structures are used to calculate the DDG value. [default: 3]
 
@@ -231,6 +236,14 @@ class BenchmarkManager(ReportingObject):
         except Exception, e:
             raise colortext.Exception('burial_cutoff must be between 0.0 and 1.0 (inclusive).')
 
+        # cap_prediction option. This is used to cap predicted values and ameliorate the effect of outliers on correlation i.e. cheat!
+        try:
+            self.prediction_cap = None
+            if arguments['--cap_predictions']:
+                self.prediction_cap = abs(float(arguments['--cap_predictions']))
+        except ValueError, e:
+            raise colortext.Exception('cap_predictions must be a float value.')
+
         # stability classication cutoff values
         try:
             self.stability_classication_x_cutoff = abs(float(arguments['--scx_cutoff']))
@@ -281,7 +294,6 @@ class BenchmarkManager(ReportingObject):
                     c = max(c) + 1
                 else:
                     c = 1
-                print(c)
                 for benchmark_run in benchmark_run_json:
                     if benchmark_run.get('Order') and str(benchmark_run.get('Order')).isdigit():
                         order = int(benchmark_run['Order'])
@@ -390,7 +402,7 @@ class BenchmarkManager(ReportingObject):
                     c += 1.0
                     self.log('\rProgress: {0:d}%'.format(int(c/num_dirs)), colortext.wcyan)
                     if not self.silent: sys.stdout.flush()
-                    analysis_data[record_id] = BenchmarkManager.extract_data(jd, self.take_lowest)
+                    analysis_data[record_id] = BenchmarkManager.extract_data(jd, self.take_lowest, prediction_cap = self.prediction_cap)
                 self.log('\rWriting to file...', colortext.wlightpurple)
                 if not self.silent: sys.stdout.flush()
                 write_file(benchmark_data_filepath, json.dumps(analysis_data, indent = 4, sort_keys=True))
@@ -425,7 +437,8 @@ class BenchmarkManager(ReportingObject):
                 stability_classication_x_cutoff = self.stability_classication_x_cutoff,
                 stability_classication_y_cutoff = self.stability_classication_y_cutoff,
                 use_existing_benchmark_data = arguments['--use_existing_benchmark_data'],
-                recreate_graphs = arguments['--recreate_graphs']
+                recreate_graphs = arguments['--recreate_graphs'],
+                prediction_cap = self.prediction_cap
             )
 
 
@@ -457,7 +470,7 @@ class BenchmarkManager(ReportingObject):
     ###
 
     @staticmethod
-    def extract_data(ddg_output_path, take_lowest):
+    def extract_data(ddg_output_path, take_lowest, prediction_cap = None):
         '''Extract the data for one dataset case.
            Note: This function is written to handle data from Rosetta at the time of writing. This will need to be altered to
            work with certain older revisions and may need to be adapted to work with future revisions.'''
@@ -480,7 +493,11 @@ class BenchmarkManager(ReportingObject):
                 avg_top_mutant_scores = sum(sorted([components['total'] for id, components in scores['Mutant_scores'].iteritems()])[:fair_top])/float(fair_top)
                 avg_top_wildtype_scores = sum(sorted([components['total'] for id, components in scores['WildType_scores'].iteritems()])[:fair_top])/float(fair_top)
                 scores['DDG_Top%d' % x] = avg_top_mutant_scores - avg_top_wildtype_scores
-
+                if prediction_cap != None:
+                    if scores['DDG_Top%d' % x] < -prediction_cap:
+                        scores['DDG_Top%d' % x] = -prediction_cap
+                    elif scores['DDG_Top%d' % x] > prediction_cap:
+                        scores['DDG_Top%d' % x] = prediction_cap
         return scores
 
 
@@ -638,7 +655,7 @@ class BenchmarkRun(ReportingObject):
 
     def __init__(self, benchmark_run_name, benchmark_run_directory, analysis_directory, dataset_cases, analysis_data, use_single_reported_value,
                  description = None, dataset_description = None, credit = None, take_lowest = 3, generate_plots = True, report_analysis = True, include_derived_mutations = False, recreate_graphs = False, silent = False, burial_cutoff = 0.25,
-                 stability_classication_x_cutoff = 1.0, stability_classication_y_cutoff = 1.0, use_existing_benchmark_data = False):
+                 stability_classication_x_cutoff = 1.0, stability_classication_y_cutoff = 1.0, use_existing_benchmark_data = False, prediction_cap = None):
         self.amino_acid_details, self.CAA, self.PAA, self.HAA = BenchmarkRun.get_amino_acid_details()
         self.benchmark_run_name = benchmark_run_name
         self.benchmark_run_directory = benchmark_run_directory
@@ -647,7 +664,7 @@ class BenchmarkRun(ReportingObject):
         self.analysis_directory = analysis_directory
         self.subplot_directory = os.path.join(self.analysis_directory, self.benchmark_run_name + '_subplots')
         self.analysis_file_prefix = os.path.join(self.analysis_directory, self.benchmark_run_name + '_subplots', self.benchmark_run_name + '_')
-        self.use_single_reported_value = use_single_reported_value
+        self.use_single_reorted_value = use_single_reported_value
         self.description = description
         self.dataset_description = dataset_description
         self.credit = credit
@@ -668,9 +685,10 @@ class BenchmarkRun(ReportingObject):
         self.metrics_filepath = os.path.join(self.analysis_directory, '{0}_metrics.txt'.format(self.benchmark_run_name))
         self.use_existing_benchmark_data = use_existing_benchmark_data
         self.ddg_analysis_type_description = None
-        assert(os.path.exists(self.analysis_csv_input_filepath))
-        assert(os.path.exists(self.analysis_json_input_filepath))
-        assert(os.path.exists(self.analysis_raw_data_input_filepath))
+        self.prediction_cap = prediction_cap
+        #assert(os.path.exists(self.analysis_csv_input_filepath))
+        #assert(os.path.exists(self.analysis_json_input_filepath))
+        #assert(os.path.exists(self.analysis_raw_data_input_filepath))
         if self.generate_plots:
             self.create_subplot_directory() # Create a directory for plots
 
@@ -1037,6 +1055,9 @@ class BenchmarkRun(ReportingObject):
         self.report(metrics_textfile[-1], fn = colortext.message)
         metrics_textfile.append('The stability classification cutoffs are: Experimental=%0.2f kcal/mol, Predicted=%0.2f energy units.' % (self.stability_classication_x_cutoff, self.stability_classication_y_cutoff))
         self.report(metrics_textfile[-1], fn = colortext.warning)
+        if self.prediction_cap != None:
+            metrics_textfile.append('These results include a cap on predicted values of +/-{0} energy units.'.format(self.prediction_cap))
+            self.report(metrics_textfile[-1], fn = colortext.warning)
 
         amino_acid_details, CAA, PAA, HAA = self.amino_acid_details, self.CAA, self.PAA, self.HAA
 
@@ -1135,7 +1156,10 @@ class BenchmarkRun(ReportingObject):
             self.log('Saving scatterplot to %s.' % main_scatterplot)
             plot_pandas(dataframe, 'Experimental', 'Predicted', main_scatterplot, RInterface.correlation_coefficient_gplot, title = 'Experimental vs. Prediction')
 
-        graph_order.append(self.create_section_slide('{0}section_1.png'.format(self.analysis_file_prefix), 'Main metrics', subtitle, self.credit))
+        if self.prediction_cap != None:
+            graph_order.append(self.create_section_slide('{0}section_1.png'.format(self.analysis_file_prefix), 'Main metrics', subtitle, self.credit, 'Predictions capped at \u00b1{0} energy units'.format(self.prediction_cap)))
+        else:
+            graph_order.append(self.create_section_slide('{0}section_1.png'.format(self.analysis_file_prefix), 'Main metrics', subtitle, self.credit))
         graph_order.append(main_scatterplot)
 
         # Plot a histogram of the absolute errors
@@ -1251,7 +1275,7 @@ class BenchmarkRun(ReportingObject):
         return max_value_cutoff, max_value, fraction_correct_range
 
 
-    def create_section_slide(self, plot_filename, title, subtitle = '', footer = ''):
+    def create_section_slide(self, plot_filename, title, subtitle = '', footer = '', extra = ''):
 
         if os.path.exists(plot_filename) and not(self.recreate_graphs):
             return plot_filename
@@ -1278,7 +1302,6 @@ class BenchmarkRun(ReportingObject):
         elif longest_line <= 32:
             subtitle_size = 8
         subtitle_size = min(title_size - 2, subtitle_size)
-
         footer_size = 6
 
         # Create plot
@@ -1295,7 +1318,8 @@ p <- ggplot(mtcars, aes(x = wt, y = mpg)) + geom_blank() +
      theme(axis.ticks.x=element_blank(), axis.ticks.y=element_blank(), axis.text.x=element_blank(), axis.text.y=element_blank(), axis.title.x=element_blank(), axis.title.y=element_blank()) +
      geom_text(hjust=0, vjust=1, size=%(title_size)d, color="black", aes(5, 90, fontface="plain", family = "Times", face = "bold", label="%(title)s")) +
      geom_text(hjust=0, vjust=1, size=%(subtitle_size)d, color="black", aes(5, 50, fontface="plain", family = "Times", face = "bold", label="%(subtitle)s")) +
-     geom_text(hjust=0, vjust=1, size=%(footer_size)d, color="black", aes(5, 5, fontface="italic", family = "Times", face = "bold", label="%(footer)s"))
+     geom_text(hjust=0, vjust=1, size=%(footer_size)d, color="black", aes(5, 5, fontface="italic", family = "Times", face = "bold", label="%(footer)s")) +
+     geom_text(hjust=0, vjust=1, size=%(footer_size)d, color="black", aes(5, 20, fontface="bold", family = "Times", face = "bold", label="%(extra)s"))
 p
 dev.off()'''
             self.log('Section slide %s.' % plot_filename)
